@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block scripts %}
+<script src="{{ STATIC_URL }}js/lib/socket.io/socket.io.js"></script>
+
+<script>
+
+var socket = io.connect('http://10.10.10.10/app');
+socket.on('track',function(data){
+	console.log(data);
+})
+</script>
+{% endblock %}
+
+
+{% block container %}
+	<div class="row">
+		<div class="col-md-8 results">
+			<h1>Results</h1>
+			<div class="track-listing-container"></div>
+		</div>
+		<div class="col-md-4 form" >
+			<h1>Search</h1>
+			{% include "home/spotify-search-form.html" %}
+		</div>	
+	</div>	
+{% endblock%}

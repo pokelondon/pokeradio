@@ -1,0 +1,13 @@
+# Directories
+logs/
+media/
+welcome_index/
+node_modules/
+*.egg-info/
+
+# Extenstions
+*.vagrant
+*.DS_Store
+*.pyc
+*.swp
+*.coverage

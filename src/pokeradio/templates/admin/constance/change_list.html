@@ -1,0 +1,78 @@
+{% extends "admin/base_site.html" %}
+{% load admin_static admin_list i18n %}
+
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/changelists.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}" />
+  {{ media.css }}
+<style>
+#result_list .changed {
+      background-color: #ffc;
+}
+  #changelist table tbody td:first-child {
+      text-align: left;
+}
+  .help {
+      font-weight: normal !important;
+}
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{% url 'admin:jsi18n' as jsi18nurl %}
+<script type="text/javascript" src="{{ jsi18nurl|default:'../../jsi18n/' }}"></script>
+{{ block.super }}
+{{ media.js }}
+{% endblock %}
+
+{% block bodyclass %}change-list{% endblock %}
+
+{% block content %}
+  <div id="content-main">
+    <div class="module" id="changelist">
+        <form action="" method="post">
+            {% csrf_token %}
+            <p>Use the table below to update application settings.</p>
+            <table cellspacing="0" id="result_list" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Default" %}</th>
+                    <th>{% trans "Value" %}</th>
+                    <th>{% trans "Is modified" %}</th>
+                </tr>
+                </thead>
+                {% for item in config %}
+                <tr class="{% cycle 'row1' 'row2' %}">
+                    <th>{{item.name}}
+                        <div class="help">{{item.help_text}}</div>
+                    </th>
+                    <td>
+                        {{ item.default }}
+                    </td>
+                        <td>
+                            {{item.form_field.errors}}
+                            {{item.form_field}}
+                        </td>
+                    <td>
+                        <img src="{{ STATIC_URL }}admin/img/icon-{% if item.modified %}yes{% else %}no{% endif %}.gif" alt="{{ item.modified }}" />
+                    </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <p class="paginator">
+            <input type="submit" name="_save" class="btn btn-primary" value="{% trans 'Save' %}"/>
+            </p>
+        </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a> <span class="divider">/</span></li>
+    <li>Config</li>
+</ul>
+{% endblock %}

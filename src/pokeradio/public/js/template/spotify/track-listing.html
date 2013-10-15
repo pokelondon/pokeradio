@@ -1,0 +1,6 @@
+<ul class="list-group">
+	<% _.each(metadata,function(item){ console.log(item)%>
+
+	<li class="list-group-item" data-uri='<%= item.attributes.href %>'><%=item.attributes.name%></li>
+	<% }); %>	
+</ul>

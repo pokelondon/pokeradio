@@ -1,0 +1,14 @@
+[run]
+branch = True
+source = pokeradio
+
+[report]
+omit =
+    */__init__.py
+    pokeradio/*/migrations/*
+    pokeradio/config/*
+    tests/
+exclude_lines =
+    pragma: no cover
+    def __unicode__
+    class Meta
