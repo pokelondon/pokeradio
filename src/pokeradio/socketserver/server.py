@@ -6,7 +6,6 @@ import logging
 import brukva
 from tornado.web import RequestHandler
 from django.conf import settings
-
 from tornadio2 import event, router, server
 #from clients.store.models import Asset, get_or_create_asset_type
 
@@ -25,7 +24,7 @@ class PlayerConnection(SocketConnection):
    
     def on_open(self, request):
         print 'mopidy connected'
-        self.mopidyConnectiongit.add(self)
+        self.mopidyConnection.add(self)
    
     @event
     def track_playback_started(self,message):
