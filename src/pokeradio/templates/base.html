@@ -19,6 +19,16 @@
     </head>
     <body>
         <div class="container">
+            <div class="page-header">
+                <h1>Poke Radio<br/>
+                    {%  if request.user.is_authenticated %}
+                    <small>
+                        {{ request.user.get_full_name }}
+                        <a href="{% url 'logout' %}" class='btn'>Logout</a>
+                    </small>
+                    {% endif %}
+                </h1>
+            </div>
             {% block container %}
             {% endblock %}
          </div>   

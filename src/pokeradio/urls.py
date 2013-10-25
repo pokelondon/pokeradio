@@ -7,7 +7,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
-from pokeradio import views
+
 
 admin.autodiscover()
 urlpatterns = patterns('')
@@ -23,6 +23,9 @@ if settings.DEBUG:
 # Root Patterns
 urls = [
     (r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.home, name='home')
+    url(r'^$', 'pokeradio.views.home', name='home'),
+    url(r'^login/$','pokeradio.accounts.views.login',name='login'),
+     url(r'^logout/$','django.contrib.auth.views.logout',name='logout'),
+    url('', include('social.apps.django_app.urls', namespace='social'))
 ]
 urlpatterns = patterns('', *urls)

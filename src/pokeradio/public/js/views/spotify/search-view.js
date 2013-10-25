@@ -1,37 +1,40 @@
 define(['jquery',
 		'backbone',
 		'underscore',
-		'collections/spotify',
+		'collections/Tracks',
 		'text!template/spotify/track-listing.html'
 		],
-		function($,Backbone,_,SpotifyCollection,tl_template){
+		function($,Backbone,_,Tracks,tl_template){
 			var searchView = Backbone.View.extend({
 				el: $('.container'),
 				
 				initialize: function(){
-					this.spotifyCollection = new SpotifyCollection;
-				}, 
+					this.tracks = new Tracks();
+				},
 				events:{
 					'submit #searchForm': 'search',
-					'click .track-listing-container li': 'add_to_playlsit'
+					'click .track-listing-container li': 'add_track'
 				},
 				search: function(e){
-					this.spotifyCollection.fetch({
+					this.tracks.fetch({
 						data : $.param(
 							{q: $('#searchInput').val()}
 						),
 						success:function(data){
-							
-							template = _.template(tl_template, {metadata:data.models});
+							var template = _.template(tl_template, {metadata:data.models});
 							$('.track-listing-container').html(template);
 						}
 					});
 					return false;
 				},
-				add_to_playlsit:function(e){
-					console.log(e);
-					socket.emit('open_uri',$(e.currentTarget).data('uri'));
-				}	
+				add_track:function(e){
+					var track = this.tracks.get($(e.currentTarget).data('href'));
+					var track_payload = {};
+					track_payload.name = track.attributes.name;
+					track_payload.href = track.attributes.href;
+					track_payload.artist = track.attributes.artists[0].name;
+					socket.emit('add_track',JSON.stringify(track_payload));
+				}
 			});
 			return searchView;
 		});

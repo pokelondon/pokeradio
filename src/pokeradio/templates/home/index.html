@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% block scripts %}
 <script src="{{ STATIC_URL }}js/lib/socket.io/socket.io.js"></script>
-
 <script>
 
-var socket = io.connect('http://10.10.10.10/app');
-socket.on('track',function(data){
-	console.log(data);
+var socket = io.connect( '{{ socketio_client_url }}');
+
+socket.on('playlist_changed',function(data){
+	alert('PLAYLIST')
+	
 })
+
 </script>
 {% endblock %}
 
@@ -21,6 +23,7 @@ socket.on('track',function(data){
 		<div class="col-md-4 form" >
 			<h1>Search</h1>
 			{% include "home/spotify-search-form.html" %}
+			<div class="playlist"></div>
 		</div>	
 	</div>	
 {% endblock%}
