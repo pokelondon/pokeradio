@@ -8,27 +8,23 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'FlowModal'
-        db.create_table(u'pokeradio_flowmodal', (
-            ('id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], primary_key=True)),
-            ('flow', self.gf('oauth2client.django_orm.FlowField')(null=True)),
+        # Adding model 'Track'
+        db.create_table(u'pokeradio_track', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('artist', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('href', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('timestamp', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('played', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('length', self.gf('django.db.models.fields.FloatField')(null=True)),
         ))
-        db.send_create_signal(u'pokeradio', ['FlowModal'])
-
-        # Adding model 'CredentialsModal'
-        db.create_table(u'pokeradio_credentialsmodal', (
-            ('id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], primary_key=True)),
-            ('credential', self.gf('oauth2client.django_orm.CredentialsField')(null=True)),
-        ))
-        db.send_create_signal(u'pokeradio', ['CredentialsModal'])
+        db.send_create_signal(u'pokeradio', ['Track'])
 
 
     def backwards(self, orm):
-        # Deleting model 'FlowModal'
-        db.delete_table(u'pokeradio_flowmodal')
-
-        # Deleting model 'CredentialsModal'
-        db.delete_table(u'pokeradio_credentialsmodal')
+        # Deleting model 'Track'
+        db.delete_table(u'pokeradio_track')
 
 
     models = {
@@ -68,15 +64,16 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'pokeradio.credentialsmodal': {
-            'Meta': {'object_name': 'CredentialsModal'},
-            'credential': ('oauth2client.django_orm.CredentialsField', [], {'null': 'True'}),
-            'id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'primary_key': 'True'})
-        },
-        u'pokeradio.flowmodal': {
-            'Meta': {'object_name': 'FlowModal'},
-            'flow': ('oauth2client.django_orm.FlowField', [], {'null': 'True'}),
-            'id': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'primary_key': 'True'})
+        u'pokeradio.track': {
+            'Meta': {'ordering': "['timestamp']", 'object_name': 'Track'},
+            'artist': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'href': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'length': ('django.db.models.fields.FloatField', [], {'null': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'played': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'timestamp': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }
 
