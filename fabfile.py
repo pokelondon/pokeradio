@@ -15,7 +15,7 @@ from velcro.py.django import syncdb, migrate
 output['running'] = False
 
 # Project Details
-env.client = ''
+env.client = 'poke'
 env.project = 'pokeradio'
 
 env.local_path = os.path.abspath(os.path.dirname(__file__))
