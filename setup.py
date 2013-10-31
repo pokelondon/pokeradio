@@ -26,7 +26,9 @@ install_dependencies = [
     'python-social-auth==0.1.14',
     'TornadIO2==0.0.4',
     'redis==2.8.0',
-    'simplejson==3.3.1'
+    'simplejson==3.3.1',
+    'django-debug-toolbar==0.9.4'
+
 ]
 
 # Test Dependencies
