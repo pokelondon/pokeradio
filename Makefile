@@ -30,3 +30,6 @@ run_django:
 
 notebook:
 	django-admin.py shell_plus --notebook
+
+run_socket:
+	python ./src/socketserver/server.py

@@ -1,6 +1,23 @@
-<ul class="list-group">
-	<% _.each(metadata,function(item){%>
 
-	<li class="list-group-item"><%=item.attributes.fields.name%></li>
-	<% }); %>	
-</ul>
+
+<% _.each(metadata,function(item){ 
+		%>
+
+	<li data-playlist-id='<%=item.id%>' class="list-group-item">
+		<b><%=item.attributes.name%></b> - <%=item.attributes.artist%><br/>
+		<small><%=item.attributes.user_fullname%></small>
+		<% if (collection.indexOf(item)==0){ %>
+		<div class="progress">
+		  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+		  </div>
+		</div>
+		<% }%>
+	</li>
+    
+<% }); %>	
+<script id="progress-template" type="text/template">
+		<div class="progress">
+		  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+		  </div>
+		</div>
+</script>

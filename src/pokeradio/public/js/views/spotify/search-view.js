@@ -1,22 +1,23 @@
 define(['jquery',
 		'backbone',
 		'underscore',
-		'collections/Tracks',
+		'collections/spotify-tracks',
+		'iobind',
 		'text!template/spotify/track-listing.html'
 		],
-		function($,Backbone,_,Tracks,tl_template){
+		function($, Backbone,_ , SpotifyTracks, ioBind, tl_template){
 			var searchView = Backbone.View.extend({
 				el: $('.container'),
 				
 				initialize: function(){
-					this.tracks = new Tracks();
+					this.spotifyTracks = new SpotifyTracks();
 				},
 				events:{
 					'submit #searchForm': 'search',
 					'click .track-listing-container li': 'add_track'
 				},
 				search: function(e){
-					this.tracks.fetch({
+					this.spotifyTracks.fetch({
 						data : $.param(
 							{q: $('#searchInput').val()}
 						),
@@ -28,11 +29,15 @@ define(['jquery',
 					return false;
 				},
 				add_track:function(e){
-					var track = this.tracks.get($(e.currentTarget).data('href'));
-					var track_payload = {};
-					track_payload.name = track.attributes.name;
-					track_payload.href = track.attributes.href;
-					track_payload.artist = track.attributes.artists[0].name;
+					var track = this.spotifyTracks.get($(e.currentTarget).data('href'));
+					console.log(track);
+					var track_payload = {
+						'name': track.attributes.name,
+						'href': track.attributes.href,
+						'artist': track.attributes.artists[0].name,
+						'length': track.attributes.length,
+						'album_href': track.attributes.album.href
+					};
 					socket.emit('add_track',JSON.stringify(track_payload));
 				}
 			});

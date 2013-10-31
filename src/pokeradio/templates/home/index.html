@@ -5,11 +5,6 @@
 
 var socket = io.connect( '{{ socketio_client_url }}');
 
-socket.on('playlist_changed',function(data){
-	alert('PLAYLIST')
-	
-})
-
 </script>
 {% endblock %}
 
@@ -23,7 +18,11 @@ socket.on('playlist_changed',function(data){
 		<div class="col-md-4 form" >
 			<h1>Search</h1>
 			{% include "home/spotify-search-form.html" %}
-			<div class="playlist"></div>
+			<div>
+				<h1>Playlist</h1>
+				<ul id="playlist" class="list-group">
+				</ul>
+			</div>
 		</div>	
 	</div>	
 {% endblock%}

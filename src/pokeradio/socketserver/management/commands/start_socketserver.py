@@ -4,28 +4,22 @@
    local development
 """
 
-import tornadio2
 import tornado
-
+from tornadio2 import router, server
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from clients.socketserver.server import UploadSockets
+from pokeradio.socketserver.server import RouterConnection
 
 
 class Command(BaseCommand):
 
-    def __init__(self):
-        pass
 
     def handle(self, *args, **kwargs):
-        print 'Starting Server on {0}'.format(settings.SOCKET_PORT)
 
-        UploadRouter = tornadio2.router.TornadioRouter(
-            UploadSockets, {'websockets_check': True})
+        Router = router.TornadioRouter(RouterConnection,
+                                         {'websockets_check': True})
+        app = tornado.web.Application(Router.urls)
 
-        application = tornado.web.Application(
-            UploadRouter.urls,
-            socket_io_port=settings.SOCKET_PORT)
+        server.SocketServer(app)
 
-        tornadio2.server.SocketServer(application)

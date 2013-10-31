@@ -23,8 +23,10 @@ install_dependencies = [
     'gunicorn == 18.0',
     'django-extensions == 1.2.2',
     'socketIO-client == 0.4',
-    'google-api-python-client==1.2',
-    'python-social-auth==0.1.14'
+    'python-social-auth==0.1.14',
+    'TornadIO2==0.0.4',
+    'redis==2.8.0',
+    'simplejson==3.3.1'
 ]
 
 # Test Dependencies
