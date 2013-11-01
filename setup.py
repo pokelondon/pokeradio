@@ -66,7 +66,7 @@ setup(
     install_requires=install_dependencies,
     include_package_data=True,
     dependency_links=[
-        'https://github.com/evilkost/brukva#egg=brukva',
+        'git://github.com/evilkost/brukva#egg=brukva',
     ],
     extras_require={
         'develop': development_dependencies,
