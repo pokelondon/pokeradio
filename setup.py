@@ -30,6 +30,7 @@ install_dependencies = [
     'django-debug-toolbar == 0.9.4',
     'tornado == 3.1',
     'simplejson == 3.3.1',
+    'brukva == 0.0.1',
 
 ]
 
@@ -65,7 +66,7 @@ setup(
     install_requires=install_dependencies,
     include_package_data=True,
     dependency_links=[
-        'git://github.com/evilkost/brukva.git#egg=brukva'
+        'git://github.com/evilkost/brukva.git#egg=brukva',
     ],
     extras_require={
         'develop': development_dependencies,
