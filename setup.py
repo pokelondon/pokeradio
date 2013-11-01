@@ -27,7 +27,8 @@ install_dependencies = [
     'TornadIO2==0.0.4',
     'redis==2.8.0',
     'simplejson==3.3.1',
-    'django-debug-toolbar==0.9.4'
+    'django-debug-toolbar==0.9.4',
+    'tornado == 3.1',
 
 ]
 
