@@ -6,10 +6,10 @@
 import tornadio2
 import tornado
 
-from server import Websocket
+from pokeradio.socketserver.server import RouterConnection
 
 
-Router = tornadio2.router.TornadioRouter(Websocket,
+Router = tornadio2.router.TornadioRouter(RouterConnection,
                                          {'websockets_check': True})
 
 app = tornado.web.Application(Router.urls)

@@ -5,7 +5,7 @@ import brukva
 from tornadio2 import event, router, server
 from helper import TrackList
 import logging
-
+from django.conf import settings
 logger = logging.getLogger()
 
 
@@ -96,7 +96,9 @@ class RouterConnection(SocketConnection):
 Router = router.TornadioRouter(RouterConnection,
                                          {'websockets_check': True})
 
-app = tornado.web.Application(Router.urls)
+app = tornado.web.Application(
+    Router.urls,
+    socket_io_port=settings.SOCKET_PORT)
 
 
 if __name__ == "__main__":
