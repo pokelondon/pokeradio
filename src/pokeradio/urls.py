@@ -24,8 +24,8 @@ if settings.DEBUG:
 urls = [
     (r'^admin/', include(admin.site.urls)),
     url(r'^$', 'pokeradio.views.home', name='home'),
-    url(r'^login/$','pokeradio.accounts.views.login',name='login'),
-     url(r'^logout/$','django.contrib.auth.views.logout',name='logout'),
+    url(r'^login/$','pokeradio.accounts.views.login_view',name='login'),
+     url(r'^logout/$','pokeradio.accounts.views.logout_view',name='logout'),
     url('', include('social.apps.django_app.urls', namespace='social'))
 ]
 urlpatterns = patterns('', *urls)
