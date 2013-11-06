@@ -5,6 +5,7 @@ welcome_index/
 node_modules/
 *.egg-info/
 
+
 # Extenstions
 *.vagrant
 *.DS_Store

@@ -36,7 +36,10 @@ define(['jquery',
 						'href': track.attributes.href,
 						'artist': track.attributes.artists[0].name,
 						'length': track.attributes.length,
-						'album_href': track.attributes.album.href
+						'album': {
+							'href': track.attributes.album.href,
+
+						}
 					};
 					socket.emit('add_track',JSON.stringify(track_payload));
 				}
