@@ -276,6 +276,52 @@ body {
   border-bottom: 1px #ebede5 solid;
   width: 100%;
 }
+#AddTrackView .media .media-body > * {
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+#AddTrackView .media .name {
+  display: block;
+  width: 100%;
+}
+#AddTrackView .media .name span {
+  display: block;
+  width: 50%;
+  text-overflow: ellipsis;
+}
+#AddTrackView .media .artist {
+  font-size: 12px;
+  color: #b8bac6;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+  width: 50%;
+}
+#AddTrackView .media .album {
+  font-size: 12px;
+  color: #b8bac6;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+  width: 25%;
+  text-overflow: ellipsis;
+}
+#AddTrackView .media .duration {
+  width: 12.5%;
+}
+#AddTrackView .media .add-icon-wrap {
+  width: 12.5%;
+}
 #AddTrackView .track {
   display: inline-block;
   /* IE 7 hack */
@@ -290,4 +336,16 @@ body {
   -moz-transition: opacity 300ms linear;
   -o-transition: opacity 300ms linear;
   transition: opacity 300ms linear;
+}
+/*------- icons ------------------*/
+.add-icon {
+  background: url('../img/add-icon.png') no-repeat;
+  width: 33px;
+  height: 33px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
 }

@@ -264,6 +264,40 @@ body {
 	.media{
 		.media-wrapper;
 		width:100%;
+
+		.media-body > *{
+			.inline;
+		}
+		@lbase-width: 50%;
+		.name{
+			display: block;
+			width: 100%;
+			span{
+				display: block;
+				width: @lbase-width;
+				text-overflow:ellipsis;
+			}
+		}
+		.artist{
+			font-size: @font-size-small;
+			color: @gray-light;
+			.inline;
+			width: @lbase-width;
+		}
+		.album{
+			font-size: @font-size-small;
+			color: @gray-light;
+			.inline;
+			width: (@lbase-width/2);
+			text-overflow:ellipsis;
+		}
+		.duration{
+			width: (@lbase-width/4);
+		}
+		.add-icon-wrap{
+			width: (@lbase-width/4);
+		}
+
 	}
 
 	.track{
@@ -277,5 +311,13 @@ body {
 .fade{
 	.transition(opacity 300ms linear);
 	
+}
+/*------- icons ------------------*/
+
+.add-icon{
+		background: url('../img/add-icon.png') no-repeat;
+		width: 33px;
+		height: 33px;
+		.inline;
 }
 
