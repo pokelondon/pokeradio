@@ -61,7 +61,10 @@ env.supervisord_config_dir = '/poke/data/conf/supervisord/'
 env.supervisord_configs = [
     'supervisord.conf',
 ]
-
+dirs = [
+    '{0}/media/albumart',
+    '{0}/media/profilepictures'
+]
 
 @pre_hooks(
     'velcro.db.mysql.create_database')
@@ -84,3 +87,4 @@ def bootstrap():
 )
 def deploy(branch, **kwargs):
     _deploy(branch)
+

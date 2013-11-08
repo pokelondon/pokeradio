@@ -67,7 +67,7 @@ class TrackList:
     def get_playlist(self):
         
         tracks_new = Track.objects.select_related().filter(played__exact=False)
-        tracks_played = Track.objects.select_related().filter(played__exact=True).order_by('timestamp')[:3]      
+        tracks_played = Track.objects.select_related().filter(played__exact=True).reverse()[:3]      
         tracks = list(chain(tracks_played, tracks_new))
         output = []
         for track in tracks:

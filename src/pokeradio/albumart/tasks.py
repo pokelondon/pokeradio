@@ -6,15 +6,15 @@ import musicbrainzngs
 musicbrainzngs.set_useragent('pokeradio', '0.1', 'developers@pokelondon.com')
 
 
-def get_image_url(mediatype, code):
-	url = settings.SPOTIFY_LOOKUP_ENDPOINT.format('%s:%s' % (mediatype, code))
+def get_image_url(code):
+	url = settings.SPOTIFY_LOOKUP_ENDPOINT.format(code)
 	try:
 		r = requests.get(url)
 	except requests.exceptions.HTTPError:
 		pass
 		#return default
 
-	spotify_meta = r.json().get(mediatype)
+	spotify_meta = r.json().get('album')
 	spotify_meta.get('external-ids')
 	ids = spotify_meta.get('external-ids')
 	artist = spotify_meta.get('artist')
