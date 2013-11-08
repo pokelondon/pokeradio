@@ -35,8 +35,13 @@ class Track(CommonProperties):
 			'timestamp': timegm(self.timestamp.utctimetuple()),
 			'played': self.played,
 			'length': self.length,
-			'user_fullname': self.user.get_full_name(),
-			'album_href': self.album_href
+			'album_href': self.album_href,
+			'user': {
+				'id': self.user.id,
+				'full_name': self.user.get_full_name(),
+			}
+
+			
 
 		}
 		

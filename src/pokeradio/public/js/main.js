@@ -8,7 +8,7 @@ require.config({
 	},
 	shim:{
 		'backbone': {
-			deps: ['underscore','jquery',],
+			deps: ['underscore','jquery'],
 			exports: 'Backbone'
 		},
 		'underscore': {
@@ -16,7 +16,7 @@ require.config({
 			exports: '_'
 		},
 		'iosync': {
-			deps: ['jquery', 'underscore', 'backbone',],
+			deps: ['jquery', 'underscore', 'backbone'],
 			exports: 'iosync'
 		},
 		'iobind': {

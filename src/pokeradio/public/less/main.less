@@ -1,0 +1,281 @@
+@import "src/pokeradio/public/less/bootstrap/variables.less";
+@import "src/pokeradio/public/less/prefixer.less";
+// Please see bootstrap/variables.less for further customisation
+
+// varibles
+//------------------------------
+
+
+@body-bg: 			#ebede5;
+@poke-blue: 		#00c6ff;
+@margin-center: 	0 auto;
+@media-list-bg:		#fff;
+@header-height: 	170px;
+@base-speed: 		300ms;
+
+.size(@w, @h){
+	width: @w;
+	height: @h
+};
+
+body {
+	background-color: @body-bg;	
+}
+
+.poke-radio-logo{
+	background-image: url('../img/poke-radio-logo.png');
+}
+
+.poke-radio-header{
+	background-color: #fff;
+	height: @header-height;
+	padding-top: 25px;
+
+}
+
+.poke-radio-header .logo{
+	width: 153px;
+	height: 77px;
+	.poke-radio-logo;
+	margin: @margin-center;
+	padding-top: 25px;
+
+}
+
+.btn{
+	background-color: @poke-blue;
+	color: #fff;	
+}
+
+.inline{
+  display: inline-block;
+  /* IE 7 hack */
+  *zoom:1;
+  *display: inline;
+  vertical-align: middle;
+ }
+.fadeout {
+	opacity: 0
+}
+
+
+/******* Poke Radio *******/
+
+
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+
+
+/*------- Playlist items --------------*/
+.media-wrapper{
+	padding: 10px;
+	height:80px;
+	margin-top:0;
+	background-color: @media-list-bg;
+	border-bottom: 1px @body-bg solid;
+}
+
+.track {
+	margin-right:20px;
+	width: 400px;
+	.name{
+	    color: @gray-dark;
+	    font-size: @font-size-base;
+	}
+	span{
+		display: block;
+		font-size: @font-size-small;
+		color: @gray-light;
+	}
+}
+
+.media-list {
+
+
+	&:first-child {
+		border-top:none;
+	}
+	img {
+		.size(60px, 60px)
+	}
+	.media{
+		padding-left: 15px;
+		padding-right: 15px;
+		margin-top :0;
+	}
+
+
+	.media-wrapper {
+		.media-wrapper;
+		
+		> *, .media-body > *{
+			.inline;
+			margin-right:20px;
+		}
+		.track {
+			.track
+		}
+		.duration{
+			font-size: @font-size-small;
+		}
+		.user{
+			font-size: @font-size-small;
+			color: @gray-light;
+			img{
+				width:35px;
+				height:35px;
+				margin-right:10px;
+
+			}
+		}
+		.user > *{
+			.inline;
+
+		}
+
+	}
+	.played{
+		font-size: @font-size-small;
+		opacity: 0.8;
+		.album-art {
+			display:none;
+		}
+		.media-wrapper {
+			border-bottom: 1px #e1e3dc solid;
+			background-color: transparent;
+			height: auto;
+			padding: 4px 10px;
+			
+			img {
+				.size(22px, 22px)
+			}
+			.name{
+				font-size: @font-size-small;
+			 	color: @gray-light;
+			}
+			span{
+				display: inline;
+				font-size: @font-size-small;
+				color: @gray-light;
+			}
+			.track {
+				width: 497px;
+			}
+		}
+	}
+	
+}
+
+
+.add-track {
+	@lheight: 50px; 
+	width: 100%;
+	padding: 0;
+	border: none;
+	margin-top: -(@lheight / 2);
+	span {
+		line-height: @lheight;
+	}
+	.search-icon{
+		background: url('../img/search-icon.png') no-repeat;
+		width: 20px;
+		height: 20px;
+		.inline;
+		margin-right: 10px;
+	}
+	.exit-icon{
+		background: url('../img/exit-icon.png') no-repeat;
+		width: 13px;
+		height: 13px;
+		.inline;
+	}
+	
+}
+
+.media.not-played{
+	&:first-of-type {
+		padding-left: 0px;
+		padding-right: 0px;
+		height:195px;
+
+	}
+}
+
+.user-controls {
+	.pull-right;
+	@lheight: 40px;
+	margin-top: -(@lheight); 
+	span{
+		font-weight:bold;
+	}
+	img {
+		width:35px;
+		height:35px;
+		margin-right:10px;
+	}
+	a {
+		font-size: @font-size-small;
+		color: @gray-dark;
+
+	}
+	> * {
+		.pull-left
+	}
+}
+
+#AddTrackView {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: fade(@body-bg, 95%);
+	overflow: auto;
+	.fade;
+	.poke-radio-header{
+		background: none;
+	}
+	.exit{
+		 height: @lheight;
+		.add-track;
+		text-align: left;
+
+		.search-icon{
+			margin-left:10px;
+		}
+
+
+	}
+
+	#searchForm input[type='search']{
+		padding: 0;
+		margin: 0;
+		border: none;
+		color: #000;
+		box-shadow: none;
+		background: transparent;
+		font-size: ceil(@font-size-base * 2);;
+	}
+
+	.media{
+		.media-wrapper;
+		width:100%;
+	}
+
+	.track{
+		.inline
+	}
+
+}
+
+/*------- transitions --------------*/
+
+.fade{
+	.transition(opacity 300ms linear);
+	
+}
+

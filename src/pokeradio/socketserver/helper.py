@@ -5,6 +5,7 @@ from pokeradio.models import Track
 from importlib import import_module
 from django.contrib.auth import SESSION_KEY
 from django.conf import settings
+from itertools import chain
 import simplejson as json
 import logging
 
@@ -65,7 +66,9 @@ class TrackList:
     
     def get_playlist(self):
         
-        tracks = Track.objects.select_related().filter(played__exact=False)
+        tracks_new = Track.objects.select_related().filter(played__exact=False)
+        tracks_played = Track.objects.select_related().filter(played__exact=True).order_by('timestamp')[:3]      
+        tracks = list(chain(tracks_played, tracks_new))
         output = []
         for track in tracks:
             output.append(track.to_dict()) 

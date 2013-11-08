@@ -12,7 +12,9 @@ module.exports = function(grunt) {
                     paths: ["src/pokeradio/public/css"]
                 },
                 files: {
-                    "src/pokeradio/public/css/main.css": "src/pokeradio/public/css/less/main.less"
+                    "src/pokeradio/public/css/main.css": "src/pokeradio/public/less/main.less",
+                     "src/pokeradio/public/css/bootstrap.css": "src/pokeradio/public/less/bootstrap/bootstrap.less"
+
                 }
             },
             production: {
@@ -21,12 +23,12 @@ module.exports = function(grunt) {
                     yuicompress: true
                 },
                 files: {
-                    "src/pokeradio/public/css/main.css": "src/pokeradio/public/css/less/main.less"
+                    "src/pokeradio/public/css/main.css": "src/pokeradio/public/less/main.less"
                 }
             }
         },
         watch: {
-            files: ["src/pokeradio/public/css/less/*.less"],
+            files: ["src/pokeradio/public/less/*.less", "src/pokeradio/public/less/bootstrap/*.less"],
             tasks: ['less:development'],
             css: {
                 files: ["src/pokeradio/public/css/*.css"],

@@ -1,21 +1,41 @@
 
 
+
 <% _.each(metadata,function(item){ 
 		%>
 
-	<li data-playlist-id='<%=item.id%>' class="list-group-item">
-		<img width='100' height='100' src='/albumart/<%= item.attributes.album_href.replace(/:/g, '/') %>.jpg'>
-		<b><%=item.attributes.name%></b> - <%=item.attributes.artist%><br/>
-		<small><%=item.attributes.user_fullname%></small>
-		<% if (collection.indexOf(item)==0){ %>
-		<div class="progress">
-		  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
-		  </div>
-		</div>
+	<li data-playlist-id="<%=item.id%>" class="media <%=item.attributes.played ? "played" : "not-played"%>">
+		<div class="media-wrapper">
+			<% if (!item.attributes.played){ %>
+			<img class="album-art media-object" src="/albumart/<%= item.attributes.album_href.replace(/:/g, "/") %>.jpg">
+			<% } %>
+				<div class="media-body">
+					<div class="track">
+						<span class='name'><%=item.attributes.name%></span>
+						<span><%=item.attributes.artist%></span>
+					</div>
+					<div class="duration"><%= _(item.attributes.length).convertToMinutes()%></div>
+					<div class="user">
+						<img class="media-object" src="/profilepictures/<%= item.attributes.user.id %>.jpg">
+						<div><%= item.attributes.user.full_name%></div>
+					</div>
+				</div>
+					
+	
+	</div>
+
+	<% if( _(item).isPlaying()){ %>
+			<div class="progress">
+			  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+			  </div>
+			</div>
 		<% }%>
 	</li>
+
     
 <% }); %>	
+
+
 <script id="progress-template" type="text/template">
 		<div class="progress">
 		  <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">

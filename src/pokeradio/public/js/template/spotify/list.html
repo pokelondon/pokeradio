@@ -1,0 +1,20 @@
+<ul class='media-list'>
+<% _.each(metadata,function(item){ 
+		%>
+
+	<li data-href="<%=item.id %>" class="media">
+
+				<div class="media-body">
+					<div class="track">
+						<span class='name'><%=item.attributes.name%></span>
+						<span><%=item.attributes.artists[0].name%></span>
+					</div>
+					<div class="album"><%=item.attributes.album.name%><span>Released: <%=item.attributes.album.released%></span></div>
+					<div class="duration"><%= _(item.attributes.length).convertToMinutes()%></div>
+
+		</div>
+<% });%>
+</div>
+
+
+    

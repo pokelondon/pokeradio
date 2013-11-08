@@ -8,8 +8,8 @@
         <title>pokeradio</title>
         <!-- Styles -->
         <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
-        <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
         <!-- Favicon -->
 
         <link rel="shortcut icon" href="img/favicon.ico" />
@@ -18,20 +18,24 @@
         {% endblock %}
     </head>
     <body>
-        <div class="container">
-            <div class="page-header">
-                <h1>Poke Radio<br/>
-                    {%  if request.user.is_authenticated %}
-                    <small>
-                        {{ request.user.get_full_name }}
-                        <a href="{% url 'logout' %}" class='btn'>Logout</a>
-                    </small>
-                    {% endif %}
-                </h1>
-            </div>
+        <div class="poke-radio-header">
+            <div class="container">
+                <div class="logo"></div>
+                {%  if request.user.is_authenticated %}
+                <div class='user-controls'>
+                    <img src="/profilepictures/{{ request.user.id }}.jpg"/>
+                    <div>
+                        <span>{{ request.user.first_name }}</span>
+                        <div><a href="{% url 'logout' %}" >Logout</a></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>    
+        </div>
+            <div class="container">
             {% block container %}
             {% endblock %}
-         </div>   
+            </div>   
         <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
     </body>
 </html>

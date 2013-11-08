@@ -3,7 +3,7 @@
 <script src="{{ STATIC_URL }}js/lib/socket.io/socket.io.js"></script>
 <script>
 
-var socket = io.connect( '{{ socketio_client_url }}');
+var socket = io.connect('{{ socketio_client_url }}');
 
 </script>
 {% endblock %}
@@ -11,18 +11,49 @@ var socket = io.connect( '{{ socketio_client_url }}');
 
 {% block container %}
 	<div class="row">
-		<div class="col-md-8 results">
-			<h1>Results</h1>
-			<div class="track-listing-container"></div>
-		</div>
-		<div class="col-md-4 form" >
-			<h1>Search</h1>
-			{% include "home/spotify-search-form.html" %}
-			<div>
-				<h1>Playlist</h1>
-				<ul id="playlist" class="list-group">
+		<div class="col-md-12">
+		<a class='btn add-track'>
+			<span class="search-icon"></span><span>Add track</span>
+		</a>
+		</div>	
+		<div class="col-md-12 playlist-wrapper">
+				<ul id="playlist" class="media-list">
+					<!-- Backbone template js/template/playlist.html
+						Backbone View js/views/playlist/playist/view.js-->
 				</ul>
 			</div>
 		</div>	
-	</div>	
+	</div>
+
+	<div id="AddTrackView" class='fadeout' style='display:none'>
+		<div class="poke-radio-header">
+            <div class="container">
+                <div class="logo"></div>
+            </div>    
+        </div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="btn exit">
+						<div class='btn-wrapper'>
+							<span class="search-icon"></span>
+							<span class="exit-icon"></span>
+					</div>
+					</div>
+				</div>
+			</div>
+			<form role="form" id="searchForm">
+				<div class="form-group">
+					<label class="sr-only" for="searchInput">Search</label>
+					<input type='search' autocomplete="off" name="search" class="form-control" id="searchInput" placeholder="Search">
+				</div>
+			<input type="submit" id="doSearch"value="Go" class="btn btn-default"/>
+			</form>	
+			<div class="track-listing-container">
+			</div>
+			
+		</div>
+</div>
+
+	
 {% endblock%}

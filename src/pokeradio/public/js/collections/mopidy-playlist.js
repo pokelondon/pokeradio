@@ -18,19 +18,18 @@ define([
 				this.ioBind('update', this.playlistUpdate, this);
 				this.ioBind('progress', this.progress, this);
 				socket.emit('playlist','fetch');
+				this.comparator = 'id';
 
 			},
 			playlistFetch: function(data){
 				// All tracks passed 
-				console.log(data);
 				this.reset($.parseJSON(data));
 			},
 			playlistUpdate: function(data){
 				//Single track is passed so we check if its a new track or played track.
 				data = $.parseJSON(data);
-				console.log(data);
 				if(data.played){
-					this.remove(this.get(data.id));
+					this.set(data);
 				}else {
 					this.add(data);
 				}

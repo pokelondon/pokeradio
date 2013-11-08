@@ -1,8 +1,0 @@
-<ul class="list-group">
-	<% _.each(metadata,function(item){%>
-
-	<li class="list-group-item"  data-href='<%= item.attributes.href %>'><%=item.attributes.name%><br/>
-		<small><%=item.attributes.artists[0].name%></small>
-	</li>
-	<% }); %>	
-</ul>

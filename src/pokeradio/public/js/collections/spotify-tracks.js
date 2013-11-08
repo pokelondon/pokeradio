@@ -8,7 +8,7 @@ define([
 			url: urls.track,
 			model: Track,
 			initialize: function(){
-
+				
 			},
 			parse: function(response){
 				return response.tracks;

@@ -1,7 +1,293 @@
-/* use less later */
+body {
+  background-color: #ebede5;
+}
+.poke-radio-logo {
+  background-image: url('../img/poke-radio-logo.png');
+}
+.poke-radio-header {
+  background-color: #fff;
+  height: 170px;
+  padding-top: 25px;
+}
+.poke-radio-header .logo {
+  width: 153px;
+  height: 77px;
+  background-image: url('../img/poke-radio-logo.png');
+  margin: 0 auto;
+  padding-top: 25px;
+}
+.btn {
+  background-color: #00c6ff;
+  color: #fff;
+}
+.inline {
+  display: inline-block;
+  /* IE 7 hack */
 
-.progress-bar{
-	-webkit-transition: none;
-	transition: none;
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+.fadeout {
+  opacity: 0;
+}
+/******* Poke Radio *******/
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+/*------- Playlist items --------------*/
+.media-wrapper {
+  padding: 10px;
+  height: 80px;
+  margin-top: 0;
+  background-color: #ffffff;
+  border-bottom: 1px #ebede5 solid;
+}
+.track {
+  margin-right: 20px;
+  width: 400px;
+}
+.track .name {
+  color: #505262;
+  font-size: 14px;
+}
+.track span {
+  display: block;
+  font-size: 12px;
+  color: #b8bac6;
+}
+.media-list:first-child {
+  border-top: none;
+}
+.media-list img {
+  width: 60px;
+  height: 60px;
+}
+.media-list .media {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 0;
+}
+.media-list .media-wrapper {
+  padding: 10px;
+  height: 80px;
+  margin-top: 0;
+  background-color: #ffffff;
+  border-bottom: 1px #ebede5 solid;
+}
+.media-list .media-wrapper > *,
+.media-list .media-wrapper .media-body > * {
+  display: inline-block;
+  /* IE 7 hack */
 
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+  margin-right: 20px;
+}
+.media-list .media-wrapper .track {
+  margin-right: 20px;
+  width: 400px;
+}
+.media-list .media-wrapper .track .name {
+  color: #505262;
+  font-size: 14px;
+}
+.media-list .media-wrapper .track span {
+  display: block;
+  font-size: 12px;
+  color: #b8bac6;
+}
+.media-list .media-wrapper .duration {
+  font-size: 12px;
+}
+.media-list .media-wrapper .user {
+  font-size: 12px;
+  color: #b8bac6;
+}
+.media-list .media-wrapper .user img {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+.media-list .media-wrapper .user > * {
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+.media-list .played {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.media-list .played .album-art {
+  display: none;
+}
+.media-list .played .media-wrapper {
+  border-bottom: 1px #e1e3dc solid;
+  background-color: transparent;
+  height: auto;
+  padding: 4px 10px;
+}
+.media-list .played .media-wrapper img {
+  width: 22px;
+  height: 22px;
+}
+.media-list .played .media-wrapper .name {
+  font-size: 12px;
+  color: #b8bac6;
+}
+.media-list .played .media-wrapper span {
+  display: inline;
+  font-size: 12px;
+  color: #b8bac6;
+}
+.media-list .played .media-wrapper .track {
+  width: 497px;
+}
+.add-track {
+  width: 100%;
+  padding: 0;
+  border: none;
+  margin-top: -25px;
+}
+.add-track span {
+  line-height: 50px;
+}
+.add-track .search-icon {
+  background: url('../img/search-icon.png') no-repeat;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.add-track .exit-icon {
+  background: url('../img/exit-icon.png') no-repeat;
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+.media.not-played:first-of-type {
+  padding-left: 0px;
+  padding-right: 0px;
+  height: 195px;
+}
+.user-controls {
+  float: right !important;
+  margin-top: -40px;
+}
+.user-controls span {
+  font-weight: bold;
+}
+.user-controls img {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+.user-controls a {
+  font-size: 12px;
+  color: #505262;
+}
+.user-controls > * {
+  float: left !important;
+}
+#AddTrackView {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(235, 237, 229, 0.95);
+  overflow: auto;
+  -webkit-transition: opacity 300ms linear;
+  -moz-transition: opacity 300ms linear;
+  -o-transition: opacity 300ms linear;
+  transition: opacity 300ms linear;
+}
+#AddTrackView .poke-radio-header {
+  background: none;
+}
+#AddTrackView .exit {
+  height: 50px;
+  width: 100%;
+  padding: 0;
+  border: none;
+  margin-top: -25px;
+  text-align: left;
+}
+#AddTrackView .exit span {
+  line-height: 50px;
+}
+#AddTrackView .exit .search-icon {
+  background: url('../img/search-icon.png') no-repeat;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+#AddTrackView .exit .exit-icon {
+  background: url('../img/exit-icon.png') no-repeat;
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+#AddTrackView .exit .search-icon {
+  margin-left: 10px;
+}
+#AddTrackView #searchForm input[type='search'] {
+  padding: 0;
+  margin: 0;
+  border: none;
+  color: #000;
+  box-shadow: none;
+  background: transparent;
+  font-size: 28px;
+}
+#AddTrackView .media {
+  padding: 10px;
+  height: 80px;
+  margin-top: 0;
+  background-color: #ffffff;
+  border-bottom: 1px #ebede5 solid;
+  width: 100%;
+}
+#AddTrackView .track {
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+/*------- transitions --------------*/
+.fade {
+  -webkit-transition: opacity 300ms linear;
+  -moz-transition: opacity 300ms linear;
+  -o-transition: opacity 300ms linear;
+  transition: opacity 300ms linear;
 }

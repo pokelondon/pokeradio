@@ -1,14 +1,10 @@
 from django.conf import settings
 import requests
 import musicbrainzngs
-from PIL import Image
-from os.path import join
-from StringIO import StringIO
-from os import stat
+
 
 musicbrainzngs.set_useragent('pokeradio', '0.1', 'developers@pokelondon.com')
 
-OUTPUT_BASE_DIR = join(settings.MEDIA_ROOT, 'albumart', 'spotify')
 
 def get_image_url(mediatype, code):
 	url = settings.SPOTIFY_LOOKUP_ENDPOINT.format('%s:%s' % (mediatype, code))
@@ -41,14 +37,3 @@ def musicbrainz_get_image(barcode, artistname, release):
 
 	return imagejson['images'][0]['thumbnails']['small']
 
-def create_image(imageurl, output_file):
-
-	output_dir = join(OUTPUT_BASE_DIR, output_file)
-	r = requests.get(imageurl)
-	image = Image.open(StringIO(r.content))
-	image.thumbnail(settings.THUMBNAIL_SIZE, Image.ANTIALIAS)
-	output_file = ('%s.jpg' % output_dir)
-	image.save(output_file)
-	statinfo = stat(output_file)
-
-	return (image, statinfo.st_size)

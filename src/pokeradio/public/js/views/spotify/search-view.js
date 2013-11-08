@@ -3,18 +3,24 @@ define(['jquery',
 		'underscore',
 		'collections/spotify-tracks',
 		'iobind',
-		'text!template/spotify/track-listing.html'
+		'text!template/spotify/list.html',
+		'utils'
 		],
-		function($, Backbone,_ , SpotifyTracks, ioBind, tl_template){
+		function($, Backbone,_ , SpotifyTracks, ioBind, tl_template,utils){
 			var searchView = Backbone.View.extend({
-				el: $('.container'),
+				el: $('#AddTrackView'),
 				
 				initialize: function(){
 					this.spotifyTracks = new SpotifyTracks();
+					
 				},
 				events:{
 					'submit #searchForm': 'search',
-					'click .track-listing-container li': 'add_track'
+					'click .track-listing-container li': 'addTrack',
+					'click .exit-icon': 'closeView'
+				},
+				render: function(){
+
 				},
 				search: function(e){
 					this.spotifyTracks.fetch({
@@ -28,7 +34,7 @@ define(['jquery',
 					});
 					return false;
 				},
-				add_track:function(e){
+				addTrack:function(e){
 					var track = this.spotifyTracks.get($(e.currentTarget).data('href'));
 					console.log(track);
 					var track_payload = {
@@ -42,7 +48,10 @@ define(['jquery',
 						}
 					};
 					socket.emit('add_track',JSON.stringify(track_payload));
-				}
+				},
+				closeView: function(){
+					utils.toggleFade($('#AddTrackView'));
+				},
 			});
 			return searchView;
 		});

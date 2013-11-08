@@ -3,31 +3,41 @@ define(['jquery',
 		'underscore',
 		'collections/mopidy-playlist',
 		'text!template/playlist.html',
+		'utils',
 		],
-		function($, Backbone, _, MopidyPlaylist, pl_template){
+		function($, Backbone, _, MopidyPlaylist, pl_template, utils){
 			var playlistView = Backbone.View.extend({
 				el: $('.container'),
 
 				initialize: function(){
-					_.bindAll(this, "render");
-					this.MopidyPlaylist = new MopidyPlaylist();
-					this.MopidyPlaylist.on('reset', this.render, this);
-					this.MopidyPlaylist.on('add', this.append, this);
-					this.MopidyPlaylist.on('remove', this.remove, this);
-					this.MopidyPlaylist.on('progressUpdate', this.progress, this);
+					_.bindAll(this, 'render','isPlaying');
+					this.MopidyPlaylistCollection = new MopidyPlaylist();
+					this.MopidyPlaylistCollection.on('reset', this.render, this);
+					this.MopidyPlaylistCollection.on('add', this.append, this);
+					this.MopidyPlaylistCollection.on('change', this.change, this);
+					this.MopidyPlaylistCollection.on('progressUpdate', this.progress, this);
+					_.mixin({
+						convertToMinutes: utils.convertToMinutes,
+						isPlaying: this.isPlaying,
+					});
+				},
+				events: {
+					'click .add-track': 'openSearch',
+
 				},
 				render: function(collection){
-					console.log(collection);
-					var template = _.template(pl_template, {metadata:collection.models, collection: this.MopidyPlaylist});
+
+					var template = _.template(pl_template, {metadata:collection.models});
 					$('#playlist').html(template);
 				},
 				append: function(model){
-					var template = _.template(pl_template, {metadata:[model], collection: this.MopidyPlaylist});
+					var template = _.template(pl_template, {metadata:[model]});
 					$('#playlist').append(template);
 				},
-				remove: function(model){
-					$( "li[data-playlist-id='"+model.id+"']" ).remove();
-					next_track = this.MopidyPlaylist.at(0);
+				change: function(model){
+					$( "li[data-playlist-id='"+model.id+"']" ).attr('class', 'media played');
+					$( "li[data-playlist-id='"+model.id+"'] .progress" ).remove();
+					next_track = this.MopidyPlaylistCollection.findWhere({played: false });
 					/*Possible to place in a subview??*/
 					pt = _.template($('#progress-template').html());
 					$( "li[data-playlist-id='"+next_track.id+"']" ).append(pt);
@@ -46,6 +56,13 @@ define(['jquery',
 						$('.progress-bar').css('width', per+'%');
 						data.time_position = data.time_position + 1000;
 					},1000);
+				},
+				isPlaying: function(model){
+					c_model = this.MopidyPlaylistCollection.findWhere({played: false });
+					return model == c_model;
+				},
+				openSearch: function(){
+					utils.toggleFade($('#AddTrackView'));
 				}
 			
 			});
