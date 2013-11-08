@@ -1,7 +1,9 @@
 from django.conf import settings
 import requests
 import musicbrainzngs
+import logging
 
+logger = logging.getLogger()
 
 musicbrainzngs.set_useragent('pokeradio', '0.1', 'developers@pokelondon.com')
 
@@ -33,7 +35,6 @@ def musicbrainz_get_image(barcode, artistname, release):
 	id = m[0].get('release-group').get('id')
 	url  = settings.COVERART_ENDPOINT.format(id)
 	r = requests.get(url)
-	print r
 	imagejson =  r.json()
 
 	return imagejson['images'][0]['thumbnails']['small']

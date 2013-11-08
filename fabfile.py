@@ -23,7 +23,12 @@ env.local_path = os.path.abspath(os.path.dirname(__file__))
 # Paths & Directories
 env.root_path = '/poke/data/www/'
 env.directories = {
-    'media': None, 'static': None, 'logs': None, 'src': None,
+    'static': None, 'logs': None, 'src': None,
+    'media':{
+        'albumart': None,
+        'profilepictures': None
+
+    }
 }
 
 # Users
