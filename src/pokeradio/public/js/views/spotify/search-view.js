@@ -6,52 +6,75 @@ define(['jquery',
 		'text!template/spotify/list.html',
 		'utils'
 		],
-		function($, Backbone,_ , SpotifyTracks, ioBind, tl_template,utils){
-			var searchView = Backbone.View.extend({
-				el: $('#AddTrackView'),
-				
-				initialize: function(){
-					this.spotifyTracks = new SpotifyTracks();
+		function($,
+				Backbone,
+				_,
+				SpotifyTracks,
+				ioBind,
+				tl_template,
+				utils) {
+
+	var searchView = Backbone.View.extend({
+		el: $('#addTrackView'),
+		initialize: function(){
+			_.bindAll(this, 'renderNextpage');
+			this.spotifyTracks = new SpotifyTracks();
+			utils.on('pageBottom', this.renderNextpage);
+			
+		},
+		events:{
+			'submit #searchForm': 'render',
+			'click .track-listing-container li': 'addTrack',
+			'click .exit-icon': 'closeView'
+		},
+		render: function(e){
+			this.query = {q: $('#searchInput').val(), page: 1};
+			this.writeToPage(false);
+			return false;
+		},
+		renderNextpage: function(){
+			var info = this.spotifyTracks.info;
+			info.pageTotal = Math.ceil(info.num_results/info.limit);
+			if (info.page < info.pageTotal){
+				this.query.page++;
+				this.writeToPage(true);
+
+			}
+			console.log(info);
+
+		},
+		writeToPage: function(append){
+
+			this.spotifyTracks.fetch({
+				data : $.param(this.query),
+				success:function(data){
+					var template = _.template(tl_template, {metadata:data.models, append:append});
+					if(append){
+						$('#mediaListHits').append(template);
+					}else{
+						$('.track-listing-container').html(template);
+					}
 					
-				},
-				events:{
-					'submit #searchForm': 'search',
-					'click .track-listing-container li': 'addTrack',
-					'click .exit-icon': 'closeView'
-				},
-				render: function(){
-
-				},
-				search: function(e){
-					this.spotifyTracks.fetch({
-						data : $.param(
-							{q: $('#searchInput').val()}
-						),
-						success:function(data){
-							var template = _.template(tl_template, {metadata:data.models});
-							$('.track-listing-container').html(template);
-						}
-					});
-					return false;
-				},
-				addTrack:function(e){
-					var track = this.spotifyTracks.get($(e.currentTarget).data('href'));
-					console.log(track);
-					var track_payload = {
-						'name': track.attributes.name,
-						'href': track.attributes.href,
-						'artist': track.attributes.artists[0].name,
-						'length': track.attributes.length,
-						'album': {
-							'href': track.attributes.album.href,
-
-						}
-					};
-					socket.emit('add_track',JSON.stringify(track_payload));
-				},
-				closeView: function(){
-					utils.toggleFade($('#AddTrackView'));
-				},
+				}
 			});
-			return searchView;
-		});
+		},
+		addTrack:function(e){
+			if($(e.currentTarget).hasClass('selected')){
+				alert('You have already added this track');
+				return;
+			}
+			$(e.currentTarget).addClass('selected');
+			var track_payload = this.spotifyTracks.getTrack($(e.currentTarget).data('href'));
+			$(e.currentTarget).find('.add-icon-wrap').html('<span class="minus-icon"></span>');
+			socket.emit('add_track',JSON.stringify(track_payload));
+		},
+		closeView: function(){
+			$('body').removeClass('modal-open');
+			utils.toggleFade($('#addTrackView'));
+			$(this.el).unbind('scroll',utils.onPageBottom);
+		},
+	});
+
+	return searchView;
+
+});

@@ -11,11 +11,24 @@ define([
 				
 			},
 			parse: function(response){
+				this.info =  response.info;
 				return response.tracks;
 			},
-			getAlbumArt: function(models, resp){
-
-			}
+			getTrack: function(id){
+				track = this.get(id);
+				return {
+					'name': track.attributes.name,
+					'href': track.attributes.href,
+					'artist': track.attributes.artists[0].name,
+					'length': track.attributes.length,
+					'album': {
+						'href': track.attributes.album.href,
+					}
+				};
+			},
+			searchNextPage: function(e){
+				
+			},
 
 
 		});

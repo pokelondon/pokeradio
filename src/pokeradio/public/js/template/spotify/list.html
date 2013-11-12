@@ -1,18 +1,59 @@
-<ul class='media-list'>
-<% _.each(metadata,function(item){ 
-		%>
-<li data-href="<%=item.id %>" class="media">
-	<div class="media-body">
-	
-				<div class='name'><span><%=item.attributes.name%></span></div>
-				<div class='artist'><%=item.attributes.artists[0].name%></div>
-				<div class="album"><%=item.attributes.album.name%></div>
-				<div class="duration"><%= _(item.attributes.length).convertToMinutes()%></div>
-				<div class='add-icon-wrap'><span class='add-icon'></span></div>
+<% if (append){
+_.each(metadata,function(item){
+	ListItem(item) 
+}); 
+} else { %>
 
-		</div>
-<% });%>
+
+<div class="top-hit">
+	<div class ='row'>
+		<div class="col-md-12">Top hit</div>
+	</div>
+</div>
+<ul id='mediaListTopHit'class='media-list'>
+<% ListItem(metadata[0]) %>
+</ul>	
+
+<div class="hits">
+	<div class ='row'>
+		<div class="col-md-12">Tracks</div>
+	</div>
+</div>
+<ul id='mediaListHits' class='media-list'>
+<%
+ var counter = 0
+_.each(metadata,function(item){ 
+	
+	if (counter > 0){
+		ListItem(item) 
+	}
+
+	counter++;
+	
+});%>
 </div>
 
+
+<% 
+	function ListItem(item) {
+	%>
+	<li data-href="<%=item.id %>" class="media">
+		<div class="media-body">
+			<div class ='row'>
+				<div class='name col-md-12'><span><%=item.attributes.name%></span></div>
+			</div>
+			<div class='row search-track-details'>	
+				<div class='artist col-md-6'><%=item.attributes.artists[0].name%></div>
+				<div class="album col-md-3"><%=item.attributes.album.name%></div>
+				<div class="duration col-md-2"><%= _(item.attributes.length).convertToMinutes()%></div>
+				<div class='add-icon-wrap col-md-1'><span class='add-icon'></span></div>
+			</div>
+		</div>
+	</li>
+
+	<%
+	}
+
+}%>
 
     

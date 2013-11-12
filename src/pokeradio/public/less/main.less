@@ -12,14 +12,35 @@
 @media-list-bg:		#fff;
 @header-height: 	170px;
 @base-speed: 		300ms;
+@lheight:			50px; 
+@selected-bg:		#f7f8f5;
 
+/****************BASE*************/
 .size(@w, @h){
 	width: @w;
 	height: @h
-};
+}
 
 body {
+	margin: 0 !important;
 	background-color: @body-bg;	
+}
+
+.btn{
+	background-color: @poke-blue;
+	color: #fff;	
+}
+
+.inline{
+  display: inline-block;
+  /* IE 7 hack */
+  *zoom:1;
+  *display: inline;
+  vertical-align: middle;
+ }
+
+.fadeout {
+	opacity: 0
 }
 
 .poke-radio-logo{
@@ -42,21 +63,8 @@ body {
 
 }
 
-.btn{
-	background-color: @poke-blue;
-	color: #fff;	
-}
 
-.inline{
-  display: inline-block;
-  /* IE 7 hack */
-  *zoom:1;
-  *display: inline;
-  vertical-align: middle;
- }
-.fadeout {
-	opacity: 0
-}
+
 
 
 /******* Poke Radio *******/
@@ -71,9 +79,8 @@ body {
 
 
 /*------- Playlist items --------------*/
-.media-wrapper{
-	padding: 10px;
-	height:80px;
+.media-wrapper(@padding){
+	padding: @padding;
 	margin-top:0;
 	background-color: @media-list-bg;
 	border-bottom: 1px @body-bg solid;
@@ -110,7 +117,8 @@ body {
 
 
 	.media-wrapper {
-		.media-wrapper;
+		.media-wrapper(10px);
+		height:80px;
 		
 		> *, .media-body > *{
 			.inline;
@@ -170,9 +178,8 @@ body {
 	
 }
 
-
+/*------- add track button --------------*/
 .add-track {
-	@lheight: 50px; 
 	width: 100%;
 	padding: 0;
 	border: none;
@@ -180,19 +187,7 @@ body {
 	span {
 		line-height: @lheight;
 	}
-	.search-icon{
-		background: url('../img/search-icon.png') no-repeat;
-		width: 20px;
-		height: 20px;
-		.inline;
-		margin-right: 10px;
-	}
-	.exit-icon{
-		background: url('../img/exit-icon.png') no-repeat;
-		width: 13px;
-		height: 13px;
-		.inline;
-	}
+	
 	
 }
 
@@ -227,30 +222,42 @@ body {
 	}
 }
 
-#AddTrackView {
-	position: absolute;
+#addTrackView {
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
 	background: fade(@body-bg, 95%);
-	overflow: auto;
 	.fade;
+	overflow: auto;
 	.poke-radio-header{
 		background: none;
 	}
 	.exit{
-		 height: @lheight;
 		.add-track;
 		text-align: left;
 
 		.search-icon{
 			margin-left:10px;
 		}
+		.exit-icon{
+			margin-right:10px;
+		}
 
 
 	}
-
+	.addtrack-search,
+	.addtrack-exit {
+		line-height: @lheight;
+		.inline
+	}
+	.addtrack-exit{
+		text-align: right;
+	}
+	#searchForm {
+		margin: 10px 0;
+	}
 	#searchForm input[type='search']{
 		padding: 0;
 		margin: 0;
@@ -262,47 +269,70 @@ body {
 	}
 
 	.media{
-		.media-wrapper;
+		.media-wrapper(10px 0);
 		width:100%;
-
-		.media-body > *{
-			.inline;
+		
+		.media-body {
+			padding-left: 15px;
+			padding-right: 15px;
 		}
-		@lbase-width: 50%;
 		.name{
-			display: block;
-			width: 100%;
 			span{
 				display: block;
-				width: @lbase-width;
 				text-overflow:ellipsis;
 			}
 		}
 		.artist{
 			font-size: @font-size-small;
 			color: @gray-light;
-			.inline;
-			width: @lbase-width;
+			
 		}
 		.album{
 			font-size: @font-size-small;
 			color: @gray-light;
-			.inline;
-			width: (@lbase-width/2);
-			text-overflow:ellipsis;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow:hidden;
+			
 		}
 		.duration{
-			width: (@lbase-width/4);
+			
 		}
-		.add-icon-wrap{
-			width: (@lbase-width/4);
+		.add-icon, .minus-icon{
+			float: right;
+		}
+		.search-track-details{
+			line-height:33px;
+			margin-top: -10px;
+
 		}
 
 	}
 
 	.track{
-		.inline
+		
 	}
+	.media.selected{
+		background: @selected-bg;
+		.add-icon{
+
+		}
+	}
+
+}
+
+
+
+.top-hit, .hits {
+	padding: 10px;
+	background: #f7f8f5;
+	border-bottom: 1px solid @body-bg;	
+}
+
+
+/* ------- search list results -----*/
+.track-listing-container {
+
 
 }
 
@@ -320,4 +350,24 @@ body {
 		height: 33px;
 		.inline;
 }
+.minus-icon{
+	background: url('../img/minus-icon.png') no-repeat;
+	width: 33px;
+	height: 33px;
+	.inline;
+}
+.search-icon{
+	background: url('../img/search-icon.png') no-repeat;
+	width: 20px;
+	height: 20px;
+	.inline;
+	margin-right: 10px;
+}
+.exit-icon{
+	background: url('../img/exit-icon.png') no-repeat;
+	width: 13px;
+	height: 13px;
+	.inline;
+}
+
 
