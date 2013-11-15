@@ -69,9 +69,9 @@ class AppConnection(SocketConnection):
     
     @event('add_track')
     def do_add_track(self, new_track):
-        sessionid = self.session.info.get_cookie('sessionid').value
+        user_id = self.session.info.get_cookie('poke_radio_user_id').value
         new_track = json.loads(new_track)
-        self.tracklist.add(sessionid, new_track)
+        self.tracklist.add(user_id, new_track)
     
     def on_close(self):
         self.client.unsubscribe('playlist')

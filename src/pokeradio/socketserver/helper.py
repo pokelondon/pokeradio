@@ -18,12 +18,12 @@ class TrackList:
     def __init__(self):
         pass
 
-    def _add_track(self, new_track, user):
+    def _add_track(self, new_track, user_id):
         track = Track()
         track.name = new_track['name']
         track.artist = new_track['artist']
         track.href = new_track['href']
-        track.user = user
+        track.user = User.get(id=user_id)
         track.length = float(new_track['length'])
         track.album_href = new_track['album']['href']
         try:
