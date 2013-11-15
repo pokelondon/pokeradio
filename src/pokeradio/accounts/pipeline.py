@@ -5,7 +5,9 @@ import redis
 r = redis.Redis()
 def get_profile_pic(strategy, details, response, user=None, is_new=False, *args, **kwargs):
 
-	
+	if user.is_superuser:
+		return
+		
 	user_key = "user_id_{0}".format(user.id)
 	
 	""" TODO: Get new image every 24 hours """
