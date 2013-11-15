@@ -18,12 +18,12 @@ class TrackList:
     def __init__(self):
         pass
 
-    def _add_track(self, new_track, user_id):
+    def _add_track(self, new_track, user):
         track = Track()
         track.name = new_track['name']
         track.artist = new_track['artist']
         track.href = new_track['href']
-        track.user = User.get(id=user_id)
+        track.user = user
         track.length = float(new_track['length'])
         track.album_href = new_track['album']['href']
         try:
@@ -36,8 +36,7 @@ class TrackList:
     def _add_album(self, new_track):
         pass
 
-    def add(self, sessionid, new_track):
-        user_id = self.get_user(sessionid)
+    def add(self, user_id, new_track):
         user = User.objects.get(pk=user_id)
         self._add_track(new_track, user)
        
