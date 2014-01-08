@@ -4,7 +4,7 @@ define(['jquery',
         ],
         function($,Backbone,_){
             MopidyTrack = Backbone.Model.extend({
-                idAttribute: "id",
+                idAttribute: "id"
             });
             return MopidyTrack;
         });

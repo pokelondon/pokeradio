@@ -3,11 +3,10 @@ define(['jquery',
         'underscore',
         'collections/spotify-tracks',
         'iobind',
-        'text!template/spotify/list.html',
         'utils',
-        'views/spotify/track-view'
+        'views/spotify/track'
         ],
-        function($, Backbone,_ , SpotifyTracks, ioBind, tl_template, utils, TrackView){
+        function($, Backbone,_ , SpotifyTracks, ioBind, utils, TrackView){
             var SearchView = Backbone.View.extend({
                 el: $('#AddTrackView'),
                 events:{

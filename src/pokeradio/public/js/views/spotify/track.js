@@ -1,25 +1,19 @@
+/**
+ * Search result item view
+ * Based on _base_track.js
+ */
 define(['jquery',
         'backbone',
         'underscore',
-        'models/spotify-track',
+        'views/_base_track',
         'text!template/spotify/track.html',
         ],
-        function($, Backbone, _ , Track, template){
-            var TrackView = Backbone.View.extend({
-                tagName: 'li',
+        function($, Backbone, _, BaseTrackView, template){
+            var TrackView = BaseTrackView.extend({
                 className: 'media',
+                template: template,
                 events:{
                     'click': 'queueTrack',
-                },
-
-                initialize: function(model){
-                    this.model = model;
-                },
-
-                render: function() {
-                    var text = _.template(template, this.model.toJSON());
-                    this.$el.html(text);
-                    return this;
                 },
 
                 /**

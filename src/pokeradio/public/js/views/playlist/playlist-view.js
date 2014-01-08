@@ -2,20 +2,25 @@ define(['jquery',
 		'backbone',
 		'underscore',
 		'collections/mopidy-playlist',
-		'text!template/playlist.html',
 		'utils',
+        'views/playlist/track'
 		],
-		function($, Backbone, _, MopidyPlaylist, pl_template, utils){
+		function($, Backbone, _, MopidyPlaylist, utils, TrackView){
 			var playlistView = Backbone.View.extend({
 				el: $('.container'),
 
 				initialize: function(){
-					_.bindAll(this, 'render','isPlaying');
-					this.MopidyPlaylistCollection = new MopidyPlaylist();
-					this.MopidyPlaylistCollection.on('reset', this.render, this);
-					this.MopidyPlaylistCollection.on('add', this.append, this);
-					this.MopidyPlaylistCollection.on('change', this.change, this);
-					this.MopidyPlaylistCollection.on('progressUpdate', this.progress, this);
+					_.bindAll(this, 'render', 'isPlaying');
+					this.collection = new MopidyPlaylist();
+
+                    // Collection events
+					this.collection.on('reset', this.render, this);
+					this.collection.on('add', this.append, this);
+					this.collection.on('change', this.change, this);
+					//this.collection.on('progressUpdate', this.progress, this);
+
+                    this.$list = this.$('#playlist');
+
 					_.mixin({
 						convertToMinutes: utils.convertToMinutes,
 						isPlaying: this.isPlaying,
@@ -23,29 +28,46 @@ define(['jquery',
 				},
 				events: {
 					'click .add-track': 'openSearch',
-
 				},
+
+                /**
+                 * Render initial track list
+                 */
 				render: function(collection){
+                    var self = this;
+                    this.$list.html('');
+                    _(this.collection.models).each(function(model) {
+                        var view = new TrackView(model);
+                        self.$list.append(view.render().el);
+                    });
+                    return this;
+				},
 
-					var template = _.template(pl_template, {metadata:collection.models});
-					$('#playlist').html(template);
-				},
+                /**
+                 * A new track has been added,
+                 * Make a view for it and append it to the list
+                 */
 				append: function(model){
-					var template = _.template(pl_template, {metadata:[model]});
-					$('#playlist').append(template);
+                    var view = new TrackView(model);
+                    this.$list.append(view.render().el);
 				},
+
 				change: function(model){
 					$( "li[data-playlist-id='"+model.id+"']" ).attr('class', 'media played');
 					$( "li[data-playlist-id='"+model.id+"'] .progress" ).remove();
-					next_track = this.MopidyPlaylistCollection.findWhere({played: false });
+					next_track = this.collection.findWhere({played: false });
 					/*Possible to place in a subview??*/
 					pt = _.template($('#progress-template').html());
 					$( "li[data-playlist-id='"+next_track.id+"']" ).append(pt);
 					/* Call the progress function manually because we don't timing of the render bar*/
 					data = {time_position: 0, length: next_track.attributes.length * 1000};
 					this.progress(data);
-
 				},
+
+                /**
+                 * Update progress.
+                 * TODO move this to its own view
+                 */
 				progress: function(data){
 					if(_.isNumber(this.interval)){
 						clearInterval(this.interval);
@@ -57,14 +79,20 @@ define(['jquery',
 						data.time_position = data.time_position + 1000;
 					},1000);
 				},
+
+                /**
+                 * Find out if the passed model is playing
+                 * TODO make it a model method
+                 */
 				isPlaying: function(model){
-					c_model = this.MopidyPlaylistCollection.findWhere({played: false });
-					return model == c_model;
+					var current_track = this.collection.findWhere({played: false });
+					return model == current_track;
 				},
+
 				openSearch: function(){
 					utils.toggleFade($('#AddTrackView'));
 				}
-			
+
 			});
 			return playlistView;
 		});
