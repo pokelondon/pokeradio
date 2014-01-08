@@ -8,6 +8,7 @@ from calendar import timegm
 import simplejson as json
 import redis
 
+
 class CommonProperties(models.Model):
 	name = models.CharField(max_length = 255)
 	artist = models.CharField(max_length = 255)
@@ -40,10 +41,7 @@ class Track(CommonProperties):
 			'user': {
 				'id': self.user.id,
 				'full_name': self.user.get_full_name(),
-			}
-
-			
-
+			}		
 		}
 		
 	def __unicode__(self):
@@ -52,20 +50,21 @@ class Track(CommonProperties):
 	class Meta:
 		ordering = ['timestamp']
 	
+class Album(CommonProperties):
+	isrc = models.CharField(max_length = 12, unique = True)
+
 
 @receiver(post_save, sender = Track)
 def track_saved(sender, instance, **kwargs):
 	r = redis.Redis()
 	r.publish('playlist', json.dumps(instance.to_dict()))
 
+
 @receiver(post_delete, sender=Track)
 def track_deleted(sender, **kwargs):
 	print 'Deleted!!'
 	r = redis.Redis()
 	r.publish('playlist_changed', 'DELETED')
-
-class Album(CommonProperties):
-	isrc = models.CharField(max_length = 12, unique = True)
 
 
 admin.site.register(Track)
