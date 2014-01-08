@@ -32,4 +32,8 @@ notebook:
 	django-admin.py shell_plus --notebook
 
 run_socket:
-	python ./src/socketserver/server.py
+	django-admin.py start_socketserver
+
+run_mopidy:
+	#export PYTHONPATH=/home/vagrant/.virtualenvs/pokeradioclient2/local/lib/python2.7/site-packages/:/usr/lib/python2.7/dist-packages
+	mopidy
