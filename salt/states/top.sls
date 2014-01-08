@@ -16,6 +16,7 @@ vagrant:
     - libjpeg
     - libxslt
     - libevent
+    - redis
     # States for this vm, based on project requirements, for example: python2
     - python2
     - mysql

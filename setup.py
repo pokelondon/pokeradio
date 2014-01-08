@@ -31,7 +31,8 @@ install_dependencies = [
     'tornado == 3.1',
     'simplejson == 3.3.1',
     'brukva ==  0.0.1',
-
+    'musicbrainzngs == 0.4',
+    'Pillow == 2.3.0',
 ]
 
 # Test Dependencies
