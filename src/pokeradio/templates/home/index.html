@@ -15,21 +15,22 @@ var socket = io.connect('{{ socketio_client_url }}');
 		<a class='btn add-track'>
 			<span class="search-icon"></span><span>Add track</span>
 		</a>
-		</div>	
+		</div>
+        <progress class="progress-bar" value="5" max="100"></progress>
 		<div class="col-md-12 playlist-wrapper">
 				<ul id="playlist" class="media-list">
 					<!-- Backbone template js/template/playlist.html
 						Backbone View js/views/playlist/playist/view.js-->
 				</ul>
 			</div>
-		</div>	
+		</div>
 	</div>
 
 	<div id="AddTrackView" class='fadeout' style='display:none'>
 		<div class="poke-radio-header">
             <div class="container">
                 <div class="logo"></div>
-            </div>    
+            </div>
         </div>
 		<div class="container">
 			<div class="row">
@@ -48,12 +49,12 @@ var socket = io.connect('{{ socketio_client_url }}');
 					<input type='search' autocomplete="off" name="search" class="form-control" id="searchInput" placeholder="Search">
 				</div>
 			<input type="submit" id="doSearch"value="Go" class="btn btn-default"/>
-			</form>	
+			</form>
 			<div class="track-listing-container">
 			</div>
-			
+
 		</div>
 </div>
 
-	
+
 {% endblock%}

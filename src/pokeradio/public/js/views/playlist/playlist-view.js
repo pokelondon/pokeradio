@@ -10,20 +10,17 @@ define(['jquery',
 				el: $('.container'),
 
 				initialize: function(){
-					_.bindAll(this, 'render', 'isPlaying');
+					_.bindAll(this, 'render');
 					this.collection = new MopidyPlaylist();
 
                     // Collection events
 					this.collection.on('reset', this.render, this);
 					this.collection.on('add', this.append, this);
-					this.collection.on('change', this.change, this);
-					//this.collection.on('progressUpdate', this.progress, this);
 
                     this.$list = this.$('#playlist');
 
 					_.mixin({
-						convertToMinutes: utils.convertToMinutes,
-						isPlaying: this.isPlaying,
+						convertToMinutes: utils.convertToMinutes
 					});
 				},
 				events: {
@@ -52,18 +49,6 @@ define(['jquery',
                     this.$list.append(view.render().el);
 				},
 
-				change: function(model){
-					$( "li[data-playlist-id='"+model.id+"']" ).attr('class', 'media played');
-					$( "li[data-playlist-id='"+model.id+"'] .progress" ).remove();
-					next_track = this.collection.findWhere({played: false });
-					/*Possible to place in a subview??*/
-					pt = _.template($('#progress-template').html());
-					$( "li[data-playlist-id='"+next_track.id+"']" ).append(pt);
-					/* Call the progress function manually because we don't timing of the render bar*/
-					data = {time_position: 0, length: next_track.attributes.length * 1000};
-					this.progress(data);
-				},
-
                 /**
                  * Update progress.
                  * TODO move this to its own view
@@ -78,15 +63,6 @@ define(['jquery',
 						$('.progress-bar').css('width', per+'%');
 						data.time_position = data.time_position + 1000;
 					},1000);
-				},
-
-                /**
-                 * Find out if the passed model is playing
-                 * TODO make it a model method
-                 */
-				isPlaying: function(model){
-					var current_track = this.collection.findWhere({played: false });
-					return model == current_track;
 				},
 
 				openSearch: function(){

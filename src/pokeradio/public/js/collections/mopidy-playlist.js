@@ -13,12 +13,11 @@ define([
             model: MopidyTrack,
 
             initialize: function(){
-                _.bindAll(this, 'playlistFetch', 'playlistUpdate', 'progress');
+                _.bindAll(this, 'playlistFetch', 'playlistUpdate');
                 // Socket Events
                 this.ioBind('fetch', this.playlistFetch, this);
                 this.ioBind('update', this.playlistUpdate, this);
-                this.ioBind('progress', this.progress, this);
-                //
+
                 // Request initial playlist data
                 socket.emit('playlist', 'fetch');
                 this.comparator = 'id';
@@ -43,14 +42,6 @@ define([
                 }else {
                     this.add(data);
                 }
-            },
-
-            /**
-             * Progress update
-             * TODO Move this and socket binding to the view
-             */
-            progress: function(data){
-                this.trigger('progressUpdate', $.parseJSON(data));
             }
 
         });

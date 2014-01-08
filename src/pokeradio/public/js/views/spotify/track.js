@@ -26,4 +26,3 @@ define(['jquery',
             });
             return TrackView;
         });
-

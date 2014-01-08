@@ -291,3 +291,9 @@ body {
   -o-transition: opacity 300ms linear;
   transition: opacity 300ms linear;
 }
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  display: block;
+  clear: left;
+}
