@@ -67,6 +67,8 @@ This project is based on Varagnt. Please see the wiki documentation for getting 
  4. The virtual environment should already be created and the projected installed to it, so just ``workon pokeradio``
  5. You will need to create a datamase so run the sync db command by running ``make syncdb``
  6. Run the django server by running ``make run_django``
+ 7. Run a instance of reddis 
+ 8. Run ``mopidy`` if you get an gdobject module error run ``export PYTHONPATH=/home/vagrant/.virtualenvs/pokeradioclient2/local/lib/python2.7/site-packages/:/usr/lib/python2.7/dist-packages``
 
 Developers
 ----------
