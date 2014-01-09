@@ -7,12 +7,28 @@ define([
         var spotifyResults = Backbone.Collection.extend({
             url: urls.track,
             model: Track,
+            teritory: 'GB',
+
+            /**
+             * Filter out results which are not locally available
+             */
             parse: function(response){
-                return response.tracks;
+                var self = this;
+                var filtered = _(response.tracks).filter(function(track) {
+                    var territories = track.album.availability.territories.split(' ');
+                    console.log(territories.indexOf(self.teritory));
+                    return territories.indexOf(self.teritory) > 0;
+                });
+                return filtered;
             },
+
             getAlbumArt: function(models, resp){
 
             },
+
+            /**
+             * Perform search query on spotify API
+             */
             search: function(query) {
                 var self = this;
                 this.fetch({
