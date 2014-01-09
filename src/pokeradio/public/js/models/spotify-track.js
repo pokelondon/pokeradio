@@ -5,10 +5,10 @@ define(['jquery',
         function($,Backbone,_){
             var Track = Backbone.Model.extend({
                 idAttribute: "href",
+                defaults: {
+                    selected: false
+                },
                 queue: function() {
-                    console.log('Queuing track');
-                    console.table(this.attributes);
-
                     var track_payload = {
                         'name': this.attributes.name,
                         'href': this.get('href'),
@@ -19,6 +19,8 @@ define(['jquery',
                         }
                     };
                     socket.emit('add_track', JSON.stringify(track_payload));
+                    this.set('selected', !this.get('selected'));
+                    // TODO Send socket message to remove from queue if re-clicked
                 }
         });
         return Track;

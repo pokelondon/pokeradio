@@ -17,6 +17,11 @@ define(['jquery',
                     'click .btn-preview': 'preview'
                 },
 
+                initialize: function() {
+                    BaseTrackView.prototype.initialize.apply(this, arguments);
+                    this.model.on('change:selected', this.onSelect, this);
+                },
+
                 /**
                  * When clicked, queue the track via socket message.
                  */
@@ -30,6 +35,14 @@ define(['jquery',
                     var $iframe = $('<iframe width="80" height="80" frameborder="0" allowtransparency="true"></iframe>');
                     $iframe.attr('src', 'https://embed.spotify.com/?uri=' + this.model.get('href'));
                     this.$el.append($iframe);
+                },
+
+                onSelect: function() {
+                    if(this.model.get('selected')) {
+                        this.$el.addClass('selected');
+                    } else {
+                        this.$el.removeClass('selected');
+                    }
                 }
             });
             return TrackView;
