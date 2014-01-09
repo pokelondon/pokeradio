@@ -81,6 +81,12 @@ body {
 
 
 /*------- Playlist items --------------*/
+.media {
+    .preview {
+        float: left;
+        padding-left: 15px;
+    }
+}
 .media-wrapper(@padding){
     padding: @padding;
     margin-top:0;
@@ -91,6 +97,9 @@ body {
 .track {
     margin-right:20px;
     width: 400px;
+    div {
+        outline: 1px solid green;
+    }
     .name{
         color: @gray-dark;
         font-size: @font-size-base;
@@ -286,7 +295,10 @@ body {
     }
 
     .media{
-        .media-wrapper(10px 0);
+        .track-main {
+            line-height: 1.5em;
+        }
+        .media-wrapper(0 0 10px 0);
         width:100%;
 
         .media-body {
@@ -320,8 +332,6 @@ body {
         }
         .search-track-details{
             line-height:33px;
-            margin-top: -10px;
-
         }
 
     }

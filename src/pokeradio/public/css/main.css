@@ -45,9 +45,16 @@ body {
   float: left !important;
 }
 /*------- Playlist items --------------*/
+.media .preview {
+  float: left;
+  padding-left: 15px;
+}
 .track {
   margin-right: 20px;
   width: 400px;
+}
+.track div {
+  outline: 1px solid green;
 }
 .track .name {
   color: #505262;
@@ -95,6 +102,9 @@ body {
 .media-list .media-wrapper .track {
   margin-right: 20px;
   width: 400px;
+}
+.media-list .media-wrapper .track div {
+  outline: 1px solid green;
 }
 .media-list .media-wrapper .track .name {
   color: #505262;
@@ -292,11 +302,14 @@ body {
   font-size: 28px;
 }
 #addTrackView .media {
-  padding: 10px 0;
+  padding: 0 0 10px 0;
   margin-top: 0;
   background-color: #ffffff;
   border-bottom: 1px #ebede5 solid;
   width: 100%;
+}
+#addTrackView .media .track-main {
+  line-height: 1.5em;
 }
 #addTrackView .media .media-body {
   padding-left: 15px;
@@ -323,7 +336,6 @@ body {
 }
 #addTrackView .media .search-track-details {
   line-height: 33px;
-  margin-top: -10px;
 }
 #addTrackView .media.selected {
   background: #f7f8f5;
