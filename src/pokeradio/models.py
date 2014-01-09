@@ -50,6 +50,7 @@ def track_saved(sender, instance, **kwargs):
     r.publish('playlist', json.dumps(instance.to_dict()))
 
 
+
 @receiver(post_delete, sender=Track)
 def track_deleted(sender, **kwargs):
     print 'Deleted!!'

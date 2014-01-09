@@ -36,8 +36,7 @@ class TrackList:
     def _add_album(self, new_track):
         pass
 
-    def add(self, sessionid, new_track):
-        user_id = self.get_user(sessionid)
+    def add(self, user_id, new_track):
         user = User.objects.get(pk=user_id)
         self._add_track(new_track, user)
        
@@ -67,7 +66,7 @@ class TrackList:
     def get_playlist(self):
         
         tracks_new = Track.objects.select_related().filter(played__exact=False)
-        tracks_played = Track.objects.select_related().filter(played__exact=True).order_by('timestamp')[:3]      
+        tracks_played = Track.objects.select_related().filter(played__exact=True).reverse()[:3]      
         tracks = list(chain(tracks_played, tracks_new))
         output = []
         for track in tracks:

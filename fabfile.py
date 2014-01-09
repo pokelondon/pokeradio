@@ -23,7 +23,12 @@ env.local_path = os.path.abspath(os.path.dirname(__file__))
 # Paths & Directories
 env.root_path = '/poke/data/www/'
 env.directories = {
-    'media': None, 'static': None, 'logs': None, 'src': None,
+    'static': None, 'logs': None, 'src': None,
+    'media':{
+        'albumart': None,
+        'profilepictures': None
+
+    }
 }
 
 # Users
@@ -61,7 +66,10 @@ env.supervisord_config_dir = '/poke/data/conf/supervisord/'
 env.supervisord_configs = [
     'supervisord.conf',
 ]
-
+dirs = [
+    '{0}/media/albumart',
+    '{0}/media/profilepictures'
+]
 
 @pre_hooks(
     'velcro.db.mysql.create_database')
@@ -84,3 +92,4 @@ def bootstrap():
 )
 def deploy(branch, **kwargs):
     _deploy(branch)
+

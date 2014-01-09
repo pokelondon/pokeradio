@@ -1,5 +1,22 @@
+/****************BASE*************/
 body {
+  margin: 0 !important;
   background-color: #ebede5;
+}
+.btn {
+  background-color: #00c6ff;
+  color: #fff;
+}
+.inline {
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+.fadeout {
+  opacity: 0;
 }
 .poke-radio-logo {
   background-image: url('../img/poke-radio-logo.png');
@@ -20,17 +37,6 @@ body {
   background-color: #00c6ff;
   color: #fff;
 }
-.inline {
-  display: inline-block;
-  /* IE 7 hack */
-
-  *zoom: 1;
-  *display: inline;
-  vertical-align: middle;
-}
-.fadeout {
-  opacity: 0;
-}
 /******* Poke Radio *******/
 .pull-right {
   float: right !important;
@@ -39,12 +45,6 @@ body {
   float: left !important;
 }
 /*------- Playlist items --------------*/
-.media-wrapper {
-  padding: 10px;
-  margin-top: 0;
-  background-color: #ffffff;
-  border-bottom: 1px #ebede5 solid;
-}
 .track {
   margin-right: 20px;
   width: 400px;
@@ -75,6 +75,7 @@ body {
   margin-top: 0;
   background-color: #ffffff;
   border-bottom: 1px #ebede5 solid;
+  height: 80px;
 }
 .media-list .media-wrapper > *,
 .media-list .media-wrapper .media-body > * {
@@ -148,6 +149,7 @@ body {
 .media-list .played .media-wrapper .track {
   width: 497px;
 }
+/*------- add track button --------------*/
 .add-track {
   width: 100%;
   padding: 0;
@@ -204,34 +206,33 @@ body {
 .user-controls > * {
   float: left !important;
 }
-#AddTrackView {
-  position: absolute;
+#addTrackView {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(235, 237, 229, 0.95);
-  overflow: auto;
   -webkit-transition: opacity 300ms linear;
   -moz-transition: opacity 300ms linear;
   -o-transition: opacity 300ms linear;
   transition: opacity 300ms linear;
+  overflow: auto;
 }
-#AddTrackView .poke-radio-header {
+#addTrackView .poke-radio-header {
   background: none;
 }
-#AddTrackView .exit {
-  height: 50px;
+#addTrackView .exit {
   width: 100%;
   padding: 0;
   border: none;
   margin-top: -25px;
   text-align: left;
 }
-#AddTrackView .exit span {
+#addTrackView .exit span {
   line-height: 50px;
 }
-#AddTrackView .exit .search-icon {
+#addTrackView .exit .search-icon {
   background: url('../img/search-icon.png') no-repeat;
   width: 20px;
   height: 20px;
@@ -243,7 +244,7 @@ body {
   vertical-align: middle;
   margin-right: 10px;
 }
-#AddTrackView .exit .exit-icon {
+#addTrackView .exit .exit-icon {
   background: url('../img/exit-icon.png') no-repeat;
   width: 13px;
   height: 13px;
@@ -254,10 +255,29 @@ body {
   *display: inline;
   vertical-align: middle;
 }
-#AddTrackView .exit .search-icon {
+#addTrackView .exit .search-icon {
   margin-left: 10px;
 }
-#AddTrackView #searchForm input[type='search'] {
+#addTrackView .exit .exit-icon {
+  margin-right: 10px;
+}
+#addTrackView .addtrack-search,
+#addTrackView .addtrack-exit {
+  line-height: 50px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+#addTrackView .addtrack-exit {
+  text-align: right;
+}
+#addTrackView #searchForm {
+  margin: 10px 0;
+}
+#addTrackView #searchForm input[type='search'] {
   padding: 0;
   margin: 0;
   border: none;
@@ -266,14 +286,62 @@ body {
   background: transparent;
   font-size: 28px;
 }
-#AddTrackView .media {
-  padding: 10px;
+#addTrackView .media {
+  padding: 10px 0;
   margin-top: 0;
   background-color: #ffffff;
   border-bottom: 1px #ebede5 solid;
   width: 100%;
 }
-#AddTrackView .track {
+#addTrackView .media .media-body {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#addTrackView .media .name span {
+  display: block;
+  text-overflow: ellipsis;
+}
+#addTrackView .media .artist {
+  font-size: 12px;
+  color: #b8bac6;
+}
+#addTrackView .media .album {
+  font-size: 12px;
+  color: #b8bac6;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#addTrackView .media .add-icon,
+#addTrackView .media .minus-icon {
+  float: right;
+}
+#addTrackView .media .search-track-details {
+  line-height: 33px;
+  margin-top: -10px;
+}
+#addTrackView .media.selected {
+  background: #f7f8f5;
+}
+.top-hit,
+.hits {
+  padding: 10px;
+  background: #f7f8f5;
+  border-bottom: 1px solid #ebede5;
+}
+/* ------- search list results -----*/
+/*------- transitions --------------*/
+.fade {
+  -webkit-transition: opacity 300ms linear;
+  -moz-transition: opacity 300ms linear;
+  -o-transition: opacity 300ms linear;
+  transition: opacity 300ms linear;
+}
+/*------- icons ------------------*/
+.add-icon {
+  background: url('../img/add-icon.png') no-repeat;
+  width: 33px;
+  height: 33px;
   display: inline-block;
   /* IE 7 hack */
 
@@ -281,12 +349,39 @@ body {
   *display: inline;
   vertical-align: middle;
 }
-/*------- transitions --------------*/
-.fade {
-  -webkit-transition: opacity 300ms linear;
-  -moz-transition: opacity 300ms linear;
-  -o-transition: opacity 300ms linear;
-  transition: opacity 300ms linear;
+.minus-icon {
+  background: url('../img/minus-icon.png') no-repeat;
+  width: 33px;
+  height: 33px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+}
+.search-icon {
+  background: url('../img/search-icon.png') no-repeat;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.exit-icon {
+  background: url('../img/exit-icon.png') no-repeat;
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  /* IE 7 hack */
+
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
 }
 .progress-bar {
   width: 100%;
