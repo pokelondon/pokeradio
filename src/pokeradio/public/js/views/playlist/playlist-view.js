@@ -49,24 +49,9 @@ define(['jquery',
                     this.$list.append(view.render().el);
                 },
 
-                /**
-                 * Update progress.
-                 * TODO move this to its own view
-                 */
-                progress: function(data){
-                    if(_.isNumber(this.interval)){
-                        clearInterval(this.interval);
-                    }
-                    this.interval = setInterval(function(){
-                        per =   data.time_position / data.length * 100;
-                        $('.progress-bar').css('transition-duration', '1000ms');
-                        $('.progress-bar').css('width', per+'%');
-                        data.time_position = data.time_position + 1000;
-                    },1000);
-                },
-
-                openSearch: function(){
-                    utils.toggleFade($('#AddTrackView'));
+                openSearch: function(evt){
+                    evt.stopPropagation();
+                    utils.toggleFade($('#addTrackView'));
                 }
 
             });

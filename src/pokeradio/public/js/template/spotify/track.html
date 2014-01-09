@@ -1,14 +1,16 @@
     <div class="media-body">
+        <div class="preview"></div>
         <div class="row">
-            <div class="name col-md-12"><span><%= name %></span></div>
+            <div class="col-md-11 col-offset-1">
+                <span><%= name %></span>
+            </div>
         </div>
         <div class="row search-track-details">
-            <div class="artist col-md-6"><%= artists[0].name %></div>
-            <div class="album col-md-3"><%= album.name %></div>
-            <div class="duration col-md-2"><%= _(length).convertToMinutes() %></div>
-            <div class="add-icon-wrap col-md-1"><span class="minus-icon"></span></div>
+            <div class="col-md-6 col-offset-1">
+                <span class="artist"><%= artists[0].name %></span>
+            </div>
+            <div class="album col-md-3"><%= album.name %> <span>Released: <%= album.released %></span></div>
+            <div class="duration col-md-1"><%= _(length).convertToMinutes() %></div>
+            <div class="add-icon-wrap col-md-2"><span class="minus-icon"></span> <button class="btn btn-preview">Preview</button></div>
         </div>
-        <div class="album"><%= album.name %><span>Released: <%= album.released %></span></div>
-        <div class="duration"><%= _(length).convertToMinutes() %></div>
-        <button class="btn btn-preview">Preview</button>
     </div>

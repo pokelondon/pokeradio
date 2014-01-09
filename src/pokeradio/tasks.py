@@ -1,4 +1,4 @@
-import Image
+from PIL import Image
 from StringIO import StringIO
 from os import stat
 import requests

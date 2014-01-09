@@ -10,50 +10,54 @@ var socket = io.connect('{{ socketio_client_url }}');
 
 
 {% block container %}
-    <div class="row">
-        <div class="col-md-12">
+<div class="row">
+    <div class="col-md-12">
         <a class='btn add-track'>
             <span class="search-icon"></span><span>Add track</span>
         </a>
-        </div>
-        <progress class="progress-bar" value="5" max="100"></progress>
-        <div class="col-md-12 playlist-wrapper">
-                <ul id="playlist" class="media-list">
-                    <!-- Backbone template js/template/playlist.html
+    </div>
+    <progress class="progress-bar" value="0" max="100"></progress>
+    <div class="col-md-12 playlist-wrapper">
+        <ul id="playlist" class="media-list">
+            <!-- Backbone template js/template/playlist.html
                         Backbone View js/views/playlist/playist/view.js-->
-                </ul>
+        </ul>
+    </div>
+</div>
+
+<div id="addTrackView">
+    <div class='add-track-view-wrapper'>
+        <div class="poke-radio-header">
+            <div class="container">
+                <div class="logo"></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="btn exit">
+                <div class='btn-wrapper'>
+                    <div class="row">
+                        <div class="col-md-6 addtrack-search"><span class="search-icon"></span></div>
+                        <div class="col-md-6 addtrack-exit"><span class="exit-icon"></span></div>
+                    </div>
+                </div>
+            </div>
+            <form role="form" id="searchForm" class="form-inline">
+                <div class="form-group">
+                    <label class="sr-only" for="searchInput">Search</label>
+                    <input type='search' autocomplete="off" name="search" class="form-control" id="searchInput" placeholder="Search">
+                </div>
+                <input type="submit" id="doSearch" class="pull-right btn" value="Go" class="btn btn-default"/>
+            </form>
+            <div class="track-listing-container">
+                <div class="hits">
+                    <div class="row">
+                        <div class="col-md-12">Tracks</div>
+                    </div>
+                </div>
+                <ul class="items"></ul>
             </div>
         </div>
     </div>
-
-
-    <div id="addTrackView" class='fadeout' style='display:none'>
-        <div class='add-track-view-wrapper'>
-            <div class="poke-radio-header">
-                <div class="container">
-                    <div class="logo"></div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="btn exit">
-                    <div class='btn-wrapper'>
-                        <div class="row">
-                            <div class="col-md-6 addtrack-search"><span class="search-icon"></span></div>
-                            <div class="col-md-6 addtrack-exit"><span class="exit-icon"></span></div>
-                        </div>
-                    </div>
-                </div>
-                <form role="form" id="searchForm" class="form-inline">
-                    <div class="form-group">
-                        <label class="sr-only" for="searchInput">Search</label>
-                        <input type='search' autocomplete="off" name="search" class="form-control" id="searchInput" placeholder="Search">
-                    </div>
-                <input type="submit" id="doSearch" class="pull-right btn" value="Go" class="btn btn-default"/>
-                </form>
-                <div class="track-listing-container">
-                </div>
-            </div>
-        </div>
 </div>
 
 

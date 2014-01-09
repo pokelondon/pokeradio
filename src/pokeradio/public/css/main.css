@@ -58,6 +58,9 @@ body {
   font-size: 12px;
   color: #b8bac6;
 }
+.items {
+  padding: 0;
+}
 .media-list:first-child {
   border-top: none;
 }
@@ -69,6 +72,8 @@ body {
   padding-left: 15px;
   padding-right: 15px;
   margin-top: 0;
+  list-style-type: none;
+  margin: 0;
 }
 .media-list .media-wrapper {
   padding: 10px;
@@ -330,6 +335,12 @@ body {
   border-bottom: 1px solid #ebede5;
 }
 /* ------- search list results -----*/
+.track-listing-container .hits {
+  display: none;
+}
+.track-listing-container.has-results .hits {
+  display: block;
+}
 /*------- transitions --------------*/
 .fade {
   -webkit-transition: opacity 300ms linear;
@@ -384,8 +395,18 @@ body {
   vertical-align: middle;
 }
 .progress-bar {
-  width: 100%;
+  width: auto;
+  float: none;
   height: 20px;
   display: block;
   clear: left;
+  background: #fff;
+  margin: 10px 15px;
+}
+progress::-webkit-progress-value {
+  background-color: hotpink;
+}
+progress::-webkit-progress-bar {
+  background-color: #bbb;
+  color: yellow;
 }
