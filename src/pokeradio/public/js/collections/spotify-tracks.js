@@ -4,7 +4,7 @@ define([
     'urls',
     'models/spotify-track'],
     function($, Backbone, urls, Track){
-        var spotifyResults = Backbone.Collection.extend({
+        var Collection = Backbone.Collection.extend({
             url: urls.track,
             model: Track,
             teritory: 'GB',
@@ -38,5 +38,5 @@ define([
                 });
             }
         });
-        return spotifyResults;
+        return new Collection();
 });

@@ -6,7 +6,7 @@ define(['jquery',
         'utils',
         'views/spotify/track'
         ],
-        function($, Backbone,_ , SpotifyTracks, ioBind, utils, TrackView){
+        function($, Backbone,_ , spotifyTracks, ioBind, utils, TrackView){
             var SearchView = Backbone.View.extend({
                 el: $('#addTrackView'),
                 events:{
@@ -15,7 +15,7 @@ define(['jquery',
                 },
 
                 initialize: function(){
-                    this.collection = new SpotifyTracks();
+                    this.collection = spotifyTracks;
                     this.collection.on('results', this.render, this);
                     this.$container = this.$('.track-listing-container');
                     this.$list = this.$('.track-listing-container .items');

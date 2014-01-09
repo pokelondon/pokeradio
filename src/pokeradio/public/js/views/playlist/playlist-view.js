@@ -5,13 +5,14 @@ define(['jquery',
         'utils',
         'views/playlist/track'
         ],
-        function($, Backbone, _, MopidyPlaylist, utils, TrackView){
+        function($, Backbone, _, mopidyPlaylist, utils, TrackView){
             var playlistView = Backbone.View.extend({
                 el: $('.container'),
 
                 initialize: function(){
                     _.bindAll(this, 'render');
-                    this.collection = new MopidyPlaylist();
+                    // Singleton instance provided by require
+                    this.collection = mopidyPlaylist;
 
                     // Collection events
                     this.collection.on('reset', this.render, this);

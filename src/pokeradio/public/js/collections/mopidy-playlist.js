@@ -7,7 +7,7 @@ define([
     'models/mopidy-track'
     ],
     function($, Backbone, urls, _, ioBind, MopidyTrack){
-        var playlistResults = Backbone.Collection.extend({
+        var Collection = Backbone.Collection.extend({
             url: 'playlist',
             socket: window.socket,
             model: MopidyTrack,
@@ -29,6 +29,7 @@ define([
              */
             playlistFetch: function(data){
                 this.reset($.parseJSON(data));
+                console.table(_(this.models).pluck('attributes'));
             },
 
             /**
@@ -45,6 +46,6 @@ define([
             }
 
         });
-        return playlistResults;
+        return new Collection();
 
 });

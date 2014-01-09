@@ -23,6 +23,16 @@ define(['jquery',
                 },
 
                 /**
+                 * When rendering, add a class if the song is aready queued.
+                 */
+                render: function() {
+                    if(this.model.get('inQueue')) {
+                        this.$el.addClass('disabled');
+                    }
+                    return BaseTrackView.prototype.render.call(this);
+                },
+
+                /**
                  * When clicked, queue the track via socket message.
                  */
                 queueTrack: function(evt) {
