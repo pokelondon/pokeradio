@@ -72,6 +72,9 @@ body {
   font-size: 12px;
   color: #b8bac6;
 }
+.album-art {
+  background: url(/s/img/loading.gif) no-repeat 50% 50%;
+}
 .items {
   padding: 0;
 }

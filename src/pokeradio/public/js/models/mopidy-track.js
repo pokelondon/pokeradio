@@ -12,10 +12,10 @@ define(['jquery',
 
                 initialize: function() {
                     this.collection.on('change:played', this.checkIsPlaying, this);
+                    console.log(this.attributes);
                 },
 
                 checkIsPlaying: function() {
-                    console.log('Hrrms wonder if im playing');
                     // Find next unplayed track
                     var current_track = this.collection.findWhere({played: false });
                     if(this.id == current_track.id) {

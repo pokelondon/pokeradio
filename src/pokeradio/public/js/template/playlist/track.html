@@ -1,7 +1,7 @@
 <!--<li data-playlist-id="<%= id %>" class="media <%= played ? "played" : "not-played" %>">-->
 <div class="media-wrapper">
     <% if (!played){ %>
-    <img class="album-art media-object" src="/albumart/<%= album_href.replace(/:/g, "/") %>.jpg">
+    <img class="album-art media-object" src="/albumart/<%= album_href.split(':')[2] %>.jpg">
     <% } %>
     <div class="media-body">
         <div class="track">
