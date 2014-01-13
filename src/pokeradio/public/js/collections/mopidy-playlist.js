@@ -29,7 +29,7 @@ define([
              */
             playlistFetch: function(data){
                 this.reset($.parseJSON(data));
-                console.table(_(this.models).pluck('attributes'));
+                //console.table(_(this.models).pluck('attributes'));
             },
 
             /**

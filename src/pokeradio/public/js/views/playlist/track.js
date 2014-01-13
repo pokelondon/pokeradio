@@ -10,11 +10,13 @@ define(['jquery',
                 template: template,
                 className: 'media not-played',
                 events:{
-                    //'click': 'queueTrack',
+                    'click .btn-remove-track': 'removeTrack',
                 },
 
                 initialize: function(model) {
-                    this.model = model; // TODO super this
+                    BaseTrackView.prototype.initialize.apply(this, arguments);
+
+                    _.bindAll(this, 'removeTrack');
                     this.model.on('change:played', this.updatePlayedState, this);
 
                     // Get inital State
@@ -31,6 +33,18 @@ define(['jquery',
                     } else {
                         this.$el.addClass('not-played').removeClass('played');
                     }
+                },
+
+                /**
+                 * Handle remove button event, tell the model to unqueue itself
+                 */
+                removeTrack: function(evt) {
+                    evt.preventDefault();
+                    this.model.unQueue();
+                },
+
+                onTrackRemoved: function() {
+                //
                 }
             });
             return TrackView;

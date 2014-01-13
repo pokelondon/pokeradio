@@ -7,12 +7,15 @@ define(['jquery',
                 idAttribute: "id",
                 wasPlaying: false,
                 defaults: {
-                    isPlaying: false
+                    isPlaying: false,
+                    isMine: false
                 },
 
                 initialize: function() {
                     this.collection.on('change:played', this.checkIsPlaying, this);
-                    console.log(this.attributes);
+                    if(this.get('user')['id'] === PRAD.user_id) {
+                        this.set('isMine', true);
+                    }
                 },
 
                 checkIsPlaying: function() {
@@ -23,6 +26,14 @@ define(['jquery',
                     }else{
                         this.set('isPlaying', false);
                     }
+                },
+
+                unQueue: function() {
+                    var track_payload = {
+                        'track_id': this.get('id'),
+                        'user_id': PRAD.user_id
+                    };
+                    socket.emit('remove_track', JSON.stringify(track_payload));
                 }
             });
             return MopidyTrack;

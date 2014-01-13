@@ -4,9 +4,11 @@ import brukva
 import simplejson as json
 from tornadio2 import SocketConnection
 from tornadio2 import event, router, server
-from helper import TrackList
 
 from django.conf import settings
+from django.contrib.sessions.models import Session
+
+from helper import TrackList
 
 
 logger = logging.getLogger()
@@ -55,10 +57,15 @@ class AppConnection(SocketConnection):
         self.client.connect()
         self.client.subscribe('playlist')
         self.client.subscribe('player_update')
-        self.tracklist = TrackList()
+
+        self.tracklist = TrackList(user_id=user_id)
 
     def on_open(self, request):
         print 'app connected'
+        session_key = request.get_cookie('sessionid').value
+        session = Session.objects.get(session_key=session_key)
+        user_id = session.get_decoded().get('_auth_user_id')
+        self.user_id = user_id
         self.client.listen(self.on_redis_message)
 
     def on_redis_message(self, data):
@@ -68,19 +75,27 @@ class AppConnection(SocketConnection):
             self.emit('playlist:update', data.body)
 
     @event('add_track')
-    def do_add_track(self, new_track):
-        user_id = self.session.info.get_cookie('poke_radio_user_id').value
-        new_track = json.loads(new_track)
-        self.tracklist.add(user_id, new_track)
+    def do_add_track(self, data):
+        data = json.loads(data)
+        user_id = data['user_id']
+        track_data = data['track']
+        # TODO catch not logged in error
+        self.tracklist.add(user_id, track_data)
+
+    @event('remove_track')
+    def do_remove_track(self, data):
+        data = json.loads(data)
+        self.tracklist.remove(user_id, track_data)
 
     def on_close(self):
         self.client.unsubscribe('playlist')
 
     @event('playlist')
     def playlist(self, command):
-        print command
         if command == 'fetch':
-            self.emit('playlist:fetch', self.tracklist.get_playlist())
+            playlist = self.tracklist.get_playlist()
+            print playlist
+            self.emit('playlist:fetch', playlist)
 
 
 

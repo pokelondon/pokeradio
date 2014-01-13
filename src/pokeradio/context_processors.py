@@ -22,4 +22,5 @@ def domain(request):
     return {
         'DOMAIN': domain,
         'site': current_site,
+        'socketio_client_url': settings.SOCKETIO_CLIENT_URL,
     }

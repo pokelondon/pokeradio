@@ -17,6 +17,10 @@ logger = logging.getLogger()
 
 class TrackList:
 
+    def __init__(self, user_id):
+        #self.user = User.objects.get(pk=user_id)
+        pass
+
     def _add_track(self, new_track, user):
         track = Track()
         track.name = new_track['name']
@@ -30,6 +34,9 @@ class TrackList:
         except IntegrityError, error:
             logger.error('Some thing has gone wrong %s' % error.message)
         return track
+
+    def remove(self, user_id, track_data):
+        print 'Remove', track_data, self.user
 
 
     def _add_album(self, new_track):
