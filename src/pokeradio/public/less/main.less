@@ -8,6 +8,7 @@
 
 @body-bg:           #ebede5;
 @poke-blue:         #00c6ff;
+@poke-pink:         #f5007f;
 @margin-center:     0 auto;
 @media-list-bg:     #fff;
 @header-height:     170px;
@@ -24,11 +25,6 @@
 body {
     margin: 0 !important;
     background-color: @body-bg;
-}
-
-.btn{
-    background-color: @poke-blue;
-    color: #fff;
 }
 
 .inline{
@@ -60,12 +56,19 @@ body {
     .poke-radio-logo;
     margin: @margin-center;
     padding-top: 25px;
-
 }
 
+/*
+ * Buttons
+ */
 .btn{
     background-color: @poke-blue;
     color: #fff;
+}
+.btn.btn-danger {
+    color: #ffffff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
 }
 
 
@@ -422,10 +425,8 @@ body {
     margin: 10px 15px;
 }
 progress::-webkit-progress-value {
-    background-color: hotpink;
+    background-color: @poke-pink;
 }
 progress::-webkit-progress-bar {
     background-color: #bbb;
-    color: yellow;
 }
-
