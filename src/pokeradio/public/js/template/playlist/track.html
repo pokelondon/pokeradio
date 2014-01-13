@@ -1,4 +1,3 @@
-<!--<li data-playlist-id="<%= id %>" class="media <%= played ? "played" : "not-played" %>">-->
 <div class="media-wrapper">
     <% if (!played){ %>
     <img class="album-art media-object" src="/albumart/<%= album_href.split(':')[2] %>.jpg">
@@ -13,5 +12,14 @@
             <img class="media-object" src="/profilepictures/<%= user.id %>.jpg">
             <div><%= user.full_name %></div>
         </div>
+        <% if (!played){ %>
+        <div class="track-actions">
+            <% if (isMine && !isPlaying){ %>
+                <button class="btn btn-remove-track">✖</button>
+            <% } %>
+            <button class="btn">⬆</button>
+            <button class="btn">⬇</button>
+        </div>
+        <% } %>
     </div>
 </div>

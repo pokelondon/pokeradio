@@ -2,9 +2,9 @@
 {% block scripts %}
 <script src="{{ STATIC_URL }}js/lib/socket.io/socket.io.js"></script>
 <script>
-
 var socket = io.connect('{{ socketio_client_url }}');
-
+var PRAD = PRAD || {};
+PRAD.user_id = {{ user_id }};
 </script>
 {% endblock %}
 

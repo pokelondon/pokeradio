@@ -44,14 +44,19 @@ class Track(models.Model):
         return u'{0} - {1}'.format(self.name, self.artist)
 
 
-@receiver(post_save, sender = Track)
+@receiver(post_save, sender=Track)
 def track_saved(sender, instance, **kwargs):
-    r = redis.Redis()
+    r = redis.Redis(host=settings.REDIS_HOST,
+                    port=settings.REDIS_PORT,
+                    db=settings.REDIS_DB)
     r.publish('playlist', json.dumps(instance.to_dict()))
 
 
 @receiver(post_delete, sender=Track)
-def track_deleted(sender, **kwargs):
-    print 'Deleted!!'
-    r = redis.Redis()
-    r.publish('playlist_changed', 'DELETED')
+def track_deleted(sender, instance, **kwargs):
+    print 'Deleted', instance.name
+    r = redis.Redis(host=settings.REDIS_HOST,
+                    port=settings.REDIS_PORT,
+                    db=settings.REDIS_DB)
+    print r
+    r.publish('deleted', instance.id)
