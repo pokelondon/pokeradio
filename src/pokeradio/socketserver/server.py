@@ -1,8 +1,8 @@
 import logging
 import tornado
 import brukva
-from itertools import chain
 import simplejson as json
+from itertools import chain
 from tornadio2 import SocketConnection
 from tornadio2 import event, router, server
 
@@ -11,6 +11,8 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 
 from pokeradio.models import Track
+
+from .utils import flush_transaction
 
 
 logger = logging.getLogger()
@@ -130,16 +132,20 @@ class AppConnection(SocketConnection):
             self.emit('playlist:message', 'You cant do that')
         else:
             self.emit('playlist:message', '{0} deleted'.format(track))
-            # TODO: Track delete event, to remove it from UI
             track.delete()
 
     def on_close(self):
         self.client.unsubscribe('playlist')
+        self.client.unsubscribe('player_update')
+        self.client.unsubscribe('deleted')
 
     @event('fetch_playlist')
     def playlist(self):
         """ Get all tracks in the playlist to bootstrap the view
         """
+        # Ensure new data is retrieved, incase another process has changed
+        # the playlist
+        flush_transaction()
         tracks_new = Track.objects.filter(played__exact=False)
         tracks_played = Track.objects.filter(played__exact=True).reverse()[:3]
         tracks = list(chain(tracks_played, tracks_new))
@@ -151,10 +157,6 @@ class AppConnection(SocketConnection):
 class RouterConnection(SocketConnection):
     __endpoints__ = {'/player': PlayerConnection,
                      '/app':AppConnection}
-
-    def on_open(self, request):
-        pass
-
 
 
 Router = router.TornadioRouter(RouterConnection, {'websockets_check': True})
