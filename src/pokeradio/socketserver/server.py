@@ -38,6 +38,7 @@ class PlayerConnection(SocketConnection):
         """ Mopidy wants a track to play
         Find the next track in the playlist
         """
+        flush_transaction()
         try:
             track = Track.objects.filter(played__exact=False)[:1][0]
         except IndexError:

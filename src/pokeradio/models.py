@@ -54,9 +54,7 @@ def track_saved(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=Track)
 def track_deleted(sender, instance, **kwargs):
-    print 'Deleted', instance.name
     r = redis.Redis(host=settings.REDIS_HOST,
                     port=settings.REDIS_PORT,
                     db=settings.REDIS_DB)
-    print r
     r.publish('deleted', instance.id)

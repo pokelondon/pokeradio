@@ -3,10 +3,6 @@ body {
   margin: 0 !important;
   background-color: #ebede5;
 }
-.btn {
-  background-color: #00c6ff;
-  color: #fff;
-}
 .inline {
   display: inline-block;
   /* IE 7 hack */
@@ -33,9 +29,17 @@ body {
   margin: 0 auto;
   padding-top: 25px;
 }
+/*
+ * Buttons
+ */
 .btn {
   background-color: #00c6ff;
   color: #fff;
+}
+.btn.btn-danger {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
 }
 /******* Poke Radio *******/
 .pull-right {
@@ -426,9 +430,8 @@ body {
   margin: 10px 15px;
 }
 progress::-webkit-progress-value {
-  background-color: hotpink;
+  background-color: #f5007f;
 }
 progress::-webkit-progress-bar {
   background-color: #bbb;
-  color: yellow;
 }
