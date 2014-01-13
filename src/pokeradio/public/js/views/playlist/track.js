@@ -18,6 +18,7 @@ define(['jquery',
 
                     _.bindAll(this, 'removeTrack');
                     this.model.on('change:played', this.updatePlayedState, this);
+                    this.model.on('remove', this.onTrackRemoved, this);
 
                     // Get inital State
                     this.updatePlayedState();
@@ -44,7 +45,10 @@ define(['jquery',
                 },
 
                 onTrackRemoved: function() {
-                //
+                    var self = this;
+                    this.$el.slideUp(function() {
+                        self.$el.remove();
+                    });
                 }
             });
             return TrackView;

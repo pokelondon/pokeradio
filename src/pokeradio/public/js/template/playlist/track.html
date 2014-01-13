@@ -14,7 +14,7 @@
         </div>
         <% if (!played){ %>
         <div class="track-actions">
-            <% if (isMine){ %>
+            <% if (isMine && !isPlaying){ %>
                 <button class="btn btn-remove-track">✖</button>
             <% } %>
             <button class="btn">⬆</button>

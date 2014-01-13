@@ -48,9 +48,13 @@ class PlayerConnection(SocketConnection):
     def on_track_playback_ended(self, href):
        """ Track complete. Mark it as played in the DB and request the next one
        """
-       track = Track.objects.get(href=href)
-       track.played = True
-       track.save()
+       try:
+           track = Track.objects.get(href=href)
+           track.played = True
+           track.save()
+       except Track.DoesNotExist:
+           pass
+
        self.on_request_track()
 
     @event('track_playback_started')
@@ -77,6 +81,7 @@ class AppConnection(SocketConnection):
         self.client.connect()
         self.client.subscribe('playlist')
         self.client.subscribe('player_update')
+        self.client.subscribe('deleted')
 
     def on_open(self, request):
         """ Websocket connection opened with the browser
@@ -98,6 +103,8 @@ class AppConnection(SocketConnection):
         """
         if data.channel == 'player_update':
             self.emit('playlist:progress', data.body)
+        if data.channel == 'deleted':
+            self.emit('playlist:deleted', data.body);
         else:
             self.emit('playlist:update', data.body)
 

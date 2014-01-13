@@ -31,6 +31,7 @@ define(['jquery',
                 unQueue: function() {
                     socket.emit('remove_track', this.get('id'));
                 }
+
             });
             return MopidyTrack;
         });

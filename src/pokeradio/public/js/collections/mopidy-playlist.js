@@ -13,11 +13,12 @@ define([
             model: MopidyTrack,
 
             initialize: function(){
-                _.bindAll(this, 'playlistFetch', 'playlistUpdate');
+                _.bindAll(this, 'playlistFetch', 'playlistUpdate', 'itemDeleted');
                 // Socket Events
                 this.ioBind('load', this.playlistFetch, this);
                 this.ioBind('update', this.playlistUpdate, this);
                 this.ioBind('message', this.displayMessage, this);
+                this.ioBind('deleted', this.itemDeleted, this);
 
                 // Request initial playlist data
                 socket.emit('fetch_playlist');
@@ -43,11 +44,21 @@ define([
             playlistUpdate: function(data){
                 // Single track is passed so we check if its a new track or played track.
                 data = $.parseJSON(data);
+                console.log(data);
                 if(data.played){
                     this.set(data);
                 }else {
                     this.add(data);
                 }
+            },
+
+            /**
+             * Item has been removed from the remote playlist.
+             * Delete it from the collection here
+             */
+            itemDeleted: function(id) {
+                var item = this.findWhere({id: parseInt(id)});
+                this.remove(item);
             }
 
         });
