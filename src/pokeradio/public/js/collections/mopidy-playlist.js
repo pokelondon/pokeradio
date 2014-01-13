@@ -17,10 +17,15 @@ define([
                 // Socket Events
                 this.ioBind('load', this.playlistFetch, this);
                 this.ioBind('update', this.playlistUpdate, this);
+                this.ioBind('message', this.displayMessage, this);
 
                 // Request initial playlist data
                 socket.emit('fetch_playlist');
                 this.comparator = 'id';
+            },
+
+            displayMessage: function(message) {
+                alert(message);
             },
 
             /**

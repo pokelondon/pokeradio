@@ -12,10 +12,14 @@
             <img class="media-object" src="/profilepictures/<%= user.id %>.jpg">
             <div><%= user.full_name %></div>
         </div>
+        <% if (!played){ %>
         <div class="track-actions">
-        <% if (isMine){ %>
-            <button class="btn btn-remove-track">-</button>
-        <% } %>
+            <% if (isMine){ %>
+                <button class="btn btn-remove-track">✖</button>
+            <% } %>
+            <button class="btn">⬆</button>
+            <button class="btn">⬇</button>
         </div>
+        <% } %>
     </div>
 </div>
