@@ -29,11 +29,7 @@ define(['jquery',
                 },
 
                 unQueue: function() {
-                    var track_payload = {
-                        'track_id': this.get('id'),
-                        'user_id': PRAD.user_id
-                    };
-                    socket.emit('remove_track', JSON.stringify(track_payload));
+                    socket.emit('remove_track', this.get('id'));
                 }
             });
             return MopidyTrack;

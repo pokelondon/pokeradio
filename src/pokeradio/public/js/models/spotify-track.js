@@ -27,16 +27,13 @@ define(['jquery',
                         return;
                     }
                     var track_payload = {
-                        'track': {
-                            'name': this.attributes.name,
-                            'href': this.get('href'),
-                            'artist': this.get('artists')[0].name,
-                            'length': this.get('length'),
-                            'album': {
-                                'href': this.get('album').href,
-                            },
-                        },
-                        'user_id': PRAD.user_id
+                        'name': this.attributes.name,
+                        'href': this.get('href'),
+                        'artist': this.get('artists')[0].name,
+                        'length': this.get('length'),
+                        'album': {
+                            'href': this.get('album').href,
+                        }
                     };
                     socket.emit('add_track', JSON.stringify(track_payload));
                     this.set('selected', !this.get('selected'));

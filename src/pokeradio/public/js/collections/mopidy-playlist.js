@@ -15,11 +15,11 @@ define([
             initialize: function(){
                 _.bindAll(this, 'playlistFetch', 'playlistUpdate');
                 // Socket Events
-                this.ioBind('fetch', this.playlistFetch, this);
+                this.ioBind('load', this.playlistFetch, this);
                 this.ioBind('update', this.playlistUpdate, this);
 
                 // Request initial playlist data
-                socket.emit('playlist', 'fetch');
+                socket.emit('fetch_playlist');
                 this.comparator = 'id';
             },
 

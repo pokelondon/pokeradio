@@ -7,8 +7,10 @@ from tornadio2 import event, router, server
 
 from django.conf import settings
 from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
 
 from helper import TrackList
+from pokeradio.models import Track
 
 
 logger = logging.getLogger()
@@ -58,14 +60,15 @@ class AppConnection(SocketConnection):
         self.client.subscribe('playlist')
         self.client.subscribe('player_update')
 
-        self.tracklist = TrackList(user_id=user_id)
+        self.tracklist = TrackList(user_id=None)
 
     def on_open(self, request):
-        print 'app connected'
         session_key = request.get_cookie('sessionid').value
         session = Session.objects.get(session_key=session_key)
         user_id = session.get_decoded().get('_auth_user_id')
         self.user_id = user_id
+        self.user = User.objects.get(pk=self.user_id)
+        print 'Webapp connected:', self.user
         self.client.listen(self.on_redis_message)
 
     def on_redis_message(self, data):
@@ -77,25 +80,31 @@ class AppConnection(SocketConnection):
     @event('add_track')
     def do_add_track(self, data):
         data = json.loads(data)
-        user_id = data['user_id']
-        track_data = data['track']
-        # TODO catch not logged in error
-        self.tracklist.add(user_id, track_data)
+        # Create track object
+        track_data = data
+        track_data['album_href'] = track_data.pop('album').get('href')
+        track_data['user_id'] = self.user_id
+        t = Track.objects.create(**data)
+
 
     @event('remove_track')
-    def do_remove_track(self, data):
-        data = json.loads(data)
-        self.tracklist.remove(user_id, track_data)
+    def do_remove_track(self, track_id):
+        try:
+            track = Track.objects.get(user=self.user, id=int(track_id),
+                                      played=False)
+        except Track.DoesNotExist:
+            print 'Track not in playlist'
+            # TODO Send a message to the frontend
+        else:
+            track.delete()
 
     def on_close(self):
         self.client.unsubscribe('playlist')
 
-    @event('playlist')
-    def playlist(self, command):
-        if command == 'fetch':
-            playlist = self.tracklist.get_playlist()
-            print playlist
-            self.emit('playlist:fetch', playlist)
+    @event('fetch_playlist')
+    def playlist(self):
+        playlist = self.tracklist.get_playlist()
+        self.emit('playlist:load', playlist)
 
 
 
