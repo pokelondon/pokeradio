@@ -17,8 +17,10 @@
             <% if (isMine && !isPlaying){ %>
                 <button class="btn btn-remove-track">✖</button>
             <% } %>
-            <button class="btn">⬆</button>
-            <button class="btn">⬇</button>
+            <% if (!isMine){ %>
+            <button class="btn btn-like">⬆</button>
+            <button class="btn btn-dislike">⬇</button>
+            <% } %>
         </div>
         <% } %>
     </div>

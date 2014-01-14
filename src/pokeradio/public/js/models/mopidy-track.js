@@ -30,6 +30,20 @@ define(['jquery',
 
                 unQueue: function() {
                     socket.emit('remove_track', this.get('id'));
+                },
+
+                likeTrack: function() {
+                    if(this.canLike()) {
+                        socket.emit('like_track', this.get('id'));
+                    }
+                },
+
+                canLike: function() {
+                    if(PRAD.user_id == this.get('user')['id']) {
+                        alert('You cant like your own track');
+                        return false;
+                    }
+                    return true;
                 }
 
             });

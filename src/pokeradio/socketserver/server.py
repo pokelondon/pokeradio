@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 
-from pokeradio.models import Track
+from pokeradio.models import Track, Point
 
 from .utils import flush_transaction
 
@@ -152,6 +152,19 @@ class AppConnection(SocketConnection):
         tracks = list(chain(tracks_played, tracks_new))
         output = [track.to_dict() for track in tracks]
         self.emit('playlist:load', json.dumps(output))
+
+    @event('like_track')
+    def like_track(self, track_id):
+        # TODO record like against archive track
+        # Score a point to the user
+        try:
+            track = Track.objects.exclude(user=self.user).get(id=int(track_id))
+        except Track.DoesNotExist:
+            self.emit('playlist:message', 'You cant do that')
+        else:
+            p = Point.objects.create(user=track.user, action='TRACK_LIKED',
+                                 track_name=str(track))
+            print p
 
 
 
