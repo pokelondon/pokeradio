@@ -51,6 +51,7 @@ define(['jquery',
                  */
                 likeTrack: function(evt) {
                     evt.preventDefault();
+                    this.$('.btn-like').html('❤').addClass('disabled');
                     this.model.likeTrack();
                 },
 
@@ -59,6 +60,7 @@ define(['jquery',
                  */
                 dislikeTrack: function(evt) {
                     evt.preventDefault();
+                    this.$('.btn-dislike').html('☹').addClass('disabled');
                     this.model.dislikeTrack();
                 },
 
