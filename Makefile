@@ -35,5 +35,4 @@ run_socket:
 	django-admin.py start_socketserver
 
 run_mopidy:
-	export PYTHONPATH=/home/vagrant/.virtualenvs/pokeradio_client/local/lib/python2.7/site-packages/:/usr/lib/python2.7/dist-packages/
-	mopidy --config /home/vagrant/pokeradio/src/mopidy-pokeradio/mopidy_pokeradio/config/dev/mopidy.conf
+	PYTHONPATH=/home/vagrant/.virtualenvs/pokeradio/local/lib/python2.7/site-packages/:/usr/lib/python2.7/dist-packages/ /home/vagrant/.virtualenvs/pokeradio/bin/mopidy --config /home/vagrant/pokeradio/src/mopidy-pokeradio/mopidy_pokeradio/config/dev/mopidy.conf
