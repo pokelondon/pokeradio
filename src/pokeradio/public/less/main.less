@@ -430,3 +430,40 @@ progress::-webkit-progress-value {
 progress::-webkit-progress-bar {
     background-color: #bbb;
 }
+
+
+.transaction-list {
+    background: #fff;
+}
+.transaction {
+    padding: 10px 20px 0;
+    margin: 10px 0 0;
+    clear: left;
+    overflow: hidden;
+    border-bottom: 1px solid @body-bg;
+}
+.transaction-value {
+    font-size: 2em;
+    float: left;
+    padding-right: 10px;
+    width: 50px;
+}
+.transaction--minus .transaction-value {
+    color: @poke-pink;
+}
+.transaction--plus .transaction-value {
+    color: @poke-blue;
+}
+.transaction-action {
+    display: block;
+    font-weight: bold;
+}
+.transaction-track {
+    color: #444;
+    font-size: 0.8em;
+}
+.transaction-date {
+    font-size: 0.8em;
+    float: right;
+    color: #999;
+}

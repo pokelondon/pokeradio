@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<div class="box">
+    <h1><small>{{ request.user.first_name }}</small> {{ my_credits }} Credits</h1>
+</div>
+
+<div class="transaction-list">
+    {% for object in object_list %}
+    <div class="transaction{% if object.value < 0 %} transaction--minus{% elif object.value > 0 %} transaction--plus{% endif %}">
+        <p>
+        <span class="transaction-value">{{ object.value }}</span>
+            <span class="transaction-action">{{ object.action }}</span>
+            <span class="transaction-track">{{ object.track_name }}</span>
+            <small class="transaction-date">{{ object.created }}</small>
+        </p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

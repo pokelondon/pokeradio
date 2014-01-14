@@ -11,6 +11,7 @@ from django.views.generic import TemplateView
 urlpatterns = patterns('')
 
 urls = [
-    url(r'^$', 'point_statement', name='index'),
+    url(r'^$', 'index', name='index'),
+    url(r'^statement/$', 'point_statement', name='statement'),
 ]
 urlpatterns += patterns('pokeradio.scoring.views', *urls)

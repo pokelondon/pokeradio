@@ -2,16 +2,6 @@
 
 {% block container %}
 <div class="box">
-    <h1>Fake Internet Points</h1>
-    <p>Points: 10000</p>
-    <p>Credits: 1220</p>
-</div>
-<div class="transaction-list">
-    {% for object in object_list %}
-    <div class="transaction-item">
-        <h3>{{ object.action }}</h3>
-        <p>{{ object.value }}</p>
-    </div>
-    {% endfor %}
+    <h1>Leaderboard</h1>
 </div>
 {% endblock %}

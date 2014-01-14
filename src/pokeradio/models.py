@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.conf import settings
 
+from pokeradio.scoring.models import Credit, Point
+
 
 class Track(models.Model):
     """ A track in a playlist
@@ -43,12 +45,22 @@ class Track(models.Model):
     def __unicode__(self):
         return u'{0} - {1}'.format(self.name, self.artist)
 
+    def set_played(self):
+        """ When the track has been played, run this.
+        """
+        self.played = True
+        self.save()
+
 
 @receiver(post_save, sender=Track)
 def track_saved(sender, instance, **kwargs):
     r = redis.Redis(host=settings.REDIS_HOST,
                     port=settings.REDIS_PORT,
                     db=settings.REDIS_DB)
+
+    # Deduct a credit for this play
+    c = Credit.objects.create(user=instance.user, action='TRACK_ADD',
+                track_name=str(instance))
     r.publish('playlist', json.dumps(instance.to_dict()))
 
 
@@ -57,4 +69,10 @@ def track_deleted(sender, instance, **kwargs):
     r = redis.Redis(host=settings.REDIS_HOST,
                     port=settings.REDIS_PORT,
                     db=settings.REDIS_DB)
+
+    if not instance.played:
+        # Refund the user a credit
+        c = Credit.objects.create(user=instance.user, action='REFUND',
+                track_name=str(instance))
+
     r.publish('deleted', instance.id)

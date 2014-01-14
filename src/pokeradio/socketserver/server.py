@@ -53,8 +53,7 @@ class PlayerConnection(SocketConnection):
        """
        try:
            track = Track.objects.get(href=href)
-           track.played = True
-           track.save()
+           track.set_played()
        except Track.DoesNotExist:
            pass
 
@@ -92,7 +91,7 @@ class AppConnection(SocketConnection):
         session_key = request.get_cookie('sessionid').value
         try:
             session = Session.objects.get(session_key=session_key)
-        except session.DoesNotExist:
+        except Session.DoesNotExist:
             print 'Session expired'
         else:
             user_id = session.get_decoded().get('_auth_user_id')
@@ -120,6 +119,7 @@ class AppConnection(SocketConnection):
         track_data['album_href'] = track_data.pop('album').get('href')
         track_data['user_id'] = self.user_id
         t = Track.objects.create(**data)
+
         print '{0} has queued {1}'.format(self.user, t)
 
 
