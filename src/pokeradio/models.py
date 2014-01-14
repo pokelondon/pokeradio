@@ -26,6 +26,14 @@ class Track(models.Model):
     class Meta:
         ordering = ['timestamp']
 
+    def _get_action_ids(self, action):
+        """ For displaying things in the playlist, fetch IDs of users who
+        have liked and disliked a track. Only for FE to compare against
+        logged in user id, as this model doesn't know who that is
+        """
+        return map(int, self.point_set.filter(action=action)\
+            .values_list('vote_from__id', flat=True))
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -39,7 +47,9 @@ class Track(models.Model):
             'user': {
                 'id': self.user.id,
                 'full_name': self.user.get_full_name(),
-            }
+            },
+            'liked_ids': self._get_action_ids(Point.TRACK_LIKED),
+            'disliked_ids': self._get_action_ids(Point.TRACK_DISLIKED),
         }
 
     def __unicode__(self):

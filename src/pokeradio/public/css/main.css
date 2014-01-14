@@ -41,6 +41,11 @@ body {
   background-color: #d9534f;
   border-color: #d43f3a;
 }
+.btn.voted {
+  color: #ffffff;
+  background-color: #f5007f;
+  border-color: #f5007f;
+}
 /******* Poke Radio *******/
 .pull-right {
   float: right !important;

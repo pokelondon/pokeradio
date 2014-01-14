@@ -18,6 +18,7 @@ define(['jquery',
                 render: function() {
                     var text = _.template(this.template, this.model.toJSON());
                     this.$el.html(text);
+                    this.trigger('render');
                     return this;
                 }
             });

@@ -8,13 +8,21 @@ define(['jquery',
                 wasPlaying: false,
                 defaults: {
                     isPlaying: false,
-                    isMine: false
+                    isMine: false,
+                    liked: false,
+                    disliked: false
                 },
 
                 initialize: function() {
                     this.collection.on('change:played', this.checkIsPlaying, this);
                     if(this.get('user')['id'] === PRAD.user_id) {
                         this.set('isMine', true);
+                    }
+                    if(_(this.get('liked_ids')).indexOf(PRAD.user_id) >= 0) {
+                        this.set('liked', true);
+                    }
+                    if(_(this.get('disliked_ids')).indexOf(PRAD.user_id) >= 0) {
+                        this.set('disliked', true);
                     }
                 },
 
@@ -35,12 +43,14 @@ define(['jquery',
                 likeTrack: function() {
                     if(this.canLike()) {
                         socket.emit('like_track', this.get('id'));
+                        this.set('liked', true);
                     }
                 },
 
                 dislikeTrack: function() {
                     if(this.canLike()) {
                         socket.emit('dislike_track', this.get('id'));
+                        this.set('disliked', true);
                     }
                 },
 

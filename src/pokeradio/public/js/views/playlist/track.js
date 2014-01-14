@@ -18,9 +18,12 @@ define(['jquery',
                 initialize: function(model) {
                     BaseTrackView.prototype.initialize.apply(this, arguments);
 
-                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack');
+                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses');
                     this.model.on('change:played', this.updatePlayedState, this);
                     this.model.on('remove', this.onTrackRemoved, this);
+                    this.model.on('change:liked', this.onVote, this);
+                    this.model.on('change:disliked', this.onVote, this);
+                    this.on('render', this.setVotedClasses, this);
 
                     // Get inital State
                     this.updatePlayedState();
@@ -51,7 +54,6 @@ define(['jquery',
                  */
                 likeTrack: function(evt) {
                     evt.preventDefault();
-                    this.$('.btn-like').html('❤').addClass('disabled');
                     this.model.likeTrack();
                 },
 
@@ -60,8 +62,25 @@ define(['jquery',
                  */
                 dislikeTrack: function(evt) {
                     evt.preventDefault();
-                    this.$('.btn-dislike').html('☹').addClass('disabled');
                     this.model.dislikeTrack();
+                },
+
+                /**
+                 * Update buttons following a like or dislike event on the model
+                 */
+                onVote: function() {
+                    this.$('.btn-dislike').addClass('disabled');
+                    this.$('.btn-like').addClass('disabled');
+                    this.setVotedClasses();
+                },
+
+                setVotedClasses: function() {
+                    if(this.model.get('liked')) {
+                        this.$('.btn-like').addClass('voted');
+                    }
+                    if(this.model.get('disliked')) {
+                        this.$('.btn-dislike').addClass('voted');
+                    }
                 },
 
                 onTrackRemoved: function() {
