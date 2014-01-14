@@ -59,12 +59,24 @@ class Point(BaseTransaction):
     point deduction.
     """
 
+    TRACK_LIKED = 'TRACK_LIKED'
+    TRACK_DISLIKED = 'TRACK_DISLIKED'
+
     TYPES = (
-        ('TRACK_LIKED', 'Track was liked'),
-        ('TRACK_DISLIKED', 'Track was disliked'),
+        (TRACK_LIKED, 'Track was liked'),
+        (TRACK_DISLIKED, 'Track was disliked'),
     )
 
     action = models.CharField(max_length=20, choices=TYPES)
+    # Prevent multiple votes for the same track from an individual
+    vote_from = models.ForeignKey(User, blank=True, null=True,
+            related_name='vote_from',
+            help_text='Voter, to prevent multiple votes')
+    playlist_track = models.ForeignKey('pokeradio.Track', blank=True,
+                                       null=True)
+
+    class Meta(BaseTransaction.Meta):
+        unique_together = ('vote_from', 'playlist_track')
 
     def _get_cost(self):
         """ Considering the action, caculate the cost of this transaction

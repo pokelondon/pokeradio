@@ -9,6 +9,7 @@ from tornadio2 import event, router, server
 from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 from pokeradio.models import Track, Point
 
@@ -156,16 +157,39 @@ class AppConnection(SocketConnection):
     @event('like_track')
     def like_track(self, track_id):
         # TODO record like against archive track
+        self.value_judgement(track_id, Point.TRACK_LIKED)
+
+    @event('dislike_track')
+    def dislike_track(self, track_id):
+        self.value_judgement(track_id, Point.TRACK_DISLIKED)
+
+    def value_judgement(self, track_id, action):
+        """ Checking various integrity constraints, record a like or dislike
+        from a user, for another user against a playlist track item
+        """
         # Score a point to the user
         try:
+            # Get the track being liked, but not if its queued by the
+            # current user
             track = Track.objects.exclude(user=self.user).get(id=int(track_id))
         except Track.DoesNotExist:
             self.emit('playlist:message', 'You cant do that')
         else:
-            p = Point.objects.create(user=track.user, action='TRACK_LIKED',
-                                 track_name=str(track))
-            print p
-
+            try:
+                # Make a point, but catch the exception raised by the
+                # violation of unique_togetherness of (playlist) track and voter
+                p = Point.objects.create(user=track.user, action=action,
+                                         track_name=str(track),
+                                         playlist_track=track,
+                                         vote_from=self.user)
+            except IntegrityError:
+                # User has already voted for this track
+                self.emit('playlist:message',
+                          'Thanks, you appear to have already voiced an '\
+                          'opinion on {0}\'s choice to play {1}'
+                          .format(track.user.first_name, track))
+            else:
+                return True
 
 
 class RouterConnection(SocketConnection):

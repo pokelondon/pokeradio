@@ -11,13 +11,14 @@ define(['jquery',
                 className: 'media not-played',
                 events:{
                     'click .btn-remove-track': 'removeTrack',
-                    'click .btn-like': 'likeTrack'
+                    'click .btn-like': 'likeTrack',
+                    'click .btn-dislike': 'dislikeTrack'
                 },
 
                 initialize: function(model) {
                     BaseTrackView.prototype.initialize.apply(this, arguments);
 
-                    _.bindAll(this, 'removeTrack', 'likeTrack');
+                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack');
                     this.model.on('change:played', this.updatePlayedState, this);
                     this.model.on('remove', this.onTrackRemoved, this);
 
@@ -50,8 +51,15 @@ define(['jquery',
                  */
                 likeTrack: function(evt) {
                     evt.preventDefault();
-                    console.table(this.model.attributes);
                     this.model.likeTrack();
+                },
+
+                /**
+                 * Handle dislike button event
+                 */
+                dislikeTrack: function(evt) {
+                    evt.preventDefault();
+                    this.model.dislikeTrack();
                 },
 
                 onTrackRemoved: function() {

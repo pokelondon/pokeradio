@@ -38,6 +38,12 @@ define(['jquery',
                     }
                 },
 
+                dislikeTrack: function() {
+                    if(this.canLike()) {
+                        socket.emit('dislike_track', this.get('id'));
+                    }
+                },
+
                 canLike: function() {
                     if(PRAD.user_id == this.get('user')['id']) {
                         alert('You cant like your own track');
