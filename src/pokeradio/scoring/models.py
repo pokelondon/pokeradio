@@ -14,7 +14,7 @@ class BaseTransaction(models.Model):
     user = models.ForeignKey(User)
     value = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
-    track_name = models.CharField(max_length=50, blank=True, null=True)
+    track_name = models.CharField(max_length=100, blank=True, null=True)
 
     # Managers
     objects = TransactionManager()

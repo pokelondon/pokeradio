@@ -187,7 +187,7 @@ class AppConnection(SocketConnection):
                 # Make a point, but catch the exception raised by the
                 # violation of unique_togetherness of (playlist) track and voter
                 p = Point.objects.create(user=track.user, action=action,
-                                         track_name=str(track),
+                                         track_name=str(track)[:100],
                                          playlist_track=track,
                                          vote_from=self.user)
             except IntegrityError:

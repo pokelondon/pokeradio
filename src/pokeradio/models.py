@@ -70,7 +70,7 @@ def track_saved(sender, instance, **kwargs):
 
     # Deduct a credit for this play
     c = Credit.objects.create(user=instance.user, action='TRACK_ADD',
-                track_name=str(instance))
+            track_name=str(instance)[:100])
     r.publish('playlist', json.dumps(instance.to_dict()))
 
 
@@ -83,6 +83,6 @@ def track_deleted(sender, instance, **kwargs):
     if not instance.played:
         # Refund the user a credit
         c = Credit.objects.create(user=instance.user, action='REFUND',
-                track_name=str(instance))
+                track_name=str(instance)[:100])
 
     r.publish('deleted', instance.id)
