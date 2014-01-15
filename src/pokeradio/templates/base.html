@@ -8,7 +8,6 @@
         <title>pokeradio</title>
         <!-- Styles -->
         <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
-        <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
         <!-- Favicon -->
 
@@ -18,20 +17,20 @@
         {% endblock %}
     </head>
     <body>
-        <div class="poke-radio-header">
+        <Header class="Header">
             <div class="container">
-                <div class="logo"></div>
+                <div class="Header-logo"></div>
                 {%  if request.user.is_authenticated %}
-                <div class='user-controls'>
-                    <img src="/profilepictures/{{ request.user.id }}.jpg"/>
-                    <div>
-                        <span>{{ request.user.first_name }}</span>
+                <div class='Header-userControls'>
+                    <img class="Header-userControls-image" src="/profilepictures/{{ request.user.id }}.jpg"/>
+                    <div class="Header-userControls-info">
+                        <span class="bold">{{ request.user.first_name }}</span>
                         <div><a href="{% url 'logout' %}" >Logout</a></div>
                     </div>
                 </div>
                 {% endif %}
             </div>    
-        </div>
+        </Header>
             <div class="container">
             {% block container %}
             {% endblock %}

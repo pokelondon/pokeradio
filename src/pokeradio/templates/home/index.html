@@ -12,39 +12,38 @@ PRAD.user_id = {{ user_id }};
 {% block container %}
 <div class="row">
     <div class="col-md-12">
-        <a class='btn add-track'>
-            <span class="search-icon"></span><span>Add track</span>
+        <a class='btn add-track u-btn--large'>
+            <span class="u-icon--search"></span><span>Add track</span>
         </a>
     </div>
     <progress class="progress-bar" value="0" max="100"></progress>
-    <div class="col-md-12 playlist-wrapper">
-        <ul id="playlist" class="media-list">
+    <section class="col-md-12 Playlist">
+        <ul id="playlist" class="Playlist-items">
             <!-- Backbone template js/template/playlist.html
                         Backbone View js/views/playlist/playist/view.js-->
         </ul>
-    </div>
+    </section>
 </div>
 
-<div id="addTrackView" style="display: none;">
-    <div class='add-track-view-wrapper'>
-        <div class="poke-radio-header">
+<div id="addTrackView" class='Search' style="display: none;">
+    <div class='Search-wrapper'>
+        <header class="Header Header--noBg">
             <div class="container">
-                <div class="logo"></div>
+                <div class="Header-logo"></div>
             </div>
-        </div>
+        </header>
         <div class="container">
-            <div class="btn exit">
+            <div class="btn exit u-btn--large">
                 <div class='btn-wrapper'>
                     <div class="row">
-                        <div class="col-md-6 addtrack-search"><span class="search-icon"></span></div>
-                        <div class="col-md-6 addtrack-exit"><span class="exit-icon"></span></div>
+                        <div class="col-md-6 Search-lookup"><span class="u-icon--search u-icon--right"></span></div>
+                        <div class="col-md-6 Search-exit"><span class="u-icon--exit u-icon--left"></span></div>
                     </div>
                 </div>
             </div>
-            <form role="form" id="searchForm" class="form-inline">
-                <div class="form-group">
-                    <label class="sr-only" for="searchInput">Search</label>
-                    <input type='search' autocomplete="off" name="search" class="form-control" id="searchInput" placeholder="Search">
+            <form role="form" id="searchForm" class="form-inline Search-form">
+                <div class="Search-input-wrapper">
+                    <input type='search' autocomplete="off" name="search" class="Search-input" id="searchInput" placeholder="Search">
                 </div>
                 <input type="submit" id="doSearch" class="pull-right btn" value="Go" class="btn btn-default"/>
             </form>

@@ -1,0 +1,60 @@
+.Search {
+    width: 100%;
+    height: 100%;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    background: fade(@grey, 95%);
+
+    overflow: auto;
+
+    .fade-transition(300ms)
+}
+
+ .Search-lookup,
+ .Search-exit {
+    display: inline-block;
+    
+    line-height: 50px;
+    vertical-align: middle;
+ } 
+
+.Search-lookup {
+    text-align: left;
+    
+    .u-icon--search{
+        margin-left: 10px;
+    }
+}
+
+.Search-exit { 
+    text-align: right;
+
+    .u-icon--search{
+        margin-right: 10px;
+    }
+}
+.Search-form {
+    margin: 10px 0;
+}
+
+.Search-input-wrapper {
+    width: 90%;
+    display: inline-block;
+}
+.Search-input {
+    width: 100%;
+    
+    margin: 0 0 5px;
+    
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline:none;
+
+    line-height: 20px;
+    color: #000;
+    font-size: 28px;
+}
