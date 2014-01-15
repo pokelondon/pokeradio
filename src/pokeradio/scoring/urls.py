@@ -12,6 +12,8 @@ urlpatterns = patterns('')
 
 urls = [
     url(r'^$', 'index', name='index'),
-    url(r'^statement/$', 'point_statement', name='statement'),
+    url(r'^statement/$', 'statement_index', name='statement'),
+    url(r'^statement/(?P<year>\d{4})/(?P<week>\d+)/$', 'statement_week',
+        name='statement_week'),
 ]
 urlpatterns += patterns('pokeradio.scoring.views', *urls)

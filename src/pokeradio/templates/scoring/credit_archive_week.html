@@ -2,8 +2,16 @@
 
 {% block container %}
 <div class="box">
-    <h1><small>{{ request.user.first_name }}</small> {{ my_credits }} Credits</h1>
+    <h1>{{ request.user.first_name }}, you have {{ my_credits }} Credits</h1>
+    <h3>Week Commencing: {{ week }}</h3>
 </div>
+
+{% if previous_week %}
+<a href="{% url 'scoring:statement_week' previous_week|date:'Y' previous_week|date:'W' %}" class="btn secondary">&larr; Previous Week</a>
+{% endif %}
+{% if next_week %}
+<a href="{% url 'scoring:statement_week' next_week|date:'Y' next_week|date:'W' %}" class="btn primary">Next Week &rarr;</a>
+{% endif %}
 
 <div class="transaction-list">
     {% for object in object_list %}
