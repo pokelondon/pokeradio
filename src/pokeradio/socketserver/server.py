@@ -9,8 +9,9 @@ from tornadio2 import event, router, server
 from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 
-from pokeradio.models import Track
+from pokeradio.models import Track, Point
 
 from .utils import flush_transaction
 
@@ -53,8 +54,7 @@ class PlayerConnection(SocketConnection):
        """
        try:
            track = Track.objects.get(href=href)
-           track.played = True
-           track.save()
+           track.set_played()
        except Track.DoesNotExist:
            pass
 
@@ -86,20 +86,28 @@ class AppConnection(SocketConnection):
         self.client.subscribe('player_update')
         self.client.subscribe('deleted')
 
-    def on_open(self, request):
-        """ Websocket connection opened with the browser
+    def _get_user_id(self, request):
+        """ Get the user ID from the session and save it to the connection
+        instance
         """
+        flush_transaction()
         session_key = request.get_cookie('sessionid').value
         try:
             session = Session.objects.get(session_key=session_key)
-        except session.DoesNotExist:
-            print 'Session expired'
+        except Session.DoesNotExist:
+            print 'Session expired', session_key
+            return False
         else:
             user_id = session.get_decoded().get('_auth_user_id')
             self.user_id = user_id
             self.user = User.objects.get(pk=self.user_id)
             print 'Webapp connected:', self.user
-            self.client.listen(self.on_redis_message)
+
+    def on_open(self, request):
+        """ Websocket connection opened with the browser
+        """
+        self._get_user_id(request)
+        self.client.listen(self.on_redis_message)
 
     def on_redis_message(self, data):
         """ Player events, emit them back down to the browsers
@@ -120,6 +128,7 @@ class AppConnection(SocketConnection):
         track_data['album_href'] = track_data.pop('album').get('href')
         track_data['user_id'] = self.user_id
         t = Track.objects.create(**data)
+
         print '{0} has queued {1}'.format(self.user, t)
 
 
@@ -153,11 +162,47 @@ class AppConnection(SocketConnection):
         output = [track.to_dict() for track in tracks]
         self.emit('playlist:load', json.dumps(output))
 
+    @event('like_track')
+    def like_track(self, track_id):
+        # TODO record like against archive track
+        self.value_judgement(track_id, Point.TRACK_LIKED)
+
+    @event('dislike_track')
+    def dislike_track(self, track_id):
+        self.value_judgement(track_id, Point.TRACK_DISLIKED)
+
+    def value_judgement(self, track_id, action):
+        """ Checking various integrity constraints, record a like or dislike
+        from a user, for another user against a playlist track item
+        """
+        # Score a point to the user
+        try:
+            # Get the track being liked, but not if its queued by the
+            # current user
+            track = Track.objects.exclude(user=self.user).get(id=int(track_id))
+        except Track.DoesNotExist:
+            self.emit('playlist:message', 'You cant do that')
+        else:
+            try:
+                # Make a point, but catch the exception raised by the
+                # violation of unique_togetherness of (playlist) track and voter
+                p = Point.objects.create(user=track.user, action=action,
+                                         track_name=str(track)[:100],
+                                         playlist_track=track,
+                                         vote_from=self.user)
+            except IntegrityError:
+                # User has already voted for this track
+                self.emit('playlist:message',
+                          'Thanks, you appear to have already voiced an '\
+                          'opinion on {0}\'s choice to play {1}'
+                          .format(track.user.first_name, track))
+            else:
+                return True
 
 
 class RouterConnection(SocketConnection):
     __endpoints__ = {'/player': PlayerConnection,
-                     '/app':AppConnection}
+                     '/app': AppConnection}
 
 
 Router = router.TornadioRouter(RouterConnection, {'websockets_check': True})

@@ -41,6 +41,11 @@ body {
   background-color: #d9534f;
   border-color: #d43f3a;
 }
+.btn.voted {
+  color: #ffffff;
+  background-color: #f5007f;
+  border-color: #f5007f;
+}
 /******* Poke Radio *******/
 .pull-right {
   float: right !important;
@@ -434,4 +439,39 @@ progress::-webkit-progress-value {
 }
 progress::-webkit-progress-bar {
   background-color: #bbb;
+}
+.transaction-list {
+  background: #fff;
+}
+.transaction {
+  padding: 10px 20px 0;
+  margin: 10px 0 0;
+  clear: left;
+  overflow: hidden;
+  border-bottom: 1px solid #ebede5;
+}
+.transaction-value {
+  font-size: 2em;
+  float: left;
+  padding-right: 10px;
+  width: 50px;
+}
+.transaction--minus .transaction-value {
+  color: #f5007f;
+}
+.transaction--plus .transaction-value {
+  color: #00c6ff;
+}
+.transaction-action {
+  display: block;
+  font-weight: bold;
+}
+.transaction-track {
+  color: #444;
+  font-size: 0.8em;
+}
+.transaction-date {
+  font-size: 0.8em;
+  float: right;
+  color: #999;
 }

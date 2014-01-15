@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|!(IE)]><!--><html lang="en" class="not-ie"><!--<![endif]-->
     <head>
         <meta charset="utf-8"/>
-        <title>pokeradio</title>
+        <title>{% block page_title %}POKERadio{% endblock %}</title>
         <!-- Styles -->
         <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
@@ -13,29 +13,29 @@
         <!-- Favicon -->
 
         <link rel="shortcut icon" href="img/favicon.ico" />
-        
+
         {% block scripts %}
         {% endblock %}
     </head>
     <body>
         <div class="poke-radio-header">
             <div class="container">
-                <div class="logo"></div>
+                <a href="/"><div class="logo"></div></a>
                 {%  if request.user.is_authenticated %}
                 <div class='user-controls'>
                     <img src="/profilepictures/{{ request.user.id }}.jpg"/>
                     <div>
                         <span>{{ request.user.first_name }}</span>
-                        <div><a href="{% url 'logout' %}" >Logout</a></div>
+                        <div><a href="{% url 'logout' %}" >Logout</a> | <a href="{% url 'scoring:statement' %}" >Credits</a></div>
                     </div>
                 </div>
                 {% endif %}
-            </div>    
+            </div>
         </div>
             <div class="container">
             {% block container %}
             {% endblock %}
-            </div>   
+            </div>
         <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
     </body>
 </html>

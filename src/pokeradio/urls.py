@@ -22,12 +22,12 @@ if settings.DEBUG:
 
 # Root Patterns
 urls = [
-    (r'^admin/', include(admin.site.urls)),
     url(r'^$', 'pokeradio.views.home', name='home'),
-    url(r'^login/$','pokeradio.accounts.views.login_view',name='login'),
-    url(r'^logout/$','pokeradio.accounts.views.logout_view',name='logout'),
-    url(r'^', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^', include('pokeradio.albumart.urls'))
-
+    url(r'^login/$', 'pokeradio.accounts.views.login_view', name='login'),
+    url(r'^logout/$', 'pokeradio.accounts.views.logout_view', name='logout'),
+    (r'^admin/', include(admin.site.urls)),
+    (r'^scoring/', include('pokeradio.scoring.urls', namespace='scoring')),
+    (r'^', include('social.apps.django_app.urls', namespace='social')),
+    (r'^', include('pokeradio.albumart.urls'))
 ]
-urlpatterns = patterns('', *urls)
+urlpatterns += patterns('', *urls)
