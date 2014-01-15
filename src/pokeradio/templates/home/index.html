@@ -18,7 +18,7 @@ PRAD.user_id = {{ user_id }};
     </div>
     <progress class="progress-bar" value="0" max="100"></progress>
     <section class="col-md-12 Playlist">
-        <ul id="playlist" class="Playlist-items">
+        <ul id="playlist" class="Playlist-items media-list">
             <!-- Backbone template js/template/playlist.html
                         Backbone View js/views/playlist/playist/view.js-->
         </ul>
@@ -37,7 +37,7 @@ PRAD.user_id = {{ user_id }};
                 <div class='btn-wrapper'>
                     <div class="row">
                         <div class="col-md-6 Search-lookup"><span class="u-icon--search u-icon--right"></span></div>
-                        <div class="col-md-6 Search-exit"><span class="u-icon--exit u-icon--left"></span></div>
+                        <div class="col-md-6 Search-exit"><span class="u-icon--exit u-icon--left js-exit-search"></span></div>
                     </div>
                 </div>
             </div>
@@ -47,13 +47,13 @@ PRAD.user_id = {{ user_id }};
                 </div>
                 <input type="submit" id="doSearch" class="pull-right btn" value="Go" class="btn btn-default"/>
             </form>
-            <div class="track-listing-container">
-                <div class="hits">
+            <div class="Search-results-wrapper js-search-results-wrapper">
+                <header class="Search-results-header">
                     <div class="row">
                         <div class="col-md-12">Tracks</div>
-                    </div>
+                    </header>
                 </div>
-                <ul class="items"></ul>
+                <ul class="Search-items js-search-items"></ul>
             </div>
         </div>
     </div>

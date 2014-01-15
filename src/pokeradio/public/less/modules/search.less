@@ -9,8 +9,6 @@
     background: fade(@grey, 95%);
 
     overflow: auto;
-
-    .fade-transition(300ms)
 }
 
  .Search-lookup,
@@ -44,6 +42,7 @@
     width: 90%;
     display: inline-block;
 }
+
 .Search-input {
     width: 100%;
     
@@ -57,4 +56,60 @@
     line-height: 20px;
     color: #000;
     font-size: 28px;
+}
+
+.Search-results-header{
+
+    display: none;
+    padding: 10px;
+    background: #f7f8f5;
+    border-bottom: 1px solid #ebede5;
+}
+
+.has-results{
+    .Search-results-header{
+        display: block;
+    }
+}
+
+.Search-items {
+    padding: 0;
+}
+
+.Search-item{
+    width: 100%;
+    
+    padding: 0 0 10px 0;
+    margin-top: 0;
+    
+    background-color: #ffffff;
+    
+    border-bottom: 1px #ebede5 solid;
+}
+.Search-item.disabled,
+.Search-item.selected {
+    background: #f7f8f5;
+}
+.Search-item-body {
+    padding: 0 15px;
+}
+
+.Search-item-details{
+    line-height: 33px;
+}
+
+.Search-item-details-preview{
+    padding-left: 15px;
+    float: left;
+}
+
+.Search-item-details-track{
+    padding-left: 15px;
+    float: left;
+    line-height: 1.5em;
+}
+
+.Search-item-secondaryText {
+    font-size: 12px;
+    color: #b8bac6;  
 }

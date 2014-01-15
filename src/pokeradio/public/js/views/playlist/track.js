@@ -8,7 +8,7 @@ define(['jquery',
             var TrackView = BaseTrackView.extend({
                 tagName: 'li',
                 template: template,
-                className: 'media not-played',
+                className: 'Playlist-item media not-played',
                 events:{
                     'click .btn-remove-track': 'removeTrack',
                 },

@@ -1,11 +1,119 @@
-.Playlist{
-
+.Playlist-item{
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 0;
+    list-style-type: none;
+    margin: 0;
 }
 
-.Playlist-item{
-    padding: 0;
+.Playlist-item-wrapper{
+    padding: 10px;
     margin-top:0;
     background-color: @media-list-bg;
-    border-bottom: 1px @body-bg solid;
+    border-bottom: 1px @grey solid;
+    min-height:80px;
+
 }
 
+.Playlist-item-album-art {
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;
+
+    background: url(/s/img/loading.gif) no-repeat 50% 50%;
+}
+
+.Playlist-item-body{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;
+}
+
+.Playlist-item-track{
+    width: 400px;
+    margin-right: 20px;
+    display: inline-block;
+    vertical-align: middle;
+
+}
+
+.Playlist-item-name {
+    color: @gray-dark;
+    font-size: @font-size-base;
+}
+
+.Playlist-item-artist {
+    display: block;
+    font-size: @font-size-small;
+    color: @gray-light;
+}
+
+.Playlist-item-duration {
+    margin-right: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: @font-size-small;
+}
+.Playlist-item-user {
+    width: 160px;
+    margin-right: 20px;
+    display: inline-block;
+    vertical-align: middle;
+
+}
+.Playlist-item-profileImage{
+    width:35px;
+    height:35px;
+    display: inline-block;
+    margin-right:10px;
+}
+
+.Playlist-item-userFullname {
+    display: inline-block;
+    font-size: @font-size-small;
+    color: @gray-light;
+}
+
+.Playlist-item-trackActions{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;
+}
+
+/*-----Played tracks --*/
+.Playlist-item.played {
+    font-size: @font-size-small;
+    opacity: 0.8;
+}
+
+.played {
+
+    .Playlist-item-wrapper{
+        border-bottom: 1px #e1e3dc solid;
+        background-color: transparent;
+        min-height: inherit;
+        padding: 4px 10px;
+    }
+
+    .Playlist-item-name{
+        font-size: @font-size-small;
+        color: @gray-light;
+    }
+    .Playlist-item-track{
+         width: 497px;
+        font-size: @font-size-small;
+        color: @gray-light;
+    }
+    .Playlist-item-artist {
+        display: none;
+    }
+
+    .Playlist-item-profileImage{
+        width: 22px;
+        height: 22px;
+    }
+}
+
+ 

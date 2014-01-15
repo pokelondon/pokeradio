@@ -10,10 +10,10 @@ define(['jquery',
         ],
         function($, Backbone, _, BaseTrackView, template){
             var TrackView = BaseTrackView.extend({
-                className: 'media',
+                className: 'media Search-item',
                 template: template,
                 events:{
-                    'click .minus-icon': 'queueTrack',
+                    'click .js-queue-track': 'queueTrack',
                     'click .btn-preview': 'preview'
                 },
 
@@ -45,7 +45,7 @@ define(['jquery',
                     evt.stopPropagation();
                     var $iframe = $('<iframe width="80" height="80" frameborder="0" allowtransparency="true"></iframe>');
                     $iframe.attr('src', 'https://embed.spotify.com/?uri=' + this.model.get('href'));
-                    this.$('.preview').html($iframe);
+                    this.$('.js-search-item-details-preview').html($iframe);
                 },
 
                 onSelect: function() {
