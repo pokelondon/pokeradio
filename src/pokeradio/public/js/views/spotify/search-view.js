@@ -11,14 +11,14 @@ define(['jquery',
                 el: $('#addTrackView'),
                 events:{
                     'submit #searchForm': 'search',
-                    'click .exit-icon': 'closeView'
+                    'click .js-exit-search': 'closeView'
                 },
 
                 initialize: function(){
                     this.collection = spotifyTracks;
                     this.collection.on('results', this.render, this);
-                    this.$container = this.$('.track-listing-container');
-                    this.$list = this.$('.track-listing-container .items');
+                    this.$container = this.$('.js-search-results-wrapper');
+                    this.$list = this.$('.js-search-items');
                 },
 
                 /**
