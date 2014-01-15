@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 
 from pokeradio.models import Track, Point
+from pokeradio.history.utils import record_track_play
 
 from .utils import flush_transaction
 

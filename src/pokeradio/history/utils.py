@@ -38,5 +38,5 @@ def record_track_play(track):
     """ Takes a Playlist Track object, and finds or creates an ArchiveTrack
     and adds a play to it against the user linked to the playlist track
     """
-    track = get_or_create_track(track)
-    play = Play.objects.create(track=track, user=track.user)
+    archive_track = get_or_create_track(track)
+    play = Play.objects.create(track=archive_track, user=track.user)

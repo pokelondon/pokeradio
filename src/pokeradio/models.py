@@ -63,7 +63,6 @@ class Track(models.Model):
         """
         self.played = True
         self.save()
-        track_played.send_robust(sender=self)
 
 
 @receiver(post_save, sender=Track)
