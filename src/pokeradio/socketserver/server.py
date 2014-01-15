@@ -49,12 +49,15 @@ class PlayerConnection(SocketConnection):
             payload = json.dumps({'id': track.id, 'href': track.href})
             self.emit('mopidy_play_track', payload)
 
+            # Save to archive and count play
+            record_track_play(track)
+
     @event('track_playback_ended')
     def on_track_playback_ended(self, href):
        """ Track complete. Mark it as played in the DB and request the next one
        """
        try:
-           track = Track.objects.get(href=href)
+           track = Track.objects.filter(href=href, played=False)[0]
            track.set_played()
        except Track.DoesNotExist:
            pass
@@ -92,7 +95,13 @@ class AppConnection(SocketConnection):
         instance
         """
         flush_transaction()
-        session_key = request.get_cookie('sessionid').value
+        try:
+            cookie = request.get_cookie('sessionid')
+            session_key = cookie.value
+        except AttributeError:
+            print 'No Cookie found'
+            return False
+
         try:
             session = Session.objects.get(session_key=session_key)
         except Session.DoesNotExist:
