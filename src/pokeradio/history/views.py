@@ -1,11 +1,13 @@
 from datetime import datetime
 
 from django.conf import settings
-from django.views.generic import TemplateView, RedirectView, WeekArchiveView
+from django.views.generic import TemplateView, RedirectView
+from django.views.generic.dates import _date_from_string
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 from .models import Play, Artist, ArchiveTrack
+from .patched_generic_views import PatchedWeekArchiveView
 
 class ThisWeek(RedirectView):
     """ Redirect to WeekArchiveView for the current week

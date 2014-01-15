@@ -12,7 +12,7 @@ urlpatterns = patterns('')
 
 urls = [
     url(r'^$', 'week_index', name='week_index'),
-    url(r'^statement/(?P<year>\d{4})/(?P<week>\d+)/$', 'play_archive_week',
+    url(r'^week/(?P<year>\d{4})/(?P<week>\d+)/$', 'play_archive_week',
         name='play_archive_week'),
 ]
 urlpatterns += patterns('pokeradio.history.views', *urls)
