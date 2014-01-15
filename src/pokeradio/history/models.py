@@ -18,6 +18,7 @@ class Base(models.Model):
 
 class Artist(Base):
     name = models.CharField(max_length=255)
+    spotify_artist_href = models.CharField(max_length=255, unique=True)
 
     def __unicode__(self):
         return self.name
@@ -25,9 +26,9 @@ class Artist(Base):
 
 class ArchiveTrack(Base):
     name = models.CharField(max_length=255)
-    spotify_href = models.CharField(max_length=255)
-    spotify_album_href = models.CharField(max_length=255)
+    spotify_href = models.CharField(max_length=255, unique=True)
     length = models.FloatField(null=True)
+    spotify_album_href = models.CharField(max_length=255)
 
     artist = models.ForeignKey(Artist)
 
