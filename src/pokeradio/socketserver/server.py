@@ -86,20 +86,28 @@ class AppConnection(SocketConnection):
         self.client.subscribe('player_update')
         self.client.subscribe('deleted')
 
-    def on_open(self, request):
-        """ Websocket connection opened with the browser
+    def _get_user_id(self, request):
+        """ Get the user ID from the session and save it to the connection
+        instance
         """
+        flush_transaction()
         session_key = request.get_cookie('sessionid').value
         try:
             session = Session.objects.get(session_key=session_key)
         except Session.DoesNotExist:
-            print 'Session expired'
+            print 'Session expired', session_key
+            return False
         else:
             user_id = session.get_decoded().get('_auth_user_id')
             self.user_id = user_id
             self.user = User.objects.get(pk=self.user_id)
             print 'Webapp connected:', self.user
-            self.client.listen(self.on_redis_message)
+
+    def on_open(self, request):
+        """ Websocket connection opened with the browser
+        """
+        self._get_user_id(request)
+        self.client.listen(self.on_redis_message)
 
     def on_redis_message(self, data):
         """ Player events, emit them back down to the browsers
@@ -194,7 +202,7 @@ class AppConnection(SocketConnection):
 
 class RouterConnection(SocketConnection):
     __endpoints__ = {'/player': PlayerConnection,
-                     '/app':AppConnection}
+                     '/app': AppConnection}
 
 
 Router = router.TornadioRouter(RouterConnection, {'websockets_check': True})
