@@ -112,11 +112,14 @@ class AppConnection(SocketConnection):
     def on_redis_message(self, data):
         """ Player events, emit them back down to the browsers
         """
-        if data.channel == 'player_update':
-            self.emit('playlist:progress', data.body)
         if data.channel == 'deleted':
             self.emit('playlist:deleted', data.body);
-        else:
+
+        if data.channel == 'player_update':
+            if 'percentage' in data.body:
+                self.emit('playlist:progress', data.body)
+
+        if data.channel == 'playlist':
             self.emit('playlist:update', data.body)
 
     @event('add_track')
