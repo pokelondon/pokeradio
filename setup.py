@@ -14,7 +14,7 @@ def read(fname):
 
 # Installation Dependencies
 install_dependencies = [
-    'Django >= 1.5, < 1.6',
+    'Django >= 1.6, < 1.7',
     'MySQL-python == 1.2.4',
     'South == 0.7.6',
     'bootstrap-admin == 0.1.9',
