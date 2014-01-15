@@ -21,17 +21,20 @@ class ThisWeek(RedirectView):
 week_index = login_required(ThisWeek.as_view())
 
 
-class WeekView(WeekArchiveView):
+class WeekView(PatchedWeekArchiveView):
     """ Allows the current user to view their credits and history of
     transactions
     """
     template_name = 'history/play_archive_week.html'
     date_field = 'created'
+    fk_date_field = 'play__created' # from patched base class
     allow_empty = True
     make_object_list = True
     allow_future = False
+    model = ArchiveTrack
 
     def get_queryset(self):
-        return ArchiveTrack.objects.select_related().all()
+        return ArchiveTrack.objects.plays()
+
 
 play_archive_week = login_required(WeekView.as_view())

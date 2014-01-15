@@ -20,8 +20,9 @@
     {% for object in object_list %}
     <div class="transaction">
         <p>
-        <span class="transaction-value">{{ object.name }}</span>
-            <span class="transaction-action">{{ object.artist }}</span>
+        <span class="transaction-value">{{ object.plays }}</span>
+            <span class="transaction-action">{{ object.name }}</span>
+            <span class="transaction-track">{{ object.artist }}</span>
         </p>
     </div>
     {% endfor %}
