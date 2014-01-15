@@ -19,7 +19,7 @@
         <p>
         <span class="transaction-value">{{ object.value }}</span>
             <span class="transaction-action">{{ object.action }}</span>
-            <span class="transaction-track">{{ object.track_name }}</span>
+            {% if object.track_name %}<span class="transaction-track">{{ object.track_name }}</span>{% endif %}
             <small class="transaction-date">{{ object.created }}</small>
         </p>
     </div>

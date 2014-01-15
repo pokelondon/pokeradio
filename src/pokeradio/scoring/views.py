@@ -19,7 +19,8 @@ class ThisWeek(RedirectView):
         return reverse('scoring:statement_week',
                 kwargs={'year': now.year, 'week': now.strftime('%U')})
 
-statement_index = ThisWeek.as_view()
+statement_index = login_required(ThisWeek.as_view())
+
 
 class StatementView(WeekArchiveView):
     """ Allows the current user to view their credits and history of
