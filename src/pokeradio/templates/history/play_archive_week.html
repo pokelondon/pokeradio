@@ -16,14 +16,12 @@
 <a href="{% url 'history:play_archive_week' next_week|date:'Y' next_week|date:'W' %}" class="btn primary">Next Week &rarr;</a>
 {% endif %}
 
-<div class="transaction-list">
+<div class="Listing-list">
     {% for object in object_list %}
-    <div class="transaction">
-        <p>
-        <span class="transaction-value">{{ object.plays }}</span>
-            <span class="transaction-action">{{ object.name }}</span>
-            <span class="transaction-track">{{ object.artist }}</span>
-        </p>
+    <div class="Listing">
+        <span class="Listing-number">{{ object.plays }}</span>
+        <span class="Listing-title">{{ object.name }}</span>
+        <span class="Listing-sub">{{ object.artist }}</span>
     </div>
     {% endfor %}
 </div>

@@ -16,15 +16,13 @@
 <a href="{% url 'scoring:statement_week' next_week|date:'Y' next_week|date:'W' %}" class="btn primary">Next Week &rarr;</a>
 {% endif %}
 
-<div class="transaction-list">
+<div class="Listing-list">
     {% for object in object_list %}
-    <div class="transaction{% if object.value < 0 %} transaction--minus{% elif object.value > 0 %} transaction--plus{% endif %}">
-        <p>
-        <span class="transaction-value">{{ object.value }}</span>
-            <span class="transaction-action">{{ object.action }}</span>
-            {% if object.track_name %}<span class="transaction-track">{{ object.track_name }}</span>{% endif %}
-            <small class="transaction-date">{{ object.created }}</small>
-        </p>
+    <div class="Listing{% if object.value < 0 %} Listing--minus{% elif object.value > 0 %} Listing--plus{% endif %}">
+        <span class="Listing-number">{{ object.value }}</span>
+        <h3 class="Listing-title">{{ object.action }}</h3>
+        {% if object.track_name %}<span class="Listing-sub">{{ object.track_name }}</span>{% endif %}
+        <small class="Listing-date">{{ object.created }}</small>
     </div>
     {% endfor %}
 </div>
