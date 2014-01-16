@@ -43,10 +43,10 @@ define([
              */
             playlistUpdate: function(data){
                 // Single track is passed so we check if its a new track or played track.
-                data = $.parseJSON(data);
-                console.log(data);
+                var data = $.parseJSON(data);
                 if(data.played){
-                    this.set(data);
+                    var item = this.findWhere({id: parseInt(data.id)});
+                    item.set('played', true);
                 }else {
                     this.add(data);
                 }

@@ -30,6 +30,7 @@ define(['jquery',
                         'name': this.attributes.name,
                         'href': this.get('href'),
                         'artist': this.get('artists')[0].name,
+                        'artist_href': this.get('artists')[0].href,
                         'length': this.get('length'),
                         'album': {
                             'href': this.get('album').href,
@@ -37,7 +38,6 @@ define(['jquery',
                     };
                     socket.emit('add_track', JSON.stringify(track_payload));
                     this.set('selected', !this.get('selected'));
-                    // TODO Send socket message to remove from queue if re-clicked
                 },
 
                 /**

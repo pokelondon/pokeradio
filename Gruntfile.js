@@ -28,7 +28,9 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            files: ["src/pokeradio/public/less/*.less", "src/pokeradio/public/less/bootstrap/*.less"],
+            files: ["src/pokeradio/public/less/*.less",
+                    "src/pokeradio/public/less/*/*.less",
+                    "src/pokeradio/public/less/bootstrap/*.less"],
             tasks: ['less:development'],
             css: {
                 files: ["src/pokeradio/public/css/*.css"],

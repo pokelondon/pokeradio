@@ -1634,6 +1634,88 @@ body {
   background-color: #00c6ff;
   color: #fff;
 }
+.btn:hover {
+  color: #fff;
+  box-shadow: 0 2px 3px #ccc;
+}
+.btn:active {
+  box-shadow: inset 0 2px 2px #009ecc;
+  border-color: #00b2e6;
+}
+.btn.btn-danger {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.btn.btn-danger:hover,
+.btn.btn-danger:focus,
+.btn.btn-danger:active,
+.btn.btn-danger.active,
+.open .dropdown-toggle.btn.btn-danger {
+  color: #ffffff;
+  background-color: #d2322d;
+  border-color: #ac2925;
+}
+.btn.btn-danger:active,
+.btn.btn-danger.active,
+.open .dropdown-toggle.btn.btn-danger {
+  background-image: none;
+}
+.btn.btn-danger.disabled,
+.btn.btn-danger[disabled],
+fieldset[disabled] .btn.btn-danger,
+.btn.btn-danger.disabled:hover,
+.btn.btn-danger[disabled]:hover,
+fieldset[disabled] .btn.btn-danger:hover,
+.btn.btn-danger.disabled:focus,
+.btn.btn-danger[disabled]:focus,
+fieldset[disabled] .btn.btn-danger:focus,
+.btn.btn-danger.disabled:active,
+.btn.btn-danger[disabled]:active,
+fieldset[disabled] .btn.btn-danger:active,
+.btn.btn-danger.disabled.active,
+.btn.btn-danger[disabled].active,
+fieldset[disabled] .btn.btn-danger.active {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.btn.voted {
+  color: #ffffff;
+  background-color: #f5007f;
+  border-color: #dc0072;
+}
+.btn.voted:hover,
+.btn.voted:focus,
+.btn.voted:active,
+.btn.voted.active,
+.open .dropdown-toggle.btn.voted {
+  color: #ffffff;
+  background-color: #cc006a;
+  border-color: #9e0052;
+}
+.btn.voted:active,
+.btn.voted.active,
+.open .dropdown-toggle.btn.voted {
+  background-image: none;
+}
+.btn.voted.disabled,
+.btn.voted[disabled],
+fieldset[disabled] .btn.voted,
+.btn.voted.disabled:hover,
+.btn.voted[disabled]:hover,
+fieldset[disabled] .btn.voted:hover,
+.btn.voted.disabled:focus,
+.btn.voted[disabled]:focus,
+fieldset[disabled] .btn.voted:focus,
+.btn.voted.disabled:active,
+.btn.voted[disabled]:active,
+fieldset[disabled] .btn.voted:active,
+.btn.voted.disabled.active,
+.btn.voted[disabled].active,
+fieldset[disabled] .btn.voted.active {
+  background-color: #f5007f;
+  border-color: #dc0072;
+}
 .u-btn--large {
   width: 100%;
   padding: 0;
@@ -1822,6 +1904,9 @@ progress::-webkit-progress-bar {
   background: rgba(235, 237, 229, 0.95);
   overflow: auto;
 }
+.Search-wrapper {
+  background: #00c6ff;
+}
 .Search-lookup,
 .Search-exit {
   display: inline-block;
@@ -1847,6 +1932,16 @@ progress::-webkit-progress-bar {
   width: 90%;
   display: inline-block;
 }
+.btn-search {
+  padding: 15px 20px;
+  width: 92px;
+  background: #fff;
+  vertical-align: top;
+  color: #00c6ff;
+}
+.btn-search:hover {
+  color: #00c6ff;
+}
 .Search-input {
   width: 100%;
   margin: 0 0 5px;
@@ -1854,9 +1949,13 @@ progress::-webkit-progress-bar {
   border: none;
   box-shadow: none;
   outline: none;
-  line-height: 20px;
-  color: #000;
-  font-size: 28px;
+  color: #fff;
+  line-height: 50px;
+  vertical-align: middle;
+  font-size: 38px;
+}
+.Search-input::-webkit-input-placeholder {
+  color: #99e8ff;
 }
 .Search-results-header {
   display: none;
@@ -1899,4 +1998,49 @@ progress::-webkit-progress-bar {
 .Search-item-secondaryText {
   font-size: 12px;
   color: #b8bac6;
+}
+.Listing-list {
+  padding: 10px 0 20px;
+}
+.Listing {
+  padding: 10px 20px 10px 75px;
+  margin: 0;
+  overflow: hidden;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+.Listing-number {
+  padding: 0 10px 0 0;
+  margin: 0 0 0 -55px;
+  width: 50px;
+  float: left;
+  font-size: 3em;
+  font-family: Georgia;
+  font-style: italic;
+  line-height: 1em;
+  text-align: center;
+}
+.Listing--minus .Listing-number {
+  color: #f5007f;
+}
+.Listing--plus .Listing-number {
+  color: #00c6ff;
+}
+.Listing-title {
+  padding: 2px 0 0;
+  margin: 0;
+  display: block;
+  font-size: 1em;
+  font-weight: bold;
+}
+.Listing-date,
+.Listing-sub {
+  padding: 0;
+  margin: 4px 0 0;
+  float: left;
+  color: #888;
+  font-size: 0.8em;
+}
+.Listing-date {
+  float: right;
 }

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<div class="row">
+    <div class="col-6">
+        <h2>Tunes</h2>
+        <a href="{% url 'history:week_index' 'me' 'tracks' %}" class="btn">My top tracks</a>
+        <a href="{% url 'history:week_index' 'all' 'tracks' %}" class="btn">Everyone's top tracks</a>
+        <h2>Artists</h2>
+        <a href="{% url 'history:week_index' 'me' 'artists' %}" class="btn">My top artists</a>
+        <a href="{% url 'history:week_index' 'all' 'artists' %}" class="btn">Everyone's top artists</a>
+    </div>
+    <div class="col-6">
+        <h2>Players</h2>
+        <a href="{% url 'scoring:statement' %}" class="btn">My Credits</a>
+        <a href="#na" class="btn disabled">Players</a>
+    </div>
+</div>
+{% endblock %}

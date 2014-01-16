@@ -10,18 +10,21 @@ from django.conf import settings
 
 from pokeradio.scoring.models import Credit, Point
 
+from pokeradio.signals import track_played
+
 
 class Track(models.Model):
     """ A track in a playlist
     """
     name = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
-    href = models.CharField(max_length=255)
+    href = models.CharField(max_length=255) # TODO, maybe index this
     timestamp = models.DateTimeField(auto_now_add=True)
     played = models.BooleanField(default=False)
     user = models.ForeignKey(User)
     length = models.FloatField(null=True)
     album_href = models.CharField(max_length=255)
+    artist_href = models.CharField(max_length=255)
 
     class Meta:
         ordering = ['timestamp']

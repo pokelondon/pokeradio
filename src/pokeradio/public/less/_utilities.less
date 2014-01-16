@@ -49,6 +49,20 @@
 .btn{
     background-color: #00c6ff;
     color: #fff;
+    &:hover {
+        color: #fff;
+        box-shadow: 0 2px 3px #ccc;
+    }
+    &:active {
+        box-shadow: inset 0 2px 2px darken(#00c6ff, 10);
+        border-color: darken(#00c6ff, 5);
+    }
+    &.btn-danger {
+        .button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+    }
+    &.voted {
+        .button-variant(#fff; @poke-pink; darken(@poke-pink, 5));
+    }
 }
 .u-btn--large {
     width: 100%;
@@ -64,7 +78,7 @@
 .u-icon--search{
    .u-iconbase();
     background: url('../img/search-icon.png') no-repeat;
-    
+
 }
 
 .u-icon--exit {

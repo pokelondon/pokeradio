@@ -44,6 +44,7 @@ define(['jquery',
                         self.percentage_interpolated += increment_per_period;
                         if(self.percentage_interpolated > 100) {
                             self.percentage_interpolated = 0;
+                            clearInterval(self.interval);
                         }
                     }, self.period);
                 }

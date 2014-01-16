@@ -27,6 +27,7 @@ urls = [
     url(r'^logout/$', 'pokeradio.accounts.views.logout_view', name='logout'),
     (r'^admin/', include(admin.site.urls)),
     (r'^scoring/', include('pokeradio.scoring.urls', namespace='scoring')),
+    (r'^history/', include('pokeradio.history.urls', namespace='history')),
     (r'^', include('social.apps.django_app.urls', namespace='social')),
     (r'^', include('pokeradio.albumart.urls'))
 ]
