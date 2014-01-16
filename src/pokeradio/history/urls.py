@@ -12,9 +12,18 @@ urlpatterns = patterns('')
 
 urls = [
     url(r'^$', 'index', name='index'),
-    url(r'^(?P<who>(all|me))/week$', 'week_index', name='week_index'),
-    url(r'^(?P<who>(all|me))/week/(?P<year>\d{4})/(?P<week>\d+)/$',
-        'play_archive_week', name='play_archive_week'),
+
+    # Redirects to the archive for the current week
+    url(r'^(?P<who>(all|me))/(?P<archive>(artists|tracks))$', 'week_index',
+        name='week_index'),
+
+    # Weekly track archive
+    url(r'^(?P<who>(all|me))/tracks/(?P<year>\d{4})/(?P<week>\d+)/$',
+        'play_archive_tracks', name='play_archive_tracks'),
+
+    # Weekly artist archive
+    url(r'^(?P<who>(all|me))/artists/(?P<year>\d{4})/(?P<week>\d+)/$',
+        'play_archive_artists', name='play_archive_artists'),
 ]
 urlpatterns += patterns('pokeradio.history.views', *urls)
 
