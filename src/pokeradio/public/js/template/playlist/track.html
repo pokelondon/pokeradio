@@ -12,9 +12,8 @@
             <img class="Playlist-item-profileImage media-object" src="/profilepictures/<%= user.id %>.jpg">
             <div class="Playlist-item-userFullname"><%= user.full_name %></div>
         </div>
-        <% if (!played){ %>
         <div class="Playlist-item-trackActions">
-            <% if (isMine && !isPlaying){ %>
+            <% if (isMine){ %>
                 <button class="btn btn-remove-track btn-danger">✖</button>
             <% } %>
             <% if (!isMine){ %>
@@ -22,6 +21,5 @@
             <button class="btn btn-dislike">⬇</button>
             <% } %>
         </div>
-        <% } %>
     </div>
 </div>

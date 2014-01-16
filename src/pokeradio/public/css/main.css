@@ -1879,6 +1879,10 @@ fieldset[disabled] .btn.voted.active {
   width: 22px;
   height: 22px;
 }
+.played .btn-remove-track,
+.played .Playlist-item-album-art {
+  display: none;
+}
 .progress-bar {
   width: auto;
   float: none;
