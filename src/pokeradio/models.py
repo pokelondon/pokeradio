@@ -10,8 +10,6 @@ from django.conf import settings
 
 from pokeradio.scoring.models import Credit, Point
 
-from pokeradio.signals import track_played
-
 
 class Track(models.Model):
     """ A track in a playlist
