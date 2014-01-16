@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 
 {% block container %}
-<div class="box">
-    <h1>Leaderboard</h1>
+<div class="row">
+    <div class="col-6">
+        <h2>Tunes</h2>
+        <a href="{% url 'history:week_index' 'me' %}" class="btn">My top tracks</a>
+        <a href="{% url 'history:week_index' 'all' %}" class="btn">Everyone's top tracks</a>
+    </div>
+    <div class="col-6">
+        <h2>Players</h2>
+        <a href="{% url 'scoring:statement' %}" class="btn">My Credits</a>
+        <a href="#na" class="btn disabled">Players</a>
+    </div>
 </div>
 {% endblock %}

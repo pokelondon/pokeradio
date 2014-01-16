@@ -25,11 +25,11 @@
                     <img class="Header-userControls-image" src="/profilepictures/{{ request.user.id }}.jpg"/>
                     <div class="Header-userControls-info">
                         <span class="bold">{{ request.user.first_name }}</span>
-                        <div><a href="{% url 'logout' %}" >Logout</a> | <a href="{% url 'scoring:statement' %}" >Credits</a></div>
+                        <div><a href="{% url 'logout' %}" >Logout</a> | <a href="{% url 'history:index' %}">Dashboard</a></div>
                     </div>
                 </div>
                 {% endif %}
-            </div>    
+            </div>
         </Header>
             <div class="container">
             {% block container %}

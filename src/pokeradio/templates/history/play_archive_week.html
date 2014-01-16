@@ -5,16 +5,24 @@
 
 {% block container %}
 <div class="box">
-    <h1>Plays</h1>
+    {% if 'me' == who %}
+    <h1>My Top Tracks
+        <small> | <a href="{% url 'history:week_index' 'all' %}" class="">View all</a></small>
+    </h1>
+    {% else %}
+    <h1>Top Tracks
+        <small> | <a href="{% url 'history:week_index' 'me' %}" class="">View mine</a></small>
+    </h1>
+    {% endif %}
     <h3>Week Commencing: {{ week }}</h3>
 </div>
-
 {% if previous_week %}
-<a href="{% url 'history:play_archive_week' previous_week|date:'Y' previous_week|date:'W' %}" class="btn secondary">&larr; Previous Week</a>
+<a href="{% url 'history:play_archive_week' year=previous_week|date:'Y' week=previous_week|date:'W' who=who %}" class="btn secondary">&larr; Previous Week</a>
 {% endif %}
 {% if next_week %}
-<a href="{% url 'history:play_archive_week' next_week|date:'Y' next_week|date:'W' %}" class="btn primary">Next Week &rarr;</a>
+<a href="{% url 'history:play_archive_week' year=next_week|date:'Y' week=next_week|date:'W' who=who %}" class="btn primary">Next Week &rarr;</a>
 {% endif %}
+<a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
 
 <div class="Listing-list">
     {% for object in object_list %}

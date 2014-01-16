@@ -15,6 +15,7 @@
 {% if next_week %}
 <a href="{% url 'scoring:statement_week' next_week|date:'Y' next_week|date:'W' %}" class="btn primary">Next Week &rarr;</a>
 {% endif %}
+<a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
 
 <div class="Listing-list">
     {% for object in object_list %}

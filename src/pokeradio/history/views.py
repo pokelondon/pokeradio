@@ -15,10 +15,11 @@ class ThisWeek(RedirectView):
 
     permanent = False
 
-    def get_redirect_url(self, **kwargs):
+    def get_redirect_url(self, who='all', **kwargs):
         now = datetime.now()
         return reverse('history:play_archive_week',
-                kwargs={'year': now.year, 'week': now.strftime('%U')})
+                kwargs={'year': now.year, 'week': now.strftime('%U'),
+                        'who': who})
 
 week_index = login_required(ThisWeek.as_view())
 
@@ -35,8 +36,28 @@ class WeekView(PatchedWeekArchiveView):
     allow_future = False
     model = ArchiveTrack
 
+    ALL = 'all'
+    ME = 'me'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.who = kwargs.get('who', 'all')
+        return super(WeekView, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
-        return ArchiveTrack.objects.plays()
+        if self.ALL == self.who:
+            return ArchiveTrack.objects.plays()
+        else:
+            return ArchiveTrack.objects.plays().filter(
+                    play__user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        """ Additional context data """
+        c = super(WeekView, self).get_context_data(**kwargs)
+        c['who'] = self.who
+        return c
 
 
 play_archive_week = login_required(WeekView.as_view())
+
+index = login_required(
+        TemplateView.as_view(template_name='history/index.html'))
