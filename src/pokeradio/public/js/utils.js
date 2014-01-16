@@ -18,18 +18,7 @@ define(
 			return minutes + ':' + seconds;
 		},
 		toggleFade: function(el){
-			if ( el.css('display') == 'none' ) {
-				el.show();
-				setTimeout(function(){
-					el.removeClass('fadeout');
-				},10);
-				
-			}else {
-				el.one('webkitTransitionEnd',function(){
-					el.hide();
-				});
-				el.addClass('fadeout');
-			}
+			el.fadeToggle();
 		},
 		onPageBottom: function(e){
 			h = $('#addTrackView').scrollTop() + $('#addTrackView').height() - $('.add-track-view-wrapper').height();

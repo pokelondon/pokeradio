@@ -1,12 +1,12 @@
-    <div class="media-body">
-        <div class="row search-track-details">
-            <div class="preview"></div>
-            <div class="col-md-4 col-offset-1 track-main">
+    <div class="media-body Search-item-body">
+        <div class="row Search-item-details">
+            <div class="Search-item-details-preview js-search-item-details-preview"></div>
+            <div class="col-md-4 col-offset-1 Search-item-details-track">
                 <span><%= name %></span><br />
-                <span class="artist"><%= artists[0].name %></span>
+                <span class="Search-item-secondaryText"><%= artists[0].name %></span>
             </div>
-            <div class="add-icon-wrap col-md-2 pull-right"><span class="minus-icon"></span> <button class="btn btn-preview">Preview</button></div>
-            <div class="duration col-md-1 pull-right"><%= _(length).convertToMinutes() %></div>
-            <div class="album col-md-3 pull-right"><%= album.name %> <span>Released: <%= album.released %></span></div>
+             <div class="Search-item-details-actions col-md-2 pull-right"><span class="u-icon--plus js-queue-track pull-right"></span> <button class="btn btn-preview">Preview</button></div>
+            <div class="Search-item-details-duration col-md-1 pull-right"><%= _(length).convertToMinutes() %></div>
+            <div class="Search-item-secondaryText col-md-3 pull-right"><%= album.name %> <span>Released: <%= album.released %></span></div>
         </div>
     </div>
