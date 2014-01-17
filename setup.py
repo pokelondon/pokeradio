@@ -14,7 +14,7 @@ def read(fname):
 
 # Installation Dependencies
 install_dependencies = [
-    'Django >= 1.5, < 1.6',
+    'Django >= 1.6, < 1.7',
     'MySQL-python == 1.2.4',
     'South == 0.7.6',
     'bootstrap-admin == 0.1.9',
@@ -31,10 +31,9 @@ install_dependencies = [
     'tornado == 3.1',
     'simplejson == 3.3.1',
     'brukva ==  0.0.1',
+    'musicbrainzngs == 0.4',
+    'Pillow == 2.3.0',
     'requests==2.0.0',
-    'musicbrainzngs==0.4',
-    'PIL==1.1.7',
-
 ]
 
 # Test Dependencies

@@ -1,80 +1,107 @@
 define(['jquery',
-		'backbone',
-		'underscore',
-		'collections/spotify-tracks',
-		'iobind',
-		'text!template/spotify/list.html',
-		'utils'
-		],
-		function($,
-				Backbone,
-				_,
-				SpotifyTracks,
-				ioBind,
-				tl_template,
-				utils) {
+        'backbone',
+        'underscore',
+        'collections/spotify-tracks',
+        'iobind',
+        'utils',
+        'views/spotify/track'
+        ],
+        function($, Backbone,_ , spotifyTracks, ioBind, utils, TrackView){
+            var SearchView = Backbone.View.extend({
+                el: $('#addTrackView'),
+                searchKey: 191, // '/' search key
+                events:{
+                    'submit #searchForm': 'search',
+                    'click': 'closeView',
+                    'click .Search-wrapper form, .Search-items': 'catchEvent'
+                },
 
-	var searchView = Backbone.View.extend({
-		el: $('#addTrackView'),
-		initialize: function(){
-			_.bindAll(this, 'renderNextpage');
-			this.spotifyTracks = new SpotifyTracks();
-			utils.on('pageBottom', this.renderNextpage);
-			
-		},
-		events:{
-			'submit #searchForm': 'render',
-			'click .track-listing-container li': 'addTrack',
-			'click .exit-icon': 'closeView'
-		},
-		render: function(e){
-			this.query = {q: $('#searchInput').val(), page: 1};
-			this.writeToPage(false);
-			return false;
-		},
-		renderNextpage: function(){
-			var info = this.spotifyTracks.info;
-			info.pageTotal = Math.ceil(info.num_results/info.limit);
-			if (info.page < info.pageTotal){
-				this.query.page++;
-				this.writeToPage(true);
+                initialize: function(){
+                    this.collection = spotifyTracks;
+                    this.collection.on('results', this.render, this);
 
-			}
-			console.log(info);
+                    this.$container = this.$('.js-search-results-wrapper');
+                    this.$list = this.$('.js-search-items');
+                    this.$input = this.$('#searchInput');
 
-		},
-		writeToPage: function(append){
+                    // Click event for open button,
+                    // not a child of this.$el so dont delegate events
+                    $('.add-track').on('click', _(this.openView).bind(this));
 
-			this.spotifyTracks.fetch({
-				data : $.param(this.query),
-				success:function(data){
-					var template = _.template(tl_template, {metadata:data.models, append:append});
-					if(append){
-						$('#mediaListHits').append(template);
-					}else{
-						$('.track-listing-container').html(template);
-					}
-					
-				}
-			});
-		},
-		addTrack:function(e){
-			if($(e.currentTarget).hasClass('selected')){
-				alert('You have already added this track');
-				return;
-			}
-			$(e.currentTarget).addClass('selected');
-			var track_payload = this.spotifyTracks.getTrack($(e.currentTarget).data('href'));
-			$(e.currentTarget).find('.add-icon-wrap').html('<span class="minus-icon"></span>');
-			socket.emit('add_track',JSON.stringify(track_payload));
-		},
-		closeView: function(){
-			$('body').removeClass('modal-open');
-			utils.toggleFade($('#addTrackView'));
-			$(this.el).unbind('scroll',utils.onPageBottom);
-		},
-	});
+                    this.on('open', this.focusInput, this);
+                    this.bindKeys();
+                },
 
-	return searchView;
+                /**
+                 * Repopulate listign with new track view instances when the
+                 * collection changes
+                 */
+                render: function() {
+                    var self = this;
+                    this.$list.html('');
+                    if(this.collection.length) {
+                        this.$container.addClass('has-results');
+                    } else {
+                        this.$container.removeClass('has-results');
+                    }
+                    // Populate items
+                    _(this.collection.models).each(function(model) {
+                        var view = new TrackView(model);
+                        self.$list.append(view.render().el);
+                    });
+                    return this;
+                },
 
-});
+                /**
+                 * DO search query
+                 */
+                search: function(evt){
+                    this.collection.search($('#searchInput').val());
+                    evt.preventDefault();
+                },
+
+                closeView: function(){
+                    this.$el.fadeOut();
+                    this.trigger('close');
+                },
+
+                openView: function(){
+                    this.$el.fadeIn();
+                    this.trigger('open');
+                },
+
+                /**
+                 * When inner parts of the view are clicked,
+                 * dont let the event get back to the container,
+                 * which would close the view
+                 */
+                catchEvent: function(evt) {
+                    evt.stopPropagation();
+                },
+
+                focusInput: function(evt) {
+                    this.$input.focus();
+                },
+
+                /**
+                 * Listen to window keyup events to open the view if
+                 * the search key is pressed
+                 */
+                windowKeyup: function(evt) {
+                    if(this.searchKey === evt.keyCode) {
+                        this.openView();
+                    }
+                    if(27 === evt.keyCode) {
+                        this.closeView();
+                    }
+                },
+
+                /**
+                 * Bind search key to open this view.
+                 */
+                bindKeys: function() {
+                    $(window).on('keyup', _(this.windowKeyup).bind(this));
+                }
+            });
+            return SearchView;
+        });

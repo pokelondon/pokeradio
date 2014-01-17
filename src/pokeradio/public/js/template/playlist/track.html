@@ -1,0 +1,25 @@
+<div class="Playlist-item-wrapper media-wrapper">
+    <% if (!played){ %>
+    <img class="Playlist-item-album-art media-object" src="/albumart/<%= album_href.split(':')[2] %>.jpg">
+    <% } %>
+    <div class="Playlist-item-body media-body">
+        <div class="Playlist-item-track">
+            <div class="Playlist-item-name"><%= name %></div>
+            <div class="Playlist-item-artist"><%= artist %></div>
+        </div>
+        <div class="Playlist-item-duration"><%= _(length).convertToMinutes()%></div>
+        <div class="Playlist-item-user">
+            <img class="Playlist-item-profileImage media-object" src="/profilepictures/<%= user.id %>.jpg">
+            <div class="Playlist-item-userFullname"><%= user.full_name %></div>
+        </div>
+        <div class="Playlist-item-trackActions">
+            <% if (isMine){ %>
+                <button class="btn btn-remove-track btn-danger">✖</button>
+            <% } %>
+            <% if (!isMine){ %>
+            <button class="btn btn-like">⬆</button>
+            <button class="btn btn-dislike">⬇</button>
+            <% } %>
+        </div>
+    </div>
+</div>

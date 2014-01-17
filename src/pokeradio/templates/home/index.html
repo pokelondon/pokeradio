@@ -1,59 +1,55 @@
 {% extends 'base.html' %}
 {% block scripts %}
-<script src="{{ STATIC_URL }}js/lib/socket.io/socket.io.js"></script>
-<script>
-
-var socket = io.connect('{{ socketio_client_url }}');
-
-</script>
+        <script src="{{ STATIC_URL }}js/lib/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('{{ socketio_client_url }}');
+            var PRAD = PRAD || {};
+            PRAD.user_id = {{ request.user.id }};
+        </script>
 {% endblock %}
 
 
 {% block container %}
-	<div class="row">
-		<div class="col-md-12">
-		<a class='btn add-track'>
-			<span class="search-icon"></span><span>Add track</span>
-		</a>
-		</div>	
-		<div class="col-md-12 playlist-wrapper">
-				<ul id="playlist" class="media-list">
-					<!-- Backbone template js/template/playlist.html
-						Backbone View js/views/playlist/playist/view.js-->
-				</ul>
-			</div>
-		</div>	
-	</div>
-
-	<div id="addTrackView" class='fadeout' style='display:none'>
-		<div class='add-track-view-wrapper'>
-			<div class="poke-radio-header">
-	            <div class="container">
-	                <div class="logo"></div>
-	            </div>    
-	        </div>
-			<div class="container">
-				<div class="btn exit">
-					<div class='btn-wrapper'>
-						<div class="row">
-							<div class="col-md-6 addtrack-search"><span class="search-icon"></span></div>
-							<div class="col-md-6 addtrack-exit"><span class="exit-icon"></span></div>
-						</div>
-					</div>
-				</div>
-				<form role="form" id="searchForm" class="form-inline">
-					<div class="form-group">
-						<label class="sr-only" for="searchInput">Search</label>
-						<input type='search' autocomplete="off" name="search" class="form-control" id="searchInput" placeholder="Search">
-					</div>
-				<input type="submit" id="doSearch" class="pull-right btn" value="Go" class="btn btn-default"/>
-				</form>	
-				<div class="track-listing-container">
-				</div>
-				
-			</div>
-		</div>	
+<div class="row">
+    <div class="col-md-12">
+        <a class='btn add-track u-btn--large'>
+            <span class="u-icon--search"></span><span>Add track</span>
+        </a>
+    </div>
+    <progress class="progress-bar" value="0" max="100"></progress>
+    <section class="col-md-12 Playlist">
+        <ul id="playlist" class="Playlist-items media-list">
+            <!-- Backbone template js/template/playlist.html
+                        Backbone View js/views/playlist/playist/view.js-->
+        </ul>
+    </section>
 </div>
 
-	
+<div id="addTrackView" class='Search' style="display: none;">
+    <div class='Search-wrapper'>
+        <header class="Header Header--noBg">
+            <div class="container">
+                <div class="Header-logo"></div>
+            </div>
+        </header>
+        <div class="container">
+            <form role="form" id="searchForm" class="form-inline Search-form">
+                <div class="Search-input-wrapper">
+                    <input type='search' autocomplete="off" name="search" class="Search-input" id="searchInput" placeholder="Search">
+                </div>
+                <input type="submit" id="doSearch" class="btn btn-search" value="Go" class="btn btn-default"/>
+            </form>
+            <div class="Search-results-wrapper js-search-results-wrapper">
+                <header class="Search-results-header">
+                    <div class="row">
+                        <div class="col-md-12">Tracks</div>
+                    </header>
+                </div>
+                <ul class="Search-items js-search-items"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock%}

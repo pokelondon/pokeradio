@@ -27,7 +27,6 @@ env.directories = {
     'media':{
         'albumart': None,
         'profilepictures': None
-
     }
 }
 

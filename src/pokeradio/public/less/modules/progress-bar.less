@@ -1,0 +1,27 @@
+.progress-bar {
+    width: auto;
+    float: none;
+    height: 20px;
+    display: block;
+    clear: left;
+    background: #fff;
+    margin: 10px 15px;
+}
+progress {
+    &::-webkit-progress-value {
+        background-color: hotpink;
+    }
+    &::-webkit-progress-bar {
+        background-color: #bbb;
+    }
+}
+
+progress.stopped,
+progress.paused {
+    &::-webkit-progress-value {
+        background-color: #bbb;
+    }
+    &::-webkit-progress-bar {
+        background-color: #ddd;
+    }
+}

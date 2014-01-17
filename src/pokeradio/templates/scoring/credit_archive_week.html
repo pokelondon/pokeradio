@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Credits for {{ week }} | {{ block.super }}{% endblock %}
+
+
+{% block container %}
+<div class="box">
+    <h1>{{ request.user.first_name }}, you have {{ my_credits }} Credits</h1>
+    <h3>Week Commencing: {{ week }}</h3>
+</div>
+
+{% if previous_week %}
+<a href="{% url 'scoring:statement_week' previous_week|date:'Y' previous_week|date:'W' %}" class="btn secondary">&larr; Previous Week</a>
+{% endif %}
+{% if next_week %}
+<a href="{% url 'scoring:statement_week' next_week|date:'Y' next_week|date:'W' %}" class="btn primary">Next Week &rarr;</a>
+{% endif %}
+<a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
+
+<div class="Listing-list">
+    {% for object in object_list %}
+    <div class="Listing{% if object.value < 0 %} Listing--minus{% elif object.value > 0 %} Listing--plus{% endif %}">
+        <span class="Listing-number">{{ object.value }}</span>
+        <h3 class="Listing-title">{{ object.action }}</h3>
+        {% if object.track_name %}<span class="Listing-sub">{{ object.track_name }}</span>{% endif %}
+        <small class="Listing-date">{{ object.created }}</small>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

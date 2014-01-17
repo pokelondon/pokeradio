@@ -5,8 +5,9 @@
 
 {% block container %}
 <div class="row">
-	<div class="col-md-4">
-		<a href="{% url 'social:begin' "google-oauth2" %}"><img src='{{ STATIC_URL }}img/btn-google-signin.png'/></a>
-	</div>
+    <div class="col-sm-4">
+        <h1>Please log in with your POKE Google account</h1>
+        <a href="{% url 'social:begin' "google-oauth2" %}" class="login-button"><img src='{{ STATIC_URL }}img/btn-google-signin.png'/></a>
+    </div>
 </div>
 {% endblock %}

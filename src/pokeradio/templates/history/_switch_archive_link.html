@@ -1,0 +1,5 @@
+{% if 'me' == who %}
+<small> | <a href="{% url pattern year=week|date:'Y' week=week|date:'W' who='all' %}" class="">View all</a></small>
+{% else %}
+<small> | <a href="{% url pattern year=week|date:'Y' week=week|date:'W' who='me' %}" class="">View mine</a></small>
+{% endif %}
