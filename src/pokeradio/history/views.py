@@ -5,6 +5,7 @@ from django.views.generic import TemplateView, RedirectView
 from django.views.generic.dates import _date_from_string
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.db.models import Count, Q
 
 from .models import Play, Artist, ArchiveTrack
 from .patched_generic_views import PatchedWeekArchiveView
@@ -42,24 +43,40 @@ class WeekView(PatchedWeekArchiveView):
         self.who = kwargs.get('who', 'all')
         return super(WeekView, self).dispatch(request, *args, **kwargs)
 
-    def get_queryset(self):
-        if self.ALL == self.who:
-            return self.model.objects.plays()
-        else:
-            return self.get_personalised_queryset()
-
-    def get_personalised_queryset(self):
-        """ Adding user clause to the query on the play foreign key
-        """
-        return self.model.objects.plays().filter(
-                play__user=self.request.user)
-
     def get_context_data(self, **kwargs):
         """ Additional context data """
         c = super(WeekView, self).get_context_data(**kwargs)
         c['who'] = self.who
         c['archive'] = self.archive
+        c['object_list'] = self.annotate_queryset(kwargs['object_list'])
         return c
+
+    def annotate_queryset(self, qs):
+        """ Finally annotate the filtered QS with stuff to count plays
+        just before it gets sent to the view
+        """
+        res = qs.annotate(plays=Count('play')).order_by('-plays')
+        print res.query
+        return res
+
+    def get_dated_queryset(self, ordering=None, **lookup):
+        """
+        Dont add filters to get_queryset, or it will confuse thigns,
+        Date query needs to be part of a Q object.
+        """
+        date_field = self.get_date_field()
+        allow_future = self.get_allow_future()
+        allow_empty = self.get_allow_empty()
+
+        if self.ALL == self.who:
+            qs = self.model.objects.filter(**lookup)
+        else:
+            qs = self.model.objects.filter(Q(play__user=self.request.user) &
+                                           Q(**lookup))
+
+        paginate_by = self.get_paginate_by(qs)
+
+        return qs
 
 
 class WeekViewArtists(WeekView):
@@ -70,12 +87,29 @@ class WeekViewArtists(WeekView):
     model = Artist
     archive = 'artists'
 
-    def get_personalised_queryset(self):
-        """ Adding user clause to the query on the play foreign key
-        Normal query is the same as ancestor class
+    def get_dated_queryset(self, ordering=None, **lookup):
         """
-        return self.model.objects.plays().filter(
-                archivetrack__play__user=self.request.user)
+        Dont add filters to get_queryset, or it will confuse thigns,
+        Date query needs to be part of a Q object.
+        """
+        date_field = self.get_date_field()
+        allow_future = self.get_allow_future()
+        allow_empty = self.get_allow_empty()
+
+        if self.ALL == self.who:
+            qs = self.model.objects.filter(**lookup)
+        else:
+            qs = self.model.objects.filter(
+                    Q(archivetrack__play__user=self.request.user) &
+                    Q(**lookup))
+
+        paginate_by = self.get_paginate_by(qs)
+
+        return qs
+
+    def annotate_queryset(self, qs):
+        return qs.annotate(plays=Count('archivetrack__play'))\
+                .order_by('-plays')
 
 
 # WeekView archive of the top tracks for the logged in user or everyone
