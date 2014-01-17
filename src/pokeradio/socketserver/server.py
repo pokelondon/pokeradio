@@ -5,6 +5,8 @@ import simplejson as json
 from itertools import chain
 from tornadio2 import SocketConnection
 from tornadio2 import event, router, server
+from raven import Client
+from raven.middleware import Sentry
 
 from django.conf import settings
 from django.contrib.sessions.models import Session
@@ -220,7 +222,14 @@ class RouterConnection(SocketConnection):
 
 Router = router.TornadioRouter(RouterConnection, {'websockets_check': True})
 
-app = tornado.web.Application(Router.urls, socket_io_port=settings.SOCKET_PORT)
+tornado_app = tornado.web.Application(Router.urls,
+                                      socket_io_port=settings.SOCKET_PORT)
+
+if hasattr(settings, 'DSN'):
+    client = Client(settings.DSN.replace('udp', 'http'))
+    app = Sentry(tornado_app, client=client)
+else:
+    app = tornado_app
 
 
 if __name__ == "__main__":
