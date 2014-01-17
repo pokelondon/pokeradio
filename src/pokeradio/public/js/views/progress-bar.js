@@ -33,7 +33,14 @@ define(['jquery',
                     var percent_per_ms = 1 / data['length'] * 100;
                     var increment_per_period = percent_per_ms * this.period;
 
+                    this.updatePlayState(data['playback_state']);
+
                     clearInterval(this.interval);
+
+                    // Only continue to animate if the state is playing
+                    if('playing' !== data['playback_state']) {
+                        return;
+                    }
 
                     // Update with real figure
                     this.percentage_interpolated = data.percentage;
@@ -47,6 +54,10 @@ define(['jquery',
                             clearInterval(self.interval);
                         }
                     }, self.period);
+                },
+
+                updatePlayState: function(state) {
+                    this.$el.removeClass('playing, paused, stopped').addClass(state);
                 }
             });
             return View;

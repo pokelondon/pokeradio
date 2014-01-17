@@ -7,10 +7,21 @@
     background: #fff;
     margin: 10px 15px;
 }
-progress::-webkit-progress-value {
-    background-color: hotpink;
+progress {
+    &::-webkit-progress-value {
+        background-color: hotpink;
+    }
+    &::-webkit-progress-bar {
+        background-color: #bbb;
+    }
 }
-progress::-webkit-progress-bar {
-    background-color: #bbb;
-    color: yellow;
+
+progress.stopped,
+progress.paused {
+    &::-webkit-progress-value {
+        background-color: #bbb;
+    }
+    &::-webkit-progress-bar {
+        background-color: #ddd;
+    }
 }

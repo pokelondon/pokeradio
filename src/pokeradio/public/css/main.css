@@ -1897,7 +1897,14 @@ progress::-webkit-progress-value {
 }
 progress::-webkit-progress-bar {
   background-color: #bbb;
-  color: yellow;
+}
+progress.stopped::-webkit-progress-value,
+progress.paused::-webkit-progress-value {
+  background-color: #bbb;
+}
+progress.stopped::-webkit-progress-bar,
+progress.paused::-webkit-progress-bar {
+  background-color: #ddd;
 }
 .Search {
   width: 100%;
