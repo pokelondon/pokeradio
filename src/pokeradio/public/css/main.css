@@ -2023,6 +2023,7 @@ progress.paused::-webkit-progress-bar {
 .Search-item-add:active {
   box-shadow: inset 0 2px 2px #009ecc;
 }
+.disabled .Search-item-add,
 .selected .Search-item-add {
   opacity: 0;
 }

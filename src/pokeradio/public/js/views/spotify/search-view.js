@@ -12,7 +12,7 @@ define(['jquery',
                 searchKey: 191, // '/' search key
                 events:{
                     'submit #searchForm': 'search',
-                    'click .Search-wrapper': 'closeView',
+                    'click': 'closeView',
                     'click .Search-wrapper form, .Search-items': 'catchEvent'
                 },
 
