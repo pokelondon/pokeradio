@@ -11,7 +11,8 @@ define(['jquery',
                 el: $('#addTrackView'),
                 events:{
                     'submit #searchForm': 'search',
-                    'click .js-exit-search': 'closeView'
+                    'click .Search-wrapper': 'closeView',
+                    'click .Search-wrapper form, .Search-items': 'catchEvent'
                 },
 
                 initialize: function(){
@@ -51,6 +52,11 @@ define(['jquery',
 
                 closeView: function(){
                     utils.toggleFade(this.$el);
+                },
+
+                catchEvent: function(evt) {
+                    evt.stopPropagation();
+                    console.log(evt);
                 }
             });
             return SearchView;
