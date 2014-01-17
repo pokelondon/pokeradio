@@ -135,13 +135,12 @@ class AppConnection(SocketConnection):
             self.emit('playlist:update', data.body)
 
     @event('add_track')
-    def do_add_track(self, data):
+    def do_add_track(self, rawdata):
         """ Save the new track to the playlist
         """
-        data = json.loads(data)
-        track_data = data
-        track_data['album_href'] = track_data.pop('album').get('href')
-        track_data['user_id'] = self.user_id
+        data = json.loads(rawdata)
+        data['album_href'] = data.pop('album').get('href')
+        data['user_id'] = self.user_id
         t = Track.objects.create(**data)
 
         print '{0} has queued {1}'.format(self.user, t)
