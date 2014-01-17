@@ -1,39 +1,35 @@
 {% extends 'base.html' %}
 
-{% block page_title %}Plays for {{ week }} | {{ block.super }}{% endblock %}
+{% block page_title %}{{ who|title }} plays for {{ week }} | {{ block.super }}{% endblock %}
 
 
 {% block container %}
 <div class="box">
     {% if 'me' == who %}
-    <h1>My top {{ archive }}
-        <small> | <a href="{% url 'history:week_index' who='all' archive=archive %}" class="">View all</a></small>
-    </h1>
+        <h1>My top {{ archive }}
     {% else %}
-    <h1>Top {{ archive }}
-        <small> | <a href="{% url 'history:week_index' who='me' archive=archive %}" class="">View mine</a></small>
-    </h1>
+        <h1>Top {{ archive }}
     {% endif %}
+
+    {% if 'tracks' == archive %}
+        {% include 'history/_switch_archive_link.html' with pattern='history:play_archive_tracks' %}
+    {% endif %}
+    {% if 'artists' == archive %}
+        {% include 'history/_switch_archive_link.html' with pattern='history:play_archive_artists' %}
+    {% endif %}
+
+    </h1>
     <h3>Week Commencing: {{ week }}</h3>
 </div>
 
 {% if 'tracks' == archive %}
-    {% if previous_week %}
-    <a href="{% url 'history:play_archive_tracks'  year=previous_week|date:'Y' week=previous_week|date:'W' who=who %}" class="btn secondary">&larr; Previous Week</a>
-    {% endif %}
-    {% if next_week %}
-    <a href="{% url 'history:play_archive_tracks' year=next_week|date:'Y' week=next_week|date:'W' who=who %}" class="btn primary">Next Week &rarr;</a>
-    {% endif %}
+{% include 'history/_week_links.html' with pattern='history:play_archive_tracks' %}
 {% endif %}
 
 {% if 'artists' == archive %}
-    {% if previous_week %}
-    <a href="{% url 'history:play_archive_artists'  year=previous_week|date:'Y' week=previous_week|date:'W' who=who %}" class="btn secondary">&larr; Previous Week</a>
-    {% endif %}
-    {% if next_week %}
-    <a href="{% url 'history:play_archive_artists' year=next_week|date:'Y' week=next_week|date:'W' who=who %}" class="btn primary">Next Week &rarr;</a>
-    {% endif %}
+{% include 'history/_week_links.html' with pattern='history:play_archive_artists' %}
 {% endif %}
+
 
 <a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
 
