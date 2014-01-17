@@ -9,17 +9,28 @@ define(['jquery',
         function($, Backbone,_ , spotifyTracks, ioBind, utils, TrackView){
             var SearchView = Backbone.View.extend({
                 el: $('#addTrackView'),
+                searchKey: 191, // '/' search key
                 events:{
                     'submit #searchForm': 'search',
                     'click .Search-wrapper': 'closeView',
-                    'click .Search-wrapper form, .Search-items': 'catchEvent'
+                    'click .Search-wrapper form, .Search-items': 'catchEvent',
+                    'keyup': 'onKeyup'
                 },
 
                 initialize: function(){
                     this.collection = spotifyTracks;
                     this.collection.on('results', this.render, this);
+
                     this.$container = this.$('.js-search-results-wrapper');
                     this.$list = this.$('.js-search-items');
+                    this.$input = this.$('#searchInput');
+
+                    // Click event for open button,
+                    // not a child of this.$el so dont delegate events
+                    $('.add-track').on('click', _(this.openView).bind(this));
+
+                    this.on('open', this.focusInput, this);
+                    this.bindSearchKey();
                 },
 
                 /**
@@ -51,12 +62,53 @@ define(['jquery',
                 },
 
                 closeView: function(){
-                    utils.toggleFade(this.$el);
+                    this.$el.fadeOut();
+                    this.trigger('close');
                 },
 
+                openView: function(){
+                    this.$el.fadeIn();
+                    this.trigger('open');
+                },
+
+                /**
+                 * When inner parts of the view are clicked,
+                 * dont let the event get back to the container,
+                 * which would close the view
+                 */
                 catchEvent: function(evt) {
                     evt.stopPropagation();
-                    console.log(evt);
+                },
+
+                focusInput: function(evt) {
+                    this.$input.focus();
+                },
+
+                /**
+                 * Close search view if esc is pressed
+                 */
+                onKeyup: function(evt) {
+                    if(27 === evt.keyCode) {
+                        this.closeView();
+                    }
+                },
+
+                /**
+                 * Listen to window keyup events to open the view if
+                 * the search key is pressed
+                 */
+                windowKeyup: function(evt) {
+                    if(this.searchKey === evt.keyCode) {
+                        this.openView();
+                    }
+                },
+
+                /**
+                 * Bind search key to open this view.
+                 */
+                bindSearchKey: function() {
+                    $(window).on('keyup', _(this.windowKeyup).bind(this));
+                    console.log('binding');
                 }
             });
             return SearchView;

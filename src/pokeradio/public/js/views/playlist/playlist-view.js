@@ -24,9 +24,6 @@ define(['jquery',
                         convertToMinutes: utils.convertToMinutes
                     });
                 },
-                events: {
-                    'click .add-track': 'openSearch',
-                },
 
                 /**
                  * Render initial track list
@@ -48,11 +45,6 @@ define(['jquery',
                 append: function(model){
                     var view = new TrackView(model);
                     this.$list.append(view.render().el);
-                },
-
-                openSearch: function(evt){
-                    evt.stopPropagation();
-                    utils.toggleFade($('#addTrackView'));
                 }
 
             });
