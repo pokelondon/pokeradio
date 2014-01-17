@@ -5,7 +5,10 @@
                 <span><%= name %></span><br />
                 <span class="Search-item-secondaryText"><%= artists[0].name %></span>
             </div>
-             <div class="Search-item-details-actions col-md-2 pull-right"><span class="u-icon--plus js-queue-track pull-right"></span> <button class="btn btn-preview">Preview</button></div>
+             <div class="Search-item-details-actions col-md-2 pull-right">
+                 <a class="Search-item-add u-icon--plus js-queue-track pull-right"></a>
+                 <button class="btn btn-preview">Preview</button>
+             </div>
             <div class="Search-item-details-duration col-md-1 pull-right"><%= _(length).convertToMinutes() %></div>
             <div class="Search-item-secondaryText col-md-3 pull-right"><%= album.name %> <span>Released: <%= album.released %></span></div>
         </div>
