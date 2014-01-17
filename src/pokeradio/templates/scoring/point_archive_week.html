@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block page_title %}Credits for {{ week }} | {{ block.super }}{% endblock %}
+{% block page_title %}Points for {{ week }} | {{ block.super }}{% endblock %}
 
 
 {% block container %}
 <div class="box">
-    <h1>{{ request.user.first_name }}, you have {{ my_credits }} Poke Disco Biscuits</h1>
+    <h1>{{ request.user.first_name }}, you have {{ my_credits }} Points <small>Points are really important, gotta get 'em all!</small></h1>
     <h3>Week Commencing: {{ week }}</h3>
 </div>
 
-{% include 'scoring/_week_links.html' with pattern='scoring:statement_week' %}
+{% include 'scoring/_week_links.html' with pattern='scoring:points_week' %}
 
 <div class="Listing-list">
     {% for object in object_list %}

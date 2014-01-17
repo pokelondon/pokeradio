@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ who|title }} plays for {{ week }} | {{ block.super }}{% endblock %}
+
+
+{% block container %}
+<div class="box">
+    <h1>Most liked</h1>
+</div>
+
+<div class="row">
+    <a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
+</div>
+
+<div class="Listing-list">
+    {% for object in object_list %}
+    <div class="Listing">
+        <span class="Listing-number">{{ object.number }}</span>
+        <span class="Listing-title">{{ object.name }}</span>
+        <span class="Listing-sub">{{ object.artist }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

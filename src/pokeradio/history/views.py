@@ -1,11 +1,11 @@
 from datetime import datetime
 
 from django.conf import settings
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import TemplateView, RedirectView, ListView
 from django.views.generic.dates import _date_from_string
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 
 from .models import Play, Artist, ArchiveTrack
 from .patched_generic_views import PatchedWeekArchiveView
@@ -112,11 +112,25 @@ class WeekViewArtists(WeekView):
                 .order_by('-plays')
 
 
+class WeekViewVoteTracks(ListView):
+    """ Like the artist archive aggregated by plays, this is agregated by
+    points. The total of the added up point values gives a score
+    """
+    template_name = 'history/score_archive.html'
+    def get_queryset(self):
+            return ArchiveTrack.objects.filter(point__isnull=False)\
+                    .annotate(number=Sum('point__value'))\
+                    .order_by('-number')[:20]
+
+
 # WeekView archive of the top tracks for the logged in user or everyone
 play_archive_tracks = login_required(WeekView.as_view())
 
 # WeekView Decendant, lists top artists for the logged in user or everyone
 play_archive_artists = login_required(WeekViewArtists.as_view())
+
+# Most liked songs
+play_archive_artists_votes = login_required(WeekViewVoteTracks.as_view())
 
 # Dashboard page, links to the current week redirector for different archives
 index = login_required(

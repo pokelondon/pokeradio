@@ -18,12 +18,16 @@ urls = [
         name='week_index'),
 
     # Weekly track archive
-    url(r'^(?P<who>(all|me))/tracks/(?P<year>\d{4})/(?P<week>\d+)/$',
+    url(r'^(?P<who>(all|me))/choons/(?P<year>\d{4})/(?P<week>\d+)/$',
         'play_archive_tracks', name='play_archive_tracks'),
 
     # Weekly artist archive
     url(r'^(?P<who>(all|me))/artists/(?P<year>\d{4})/(?P<week>\d+)/$',
         'play_archive_artists', name='play_archive_artists'),
+
+    # Weekly best voted tracks archive
+    url(r'^most-best/$', 'play_archive_artists_votes',
+        name='play_archive_artists_votes'),
 ]
 urlpatterns += patterns('pokeradio.history.views', *urls)
 

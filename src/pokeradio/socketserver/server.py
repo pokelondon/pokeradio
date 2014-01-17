@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 
 from pokeradio.models import Track, Point
-from pokeradio.history.utils import record_track_play
+from pokeradio.history.utils import record_track_play, get_or_create_track
 
 from .utils import flush_transaction
 
@@ -198,11 +198,13 @@ class AppConnection(SocketConnection):
             self.emit('playlist:message', 'You cant do that')
         else:
             try:
+                archive_track = get_or_create_track(track)
                 # Make a point, but catch the exception raised by the
                 # violation of unique_togetherness of (playlist) track and voter
                 p = Point.objects.create(user=track.user, action=action,
                                          track_name=str(track)[:100],
                                          playlist_track=track,
+                                         archive_track=archive_track,
                                          vote_from=self.user)
             except IntegrityError:
                 # User has already voted for this track
