@@ -95,17 +95,16 @@ class AppConnection(SocketConnection):
         instance
         """
         flush_transaction()
+
         try:
             cookie = request.get_cookie('sessionid')
             session_key = cookie.value
-        except AttributeError:
-            print 'No Cookie found'
-            return False
-
-        try:
             session = Session.objects.get(session_key=session_key)
         except Session.DoesNotExist:
-            print 'Session expired', session_key
+            logger.error('Session expired', {'session_key': session_key})
+            return False
+        except AttributeError:
+            logger.error('No Cookie Found')
             return False
         else:
             user_id = session.get_decoded().get('_auth_user_id')
@@ -118,6 +117,7 @@ class AppConnection(SocketConnection):
         """
         self._get_user_id(request)
         self.client.listen(self.on_redis_message)
+
 
     def on_redis_message(self, data):
         """ Player events, emit them back down to the browsers
