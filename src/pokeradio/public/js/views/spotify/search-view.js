@@ -13,8 +13,7 @@ define(['jquery',
                 events:{
                     'submit #searchForm': 'search',
                     'click .Search-wrapper': 'closeView',
-                    'click .Search-wrapper form, .Search-items': 'catchEvent',
-                    'keyup': 'onKeyup'
+                    'click .Search-wrapper form, .Search-items': 'catchEvent'
                 },
 
                 initialize: function(){
@@ -30,7 +29,7 @@ define(['jquery',
                     $('.add-track').on('click', _(this.openView).bind(this));
 
                     this.on('open', this.focusInput, this);
-                    this.bindSearchKey();
+                    this.bindKeys();
                 },
 
                 /**
@@ -85,15 +84,6 @@ define(['jquery',
                 },
 
                 /**
-                 * Close search view if esc is pressed
-                 */
-                onKeyup: function(evt) {
-                    if(27 === evt.keyCode) {
-                        this.closeView();
-                    }
-                },
-
-                /**
                  * Listen to window keyup events to open the view if
                  * the search key is pressed
                  */
@@ -101,14 +91,16 @@ define(['jquery',
                     if(this.searchKey === evt.keyCode) {
                         this.openView();
                     }
+                    if(27 === evt.keyCode) {
+                        this.closeView();
+                    }
                 },
 
                 /**
                  * Bind search key to open this view.
                  */
-                bindSearchKey: function() {
+                bindKeys: function() {
                     $(window).on('keyup', _(this.windowKeyup).bind(this));
-                    console.log('binding');
                 }
             });
             return SearchView;
