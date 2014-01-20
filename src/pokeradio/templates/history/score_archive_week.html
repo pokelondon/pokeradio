@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ who|title }} plays for {{ week }} | {{ block.super }}{% endblock %}
+
+
+{% block container %}
+<div class="box">
+    {% if 'me' == who %}
+        <h1>My favorite {{ archive }}
+    {% else %}
+        <h1>Everyone's democraticaly favorite {{ archive }}
+    {% endif %}
+
+    {% if 'tracks' == archive %}
+        {% include 'history/_switch_archive_link.html' with pattern='history:vote_archive_tracks' %}
+    {% endif %}
+    {% if 'artists' == archive %}
+        {% include 'history/_switch_archive_link.html' with pattern='history:vote_archive_artists' %}
+    {% endif %}
+
+    </h1>
+    <h3>Week Commencing: {{ week }}</h3>
+</div>
+
+{% if 'tracks' == archive %}
+{% include 'history/_week_links.html' with pattern='history:vote_archive_tracks' %}
+{% endif %}
+
+{% if 'artists' == archive %}
+{% include 'history/_week_links.html' with pattern='history:vote_archive_artists' %}
+{% endif %}
+
+<a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
+
+<div class="Listing-list">
+    {% for object in object_list %}
+    <div class="Listing">
+        <span class="Listing-number">{{ object.number }}</span>
+        <span class="Listing-title">{{ object.name }}</span>
+        <span class="Listing-sub">{{ object.artist }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
