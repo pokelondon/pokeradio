@@ -160,8 +160,10 @@ index = login_required(
         TemplateView.as_view(template_name='history/index.html'))
 
 # Redirects to different archives, depending on URL for the current week
-week_index = login_required(WeekArchiveRedirect.as_view(
+play_tracks_index = login_required(WeekArchiveRedirect.as_view(
     pattern='history:play_archive_tracks', who='me'))
+play_artists_index = login_required(WeekArchiveRedirect.as_view(
+    pattern='history:play_archive_artists', who='me'))
 
 vote_tracks_index = login_required(WeekArchiveRedirect.as_view(
     pattern='history:vote_archive_tracks', who='me'))

@@ -13,9 +13,13 @@ urlpatterns = patterns('')
 urls = [
     url(r'^$', 'index', name='index'),
 
-    # Redirects to the archive for the current week
-    url(r'^(?P<who>(all|me))/(?P<archive>(artists|tracks))$', 'week_index',
-        name='week_index'),
+    # Redirects to the tracks votes archive for the current week
+    url(r'^plays/(?P<who>(all|me))/tracks/$', 'play_tracks_index',
+        name='play_tracks_index'),
+
+    # Redirects to the tracks votes archive for the current week
+    url(r'^plays/(?P<who>(all|me))/artists/$', 'play_artists_index',
+        name='play_artists_index'),
 
     # Redirects to the tracks votes archive for the current week
     url(r'^votes/(?P<who>(all|me))/tracks/$', 'vote_tracks_index',
