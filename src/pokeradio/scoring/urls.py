@@ -12,10 +12,14 @@ urlpatterns = patterns('')
 
 urls = [
     url(r'^$', 'index', name='index'),
-    url(r'^disco-biscuits/$', 'statement_index', name='statement'),
-    url(r'^disco-biscuits/(?P<year>\d{4})/(?P<week>\d+)/$', 'statement_week',
-        name='statement_week'),
-    url(r'^fake-internet-points/$', 'points_index', name='points'),
+
+    # Credits
+    url(r'^disco-biscuits/$', 'credits_index', name='credits_index'),
+    url(r'^disco-biscuits/(?P<year>\d{4})/(?P<week>\d+)/$', 'credits_week',
+        name='credits_week'),
+
+    # Points
+    url(r'^fake-internet-points/$', 'points_index', name='points_index'),
     url(r'^fake-internet-points/(?P<year>\d{4})/(?P<week>\d+)/$', 'points_week',
         name='points_week'),
 ]

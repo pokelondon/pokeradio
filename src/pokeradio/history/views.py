@@ -7,21 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Count, Q, Sum
 
+from pokeradio.views import WeekArchiveRedirect
+
 from .models import Play, Artist, ArchiveTrack
 from .patched_generic_views import PatchedWeekArchiveView
-
-
-class ThisWeek(RedirectView):
-    """ Redirect to WeekArchiveView for the current week
-    """
-
-    permanent = False
-
-    def get_redirect_url(self, who='all', archive='tracks', **kwargs):
-        now = datetime.now()
-        kwargs={'year': now.year, 'week': now.strftime('%U'), 'who': who}
-        return reverse('history:play_archive_{0}'.format(archive),
-                       kwargs=kwargs)
 
 
 class WeekView(PatchedWeekArchiveView):
@@ -53,16 +42,16 @@ class WeekView(PatchedWeekArchiveView):
 
     def annotate_queryset(self, qs):
         """ Finally annotate the filtered QS with stuff to count plays
-        just before it gets sent to the view
+        just before it gets sent to the view after the Week Archive View
+        has added filters and stuff
         """
         res = qs.annotate(plays=Count('play')).order_by('-plays')
-        print res.query
         return res
 
     def get_dated_queryset(self, ordering=None, **lookup):
-        """
-        Dont add filters to get_queryset, or it will confuse thigns,
-        Date query needs to be part of a Q object.
+        """ Dont add filters to get_queryset, or it will confuse things,
+        Date query needs to be part of a Q object. So the date filtering is
+        done manually as part of this method
         """
         date_field = self.get_date_field()
         allow_future = self.get_allow_future()
@@ -88,9 +77,11 @@ class WeekViewArtists(WeekView):
     archive = 'artists'
 
     def get_dated_queryset(self, ordering=None, **lookup):
-        """
-        Dont add filters to get_queryset, or it will confuse thigns,
-        Date query needs to be part of a Q object.
+        """ Dont add filters to get_queryset, or it will confuse things,
+        Date query needs to be part of a Q object. So the date filtering is
+        done manually as part of this method
+
+        lookup is a dict of archivetrack__play__created__gt and ..lt params
         """
         date_field = self.get_date_field()
         allow_future = self.get_allow_future()
@@ -137,5 +128,6 @@ index = login_required(
         TemplateView.as_view(template_name='history/index.html'))
 
 # Redirects to different archives, depending on URL for the current week
-week_index = login_required(ThisWeek.as_view())
+week_index = login_required(WeekArchiveRedirect.as_view(
+    pattern='history:play_archive_tracks', who='me'))
 

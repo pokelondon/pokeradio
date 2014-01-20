@@ -5,7 +5,7 @@ from fabric.state import output
 from velcro.env import bootstrap as _bootstrap
 from velcro.decorators import pre_hooks, post_hooks
 from velcro.http.nginx import (restart_nginx, reload_nginx, stop_nginx,
-                              start_nginx)
+                               start_nginx)
 from velcro.service.supervisord import list_programs, start, stop, restart
 from velcro.scm.git import deploy as _deploy
 from velcro.target import live, stage
