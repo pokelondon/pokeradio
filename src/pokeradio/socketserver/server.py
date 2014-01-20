@@ -2,6 +2,7 @@ import logging
 import tornado
 import brukva
 import simplejson as json
+from datetime import datetime
 from itertools import chain
 from tornadio2 import SocketConnection
 from tornadio2 import event, router, server
@@ -27,15 +28,23 @@ class PlayerConnection(SocketConnection):
     Bridged to browser connections via Redis PubSub
     """
 
+    waiting_for_more_tracks = False
+
     def __init__(self, *args, **kwargs):
         super(PlayerConnection, self).__init__(*args, **kwargs)
         self.client = brukva.Client(host=settings.REDIS_HOST,
                                     port=settings.REDIS_PORT,
                                     selected_db=settings.REDIS_DB)
         self.client.connect()
+        self.client.subscribe('playlist')
 
     def on_open(self, request):
-        print 'Mopidy Connected'
+        print 'Mopidy Connected via websocket'
+        # Handle events from pubsub queue
+        self.client.listen(self.on_redis_message)
+
+    def on_close(self):
+        self.client.unsubscribe('playlist')
 
     @event('request_track')
     def on_request_track(self, message=None):
@@ -46,8 +55,10 @@ class PlayerConnection(SocketConnection):
         try:
             track = Track.objects.filter(played__exact=False)[:1][0]
         except IndexError:
-            pass
+            print 'No Track to play'
+            self.waiting_for_more_tracks = True
         else:
+            self.waiting_for_more_tracks = False
             payload = json.dumps({'id': track.id, 'href': track.href})
             self.emit('mopidy_play_track', payload)
 
@@ -75,6 +86,13 @@ class PlayerConnection(SocketConnection):
         """ Player state change, pass message onto redis channel
         """
         self.client.publish('player_update', data)
+
+    def on_redis_message(self, data):
+        if data.channel == 'playlist':
+            # Message from ORM, a track has been added.
+            # Use this to kick mopidy if the playlist has been empty
+            if self.waiting_for_more_tracks:
+                self.on_request_track()
 
 
 class AppConnection(SocketConnection):
@@ -112,13 +130,20 @@ class AppConnection(SocketConnection):
             user_id = session.get_decoded().get('_auth_user_id')
             self.user_id = user_id
             self.user = User.objects.get(pk=self.user_id)
-            print 'Webapp connected:', self.user
+            self.session_expire = session.expire_date
+            print 'Webapp connected:', self.user, self.session_expire
 
     def on_open(self, request):
         """ Websocket connection opened with the browser
         """
         self._get_user_id(request)
         self.client.listen(self.on_redis_message)
+
+
+    def on_close(self):
+        self.client.unsubscribe('playlist')
+        self.client.unsubscribe('player_update')
+        self.client.unsubscribe('deleted')
 
 
     def on_redis_message(self, data):
@@ -134,10 +159,21 @@ class AppConnection(SocketConnection):
         if data.channel == 'playlist':
             self.emit('playlist:update', data.body)
 
+    def check_expiry(self):
+        """ Check the session hasnt expired before doing any events
+        """
+        now = datetime.now()
+        if self.session_expire < now:
+            self.emit('playlist:expired')
+            return True
+        return False
+
     @event('add_track')
     def do_add_track(self, rawdata):
         """ Save the new track to the playlist
         """
+        if self.check_expiry():
+            return
         data = json.loads(rawdata)
         data['album_href'] = data.pop('album').get('href')
         data['user_id'] = self.user_id
@@ -148,6 +184,8 @@ class AppConnection(SocketConnection):
 
     @event('remove_track')
     def do_remove_track(self, track_id):
+        if self.check_expiry():
+            return
         try:
             track = Track.objects.get(user=self.user, id=int(track_id),
                                       played=False)
@@ -158,15 +196,12 @@ class AppConnection(SocketConnection):
             self.emit('playlist:message', '{0} deleted'.format(track))
             track.delete()
 
-    def on_close(self):
-        self.client.unsubscribe('playlist')
-        self.client.unsubscribe('player_update')
-        self.client.unsubscribe('deleted')
-
     @event('fetch_playlist')
     def playlist(self):
         """ Get all tracks in the playlist to bootstrap the view
         """
+        if self.check_expiry():
+            return
         # Ensure new data is retrieved, incase another process has changed
         # the playlist
         flush_transaction()
@@ -178,11 +213,14 @@ class AppConnection(SocketConnection):
 
     @event('like_track')
     def like_track(self, track_id):
-        # TODO record like against archive track
+        if self.check_expiry():
+            return
         self.value_judgement(track_id, Point.TRACK_LIKED)
 
     @event('dislike_track')
     def dislike_track(self, track_id):
+        if self.check_expiry():
+            return
         self.value_judgement(track_id, Point.TRACK_DISLIKED)
 
     def value_judgement(self, track_id, action):
