@@ -28,15 +28,23 @@ class PlayerConnection(SocketConnection):
     Bridged to browser connections via Redis PubSub
     """
 
+    waiting_for_more_tracks = False
+
     def __init__(self, *args, **kwargs):
         super(PlayerConnection, self).__init__(*args, **kwargs)
         self.client = brukva.Client(host=settings.REDIS_HOST,
                                     port=settings.REDIS_PORT,
                                     selected_db=settings.REDIS_DB)
         self.client.connect()
+        self.client.subscribe('playlist')
 
     def on_open(self, request):
-        print 'Mopidy Connected'
+        print 'Mopidy Connected via websocket'
+        # Handle events from pubsub queue
+        self.client.listen(self.on_redis_message)
+
+    def on_close(self):
+        self.client.unsubscribe('playlist')
 
     @event('request_track')
     def on_request_track(self, message=None):
@@ -47,8 +55,10 @@ class PlayerConnection(SocketConnection):
         try:
             track = Track.objects.filter(played__exact=False)[:1][0]
         except IndexError:
-            pass
+            print 'No Track to play'
+            self.waiting_for_more_tracks = True
         else:
+            self.waiting_for_more_tracks = False
             payload = json.dumps({'id': track.id, 'href': track.href})
             self.emit('mopidy_play_track', payload)
 
@@ -76,6 +86,13 @@ class PlayerConnection(SocketConnection):
         """ Player state change, pass message onto redis channel
         """
         self.client.publish('player_update', data)
+
+    def on_redis_message(self, data):
+        if data.channel == 'playlist':
+            # Message from ORM, a track has been added.
+            # Use this to kick mopidy if the playlist has been empty
+            if self.waiting_for_more_tracks:
+                self.on_request_track()
 
 
 class AppConnection(SocketConnection):
