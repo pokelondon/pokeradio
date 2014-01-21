@@ -30,7 +30,7 @@ install_dependencies = [
     'django-debug-toolbar == 0.9.4',
     'tornado == 3.1',
     'simplejson == 3.3.1',
-    'brukva ==  0.0.1',
+    'tornado-redis == 2.4.15',
     'musicbrainzngs == 0.4',
     'Pillow == 2.3.0',
     'requests==2.0.0',

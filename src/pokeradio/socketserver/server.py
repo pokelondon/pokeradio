@@ -1,11 +1,14 @@
+import redis
 import logging
 import tornado
-import brukva
+import tornadoredis
 import simplejson as json
+import tornado.gen
+
 from datetime import datetime
 from itertools import chain
 from tornadio2 import SocketConnection
-from tornadio2 import event, router, server
+from tornadio2 import event, router, server, gen
 from raven import Client
 from raven.middleware import Sentry
 
@@ -29,22 +32,31 @@ class PlayerConnection(SocketConnection):
     """
 
     waiting_for_more_tracks = False
+    CHANNELS = ['pr:track_add', ]
 
     def __init__(self, *args, **kwargs):
         super(PlayerConnection, self).__init__(*args, **kwargs)
-        self.client = brukva.Client(host=settings.REDIS_HOST,
-                                    port=settings.REDIS_PORT,
-                                    selected_db=settings.REDIS_DB)
+
+        self.connection_pool = tornadoredis.connection.ConnectionPool(
+                host=settings.REDIS_HOST,
+                port=settings.REDIS_PORT)
+        self.client = tornadoredis.Client(connection_pool=self.connection_pool,
+                                          selected_db=settings.REDIS_DB)
+        self.listen()
+
+    @gen.engine
+    def listen(self):
         self.client.connect()
-        self.client.subscribe('playlist')
+        yield gen.Task(self.client.subscribe, self.CHANNELS)
+        self.client.listen(self.on_redis_message)
 
     def on_open(self, request):
         print 'Mopidy Connected via websocket'
-        # Handle events from pubsub queue
-        self.client.listen(self.on_redis_message)
 
     def on_close(self):
-        self.client.unsubscribe('playlist')
+        if self.client.subscribed:
+            self.client.unsubscribe(self.CHANNELS)
+            self.client.disconnect()
 
     @event('request_track')
     def on_request_track(self, message=None):
@@ -77,38 +89,45 @@ class PlayerConnection(SocketConnection):
 
        self.on_request_track()
 
-    @event('track_playback_started')
-    def on_track_playlist_started(self, data):
-        print 'started playing', data
-
     @event('player_update')
     def on_player_update(self, data):
         """ Player state change, pass message onto redis channel
         """
-        self.client.publish('player_update', data)
+        r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT)
+        r.publish('pr:progress', data)
+
+    def on_new_track(self):
+        """ Message from ORM, a track has been added.
+        Use this to kick mopidy if the playlist has been empty
+        """
+        if self.waiting_for_more_tracks:
+            self.on_request_track()
 
     def on_redis_message(self, data):
-        if data.channel == 'playlist':
-            # Message from ORM, a track has been added.
-            # Use this to kick mopidy if the playlist has been empty
-            if self.waiting_for_more_tracks:
-                self.on_request_track()
+        if data.channel == 'pr:track_add':
+            self.on_new_track()
 
 
 class AppConnection(SocketConnection):
     """ Instances of this class represent connections to the browsers via
     websocket. Connection to the player socket server is via redis
     """
+    CHANNELS = ['pr:track_add', 'pr:track_deleted', 'pr:progress']
+
     def __init__(self, *args, **kwargs):
         super(AppConnection, self).__init__(*args, **kwargs)
-        # Connect to redis to recieve messages from the other socket server
-        self.client = brukva.Client(host=settings.REDIS_HOST,
-                                    port=settings.REDIS_PORT,
-                                    selected_db=settings.REDIS_DB)
+        self.connection_pool = tornadoredis.connection.ConnectionPool(
+                host=settings.REDIS_HOST,
+                port=settings.REDIS_PORT)
+        self.client = tornadoredis.Client(connection_pool=self.connection_pool,
+                                          selected_db=settings.REDIS_DB)
+        self.listen()
+
+    @gen.engine
+    def listen(self):
         self.client.connect()
-        self.client.subscribe('playlist')
-        self.client.subscribe('player_update')
-        self.client.subscribe('deleted')
+        yield gen.Task(self.client.subscribe, self.CHANNELS)
+        self.client.listen(self.on_redis_message)
 
     def _get_user_id(self, request):
         """ Get the user ID from the session and save it to the connection
@@ -132,32 +151,34 @@ class AppConnection(SocketConnection):
             self.user = User.objects.get(pk=self.user_id)
             self.session_expire = session.expire_date
             print 'Webapp connected:', self.user, self.session_expire
+            return True
 
     def on_open(self, request):
         """ Websocket connection opened with the browser
         """
-        self._get_user_id(request)
-        self.client.listen(self.on_redis_message)
+        #self.client.listen(self.on_redis_message)
+        return self._get_user_id(request)
 
 
     def on_close(self):
-        self.client.unsubscribe('playlist')
-        self.client.unsubscribe('player_update')
-        self.client.unsubscribe('deleted')
+        if self.client.subscribed:
+            self.client.unsubscribe(self.CHANNELS)
+            self.client.disconnect()
 
 
     def on_redis_message(self, data):
         """ Player events, emit them back down to the browsers
         """
-        if data.channel == 'deleted':
-            self.emit('playlist:deleted', data.body);
+        if data.kind == 'message':
+            if data.channel == 'pr:track_deleted':
+                self.emit('playlist:deleted', data.body);
 
-        if data.channel == 'player_update':
-            if 'percentage' in data.body:
-                self.emit('playlist:progress', data.body)
+            if data.channel == 'pr:progress':
+                if 'percentage' in data.body:
+                    self.emit('playlist:progress', data.body)
 
-        if data.channel == 'playlist':
-            self.emit('playlist:update', data.body)
+            if data.channel == 'pr:track_add':
+                self.emit('playlist:update', data.body)
 
     def check_expiry(self):
         """ Check the session hasnt expired before doing any events
