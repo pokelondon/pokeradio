@@ -51,7 +51,7 @@ class PlayerConnection(SocketConnection):
         self.client.listen(self.on_redis_message)
 
     def on_open(self, request):
-        print 'Mopidy Connected via websocket'
+        logger.info('Mopidy Connected via websocket')
 
     def on_close(self):
         if self.client.subscribed:
@@ -67,7 +67,7 @@ class PlayerConnection(SocketConnection):
         try:
             track = Track.objects.filter(played__exact=False)[:1][0]
         except IndexError:
-            print 'No Track to play'
+            logger.warn('No Track to play')
             self.waiting_for_more_tracks = True
         else:
             self.waiting_for_more_tracks = False
@@ -112,7 +112,7 @@ class AppConnection(SocketConnection):
     """ Instances of this class represent connections to the browsers via
     websocket. Connection to the player socket server is via redis
     """
-    CHANNELS = ['pr:track_add', 'pr:track_deleted', 'pr:progress']
+    CHANNELS = ['pr:track_add', 'pr:track_delete', 'pr:progress']
 
     def __init__(self, *args, **kwargs):
         super(AppConnection, self).__init__(*args, **kwargs)
@@ -150,7 +150,8 @@ class AppConnection(SocketConnection):
             self.user_id = user_id
             self.user = User.objects.get(pk=self.user_id)
             self.session_expire = session.expire_date
-            print 'Webapp connected:', self.user, self.session_expire
+            logger.info('Webapp connected: {0} {1}'\
+                    .format(self.user, self.session_expire))
             return True
 
     def on_open(self, request):
@@ -170,7 +171,7 @@ class AppConnection(SocketConnection):
         """ Player events, emit them back down to the browsers
         """
         if data.kind == 'message':
-            if data.channel == 'pr:track_deleted':
+            if data.channel == 'pr:track_delete':
                 self.emit('playlist:deleted', data.body);
 
             if data.channel == 'pr:progress':
@@ -200,7 +201,7 @@ class AppConnection(SocketConnection):
         data['user_id'] = self.user_id
         t = Track.objects.create(**data)
 
-        print '{0} has queued {1}'.format(self.user, t)
+        logger.info('{0} has queued {1}'.format(self.user, t))
 
 
     @event('remove_track')
@@ -211,7 +212,7 @@ class AppConnection(SocketConnection):
             track = Track.objects.get(user=self.user, id=int(track_id),
                                       played=False)
         except Track.DoesNotExist:
-            print 'Track not in playlist'
+            logger.warn('Delete: Track not in playlist')
             self.emit('playlist:message', 'You cant do that')
         else:
             self.emit('playlist:message', '{0} deleted'.format(track))
