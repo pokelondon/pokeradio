@@ -24,7 +24,7 @@ class BaseTransaction(models.Model):
         ordering = ['-created']
 
     def __unicode__(self):
-        return '{0} {1}'.format(self.user, self.action)
+        return u'{0} {1}'.format(self.user, self.action)
 
     def save(self, *args, **kwargs):
         """ Save the cost into a DB field for summing on DB server

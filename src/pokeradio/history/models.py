@@ -39,7 +39,7 @@ class ArchiveTrack(Base):
     objects = TrackManager()
 
     def __unicode__(self):
-        return '{0} - {1}'.format(self.name, self.artist)
+        return u'{0} - {1}'.format(self.name, self.artist)
 
 
 class Play(Base):
@@ -47,7 +47,7 @@ class Play(Base):
     user = models.ForeignKey(User)
 
     def __unicode__(self):
-        return '{0} played by {1}'.format(self.track, self.user)
+        return u'{0} played by {1}'.format(self.track, self.user)
 
 
 
