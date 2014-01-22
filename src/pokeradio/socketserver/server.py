@@ -23,7 +23,7 @@ from pokeradio.history.utils import record_track_play, get_or_create_track
 from .utils import flush_transaction
 
 
-logger = logging.getLogger()
+logger = logging.getLogger('socketserver')
 
 
 class PlayerConnection(SocketConnection):
@@ -101,6 +101,7 @@ class PlayerConnection(SocketConnection):
         Use this to kick mopidy if the playlist has been empty
         """
         if self.waiting_for_more_tracks:
+            logger.info('Restarting from empty playlist')
             self.on_request_track()
 
     def on_redis_message(self, data):
@@ -141,7 +142,8 @@ class AppConnection(SocketConnection):
             session_key = cookie.value
             session = Session.objects.get(session_key=session_key)
         except Session.DoesNotExist:
-            logger.error('Session expired', {'session_key': session_key})
+            logger.error('Session expired', exc_info=True,
+                    extra={'session_key': session_key})
             return False
         except AttributeError:
             logger.error('No Cookie Found')
@@ -151,8 +153,8 @@ class AppConnection(SocketConnection):
             self.user_id = user_id
             self.user = User.objects.get(pk=self.user_id)
             self.session_expire = session.expire_date
-            logger.info('Webapp connected: {0} {1}'\
-                    .format(self.user, self.session_expire))
+            logger.debug('Webapp connected', exc_info=True,
+                    extra={'user': self.user, 'expires': self.session_expire})
             return True
 
     def on_open(self, request):
@@ -202,7 +204,7 @@ class AppConnection(SocketConnection):
         data['user_id'] = self.user_id
         t = Track.objects.create(**data)
 
-        logger.info('{0} has queued {1}'.format(self.user, t))
+        logger.debug('{0} has queued {1}'.format(self.user, t))
 
 
     @event('remove_track')
