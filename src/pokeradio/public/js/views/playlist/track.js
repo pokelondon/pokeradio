@@ -3,6 +3,7 @@ define(['jquery',
         'underscore',
         'views/_base_track',
         'text!template/playlist/track.html',
+        'bootstrap'
         ],
         function($, Backbone, _, BaseTrackView, template){
             var TrackView = BaseTrackView.extend({
@@ -12,7 +13,8 @@ define(['jquery',
                 events:{
                     'click .btn-remove-track': 'removeTrack',
                     'click .btn-like': 'likeTrack',
-                    'click .btn-dislike': 'dislikeTrack'
+                    'click .btn-dislike': 'dislikeTrack',
+                    'mouseover': 'timeTillPlay'
                 },
 
                 initialize: function(model) {
@@ -75,12 +77,14 @@ define(['jquery',
                 },
 
                 setVotedClasses: function() {
+                    var self = this;
                     if(this.model.get('liked')) {
                         this.$('.btn-like').addClass('voted');
                     }
                     if(this.model.get('disliked')) {
                         this.$('.btn-dislike').addClass('voted');
                     }
+                    this.$el.data('title', function() { return 'Playing in: ' + self.model.timeTillPlay(); });
                 },
 
                 onTrackRemoved: function() {
@@ -88,6 +92,10 @@ define(['jquery',
                     this.$el.slideUp(function() {
                         self.$el.remove();
                     });
+                },
+
+                timeTillPlay: function() {
+                    this.$el.tooltip('show');
                 }
             });
             return TrackView;
