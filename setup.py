@@ -67,9 +67,6 @@ setup(
     packages=find_packages('src'),
     install_requires=install_dependencies,
     include_package_data=True,
-    dependency_links=[
-        'https://github.com/evilkost/brukva/tarball/master/#egg=brukva-0.0.1',
-    ],
     extras_require={
         'develop': development_dependencies,
         'test': test_dependencies,

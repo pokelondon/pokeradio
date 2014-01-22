@@ -104,8 +104,9 @@ class PlayerConnection(SocketConnection):
             self.on_request_track()
 
     def on_redis_message(self, data):
-        if data.channel == 'pr:track_add':
-            self.on_new_track()
+        if data.kind == 'message':
+            if data.channel == 'pr:track_add':
+                self.on_new_track()
 
 
 class AppConnection(SocketConnection):
