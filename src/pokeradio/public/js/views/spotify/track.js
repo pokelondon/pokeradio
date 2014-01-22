@@ -29,6 +29,7 @@ define(['jquery',
                     if(this.model.get('inQueue')) {
                         this.$el.addClass('disabled');
                     }
+
                     return BaseTrackView.prototype.render.call(this);
                 },
 

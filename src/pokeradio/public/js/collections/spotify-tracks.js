@@ -8,6 +8,10 @@ define([
             url: urls.track,
             model: Track,
             teritory: 'GB',
+            comparator: function(i) {
+                var index = parseFloat(i.get('popularity'));
+                return 1 - index;
+            },
 
             /**
              * Filter out results which are not locally available

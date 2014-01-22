@@ -1995,6 +1995,18 @@ fieldset[disabled] .btn.voted.active {
   background: #fff;
   margin: 10px 15px;
 }
+.progress-bar--small {
+  width: 150px;
+  height: 10px;
+  display: inline-block;
+  margin: 0;
+}
+.progress-bar--small::-webkit-progress-value {
+  background-color: #00c6ff;
+}
+.progress-bar--small::-webkit-progress-bar {
+  background-color: #bbb;
+}
 progress::-webkit-progress-value {
   background-color: hotpink;
 }
@@ -2129,12 +2141,6 @@ progress.paused::-webkit-progress-bar {
 .disabled .Search-item-add,
 .selected .Search-item-add {
   opacity: 0;
-}
-.Track-popularityprogress::progress-value {
-  background-color: hotpink;
-}
-.Track-popularityprogress::progress-bar {
-  background-color: #bbb;
 }
 .Listing-list {
   padding: 10px 0 20px;

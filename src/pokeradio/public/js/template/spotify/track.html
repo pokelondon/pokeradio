@@ -3,7 +3,8 @@
             <div class="Search-item-details-preview js-search-item-details-preview"></div>
             <div class="col-md-4 col-offset-1 Search-item-details-track">
                 <span><%= name %></span><br />
-                <span class="Search-item-secondaryText"><%= artists[0].name %></span>
+                <span class="Search-item-secondaryText"><%= artists[0].name %></span><br />
+                <progress class="progress-bar progress-bar--small" value="<%= popularity %>" max="1"></progress>
             </div>
              <div class="Search-item-details-actions col-md-2 pull-right">
                  <a class="Search-item-add u-icon--plus js-queue-track pull-right"></a>
