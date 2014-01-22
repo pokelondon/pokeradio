@@ -65,12 +65,12 @@ define(['jquery',
                 /**
                  * Find the total time in minutes of tracks preceeding this one in the playlist
                  */
-                timeTillPlay: function() {
+                timeTillPlay: function(mins) {
                     var index = this.collection.indexOf(this);
                     var _preceeding_tracks = this.collection.chain().slice(0, index);
                     var _unplayed = _preceeding_tracks.filter(function(i) { return !i.get('played'); });
                     var t = _unplayed.reduce(function(memo, i) { return memo + i.get('length'); }, 0);
-                    return t.convertToMinutes().value();
+                    return (!!mins) ? t.convertToMinutes().value() : t.value();
                 }
 
             });

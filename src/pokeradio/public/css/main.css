@@ -1986,6 +1986,10 @@ fieldset[disabled] .btn.voted.active {
 .played .Playlist-item-album-art {
   display: none;
 }
+.Track-item-until {
+  color: #999;
+  font-size: 0.8em;
+}
 .progress-bar {
   width: auto;
   float: none;

@@ -9,18 +9,20 @@ define(['jquery',
             var TrackView = BaseTrackView.extend({
                 tagName: 'li',
                 template: template,
+                secondOffset: 0,
                 className: 'Playlist-item media not-played',
                 events:{
                     'click .btn-remove-track': 'removeTrack',
                     'click .btn-like': 'likeTrack',
                     'click .btn-dislike': 'dislikeTrack',
-                    'mouseover': 'timeTillPlay'
+                    'mouseover': 'timeTillPlay',
+                    'mouseout': 'tooltipClose'
                 },
 
                 initialize: function(model) {
                     BaseTrackView.prototype.initialize.apply(this, arguments);
 
-                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses');
+                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses', 'timeTillPlay');
                     this.model.on('change:played', this.updatePlayedState, this);
                     this.model.on('remove', this.onTrackRemoved, this);
                     this.model.on('change:liked', this.onVote, this);
@@ -84,7 +86,7 @@ define(['jquery',
                     if(this.model.get('disliked')) {
                         this.$('.btn-dislike').addClass('voted');
                     }
-                    this.$el.data('title', function() { return 'Playing in: ' + self.model.timeTillPlay(); });
+                    this.$playingin = this.$('.js-playing-in');
                 },
 
                 onTrackRemoved: function() {
@@ -95,7 +97,23 @@ define(['jquery',
                 },
 
                 timeTillPlay: function() {
-                    this.$el.tooltip('show');
+                    var self = this;
+                    var ttp = this.model.timeTillPlay();
+                    self.$playingin.fadeIn();
+                    $(window).on('play:progress:interpolated:seconds', function(el, seconds) {
+                        var text = '';
+                        if(1 > ttp) {
+                            text = 'Playing';
+                        }else{
+                            text = 'Playing in: ' + _(ttp - seconds).convertToMinutes();
+                        }
+                        self.$playingin.text(text);
+                    });
+                },
+
+                tooltipClose: function() {
+                    this.$playingin.fadeOut();
+                    $(window).off('play:progress:interpolated:seconds');
                 }
             });
             return TrackView;

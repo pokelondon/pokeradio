@@ -9,13 +9,13 @@ define([
     function($, Backbone, _, SearchView, PlaylistView, ProgressBar){
         window.PRAD = window.PRAD || {};
         window.PRAD.is_fox = (navigator.appVersion.indexOf("Win")!=-1);
-        var app = {
+        window.PRAD.app = {
             init: function(){
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();
                 this.progressbar = new ProgressBar();
             }
         };
-        return app;
+        return window.PRAD.app;
     }
 );
