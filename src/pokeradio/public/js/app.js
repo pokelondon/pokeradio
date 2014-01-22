@@ -7,7 +7,9 @@ define([
     'views/progress-bar'
     ],
     function($, Backbone, _, SearchView, PlaylistView, ProgressBar){
-        app = {
+        window.PRAD = window.PRAD || {};
+        window.PRAD.is_fox = (navigator.appVersion.indexOf("Win")!=-1);
+        var app = {
             init: function(){
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();

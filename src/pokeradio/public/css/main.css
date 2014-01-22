@@ -1688,6 +1688,9 @@ body {
   margin: 0;
   background-color: #ebede5;
 }
+body.is-pc {
+  font-family: "Comic Sans" "Comic Sans MS";
+}
 /*------- transitions --------------*/
 /*------- common rules -------*/
 .clearfix:before,
@@ -2126,6 +2129,12 @@ progress.paused::-webkit-progress-bar {
 .disabled .Search-item-add,
 .selected .Search-item-add {
   opacity: 0;
+}
+.Track-popularityprogress::progress-value {
+  background-color: hotpink;
+}
+.Track-popularityprogress::progress-bar {
+  background-color: #bbb;
 }
 .Listing-list {
   padding: 10px 0 20px;
