@@ -84,7 +84,7 @@ class PlayerConnection(SocketConnection):
        try:
            track = Track.objects.filter(href=href, played=False)[0]
            track.set_played()
-       except Track.DoesNotExist:
+       except (Track.DoesNotExist, IndexError):
            pass
 
        self.on_request_track()
@@ -212,6 +212,8 @@ class AppConnection(SocketConnection):
         if self.check_expiry():
             return
         try:
+            # TODO Check that this isnt the first unplayed track in the playlist
+            # as this could mean that its playing now.
             track = Track.objects.get(user=self.user, id=int(track_id),
                                       played=False)
         except Track.DoesNotExist:
