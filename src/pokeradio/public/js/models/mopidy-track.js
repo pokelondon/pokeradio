@@ -15,6 +15,7 @@ define(['jquery',
 
                 initialize: function() {
                     this.collection.on('change:played', this.checkIsPlaying, this);
+
                     if(this.get('user')['id'] === PRAD.user_id) {
                         this.set('isMine', true);
                     }
@@ -28,11 +29,13 @@ define(['jquery',
 
                 checkIsPlaying: function() {
                     // Find next unplayed track
-                    var current_track = this.collection.findWhere({played: false });
-                    if(this.id == current_track.id) {
+                    var current_track = this.collection.findWhere({played: false});
+                    if(this.get('id') == current_track.get('id')) {
                         this.set('isPlaying', true);
+                        return true;
                     }else{
                         this.set('isPlaying', false);
+                        return false;
                     }
                 },
 
@@ -63,10 +66,18 @@ define(['jquery',
                 },
 
                 /**
+                 * Find the index in the collection of this model
+                 * Usefull for splitting off before and after a certain item
+                 */
+                getCollectionIndex: function() {
+                    return this.collection.indexOf(this);
+                },
+
+                /**
                  * Find the total time in minutes of tracks preceeding this one in the playlist
                  */
                 timeTillPlay: function(mins) {
-                    var index = this.collection.indexOf(this);
+                    var index = this.getCollectionIndex();
                     var _preceeding_tracks = this.collection.chain().slice(0, index);
                     var _unplayed = _preceeding_tracks.filter(function(i) { return !i.get('played'); });
                     var t = _unplayed.reduce(function(memo, i) { return memo + i.get('length'); }, 0);

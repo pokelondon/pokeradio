@@ -2765,7 +2765,7 @@ fieldset[disabled] .btn.voted.active {
   display: inline-block;
   vertical-align: middle;
   margin-right: 20px;
-  background: url(/s/img/loading.gif) no-repeat 50% 50%;
+  background: url(/s/img/404-album-60.jpg) no-repeat 50% 50%;
 }
 .Playlist-item-body {
   display: inline-block;
@@ -2846,9 +2846,30 @@ fieldset[disabled] .btn.voted.active {
 .played .Playlist-item-album-art {
   display: none;
 }
+.played .Playlist-item-user {
+  margin-right: 10px;
+}
+.played .btn {
+  font-size: 0.8em;
+  padding: 5px 6px;
+}
 .Track-item-until {
   color: #999;
   font-size: 0.8em;
+}
+.is-playing {
+  margin: 10px 0 20px;
+}
+.is-playing .btn-remove-track {
+  display: none;
+}
+.is-playing .Playlist-item-album-art {
+  width: 100px;
+  height: 100px;
+  background-image: url(/s/img/404-album-100.jpg);
+}
+.is-playing .Playlist-item-track {
+  width: 360px;
 }
 .progress-bar {
   width: auto;

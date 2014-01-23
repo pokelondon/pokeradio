@@ -47,6 +47,12 @@ define(['jquery',
                     } else {
                         this.$el.addClass('not-played').removeClass('played');
                     }
+
+                    if(this.model.checkIsPlaying()) {
+                        this.$el.addClass('is-playing');
+                    } else {
+                        this.$el.removeClass('is-playing');
+                    }
                 },
 
                 /**

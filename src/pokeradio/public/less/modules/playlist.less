@@ -22,7 +22,7 @@
     vertical-align: middle;
     margin-right: 20px;
 
-    background: url(/s/img/loading.gif) no-repeat 50% 50%;
+    background: url(/s/img/404-album-60.jpg) no-repeat 50% 50%;
 }
 
 .Playlist-item-body{
@@ -89,14 +89,12 @@
 }
 
 .played {
-
     .Playlist-item-wrapper{
         border-bottom: 1px #e1e3dc solid;
         background-color: transparent;
         min-height: inherit;
         padding: 4px 10px;
     }
-
     .Playlist-item-name{
         font-size: @font-size-small;
         color: @gray-light;
@@ -118,9 +116,31 @@
     .Playlist-item-album-art {
         display: none;
     }
+    .Playlist-item-user {
+        margin-right: 10px;
+    }
+    .btn {
+        font-size: 0.8em;
+        padding: 5px 6px;
+    }
 }
 
 .Track-item-until {
     color: #999;
     font-size: 0.8em;
+}
+
+.is-playing {
+    margin: 10px 0 20px;
+    .btn-remove-track {
+        display: none;
+    }
+    .Playlist-item-album-art {
+        width: 100px;
+        height: 100px;
+        background-image: url(/s/img/404-album-100.jpg);
+    }
+    .Playlist-item-track {
+        width: 360px;
+    }
 }
