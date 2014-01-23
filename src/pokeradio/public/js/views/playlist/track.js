@@ -2,27 +2,26 @@ define(['jquery',
         'backbone',
         'underscore',
         'views/_base_track',
-        'text!template/playlist/track.html',
-        'bootstrap'
+        'text!template/playlist/track.html'
         ],
         function($, Backbone, _, BaseTrackView, template){
             var TrackView = BaseTrackView.extend({
                 tagName: 'li',
                 template: template,
                 secondOffset: 0,
+                countdownText: '',
                 className: 'Playlist-item media not-played',
                 events:{
                     'click .btn-remove-track': 'removeTrack',
                     'click .btn-like': 'likeTrack',
                     'click .btn-dislike': 'dislikeTrack',
-                    'mouseover': 'timeTillPlay',
-                    'mouseout': 'tooltipClose'
+                    'mouseenter .media-wrapper': 'ttpIn',
                 },
 
                 initialize: function(model) {
                     BaseTrackView.prototype.initialize.apply(this, arguments);
 
-                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses', 'timeTillPlay');
+                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses', 'ttpIn');
                     this.model.on('change:played', this.updatePlayedState, this);
                     this.model.on('remove', this.onTrackRemoved, this);
                     this.model.on('change:liked', this.onVote, this);
@@ -31,6 +30,11 @@ define(['jquery',
 
                     // Get inital State
                     this.updatePlayedState();
+                    $(window).on('ttpIn', _.bind(this.ttpOut, this));
+                    // Proxy event to each instance of this model so it can be unsubed
+                    $(window).on('play:progress:interpolated:seconds', _.bind(function(evt, data) {
+                        this.trigger('update:countdown', data);
+                    }, this));
                 },
 
                 /**
@@ -86,7 +90,7 @@ define(['jquery',
                     if(this.model.get('disliked')) {
                         this.$('.btn-dislike').addClass('voted');
                     }
-                    this.$playingin = this.$('.js-playing-in');
+                    this.$playingin = this.$('.js-playing-in').hide();
                 },
 
                 onTrackRemoved: function() {
@@ -96,24 +100,47 @@ define(['jquery',
                     });
                 },
 
-                timeTillPlay: function() {
+
+                ttpIn: function(evt) {
                     var self = this;
-                    var ttp = this.model.timeTillPlay();
-                    self.$playingin.fadeIn();
-                    $(window).on('play:progress:interpolated:seconds', function(el, seconds) {
-                        var text = '';
+                    var update = function(seconds) {
+                        var ttp = self.model.timeTillPlay();
+                        // Check track isnt already played or playing
                         if(1 > ttp) {
-                            text = 'Playing';
+                            if(self.model.get('played')) {
+                                self.countdownText = '';
+                            } else {
+                                self.countdownText = '▶';
+                            }
                         }else{
-                            text = 'Playing in: ' + _(ttp - seconds).convertToMinutes();
+                            self.countdownText = 'Playing in: ' + _(ttp - seconds).convertToMinutes();
                         }
-                        self.$playingin.text(text);
-                    });
+                        self.$playingin.text(self.countdownText);
+                    };
+                    // Set initial text before a progress event happens
+                    update(0);
+                    // Display the counting text
+                    this.$playingin.fadeIn();
+                    // Proxied event from the progressbar interpolator
+                    this.on('update:countdown', update, this);
+                    // Update if the playlist changes (delete or played)
+                    this.model.collection.on('change', update, this);
+                    // Trigger 'in' event to close other counters
+                    $(window).trigger('ttpIn', this.model.get('id'));
                 },
 
-                tooltipClose: function() {
+                /**
+                 * Triggered on the mouse enter event of all tracks
+                 * Only use this to do the hide sequence if its not this
+                 * one being mouseovered.
+                 */
+                ttpOut: function(evt, id) {
+                    if(this.model.get('id') === id) {
+                        return;
+                    }
                     this.$playingin.fadeOut();
-                    $(window).off('play:progress:interpolated:seconds');
+                    // Unsubscribe from ticking event
+                    this.off('update:countdown');
                 }
             });
             return TrackView;

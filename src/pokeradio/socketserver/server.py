@@ -77,6 +77,11 @@ class PlayerConnection(SocketConnection):
             # Save to archive and count play
             record_track_play(track)
 
+    @event('track_playback_started')
+    def on_track_playback_started(self, href):
+        # TODO Mark track as playing in DB
+        pass
+
     @event('track_playback_ended')
     def on_track_playback_ended(self, href):
        """ Track complete. Mark it as played in the DB and request the next one

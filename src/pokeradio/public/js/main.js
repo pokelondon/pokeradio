@@ -4,8 +4,7 @@ require.config({
         backbone: 'lib/backbone/backbone.min',
         underscore: 'lib/underscore/underscore',
         iobind: 'lib/backbone/backbone.iobind.min',
-        iosync: 'lib/backbone/backbone.iosync.min',
-        bootstrap: 'lib/bootstrap/bootstrap'
+        iosync: 'lib/backbone/backbone.iosync.min'
     },
     shim:{
         'backbone': {
@@ -15,10 +14,6 @@ require.config({
         'underscore': {
             deps: ['jquery'],
             exports: '_'
-        },
-        'bootstrap': {
-            deps: ['jquery'],
-            exports: '$'
         },
         'iosync': {
             deps: ['jquery', 'underscore', 'backbone'],
