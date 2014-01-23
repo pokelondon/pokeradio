@@ -37,8 +37,14 @@
     {% for object in object_list %}
     <div class="Listing">
         <span class="Listing-number">{{ object.plays }}</span>
-        <span class="Listing-title">{{ object.name }}</span>
-        <span class="Listing-sub">{{ object.artist }}</span>
+        {% if 'tracks' == archive %}
+        <span class="Listing-title"><a title="Open in Spotify locally" href="{{ object.spotify_href }}">{{ object.name }}</a></span>
+        <span class="Listing-sub"><a title="Open in Spotify locally" href="{{ object.artist.spotify_artist_href }}">{{ object.artist }}</a></span>
+        {% endif %}
+
+        {% if 'artists' == archive %}
+        <span class="Listing-title"><a title="Open in Spotify locally" href="{{ object.spotify_artist_href }}">{{ object.name }}</a></span>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

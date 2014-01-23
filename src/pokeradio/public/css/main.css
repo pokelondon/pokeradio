@@ -2548,6 +2548,9 @@ body {
   margin: 0;
   background-color: #ebede5;
 }
+a {
+  color: #007799;
+}
 /*------- transitions --------------*/
 /*------- common rules -------*/
 .clearfix:before,
@@ -2815,6 +2818,10 @@ fieldset[disabled] .btn.voted.active {
   vertical-align: middle;
   margin-right: 20px;
 }
+.Track-item-until {
+  color: #999;
+  font-size: 0.8em;
+}
 /*-----Played tracks --*/
 .Playlist-item.played {
   font-size: 12px;
@@ -2852,10 +2859,6 @@ fieldset[disabled] .btn.voted.active {
 .played .btn {
   font-size: 0.8em;
   padding: 5px 6px;
-}
-.Track-item-until {
-  color: #999;
-  font-size: 0.8em;
 }
 .is-playing {
   margin: 10px 0 20px;
@@ -3039,8 +3042,8 @@ progress.paused::-webkit-progress-bar {
 }
 .Listing-number {
   padding: 0 10px 0 0;
-  margin: 0 0 0 -55px;
-  width: 50px;
+  margin: 0 0 0 -65px;
+  width: 80px;
   float: left;
   font-size: 3em;
   font-family: Georgia;

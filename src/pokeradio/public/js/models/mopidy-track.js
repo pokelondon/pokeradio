@@ -30,6 +30,9 @@ define(['jquery',
                 checkIsPlaying: function() {
                     // Find next unplayed track
                     var current_track = this.collection.findWhere({played: false});
+                    if(!current_track) {
+                        return;
+                    }
                     if(this.get('id') == current_track.get('id')) {
                         this.set('isPlaying', true);
                         return true;
