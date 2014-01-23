@@ -7,6 +7,20 @@
     background: #fff;
     margin: 10px 15px;
 }
+
+.progress-bar--small {
+    width: 150px;
+    height: 10px;
+    display: inline-block;
+    margin: 0;
+
+    &::-webkit-progress-value {
+        background-color: @poke-blue;
+    }
+    &::-webkit-progress-bar {
+        background-color: #bbb;
+    }
+}
 progress {
     &::-webkit-progress-value {
         background-color: hotpink;

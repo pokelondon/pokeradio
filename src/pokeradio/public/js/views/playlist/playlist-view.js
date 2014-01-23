@@ -23,6 +23,10 @@ define(['jquery',
                     _.mixin({
                         convertToMinutes: utils.convertToMinutes
                     });
+
+                    if(PRAD.is_fox) {
+                        $('body').addClass('is-pc');
+                    }
                 },
 
                 /**

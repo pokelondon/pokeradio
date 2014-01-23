@@ -24,7 +24,7 @@ class BaseTransaction(models.Model):
         ordering = ['-created']
 
     def __unicode__(self):
-        return '{0} {1}'.format(self.user, self.action)
+        return u'{0} {1}'.format(self.user, self.action)
 
     def save(self, *args, **kwargs):
         """ Save the cost into a DB field for summing on DB server
@@ -73,7 +73,11 @@ class Point(BaseTransaction):
             related_name='vote_from',
             help_text='Voter, to prevent multiple votes')
     playlist_track = models.ForeignKey('pokeradio.Track', blank=True,
-                                       null=True)
+                                       null=True, on_delete=models.SET_NULL)
+
+    # Link to the persistent track obkect for reporting
+    archive_track = models.ForeignKey('history.ArchiveTrack',
+                                      blank=True, null=True)
 
     class Meta(BaseTransaction.Meta):
         unique_together = ('vote_from', 'playlist_track')

@@ -19,6 +19,7 @@ define([
                 this.ioBind('update', this.playlistUpdate, this);
                 this.ioBind('message', this.displayMessage, this);
                 this.ioBind('deleted', this.itemDeleted, this);
+                this.ioBind('expired', this.sessionExpired, this);
 
                 // Request initial playlist data
                 socket.emit('fetch_playlist');
@@ -59,6 +60,15 @@ define([
             itemDeleted: function(id) {
                 var item = this.findWhere({id: parseInt(id)});
                 this.remove(item);
+            },
+
+            /**
+             * This happens when the socket server realises the session's exipred
+             */
+            sessionExpired: function() {
+                alert('Soz, session\'s expired');
+                // Redirect to logout page just in case, so we don't start a loop
+                window.location.href = '/logout/';
             }
 
         });

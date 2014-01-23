@@ -5,7 +5,7 @@ import logging
 from django.conf import settings
 from django.http import Http404
 
-logger = logging.getLogger()
+logger = logging.getLogger('raven')
 
 musicbrainzngs.set_useragent('pokeradio', '0.1', 'developers@pokelondon.com')
 
@@ -21,13 +21,15 @@ def get_image_url(code):
     except requests.exceptions.HTTPError:
         raise Http404()
 
+    if 200 != r.status_code:
+        raise Http404()
+
     spotify_meta = r.json().get('album')
     spotify_meta.get('external-ids')
     ids = spotify_meta.get('external-ids')
     artist = spotify_meta.get('artist')
     release = spotify_meta.get('name')
     barcode = ids[0].get('id')
-    print barcode, artist, release
     imageurl = musicbrainz_get_image(barcode=barcode, artistname=artist,
                                      release=release)
     return imageurl
