@@ -10,6 +10,7 @@ define(['jquery',
             var SearchView = Backbone.View.extend({
                 el: $('#addTrackView'),
                 searchKey: 191, // '/' search key
+                enterToQueue: false,
                 events:{
                     'submit #searchForm': 'search',
                     'click': 'closeView',
@@ -31,6 +32,7 @@ define(['jquery',
                     $('.add-track').on('click', _(this.openView).bind(this));
 
                     this.on('open', this.focusInput, this);
+                    // Non [backbone] delegated event bind for opening and closing the search view
                     this.bindKeys();
                 },
 
@@ -51,17 +53,25 @@ define(['jquery',
                         38: function(evt) {
                             evt.preventDefault();
                             self.collection.selectPrev();
+                            self.enterToQueue = true;
                         },
                         40: function(evt) {
                             evt.preventDefault();
                             self.collection.selectNext();
+                            self.enterToQueue = true;
                         },
                         13: function(evt) {
+                            // Check the flag, only attempt to queue if its not already been done
+                            // Or it might be an enter press for closing an alert (that would cause more to show)
+                            if(!self.enterToQueue) {
+                                return;
+                            }
                             evt.preventDefault();
                             evt.stopPropagation();
                             var model = self.collection.findWhere({'is-focused': true});
                             if(model) {
                                 model.queue();
+                                self.enterToQueue = false;
                             }
                         }
                     }[evt.keyCode](evt);
