@@ -12,6 +12,10 @@ from datetime import datetime, timedelta
 
 from pokeradio.history.models import *
 
+
+ws = 'http://ws.spotify.com/lookup/1/.json?uri={0}'
+
+
 class Year:
     request_count = 0
     SLEEP = 1
@@ -51,7 +55,6 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **kwargs):
-        ws = 'http://ws.spotify.com/lookup/1/.json?uri={0}'
         now = datetime.now()
         a_week = timedelta(weeks=1)
         this_week = [now - a_week, now]
