@@ -73,7 +73,7 @@ define(['jquery',
                  * Usefull for splitting off before and after a certain item
                  */
                 getCollectionIndex: function() {
-                    return this.collection.indexOf(this);
+                    return this.collection.indexOf(this) || 0;
                 },
 
                 /**
