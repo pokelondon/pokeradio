@@ -8,6 +8,14 @@ define([
             url: urls.track,
             model: Track,
             teritory: 'GB',
+            arrowIndex: -1,
+
+            initialize: function() {
+                // Reset keyboard select index when new results are fetched
+                this.on('results', function() { this.arrowIndex = -1; }, this);
+                this.on('queued', this.defocus, this);
+            },
+
             comparator: function(i) {
                 var index = parseFloat(i.get('popularity'));
                 return 1 - index;
@@ -40,6 +48,35 @@ define([
                         self.trigger('results');
                     }
                 });
+            },
+
+            selectNext: function() {
+                if(this.arrowIndex <= this.length) {
+                    this.arrowIndex ++;
+                }
+                this.focus(this.arrowIndex);
+            },
+
+            selectPrev: function() {
+                if(this.arrowIndex > 0) {
+                    this.arrowIndex --;
+                }
+                this.focus(this.arrowIndex);
+            },
+
+            focus: function(index) {
+                var model = this.at(index);
+                if(!model) { return false; }
+                this.defocus();
+                model.set('is-focused', true);
+                return true;
+            },
+
+            /**
+             * Remove keyboard selection 'focus' from all models
+             */
+            defocus: function() {
+                this.invoke('set', 'is-focused', false);
             }
         });
         return new Collection();

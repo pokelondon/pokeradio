@@ -19,18 +19,11 @@ define(['jquery',
 
                 initialize: function() {
                     BaseTrackView.prototype.initialize.apply(this, arguments);
-                    this.model.on('change:selected', this.onSelect, this);
-                },
-
-                /**
-                 * When rendering, add a class if the song is aready queued.
-                 */
-                render: function() {
-                    if(this.model.get('inQueue')) {
-                        this.$el.addClass('disabled');
-                    }
-
-                    return BaseTrackView.prototype.render.call(this);
+                    this.model.on('change:is-selected', this.onSelectChange, this);
+                    this.model.on('change:is-focused', this.onFocusChange, this);
+                    // Initial state for tracks that are already in the playlist
+                    // Checked against mopidy playlist on model init
+                    this.onSelectChange();
                 },
 
                 /**
@@ -41,6 +34,9 @@ define(['jquery',
                     this.model.queue();
                 },
 
+                /**
+                 * Embed the spotify iframe player for this track
+                 */
                 preview: function(evt) {
                     evt.preventDefault();
                     evt.stopPropagation();
@@ -49,11 +45,28 @@ define(['jquery',
                     this.$('.js-search-item-details-preview').html($iframe);
                 },
 
-                onSelect: function() {
-                    if(this.model.get('selected')) {
-                        this.$el.addClass('selected');
+                /**
+                 * Add and remove class for selected state
+                 * selected is when a track is in the playlist
+                 */
+                onSelectChange: function() {
+                    if(this.model.get('is-selected')) {
+                        this.$el.addClass('is-selected');
                     } else {
-                        this.$el.removeClass('selected');
+                        this.$el.removeClass('is-selected');
+                    }
+                },
+
+                /**
+                 * Add and remove class for focused state
+                 * focused state is when a model is considered active
+                 * by keyboarding up and down the search results
+                 */
+                onFocusChange: function() {
+                    if(this.model.get('is-focused')) {
+                        this.$el.addClass('is-focused');
+                    } else {
+                        this.$el.removeClass('is-focused');
                     }
                 }
             });

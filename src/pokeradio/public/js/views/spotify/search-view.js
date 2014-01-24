@@ -13,10 +13,12 @@ define(['jquery',
                 events:{
                     'submit #searchForm': 'search',
                     'click': 'closeView',
-                    'click .Search-wrapper form, .Search-items': 'catchEvent'
+                    'click .Search-wrapper form, .Search-items': 'catchEvent',
+                    'keyup #searchInput': 'arrowKeys'
                 },
 
-                initialize: function(){
+                initialize: function() {
+                    _.bindAll(this, 'arrowKeys');
                     this.collection = spotifyTracks;
                     this.collection.on('results', this.render, this);
 
@@ -30,6 +32,39 @@ define(['jquery',
 
                     this.on('open', this.focusInput, this);
                     this.bindKeys();
+                },
+
+                /**
+                 * While the text input is in focus, listen to keyup events
+                 * If they are arrows, toggle the selected item in the collection
+                 */
+                arrowKeys: function(evt) {
+                    var self = this;
+                    var UP = 38;
+                    var DOWN = 40;
+                    var ENTER = 13;
+
+                    if([UP, DOWN, ENTER].indexOf(evt.keyCode) < 0) {
+                        return;
+                    }
+                    return {
+                        38: function(evt) {
+                            evt.preventDefault();
+                            self.collection.selectPrev();
+                        },
+                        40: function(evt) {
+                            evt.preventDefault();
+                            self.collection.selectNext();
+                        },
+                        13: function(evt) {
+                            evt.preventDefault();
+                            evt.stopPropagation();
+                            var model = self.collection.findWhere({'is-focused': true});
+                            if(model) {
+                                model.queue();
+                            }
+                        }
+                    }[evt.keyCode](evt);
                 },
 
                 /**
