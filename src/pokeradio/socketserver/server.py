@@ -119,7 +119,8 @@ class AppConnection(SocketConnection):
     """ Instances of this class represent connections to the browsers via
     websocket. Connection to the player socket server is via redis
     """
-    CHANNELS = ['pr:track_add', 'pr:track_delete', 'pr:progress']
+    CHANNELS = ['pr:track_add', 'pr:track_delete', 'pr:progress',
+                'pr:track_played']
 
     def __init__(self, *args, **kwargs):
         super(AppConnection, self).__init__(*args, **kwargs)
@@ -187,6 +188,10 @@ class AppConnection(SocketConnection):
                     self.emit('playlist:progress', data.body)
 
             if data.channel == 'pr:track_add':
+                self.emit('playlist:update', data.body)
+
+            if data.channel == 'pr:track_played':
+                # Same socket evemt playlist is updated
                 self.emit('playlist:update', data.body)
 
     def check_expiry(self):

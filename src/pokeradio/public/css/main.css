@@ -2548,6 +2548,9 @@ body {
   margin: 0;
   background-color: #ebede5;
 }
+a {
+  color: #007799;
+}
 /*------- transitions --------------*/
 /*------- common rules -------*/
 .clearfix:before,
@@ -2765,7 +2768,7 @@ fieldset[disabled] .btn.voted.active {
   display: inline-block;
   vertical-align: middle;
   margin-right: 20px;
-  background: url(/s/img/loading.gif) no-repeat 50% 50%;
+  background: url(/s/img/404-album-60.jpg) no-repeat 50% 50%;
 }
 .Playlist-item-body {
   display: inline-block;
@@ -2815,6 +2818,10 @@ fieldset[disabled] .btn.voted.active {
   vertical-align: middle;
   margin-right: 20px;
 }
+.Track-item-until {
+  color: #999;
+  font-size: 0.8em;
+}
 /*-----Played tracks --*/
 .Playlist-item.played {
   font-size: 12px;
@@ -2846,9 +2853,26 @@ fieldset[disabled] .btn.voted.active {
 .played .Playlist-item-album-art {
   display: none;
 }
-.Track-item-until {
-  color: #999;
+.played .Playlist-item-user {
+  margin-right: 10px;
+}
+.played .btn {
   font-size: 0.8em;
+  padding: 5px 6px;
+}
+.is-playing {
+  margin: 10px 0 20px;
+}
+.is-playing .btn-remove-track {
+  display: none;
+}
+.is-playing .Playlist-item-album-art {
+  width: 100px;
+  height: 100px;
+  background-image: url(/s/img/404-album-100.jpg);
+}
+.is-playing .Playlist-item-track {
+  width: 360px;
 }
 .progress-bar {
   width: auto;
@@ -2965,9 +2989,19 @@ progress.paused::-webkit-progress-bar {
   background-color: #ffffff;
   border-bottom: 1px #ebede5 solid;
 }
-.Search-item.disabled,
-.Search-item.selected {
+.Search-item.is-selected {
   background: #f7f8f5;
+}
+.Search-item.is-selected .Search-item-add {
+  opacity: 0;
+}
+.Search-item.is-focused {
+  background: #007799;
+  color: #fff;
+}
+.Search-item.is-focused .Search-item-secondaryText {
+  color: #fff;
+  opacity: 0.7;
 }
 .Search-item-body {
   padding: 0 15px;
@@ -3002,10 +3036,6 @@ progress.paused::-webkit-progress-bar {
 .Search-item-add:active {
   box-shadow: inset 0 2px 2px #009ecc;
 }
-.disabled .Search-item-add,
-.selected .Search-item-add {
-  opacity: 0;
-}
 .Listing-list {
   padding: 10px 0 20px;
 }
@@ -3018,8 +3048,8 @@ progress.paused::-webkit-progress-bar {
 }
 .Listing-number {
   padding: 0 10px 0 0;
-  margin: 0 0 0 -55px;
-  width: 50px;
+  margin: 0 0 0 -65px;
+  width: 80px;
   float: left;
   font-size: 3em;
   font-family: Georgia;

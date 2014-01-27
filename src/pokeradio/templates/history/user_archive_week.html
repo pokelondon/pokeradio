@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ who|title }} plays for {{ week }} | {{ block.super }}{% endblock %}
+
+
+{% block container %}
+<div class="box">
+    <h1>Playas</h1>
+    <h3>Week Commencing: {{ week }}</h3>
+</div>
+
+{% include 'history/_week_links.html' with pattern='history:leaderboard' %}
+
+<a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
+
+<div class="Listing-list">
+    {% for object in object_list %}
+    <div class="Listing">
+        <span class="Listing-number">{{ object.number }}</span>
+
+        <span class="Listing-title">{{ object.user.get_full_name }}</span>
+
+        {% regroup object.tracks by artist as artist_list %}
+        {% for artist in artist_list %}
+            <strong><a title="Open in Spotify locally" href="{{ artist.grouper.spotify_artist_href }}">{{ artist.grouper }}</a></strong> -
+            {% for item in artist.list %}
+            <a title="Open in Spotify locally" href="{{ item.spotify_href }}">{{ item.name }}</a>{% if item.plays > 1 %} &times;{{ item.plays }}{% endif %}{% if not forloop.last %},{% endif %}
+            {% endfor %}<br />
+        {% endfor %}
+
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+

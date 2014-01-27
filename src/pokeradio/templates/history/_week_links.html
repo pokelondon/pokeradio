@@ -1,6 +1,15 @@
-{% if previous_week %}
-<a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' who=who %}" class="btn secondary">&larr; Previous Week</a>
-{% endif %}
-{% if next_week %}
-<a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' who=who %}" class="btn primary">Next Week &rarr;</a>
+{% if who %}
+    {% if previous_week %}
+    <a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' who=who %}" class="btn secondary">&larr; Previous Week</a>
+    {% endif %}
+    {% if next_week %}
+    <a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' who=who %}" class="btn primary">Next Week &rarr;</a>
+    {% endif %}
+{% else %}
+    {% if previous_week %}
+    <a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' %}" class="btn secondary">&larr; Previous Week</a>
+    {% endif %}
+    {% if next_week %}
+    <a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' %}" class="btn primary">Next Week &rarr;</a>
+    {% endif %}
 {% endif %}

@@ -12,6 +12,7 @@ from django.contrib.sites.models import Site
 from .models import Track
 
 class TrackAdmin(admin.ModelAdmin):
+    search_fields = ('name', 'artist', 'user__first_name', 'user__last_name')
     list_display = ('name', 'artist', 'played', 'user', 'length')
     list_filter = ('artist', 'user', 'played')
 

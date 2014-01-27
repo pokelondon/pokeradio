@@ -14,7 +14,11 @@
         <h2>My stuff</h2>
         <a href="{% url 'scoring:credits_index' %}" class="btn">Disco biscuits</a>
         <a href="{% url 'scoring:points_index' %}" class="btn">Fake internet points</a>
-        <a href="#na" class="btn disabled">Players</a>
+        {% if request.user.is_superuser %}
+        <a href="{% url 'history:leaderboard_index' %}" class="btn">Playas</a>
+        {% else %}
+        <a href="#na" class="btn disabled">Playas</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
