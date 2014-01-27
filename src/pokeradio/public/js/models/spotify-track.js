@@ -7,14 +7,17 @@ define(['jquery',
             var Track = Backbone.Model.extend({
                 idAttribute: "href",
                 defaults: {
-                    selected: false,
-                    inQueue: false
+                    'is-selected': false
                 },
 
                 initialize: function() {
+                    this.setSelected();
+                },
+
+                setSelected: function() {
                     // Initial value for inqueue to dim out stuff when
                     // a new search is made
-                    this.set('inQueue', this.checkInPlaylist());
+                    this.set('is-selected', this.checkInPlaylist());
                 },
 
                 /**
@@ -37,7 +40,8 @@ define(['jquery',
                         }
                     };
                     socket.emit('add_track', JSON.stringify(track_payload));
-                    this.set('selected', !this.get('selected'));
+                    this.set('is-selected', true);
+                    this.collection.trigger('queued');
                 },
 
                 /**

@@ -10,13 +10,16 @@ define(['jquery',
             var SearchView = Backbone.View.extend({
                 el: $('#addTrackView'),
                 searchKey: 191, // '/' search key
+                enterToQueue: false,
                 events:{
                     'submit #searchForm': 'search',
                     'click': 'closeView',
-                    'click .Search-wrapper form, .Search-items': 'catchEvent'
+                    'click .Search-wrapper form, .Search-items': 'catchEvent',
+                    'keyup #searchInput': 'arrowKeys'
                 },
 
-                initialize: function(){
+                initialize: function() {
+                    _.bindAll(this, 'arrowKeys');
                     this.collection = spotifyTracks;
                     this.collection.on('results', this.render, this);
 
@@ -29,7 +32,49 @@ define(['jquery',
                     $('.add-track').on('click', _(this.openView).bind(this));
 
                     this.on('open', this.focusInput, this);
+                    // Non [backbone] delegated event bind for opening and closing the search view
                     this.bindKeys();
+                },
+
+                /**
+                 * While the text input is in focus, listen to keyup events
+                 * If they are arrows, toggle the selected item in the collection
+                 */
+                arrowKeys: function(evt) {
+                    var self = this;
+                    var UP = 38;
+                    var DOWN = 40;
+                    var ENTER = 13;
+
+                    if([UP, DOWN, ENTER].indexOf(evt.keyCode) < 0) {
+                        return;
+                    }
+                    return {
+                        38: function(evt) {
+                            evt.preventDefault();
+                            self.collection.selectPrev();
+                            self.enterToQueue = true;
+                        },
+                        40: function(evt) {
+                            evt.preventDefault();
+                            self.collection.selectNext();
+                            self.enterToQueue = true;
+                        },
+                        13: function(evt) {
+                            // Check the flag, only attempt to queue if its not already been done
+                            // Or it might be an enter press for closing an alert (that would cause more to show)
+                            if(!self.enterToQueue) {
+                                return;
+                            }
+                            evt.preventDefault();
+                            evt.stopPropagation();
+                            var model = self.collection.findWhere({'is-focused': true});
+                            if(model) {
+                                model.queue();
+                                self.enterToQueue = false;
+                            }
+                        }
+                    }[evt.keyCode](evt);
                 },
 
                 /**

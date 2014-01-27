@@ -34,6 +34,7 @@ install_dependencies = [
     'musicbrainzngs == 0.4',
     'Pillow == 2.3.0',
     'requests==2.0.0',
+    'plotly',
 ]
 
 # Test Dependencies
