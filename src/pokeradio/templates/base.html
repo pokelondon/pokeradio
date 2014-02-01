@@ -23,6 +23,8 @@
 
         {% block scripts %}
         {% endblock %}
+        {% block head %}
+        {% endblock %}
     </head>
     <body>
         <Header class="Header">
@@ -43,6 +45,8 @@
             {% block container %}
             {% endblock %}
             </div>
-        <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
+            {% block js %}
+                <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
+            {% endblock %}
     </body>
 </html>

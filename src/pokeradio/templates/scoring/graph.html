@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <script>
+        var PRAD = PRAD || {};
+        PRAD.json_endpoint = "{% url 'scoring:graph_json' %}";
+    </script>
+    <style>
+        .link {
+            stroke: #ccc;
+        }
+        .node text {
+            pointer-events: none;
+            font: 10px sans-serif;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="{{ STATIC_URL }}js/scripts/graph.js"></script>
+{% endblock %}
+
+{% block container %}
+
+<div class="box">
+    <h1>Leaderboard</h1>
+</div>
+<div id="graph">
+</div>
+{% endblock %}
+
