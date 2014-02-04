@@ -8,19 +8,18 @@
         .attr("height", height);
 
     var force = d3.layout.force()
-        .distance(500)
-        .gravity(0.3)
-        .charge(30)
+        .gravity(0.5)
+        .friction(0.9)
+        .charge(-900)
+        .linkDistance(300)
         .size([width, height]);
 
     d3.json(PRAD.json_endpoint, function(error, json) {
-        console.log(json);
         force
-            .nodes(json.nodes)
             .links(json.links)
-            .charge(function(d) {return d.value;})
+            .nodes(json.nodes)
+            .charge(function(d) {return d * -10;})
             .start();
-            //.charge(function(d) {return d.value;})
 
         var link = svg.selectAll(".link")
             .data(json.links)
@@ -43,13 +42,13 @@
 
         node.append("image")
             .attr("xlink:href", function(d) { return "http://pokerad.io/profilepictures/" + d.id + ".jpg";})
-            .attr("x", -10)
-            .attr("y", -10)
-            .attr("width", 20)
-            .attr("height", 20);
+            .attr("x", -15)
+            .attr("y", -15)
+            .attr("width", 30)
+            .attr("height", 30);
 
         node.append("text")
-            .attr("dx", 12)
+            .attr("dx", 22)
             .attr("dy", ".35em")
             .text(function(d) { return d.name });
 

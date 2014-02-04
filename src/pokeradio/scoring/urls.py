@@ -23,8 +23,13 @@ urls = [
     url(r'^fake-internet-points/(?P<year>\d{4})/(?P<week>\d+)/$', 'points_week',
         name='points_week'),
     # JSON
-    url(r'^graph/$', TemplateView.as_view(template_name="scoring/graph.html"),
-        name='graph'),
-    url(r'^graph.json$', 'graph_json', name='graph_json'),
+    url(r'^graph/force/$',
+        TemplateView.as_view(template_name="scoring/graph_force.html"),
+        name='graph_force'),
+    url(r'^graph/wheel/$',
+        TemplateView.as_view(template_name="scoring/graph_wheel.html"),
+        name='graph_wheel'),
+    url(r'^force.json$', 'force_graph_json', name='force_graph_json'),
+    url(r'^wheel.json$', 'wheel_graph_json', name='wheel_graph_json'),
 ]
 urlpatterns += patterns('pokeradio.scoring.views', *urls)
