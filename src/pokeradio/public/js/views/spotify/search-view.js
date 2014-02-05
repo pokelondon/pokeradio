@@ -34,6 +34,8 @@ define(['jquery',
                     this.on('open', this.focusInput, this);
                     // Non [backbone] delegated event bind for opening and closing the search view
                     this.bindKeys();
+                    $('html').on('dragenter dragover dragleave', this.ignoreEvent);
+                    $('html').on('drop', _(this.drop).bind(this));
                 },
 
                 /**
@@ -94,6 +96,9 @@ define(['jquery',
                         var view = new TrackView(model);
                         self.$list.append(view.render().el);
                     });
+                    if(this.collection.endpoint == 'lookup') {
+                        $('#searchInput').val(this.collection.at(0).attributes.name);
+                    }
                     return this;
                 },
 
@@ -146,6 +151,25 @@ define(['jquery',
                  */
                 bindKeys: function() {
                     $(window).on('keyup', _(this.windowKeyup).bind(this));
+                },
+                /**
+                 * Drop
+                 */
+                drop: function(evt) {
+                    evt.preventDefault();
+                    uri = evt.originalEvent.dataTransfer.getData('Text');
+                    uri = (uri.split('/'));
+                    uri.splice(0,3);
+                    uri.splice(0,0,'spotify');
+                    if (uri[1] != 'track') {
+                        return false;
+                    }
+                    this.collection.lookup(uri.join(':'));
+                    this.openView();
+                },
+                ignoreEvent: function(evt) {
+                     evt.preventDefault();
+                     evt.stopPropagation();
                 }
             });
             return SearchView;
