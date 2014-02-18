@@ -27,6 +27,8 @@
     <body>
         <Header class="Header">
             <div class="container">
+                {% block leaderboard %}
+                {% endblock %}
                 <a href="/"><div class="Header-logo"></div></a>
                 {%  if request.user.is_authenticated %}
                 <div class='Header-userControls'>
