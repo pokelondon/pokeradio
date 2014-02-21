@@ -6,7 +6,7 @@ from django.db import models
 
 
 payload = {
-    "channel": "test",
+    "channel": "#general",
     "username": "Poke Radio",
     "fallback": "Track Vote",
 }
