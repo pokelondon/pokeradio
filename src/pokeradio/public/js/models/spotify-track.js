@@ -54,8 +54,7 @@ define(['jquery',
                 },
 
                 checkInBlacklist: function() {
-                    if(window.PRAD.blacklist.indexOf(this.get('href')) >= 0) {
-                        console.log(this.get('name'), 'in blakclist');
+                    if(_(window.PRAD.blacklist).indexOf(this.get('href')) >= 0) {
                         return true;
                     }
                     return false;
