@@ -5,6 +5,8 @@
             var socket = io.connect('{{ socketio_client_url }}');
             var PRAD = PRAD || {};
             PRAD.user_id = {{ request.user.id }};
+            PRAD.blacklist = {{ blacklist|safe }};
+            PRAD.first_name = '{{ request.user.first_name }}';
         </script>
 {% endblock %}
 
