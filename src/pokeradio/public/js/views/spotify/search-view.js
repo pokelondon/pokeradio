@@ -160,7 +160,6 @@ define(['jquery',
                  * Drop
                  */
                 drop: function(evt) {
-            
                     if($(evt.target).parents('.js-dropzone').length) {
                         evt.stopPropagation();
                         evt.preventDefault();
@@ -172,14 +171,11 @@ define(['jquery',
                             alert('Only single tracks from Spotify\xAE are allowed');
                         }
                     }
-                    
                     $('.js-Search-dragDrop').fadeOut(300, function(){
                         $('body').removeClass('on-drag');
                     });
                 },
                 ignoreEvent: function(evt) {
-                  
-                    
                     switch (evt.type) {
                         case 'dragenter':
                             console.log('in');
@@ -194,10 +190,7 @@ define(['jquery',
                                 });
                             }
                             break;
-                           
                     }
-                    console.log(evt.originalEvent.dataTransfer.types);
-                    
                     evt.stopPropagation();
                     evt.preventDefault();
                 }
