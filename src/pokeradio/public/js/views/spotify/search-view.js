@@ -39,7 +39,7 @@ define(['jquery',
                     $('html').on('drop', 'body', _(this.drop).bind(this));
 
                     //Validate spotify uris
-                    this.spotify_validate = new RegExp('^spotify:track:', 'i');
+                    this.spotify_validate = new RegExp('^spotify:track:([a-zA-Z0-9]{22})$', 'i');
                 },
 
                 /**
@@ -163,7 +163,8 @@ define(['jquery',
                     if($(evt.target).parents('.js-dropzone').length) {
                         evt.stopPropagation();
                         evt.preventDefault();
-                        uri = evt.originalEvent.dataTransfer.getData('text/uri-list');
+                        uri = this.parseSpotifyUri(evt);
+                        console.log(uri);
                         if(this.spotify_validate.test(uri)) {
                             this.collection.lookup(uri);
                             this.openView();
@@ -193,6 +194,24 @@ define(['jquery',
                     }
                     evt.stopPropagation();
                     evt.preventDefault();
+                },
+                parseSpotifyUri: function(evt){
+                    var uri = evt.originalEvent.dataTransfer.getData('text/uri-list');
+                    if(this.spotify_validate.test(uri)) {
+                        return uri;
+                    } else {
+                        var dndData = evt.originalEvent.dataTransfer.getData('Text');
+                        dndData_uri = (dndData.split('/'));
+                        // removing "http://open.spotify.com/"
+                        dndData_uri.splice(0,3);
+                        dndData_uri.splice(0,0,'spotify');
+                        uri = dndData_uri.join(':');
+
+                        if (this.spotify_validate.test(uri)) {
+                         return uri;
+                        }
+                    }
+                    return false;
                 }
             });
             return SearchView;
