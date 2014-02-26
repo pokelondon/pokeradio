@@ -34,8 +34,12 @@ define(['jquery',
                     this.on('open', this.focusInput, this);
                     // Non [backbone] delegated event bind for opening and closing the search view
                     this.bindKeys();
-                    $('html').on('dragenter dragover dragleave', this.ignoreEvent);
-                    $('html').on('drop', _(this.drop).bind(this));
+                    $('html').on('drag dragenter dragover dragleave drop', 'body', this.ignoreEvent);
+
+                    $('html').on('drop', 'body', _(this.drop).bind(this));
+
+                    //Validate spotify uris
+                    this.spotify_validate = new RegExp('^spotify:track:', 'i');
                 },
 
                 /**
@@ -156,20 +160,46 @@ define(['jquery',
                  * Drop
                  */
                 drop: function(evt) {
-                    evt.preventDefault();
-                    uri = evt.originalEvent.dataTransfer.getData('Text');
-                    uri = (uri.split('/'));
-                    uri.splice(0,3);
-                    uri.splice(0,0,'spotify');
-                    if (uri[1] != 'track') {
-                        return false;
+            
+                    if($(evt.target).parents('.js-dropzone').length) {
+                        evt.stopPropagation();
+                        evt.preventDefault();
+                        uri = evt.originalEvent.dataTransfer.getData('text/uri-list');
+                        if(this.spotify_validate.test(uri)) {
+                            this.collection.lookup(uri);
+                            this.openView();
+                        }else {
+                            alert('Only single tracks from Spotify\xAE are allowed');
+                        }
                     }
-                    this.collection.lookup(uri.join(':'));
-                    this.openView();
+                    
+                    $('.js-Search-dragDrop').fadeOut(300, function(){
+                        $('body').removeClass('on-drag');
+                    });
                 },
                 ignoreEvent: function(evt) {
-                     evt.preventDefault();
-                     evt.stopPropagation();
+                  
+                    
+                    switch (evt.type) {
+                        case 'dragenter':
+                            console.log('in');
+                            lastenter = evt.target;
+                            $('.js-Search-dragDrop').fadeIn();
+                             $('body').addClass('on-drag');
+                            break;
+                        case 'dragleave':
+                            if (lastenter === evt.target) {
+                                $('.js-Search-dragDrop').fadeOut(300, function(){
+                                    $('body').removeClass('on-drag');
+                                });
+                            }
+                            break;
+                           
+                    }
+                    console.log(evt.originalEvent.dataTransfer.types);
+                    
+                    evt.stopPropagation();
+                    evt.preventDefault();
                 }
             });
             return SearchView;

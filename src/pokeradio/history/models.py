@@ -8,7 +8,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
-from .managers import ArtistManager, TrackManager
+from .managers import ArtistManager, TrackManager, BlacklistManager
 
 
 class Base(models.Model):
@@ -33,10 +33,12 @@ class ArchiveTrack(Base):
     spotify_href = models.CharField(max_length=255, unique=True)
     length = models.FloatField(null=True)
     spotify_album_href = models.CharField(max_length=255)
+    in_blacklist = models.BooleanField(default=False)
 
     artist = models.ForeignKey(Artist)
 
     objects = TrackManager()
+    blacklist = BlacklistManager()
 
     def __unicode__(self):
         return u'{0} - {1}'.format(self.name, self.artist)

@@ -17,7 +17,6 @@ install_dependencies = [
     'Django >= 1.6, < 1.7',
     'MySQL-python == 1.2.4',
     'South == 0.7.6',
-    'bootstrap-admin == 0.1.9',
     'django-picklefield == 0.3.0',
     'raven == 3.3.5',
     'gunicorn == 18.0',

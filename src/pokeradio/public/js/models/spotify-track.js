@@ -51,6 +51,13 @@ define(['jquery',
                 checkInPlaylist: function() {
                     var res = mopidyPlaylist.findWhere({href: this.get('href')});
                     return !!res;
+                },
+
+                checkInBlacklist: function() {
+                    if(_(window.PRAD.blacklist).indexOf(this.get('href')) >= 0) {
+                        return true;
+                    }
+                    return false;
                 }
         });
         return Track;

@@ -21,3 +21,9 @@ class TrackManager(Manager):
     def plays(self, **kwargs):
         return super(TrackManager, self).get_query_set()\
                 .annotate(plays=Count('play')).order_by('-plays')
+
+
+class BlacklistManager(Manager):
+
+    def get_query_set(self, **kwargs):
+        return super(BlacklistManager, self).get_query_set().filter(in_blacklist=True)
