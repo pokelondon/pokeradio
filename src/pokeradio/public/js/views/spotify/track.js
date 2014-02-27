@@ -31,6 +31,9 @@ define(['jquery',
                  */
                 queueTrack: function(evt) {
                     evt.preventDefault();
+                    if(this.model.checkInBlacklist()) {
+                        alert('Think about what you\'re doing here ' + window.PRAD.first_name);
+                    }
                     this.model.queue();
                 },
 

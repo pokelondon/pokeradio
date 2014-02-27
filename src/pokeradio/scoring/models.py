@@ -6,8 +6,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models.signals import post_save
 
 from .managers import TransactionManager
+from .recievers import report_vote
 
 
 class BaseTransaction(models.Model):
@@ -86,3 +88,5 @@ class Point(BaseTransaction):
         """ Considering the action, caculate the cost of this transaction
         """
         return settings.POKERADIO_SCORING_POINT.get(self.action, 0)
+
+post_save.connect(report_vote, sender=Point)
