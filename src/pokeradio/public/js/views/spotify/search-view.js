@@ -164,8 +164,7 @@ define(['jquery',
                         evt.stopPropagation();
                         evt.preventDefault();
                         uri = this.parseSpotifyUri(evt);
-                        console.log(uri);
-                        if(this.spotify_validate.test(uri)) {
+                        if(uri) {
                             this.collection.lookup(uri);
                             this.openView();
                         }else {
@@ -179,7 +178,6 @@ define(['jquery',
                 ignoreEvent: function(evt) {
                     switch (evt.type) {
                         case 'dragenter':
-                            console.log('in');
                             lastenter = evt.target;
                             $('.js-Search-dragDrop').fadeIn();
                              $('body').addClass('on-drag');
