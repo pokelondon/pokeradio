@@ -80,3 +80,46 @@
 .w--27 { width: @unit * 27; }
 .w--28 { width: @unit * 28; }
 .w--29 { width: @unit * 29; }
+
+
+
+.Listing--bar {
+    position: relative;
+    padding: 0;
+    background: #000;
+    border-bottom-color: #000;
+    * {
+        position: relative;
+        z-index: 1;
+    }
+    .Listing-number {
+
+    }
+    .Listing-title {
+        text-align: center;
+        text-transform: uppercase;
+        color: #fff;
+        font-size: 30px;
+        letter-spacing: 5px;
+        opacity: 0.3;
+        .transition(opacity 500ms);
+    }
+    &:hover {
+        .Listing-title {
+            opacity: 1;
+        }
+    }
+}
+.Bar {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    z-index: 0;
+}
+.Bar--likes {
+    background: @poke-blue;
+}
+.Bar--dislikes {
+    background: @poke-pink;
+}

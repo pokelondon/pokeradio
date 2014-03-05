@@ -3222,3 +3222,41 @@ progress.paused::-webkit-progress-bar {
 .w--29 {
   width: 116%;
 }
+.Listing--bar {
+  position: relative;
+  padding: 0;
+  background: #000;
+  border-bottom-color: #000;
+}
+.Listing--bar * {
+  position: relative;
+  z-index: 1;
+}
+.Listing--bar .Listing-title {
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 30px;
+  letter-spacing: 5px;
+  opacity: 0.3;
+  -webkit-transition: opacity 500ms;
+  -moz-transition: opacity 500ms;
+  -o-transition: opacity 500ms;
+  transition: opacity 500ms;
+}
+.Listing--bar:hover .Listing-title {
+  opacity: 1;
+}
+.Bar {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  z-index: 0;
+}
+.Bar--likes {
+  background: #00c6ff;
+}
+.Bar--dislikes {
+  background: #f5007f;
+}

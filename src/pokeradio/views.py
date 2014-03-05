@@ -15,15 +15,15 @@ class HomeView(TemplateView, ContextMixin):
     template_name = 'home/index.html'
 
     def get_leaderboard(self):
-        now = datetime.now()
-        a_week = timedelta(weeks=4)
-        this_week = [now - a_week, now]
+        today = datetime.today().date()
+        td  = timedelta(days=1)
+        period = [today, today + td]
 
         qs = User.objects.all()
         object_list = []
 
         for i in qs:
-            points = i.point_set.filter(created__range=this_week)
+            points = i.point_set.filter(created__range=period)
             likes = points.filter(action=Point.TRACK_LIKED).count()
             dislikes = points.filter(action=Point.TRACK_DISLIKED).count()
             if likes < 1 or likes - dislikes < 1:
