@@ -3225,20 +3225,22 @@ progress.paused::-webkit-progress-bar {
 .Listing--bar {
   position: relative;
   padding: 0;
-  background: #000;
-  border-bottom-color: #000;
+  border-bottom: none;
+  margin-bottom: 1px;
+  background: rgba(0, 0, 0, 0.4);
+  text-align: center;
 }
 .Listing--bar * {
   position: relative;
   z-index: 1;
 }
 .Listing--bar .Listing-title {
-  text-align: center;
+  display: inline-block;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  padding: 1px 7px;
+  margin-top: 10px;
   color: #fff;
-  font-size: 30px;
-  letter-spacing: 5px;
-  opacity: 0.3;
   -webkit-transition: opacity 500ms;
   -moz-transition: opacity 500ms;
   -o-transition: opacity 500ms;
@@ -3255,8 +3257,17 @@ progress.paused::-webkit-progress-bar {
   z-index: 0;
 }
 .Bar--likes {
-  background: #00c6ff;
+  background: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.6);
+  /*border-top-right-radius: 20px;*/
+
+  /*border-bottom-right-radius: 20px;*/
+
 }
 .Bar--dislikes {
-  background: #f5007f;
+  background: rgba(0, 0, 0, 0.5);
+  /*border-top-left-radius: 20px;*/
+
+  /*border-bottom-left-radius: 20px;*/
+
 }
