@@ -2861,6 +2861,37 @@ fieldset[disabled] .btn.voted.active {
 .Header-userControls-info {
   float: left;
 }
+#owlFavs {
+  padding: 0;
+  font-size: 12px;
+}
+#owlFavs img {
+  width: 100%;
+  height: auto;
+  display: block;
+  min-height: 158px;
+}
+#owlFavs li {
+  width: 100%;
+  list-style: none;
+  display: block;
+  float: left;
+  background: #fff;
+  height: 235px;
+  margin: 0 10px 0 0;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+#owlFavs .label {
+  display: block;
+  padding: 5px;
+  color: #444;
+  font-style: italic;
+}
+#owlFavs strong {
+  display: block;
+  color: #4d0428;
+  font-style: normal;
+}
 .Playlist-item {
   padding-left: 15px;
   padding-right: 15px;
@@ -3179,6 +3210,15 @@ progress.paused::-webkit-progress-bar {
   line-height: 1em;
   text-align: center;
 }
+.Listing-number .fa {
+  margin-top: 15px;
+}
+.Listing-number .fa-thumbs-up {
+  color: #0093a8;
+}
+.Listing-number .fa-thumbs-down {
+  color: #f1525d;
+}
 .Listing--minus .Listing-number {
   color: #f1525d;
 }
@@ -3191,6 +3231,12 @@ progress.paused::-webkit-progress-bar {
   display: block;
   font-size: 1em;
   font-weight: bold;
+}
+.Listing-artwork {
+  float: left;
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
 }
 .Listing-date,
 .Listing-sub {

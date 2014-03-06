@@ -7,6 +7,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from .managers import ArtistManager, TrackManager
 
@@ -40,6 +41,11 @@ class ArchiveTrack(Base):
 
     def __unicode__(self):
         return u'{0} - {1}'.format(self.name, self.artist)
+
+    @property
+    def artwork_url(self):
+        album_id = self.spotify_album_href.split(':')[2]
+        return reverse('albumart:getimage', args=(album_id, ))
 
 
 class Play(Base):

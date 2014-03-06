@@ -1,8 +1,20 @@
 {% extends 'base.html' %}
 
+{% block footer_scripts %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}lib/owl-carousel/owl.carousel.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#owlFavs").owlCarousel({
+                items: 4,
+                });
+            });
+    </script>
+{% endblock %}
+
 {% block container %}
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
 
         <h2><i class="fa fa-flask"></i> Data!</h2>
         <a href="{% url 'history:vote_tracks_index' 'all' %}" class="btn"><i class="fa fa-heart"></i> Most liked tracks</a>
@@ -13,14 +25,22 @@
         <p><a href="{% url 'history:play_tracks_index' 'all' %}"><i class="fa fa-music"></i> Track Plays</a></p>
         <p><a href="{% url 'history:vote_artists_index' 'all' %}"><i class="fa fa-heart"></i> Artist Likes</a></p>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
         <h2><i class="fa fa-user"></i> My stuff</h2>
         <a href="{% url 'scoring:points_index' %}" class="btn"><i class="fa fa-star-o"></i> Fake internet points</a>
 
         <h3><i class="fa fa-heart"></i> My Favorites</h3>
-        <ul>
+        <ul id="owlFavs">
         {% for object in object_list %}
-            <li><a title="Open in Spotify locally" href="{{ object.spotify_href }}"><strong>{{ object.name }}</strong> - {{ object.artist }}</a></li>
+            <li>
+                <a title="Open in Spotify locally" href="{{ object.spotify_href }}">
+                <img src="{{ object.artwork_url }}" alt="Artwork" />
+                </a>
+                <span class="label">
+                    <strong class="title">{{ object.name }}</strong>
+                    <span class="artist">{{ object.artist }}<span>
+                <span>
+            </li>
         {% empty %}
             <li>No Likes yet this week, come on! like some stuff!</li>
         {% endfor %}
