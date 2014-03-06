@@ -8,21 +8,23 @@
         <a href="{% url 'history:vote_tracks_index' 'all' %}" class="btn"><i class="fa fa-heart"></i> Most liked tracks</a>
         <a href="{% url 'scoring:leaderboard_index' %}" class="btn"><i class="fa fa-bar-chart-o"></i> Leaderboard</a>
 
-        <h3>Moar Stuffs</h3>
-        <p><a href="{% url 'history:play_artists_index' 'all' %}"><i class="fa fa-music"></i> Most played artists</a></p>
-        <p><a href="{% url 'history:play_tracks_index' 'all' %}"><i class="fa fa-music"></i> Most played tracks</a></p>
-        <p><a href="{% url 'history:vote_artists_index' 'all' %}"><i class="fa fa-heart"></i> Most liked artists</a></p>
+        <h3>This Week</h3>
+        <p><a href="{% url 'history:play_artists_index' 'all' %}"><i class="fa fa-music"></i> Artist Plays</a></p>
+        <p><a href="{% url 'history:play_tracks_index' 'all' %}"><i class="fa fa-music"></i> Track Plays</a></p>
+        <p><a href="{% url 'history:vote_artists_index' 'all' %}"><i class="fa fa-heart"></i> Artist Likes</a></p>
     </div>
     <div class="col-md-6">
         <h2><i class="fa fa-user"></i> My stuff</h2>
         <a href="{% url 'scoring:points_index' %}" class="btn"><i class="fa fa-star-o"></i> Fake internet points</a>
-        <h3><i class="fa fa-heart"></i> My Favorites</h3>
 
+        <h3><i class="fa fa-heart"></i> My Favorites</h3>
+        <ul>
         {% for object in object_list %}
-            <p><a title="Open in Spotify locally" href="{{ object.spotify_href }}">{{ object.name }}</a></p>
+            <li><a title="Open in Spotify locally" href="{{ object.spotify_href }}"><strong>{{ object.name }}</strong> - {{ object.artist }}</a></li>
         {% empty %}
-            <p>No Likes yet this week, come on! like some stuff!</p>
+            <li>No Likes yet this week, come on! like some stuff!</li>
         {% endfor %}
+        </ul>
         <a href="{% url 'history:vote_tracks_index' 'me' %}" class="btn"><i class="fa fa-heart"></i> My Favs by week</a>
     </div>
 </div>

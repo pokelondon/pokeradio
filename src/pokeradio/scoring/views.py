@@ -26,6 +26,12 @@ class StatementView(WeekArchiveView):
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
 
+    def get_context_data(self, **kwargs):
+        context = {}
+        context['my_total'] = self.model.objects.total(user=self.request.user)
+        context.update(kwargs)
+        return super(StatementView, self).get_context_data(**context)
+
 
 class Leaderboard(WeekArchiveView):
     template_name = 'scoring/leaderboard.html'
@@ -82,11 +88,6 @@ class Leaderboard(WeekArchiveView):
             'max_value': max_value,
         })
 
-    def get_context_data(self, **kwargs):
-        context = {}
-        context.update(kwargs)
-        return super(Leaderboard, self).get_context_data(**context)
-
 
 # Index views to redirect to the weekly archives
 points_index = login_required(WeekArchiveRedirect.as_view(
@@ -99,7 +100,7 @@ points_week = login_required(StatementView.as_view())
 index = login_required(
         TemplateView.as_view(template_name='scoring/index.html'))
 
-# TODO
+# Leaderboard
 leaderboard = login_required(Leaderboard.as_view())
 leaderboard_index = login_required(WeekArchiveRedirect.as_view(
     pattern='scoring:leaderboard'))

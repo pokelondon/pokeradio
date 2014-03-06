@@ -30,8 +30,6 @@
 {% include 'history/_week_links.html' with pattern='history:vote_archive_artists' %}
 {% endif %}
 
-<a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
-
 <div class="Listing-list">
     {% for object in object_list %}
     <div class="Listing">

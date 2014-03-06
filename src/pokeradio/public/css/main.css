@@ -2642,6 +2642,9 @@ fieldset[disabled] .btn.btn-danger.active {
   background-color: #d9534f;
   border-color: #d43f3a;
 }
+.btn.btn-danger:active {
+  box-shadow: inset 0 2px 2px #c9302c;
+}
 .btn.btn-orange {
   color: #ffffff;
   background-color: #ee7905;
@@ -2678,6 +2681,9 @@ fieldset[disabled] .btn.btn-orange:active,
 fieldset[disabled] .btn.btn-orange.active {
   background-color: #ee7905;
   border-color: #ee7905;
+}
+.btn.btn-orange:active {
+  box-shadow: inset 0 2px 2px #bc6004;
 }
 .btn.btn-green {
   color: #ffffff;
@@ -2716,6 +2722,9 @@ fieldset[disabled] .btn.btn-green.active {
   background-color: #cbcb00;
   border-color: #cbcb00;
 }
+.btn.btn-green:active {
+  box-shadow: inset 0 2px 2px #989800;
+}
 .btn.btn-purple {
   color: #ffffff;
   background-color: #4d0428;
@@ -2752,6 +2761,9 @@ fieldset[disabled] .btn.btn-purple:active,
 fieldset[disabled] .btn.btn-purple.active {
   background-color: #4d0428;
   border-color: #4d0428;
+}
+.btn.btn-purple:active {
+  box-shadow: inset 0 2px 2px #1d010f;
 }
 .btn.voted {
   color: #ffffff;
