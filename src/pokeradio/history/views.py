@@ -14,6 +14,30 @@ from .models import Play, Artist, ArchiveTrack
 from .patched_generic_views import PatchedWeekArchiveView
 
 
+class Dashboard(TemplateView, ListView):
+    template_name = 'history/index.html'
+
+    model = ArchiveTrack
+    archive = 'tracks'
+
+    #def get_query_set(self, **lookup):
+        ## TODO filter by week
+        #return self.model.objects.filter(
+                #Q(point__isnull=False) &
+                #Q(point__vote_from=self.request.user) &
+                #Q(**lookup))
+
+    #def annotate_queryset(self, qs):
+        #return qs.annotate(number=Sum('point__value'))\
+                         #.order_by('-number')[:20]
+
+    def get_context_data(self, **kwargs):
+        """ Additional context data """
+        c = super(Dashboard, self).get_context_data(**kwargs)
+        #c['object_list'] = self.annotate_queryset(kwargs['object_list'])
+        return c
+
+
 class WeekView(PatchedWeekArchiveView):
     """ Week view for top Tracks
     """
@@ -157,8 +181,7 @@ vote_archive_tracks = login_required(WeekViewVoteTracks.as_view())
 vote_archive_artists = login_required(WeekViewVoteArtists.as_view())
 
 # Dashboard page, links to the current week redirector for different archives
-index = login_required(
-        TemplateView.as_view(template_name='history/index.html'))
+index = login_required(TemplateView.as_view(template_name='history/index.html'))
 
 # Redirects to different archives, depending on URL for the current week
 play_tracks_index = login_required(WeekArchiveRedirect.as_view(
