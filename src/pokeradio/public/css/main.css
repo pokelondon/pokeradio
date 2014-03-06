@@ -2549,7 +2549,7 @@ body {
   background-color: #ebede5;
 }
 a {
-  color: #24758c;
+  color: #003a42;
 }
 /*------- transitions --------------*/
 /*------- common rules -------*/
@@ -2594,7 +2594,7 @@ a {
   font-weight: bold;
 }
 .btn {
-  background-color: #47b1cf;
+  background-color: #0093a8;
   color: #fff;
 }
 .btn:hover {
@@ -2602,8 +2602,8 @@ a {
   box-shadow: 0 2px 3px #ccc;
 }
 .btn:active {
-  box-shadow: inset 0 2px 2px #2f97b4;
-  border-color: #34a8c8;
+  box-shadow: inset 0 2px 2px #006675;
+  border-color: #007d8f;
 }
 .btn.btn-danger {
   color: #ffffff;
@@ -2642,6 +2642,117 @@ fieldset[disabled] .btn.btn-danger.active {
   background-color: #d9534f;
   border-color: #d43f3a;
 }
+.btn.btn-orange {
+  color: #ffffff;
+  background-color: #ee7905;
+  border-color: #ee7905;
+}
+.btn.btn-orange:hover,
+.btn.btn-orange:focus,
+.btn.btn-orange:active,
+.btn.btn-orange.active,
+.open .dropdown-toggle.btn.btn-orange {
+  color: #ffffff;
+  background-color: #c66504;
+  border-color: #b25b04;
+}
+.btn.btn-orange:active,
+.btn.btn-orange.active,
+.open .dropdown-toggle.btn.btn-orange {
+  background-image: none;
+}
+.btn.btn-orange.disabled,
+.btn.btn-orange[disabled],
+fieldset[disabled] .btn.btn-orange,
+.btn.btn-orange.disabled:hover,
+.btn.btn-orange[disabled]:hover,
+fieldset[disabled] .btn.btn-orange:hover,
+.btn.btn-orange.disabled:focus,
+.btn.btn-orange[disabled]:focus,
+fieldset[disabled] .btn.btn-orange:focus,
+.btn.btn-orange.disabled:active,
+.btn.btn-orange[disabled]:active,
+fieldset[disabled] .btn.btn-orange:active,
+.btn.btn-orange.disabled.active,
+.btn.btn-orange[disabled].active,
+fieldset[disabled] .btn.btn-orange.active {
+  background-color: #ee7905;
+  border-color: #ee7905;
+}
+.btn.btn-green {
+  color: #ffffff;
+  background-color: #cbcb00;
+  border-color: #cbcb00;
+}
+.btn.btn-green:hover,
+.btn.btn-green:focus,
+.btn.btn-green:active,
+.btn.btn-green.active,
+.open .dropdown-toggle.btn.btn-green {
+  color: #ffffff;
+  background-color: #a2a200;
+  border-color: #8e8e00;
+}
+.btn.btn-green:active,
+.btn.btn-green.active,
+.open .dropdown-toggle.btn.btn-green {
+  background-image: none;
+}
+.btn.btn-green.disabled,
+.btn.btn-green[disabled],
+fieldset[disabled] .btn.btn-green,
+.btn.btn-green.disabled:hover,
+.btn.btn-green[disabled]:hover,
+fieldset[disabled] .btn.btn-green:hover,
+.btn.btn-green.disabled:focus,
+.btn.btn-green[disabled]:focus,
+fieldset[disabled] .btn.btn-green:focus,
+.btn.btn-green.disabled:active,
+.btn.btn-green[disabled]:active,
+fieldset[disabled] .btn.btn-green:active,
+.btn.btn-green.disabled.active,
+.btn.btn-green[disabled].active,
+fieldset[disabled] .btn.btn-green.active {
+  background-color: #cbcb00;
+  border-color: #cbcb00;
+}
+.btn.btn-purple {
+  color: #ffffff;
+  background-color: #4d0428;
+  border-color: #4d0428;
+}
+.btn.btn-purple:hover,
+.btn.btn-purple:focus,
+.btn.btn-purple:active,
+.btn.btn-purple.active,
+.open .dropdown-toggle.btn.btn-purple {
+  color: #ffffff;
+  background-color: #260214;
+  border-color: #13010a;
+}
+.btn.btn-purple:active,
+.btn.btn-purple.active,
+.open .dropdown-toggle.btn.btn-purple {
+  background-image: none;
+}
+.btn.btn-purple.disabled,
+.btn.btn-purple[disabled],
+fieldset[disabled] .btn.btn-purple,
+.btn.btn-purple.disabled:hover,
+.btn.btn-purple[disabled]:hover,
+fieldset[disabled] .btn.btn-purple:hover,
+.btn.btn-purple.disabled:focus,
+.btn.btn-purple[disabled]:focus,
+fieldset[disabled] .btn.btn-purple:focus,
+.btn.btn-purple.disabled:active,
+.btn.btn-purple[disabled]:active,
+fieldset[disabled] .btn.btn-purple:active,
+.btn.btn-purple.disabled.active,
+.btn.btn-purple[disabled].active,
+fieldset[disabled] .btn.btn-purple.active {
+  background-color: #4d0428;
+  border-color: #4d0428;
+}
 .btn.voted {
   color: #ffffff;
   background-color: #f1525d;
@@ -2679,9 +2790,6 @@ fieldset[disabled] .btn.voted.active {
   background-color: #f1525d;
   border-color: #ef3a47;
 }
-.is-pc .btn.btn--icon {
-  font-family: 'entypo';
-}
 .u-btn--large {
   width: 100%;
   padding: 0;
@@ -2706,13 +2814,6 @@ fieldset[disabled] .btn.voted.active {
   display: inline-block;
   vertical-align: middle;
   background: url('../img/exit-icon.png') no-repeat;
-}
-.u-icon--plus {
-  width: 33px;
-  height: 32px;
-  display: inline-block;
-  vertical-align: middle;
-  background: url('../img/plus-icon.png') no-repeat;
 }
 .Header {
   height: 170px;
@@ -2768,7 +2869,7 @@ fieldset[disabled] .btn.voted.active {
   display: inline-block;
   vertical-align: middle;
   margin-right: 20px;
-  background: url(/s/img/404-album-60.jpg) no-repeat 50% 50%;
+  background: url(../img/404-album-60.jpg) no-repeat 50% 50%;
 }
 .Playlist-item-body {
   display: inline-block;
@@ -2818,6 +2919,10 @@ fieldset[disabled] .btn.voted.active {
   vertical-align: middle;
   margin-right: 20px;
 }
+.Playlist-item-trackActions .btn {
+  font-size: 1em;
+  padding: 1px 5px;
+}
 .Track-item-until {
   color: #999;
   font-size: 0.8em;
@@ -2856,10 +2961,6 @@ fieldset[disabled] .btn.voted.active {
 .played .Playlist-item-user {
   margin-right: 10px;
 }
-.played .btn {
-  font-size: 0.8em;
-  padding: 5px 6px;
-}
 .is-playing {
   margin: 10px 0 20px;
 }
@@ -2873,6 +2974,10 @@ fieldset[disabled] .btn.voted.active {
 }
 .is-playing .Playlist-item-track {
   width: 360px;
+}
+.is-playing .btn {
+  font-size: 1.3em;
+  padding: 3px 9px;
 }
 .progress-bar {
   width: auto;
@@ -2890,7 +2995,7 @@ fieldset[disabled] .btn.voted.active {
   margin: 0;
 }
 .progress-bar--small::-webkit-progress-value {
-  background-color: #ffb400;
+  background-color: #ee7905;
 }
 .progress-bar--small::-webkit-progress-bar {
   background-color: #eee;
@@ -2918,7 +3023,7 @@ progress.paused::-webkit-progress-bar {
   background: rgba(0, 0, 0, 0.7);
 }
 .Search-wrapper {
-  background: #47b1cf;
+  background: #0093a8;
 }
 .Search-lookup,
 .Search-exit {
@@ -2950,10 +3055,11 @@ progress.paused::-webkit-progress-bar {
   width: 92px;
   background: #fff;
   vertical-align: top;
-  color: #47b1cf;
+  color: #0093a8;
 }
 .btn-search:hover {
-  color: #47b1cf;
+  color: #0093a8;
+  box-shadow: none;
 }
 .Search-input {
   width: 100%;
@@ -2968,7 +3074,7 @@ progress.paused::-webkit-progress-bar {
   font-size: 38px;
 }
 .Search-input::-webkit-input-placeholder {
-  color: #c0e4ef;
+  color: #42e7ff;
 }
 .Search-results-header {
   display: none;
@@ -2996,7 +3102,7 @@ progress.paused::-webkit-progress-bar {
   opacity: 0;
 }
 .Search-item.is-focused {
-  background: #24758c;
+  background: #003a42;
   color: #fff;
 }
 .Search-item.is-focused .Search-item-secondaryText {
@@ -3024,17 +3130,21 @@ progress.paused::-webkit-progress-bar {
 }
 .Search-item-add {
   cursor: pointer;
-  border-radius: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 2em;
+  padding-right: 10px;
+  color: #f1525d;
   -webkit-transition: opacity 200ms;
   -moz-transition: opacity 200ms;
   -o-transition: opacity 200ms;
   transition: opacity 200ms;
 }
 .Search-item-add:hover {
-  box-shadow: 0 2px 3px #ccc;
+  text-shadow: 0 2px 3px #ccc;
 }
 .Search-item-add:active {
-  box-shadow: inset 0 2px 2px #009ecc;
+  text-shadow: inset 0 2px 2px #009ecc;
 }
 .Listing-list {
   padding: 10px 0 20px;
@@ -3061,7 +3171,7 @@ progress.paused::-webkit-progress-bar {
   color: #f1525d;
 }
 .Listing--plus .Listing-number {
-  color: #47b1cf;
+  color: #0093a8;
 }
 .Listing-title {
   padding: 2px 0 0;
@@ -3119,7 +3229,7 @@ progress.paused::-webkit-progress-bar {
   -moz-transition: width 300ms;
   -o-transition: width 300ms;
   transition: width 300ms;
-  background: #47b1cf;
+  background: #0093a8;
 }
 .Leaderboard-bar--dislikes {
   position: absolute;
@@ -3131,9 +3241,8 @@ progress.paused::-webkit-progress-bar {
   -moz-transition: width 300ms;
   -o-transition: width 300ms;
   transition: width 300ms;
-  background: #47b1cf;
-  background: #000;
-  opacity: 0.5;
+  background: #0093a8;
+  background: #f1525d;
 }
 .w--1 {
   width: 4%;
@@ -3276,7 +3385,7 @@ progress.paused::-webkit-progress-bar {
   font-size: 30px;
 }
 .Bar--likes {
-  background: #47b1cf;
+  background: #0093a8;
   text-align: left;
 }
 .Bar--likes .Bar-number {
