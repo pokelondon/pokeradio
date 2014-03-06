@@ -88,8 +88,7 @@
     padding: 0;
     border-bottom: none;
     margin-bottom: 1px;
-    background: rgba(0, 0, 0, 0.4);
-
+    background: none;
     text-align: center;
     * {
         position: relative;
@@ -103,12 +102,19 @@
         letter-spacing: 2px;
         text-transform: uppercase;
         padding: 1px 7px;
-        margin-top: 10px;
+        margin-top: 13px;
+        border-radius: 20px;
+        font-size: 10px;
+        background: rgba(255, 255, 255, 0.8);
+        background: @purple;
         color: #fff;
-        .transition(opacity 500ms);
+        .transition(opacity 200ms);
     }
     &:hover {
         .Listing-title {
+            opacity: 0;
+        }
+        .Bar-number {
             opacity: 1;
         }
     }
@@ -120,14 +126,27 @@
     left: 50%;
     z-index: 0;
 }
+.Bar-number {
+    .transition(opacity 200ms);
+    opacity: 0;
+    color: #fff;
+    padding: 0 5px;
+    line-height: 1.2em;
+    font-family: georgia;
+    font-size: 30px;
+}
 .Bar--likes {
-    background: rgba(255, 255, 255, 0.6);
-    background: rgba(0, 0, 0, 0.6);
-    /*border-top-right-radius: 20px;*/
-    /*border-bottom-right-radius: 20px;*/
+    background: @poke-blue;
+    text-align: left;
+    .Bar-number {
+        float: right;
+    }
 }
 .Bar--dislikes {
-    background: rgba(0, 0, 0, 0.5);
-    /*border-top-left-radius: 20px;*/
-    /*border-bottom-left-radius: 20px;*/
+    background: @poke-pink;
+    border-right: 1px solid #fff;
+    text-align: right;
+    .Bar-number {
+        float: left;
+    }
 }

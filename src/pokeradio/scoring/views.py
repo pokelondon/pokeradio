@@ -60,8 +60,9 @@ class Leaderboard(WeekArchiveView):
             points = i.point_set.filter(created__range=period)
             likes = points.filter(action=Point.TRACK_LIKED).count()
             dislikes = points.filter(action=Point.TRACK_DISLIKED).count()
-            object_list.append({'user': i, 'likes': likes,
-                'dislikes': dislikes, 'net': likes - dislikes})
+            if likes + dislikes > 0:
+                object_list.append({'user': i, 'likes': likes,
+                    'dislikes': dislikes, 'net': likes - dislikes})
 
         # Get the highest value
         max_value = float(max(object_list, key=lambda i: i['likes'])['likes'])

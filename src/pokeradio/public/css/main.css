@@ -2549,7 +2549,7 @@ body {
   background-color: #ebede5;
 }
 a {
-  color: #007799;
+  color: #24758c;
 }
 /*------- transitions --------------*/
 /*------- common rules -------*/
@@ -2594,7 +2594,7 @@ a {
   font-weight: bold;
 }
 .btn {
-  background-color: #00c6ff;
+  background-color: #47b1cf;
   color: #fff;
 }
 .btn:hover {
@@ -2602,8 +2602,8 @@ a {
   box-shadow: 0 2px 3px #ccc;
 }
 .btn:active {
-  box-shadow: inset 0 2px 2px #009ecc;
-  border-color: #00b2e6;
+  box-shadow: inset 0 2px 2px #2f97b4;
+  border-color: #34a8c8;
 }
 .btn.btn-danger {
   color: #ffffff;
@@ -2644,8 +2644,8 @@ fieldset[disabled] .btn.btn-danger.active {
 }
 .btn.voted {
   color: #ffffff;
-  background-color: #f5007f;
-  border-color: #dc0072;
+  background-color: #f1525d;
+  border-color: #ef3a47;
 }
 .btn.voted:hover,
 .btn.voted:focus,
@@ -2653,8 +2653,8 @@ fieldset[disabled] .btn.btn-danger.active {
 .btn.voted.active,
 .open .dropdown-toggle.btn.voted {
   color: #ffffff;
-  background-color: #cc006a;
-  border-color: #9e0052;
+  background-color: #ee2c3a;
+  border-color: #db1220;
 }
 .btn.voted:active,
 .btn.voted.active,
@@ -2676,8 +2676,8 @@ fieldset[disabled] .btn.voted:active,
 .btn.voted.disabled.active,
 .btn.voted[disabled].active,
 fieldset[disabled] .btn.voted.active {
-  background-color: #f5007f;
-  border-color: #dc0072;
+  background-color: #f1525d;
+  border-color: #ef3a47;
 }
 .is-pc .btn.btn--icon {
   font-family: 'entypo';
@@ -2890,13 +2890,13 @@ fieldset[disabled] .btn.voted.active {
   margin: 0;
 }
 .progress-bar--small::-webkit-progress-value {
-  background-color: #00c6ff;
+  background-color: #ffb400;
 }
 .progress-bar--small::-webkit-progress-bar {
-  background-color: #bbb;
+  background-color: #eee;
 }
 progress::-webkit-progress-value {
-  background-color: hotpink;
+  background-color: #f1525d;
 }
 progress::-webkit-progress-bar {
   background-color: #bbb;
@@ -2918,7 +2918,7 @@ progress.paused::-webkit-progress-bar {
   background: rgba(0, 0, 0, 0.7);
 }
 .Search-wrapper {
-  background: #00c6ff;
+  background: #47b1cf;
 }
 .Search-lookup,
 .Search-exit {
@@ -2950,10 +2950,10 @@ progress.paused::-webkit-progress-bar {
   width: 92px;
   background: #fff;
   vertical-align: top;
-  color: #00c6ff;
+  color: #47b1cf;
 }
 .btn-search:hover {
-  color: #00c6ff;
+  color: #47b1cf;
 }
 .Search-input {
   width: 100%;
@@ -2968,7 +2968,7 @@ progress.paused::-webkit-progress-bar {
   font-size: 38px;
 }
 .Search-input::-webkit-input-placeholder {
-  color: #99e8ff;
+  color: #c0e4ef;
 }
 .Search-results-header {
   display: none;
@@ -2996,7 +2996,7 @@ progress.paused::-webkit-progress-bar {
   opacity: 0;
 }
 .Search-item.is-focused {
-  background: #007799;
+  background: #24758c;
   color: #fff;
 }
 .Search-item.is-focused .Search-item-secondaryText {
@@ -3058,10 +3058,10 @@ progress.paused::-webkit-progress-bar {
   text-align: center;
 }
 .Listing--minus .Listing-number {
-  color: #f5007f;
+  color: #f1525d;
 }
 .Listing--plus .Listing-number {
-  color: #00c6ff;
+  color: #47b1cf;
 }
 .Listing-title {
   padding: 2px 0 0;
@@ -3119,7 +3119,7 @@ progress.paused::-webkit-progress-bar {
   -moz-transition: width 300ms;
   -o-transition: width 300ms;
   transition: width 300ms;
-  background: #00c6ff;
+  background: #47b1cf;
 }
 .Leaderboard-bar--dislikes {
   position: absolute;
@@ -3131,7 +3131,7 @@ progress.paused::-webkit-progress-bar {
   -moz-transition: width 300ms;
   -o-transition: width 300ms;
   transition: width 300ms;
-  background: #00c6ff;
+  background: #47b1cf;
   background: #000;
   opacity: 0.5;
 }
@@ -3227,7 +3227,7 @@ progress.paused::-webkit-progress-bar {
   padding: 0;
   border-bottom: none;
   margin-bottom: 1px;
-  background: rgba(0, 0, 0, 0.4);
+  background: none;
   text-align: center;
 }
 .Listing--bar * {
@@ -3239,14 +3239,21 @@ progress.paused::-webkit-progress-bar {
   letter-spacing: 2px;
   text-transform: uppercase;
   padding: 1px 7px;
-  margin-top: 10px;
+  margin-top: 13px;
+  border-radius: 20px;
+  font-size: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  background: #4d0428;
   color: #fff;
-  -webkit-transition: opacity 500ms;
-  -moz-transition: opacity 500ms;
-  -o-transition: opacity 500ms;
-  transition: opacity 500ms;
+  -webkit-transition: opacity 200ms;
+  -moz-transition: opacity 200ms;
+  -o-transition: opacity 200ms;
+  transition: opacity 200ms;
 }
 .Listing--bar:hover .Listing-title {
+  opacity: 0;
+}
+.Listing--bar:hover .Bar-number {
   opacity: 1;
 }
 .Bar {
@@ -3256,18 +3263,30 @@ progress.paused::-webkit-progress-bar {
   left: 50%;
   z-index: 0;
 }
+.Bar-number {
+  -webkit-transition: opacity 200ms;
+  -moz-transition: opacity 200ms;
+  -o-transition: opacity 200ms;
+  transition: opacity 200ms;
+  opacity: 0;
+  color: #fff;
+  padding: 0 5px;
+  line-height: 1.2em;
+  font-family: georgia;
+  font-size: 30px;
+}
 .Bar--likes {
-  background: rgba(255, 255, 255, 0.6);
-  background: rgba(0, 0, 0, 0.6);
-  /*border-top-right-radius: 20px;*/
-
-  /*border-bottom-right-radius: 20px;*/
-
+  background: #47b1cf;
+  text-align: left;
+}
+.Bar--likes .Bar-number {
+  float: right;
 }
 .Bar--dislikes {
-  background: rgba(0, 0, 0, 0.5);
-  /*border-top-left-radius: 20px;*/
-
-  /*border-bottom-left-radius: 20px;*/
-
+  background: #f1525d;
+  border-right: 1px solid #fff;
+  text-align: right;
+}
+.Bar--dislikes .Bar-number {
+  float: left;
 }
