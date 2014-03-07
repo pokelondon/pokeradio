@@ -30,12 +30,14 @@
 {% include 'history/_week_links.html' with pattern='history:vote_archive_artists' %}
 {% endif %}
 
-<a href="{% url 'history:index' %}" class="btn pull-right">Dashboard</a>
-
 <div class="Listing-list">
     {% for object in object_list %}
     <div class="Listing">
-        <span class="Listing-number">{{ object.number }}</span>
+        <span class="Listing-number"><i class="fa fa-thumbs-{% if object.number > 0 %}up{% else %}down{% endif %}"></i></span>
+
+        {% if 'tracks' == archive %}
+        <img class="Listing-artwork" src="{{ object.artwork_url }}" alt="Artwork" width="100" height="100" />
+        {% endif %}
 
         {% if 'tracks' == archive %}
         <span class="Listing-title"><a title="Open in Spotify locally" href="{{ object.spotify_href }}">{{ object.name }}</a></span>

@@ -146,6 +146,7 @@ class AppConnection(SocketConnection):
         try:
             cookie = request.get_cookie('sessionid')
             session_key = cookie.value
+            print session_key
             session = Session.objects.get(session_key=session_key)
         except Session.DoesNotExist:
             logger.error('Session expired', exc_info=True,

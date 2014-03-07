@@ -15,7 +15,11 @@
         <title>{% block page_title %}POKERadio{% endblock %}</title>
         <!-- Styles -->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+        <!-- Owl Carousel Assets -->
+        <link rel="stylesheet" href="{{ STATIC_URL }}lib/owl-carousel/owl.carousel.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}lib/owl-carousel/owl.theme.css">
         <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
         <!-- Favicon -->
 
@@ -23,10 +27,14 @@
 
         {% block scripts %}
         {% endblock %}
+        {% block head %}
+        {% endblock %}
     </head>
     <body>
-        <Header class="Header">
+        <header class="Header">
             <div class="container">
+                {% block leaderboard %}
+                {% endblock %}
                 <a href="/"><div class="Header-logo"></div></a>
                 {%  if request.user.is_authenticated %}
                 <div class='Header-userControls'>
@@ -38,11 +46,13 @@
                 </div>
                 {% endif %}
             </div>
-        </Header>
+        </header>
             <div class="container">
             {% block container %}
             {% endblock %}
             </div>
-        <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
+            {% block footer_scripts %}
+                <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
+            {% endblock %}
     </body>
 </html>

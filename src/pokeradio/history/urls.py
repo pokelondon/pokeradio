@@ -44,11 +44,6 @@ urls = [
     # Weekly best voted artists archive
     url(r'^votes/(?P<who>(all|me))/artists/(?P<year>\d{4})/(?P<week>\d+)/$',
         'vote_archive_artists', name='vote_archive_artists'),
-
-    # Weekly Users report
-    url(r'^playas/$', 'leaderboard_index', name='leaderboard_index'),
-    url(r'^playas/(?P<year>\d{4})/(?P<week>\d+)/$', 'leaderboard',
-        name='leaderboard'),
 ]
 urlpatterns += patterns('pokeradio.history.views', *urls)
 

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <script>
+        var PRAD = PRAD || {};
+        PRAD.json_endpoint = "{% url 'scoring:wheel_graph_json' %}";
+    </script>
+    <style>
+        .link {
+            stroke: #ccc;
+        }
+        .node text {
+            pointer-events: none;
+            font: 10px sans-serif;
+        }
+        #graph image {
+            border-radius: 15px;
+        }
+    </style>
+{% endblock %}
+
+{% block footer_scripts %}
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="{{ STATIC_URL }}js/scripts/wheel.js"></script>
+{% endblock %}
+
+{% block container %}
+    <div class="box">
+        <h1>Leaderboard</h1>
+        <a href="{% url 'scoring:graph_force' %}" class="btn">Force Graph</a>
+        <a href="{% url 'scoring:graph_wheel' %}" class="btn">Wheel Graph</a>
+    </div>
+    <div id="graph">
+    </div>
+{% endblock %}
+

@@ -8,11 +8,10 @@
 
 .Playlist-item-wrapper{
     padding: 10px;
-    margin-top:0;
+    margin-top: 0;
     background-color: @media-list-bg;
     border-bottom: 1px @grey solid;
-    min-height:80px;
-
+    min-height: 80px;
 }
 
 .Playlist-item-album-art {
@@ -22,16 +21,16 @@
     vertical-align: middle;
     margin-right: 20px;
 
-    background: url(/s/img/404-album-60.jpg) no-repeat 50% 50%;
+    background: url(../img/404-album-60.jpg) no-repeat 50% 50%;
 }
 
-.Playlist-item-body{
+.Playlist-item-body {
     display: inline-block;
     vertical-align: middle;
     margin-right: 20px;
 }
 
-.Playlist-item-track{
+.Playlist-item-track {
     width: 400px;
     margin-right: 20px;
     display: inline-block;
@@ -63,7 +62,7 @@
     vertical-align: middle;
 
 }
-.Playlist-item-profileImage{
+.Playlist-item-profileImage {
     width:35px;
     height:35px;
     display: inline-block;
@@ -76,10 +75,14 @@
     color: @gray-light;
 }
 
-.Playlist-item-trackActions{
+.Playlist-item-trackActions {
     display: inline-block;
     vertical-align: middle;
     margin-right: 20px;
+    .btn {
+        font-size: 1em;
+        padding: 1px 5px;
+    }
 }
 
 .Track-item-until {
@@ -124,10 +127,6 @@
     .Playlist-item-user {
         margin-right: 10px;
     }
-    .btn {
-        font-size: 0.8em;
-        padding: 5px 6px;
-    }
 }
 
 .is-playing {
@@ -142,5 +141,9 @@
     }
     .Playlist-item-track {
         width: 360px;
+    }
+    .btn {
+        font-size: 1.3em;
+        padding: 3px 9px;
     }
 }
