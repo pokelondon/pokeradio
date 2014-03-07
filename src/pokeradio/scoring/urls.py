@@ -22,5 +22,17 @@ urls = [
     url(r'^playas/$', 'leaderboard_index', name='leaderboard_index'),
     url(r'^playas/(?P<year>\d{4})/(?P<week>\d+)/$', 'leaderboard',
         name='leaderboard'),
+
+    # Graphs
+    url(r'^graph/force/$',
+        TemplateView.as_view(template_name="scoring/graph_force.html"),
+        name='graph_force'),
+    url(r'^graph/wheel/$',
+        TemplateView.as_view(template_name="scoring/graph_wheel.html"),
+        name='graph_wheel'),
+
+    # JSON data for graphs
+    url(r'^force.json$', 'force_graph_json', name='force_graph_json'),
+    url(r'^wheel.json$', 'wheel_graph_json', name='wheel_graph_json'),
 ]
 urlpatterns += patterns('pokeradio.scoring.views', *urls)

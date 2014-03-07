@@ -17,8 +17,20 @@
     <div class="col-md-4">
 
         <h2><i class="fa fa-flask"></i> Data!</h2>
-        <a href="{% url 'history:vote_tracks_index' 'all' %}" class="btn"><i class="fa fa-heart"></i> Most liked tracks</a>
-        <a href="{% url 'scoring:leaderboard_index' %}" class="btn"><i class="fa fa-bar-chart-o"></i> Leaderboard</a>
+        <p>
+            <a href="{% url 'history:vote_tracks_index' 'all' %}" class="btn"><i class="fa fa-heart"></i> Most liked tracks</a>
+            <a href="{% url 'scoring:leaderboard_index' %}" class="btn"><i class="fa fa-bar-chart-o"></i> Leaderboard</a>
+        </p>
+        {% for group in request.user.groups.all %}
+            {% if group.name == 'Graph' %}
+                <p>
+                    <a href="{% url 'scoring:graph_wheel' %}" class="btn"><i class="fa fa-bar-chart-o"></i> Wheel O' Compatability</a>
+                </p>
+                <p>
+                    <a href="{% url 'scoring:graph_force' %}" class="btn"><i class="fa fa-bar-chart-o"></i> Web of lies</a>
+                </p>
+            {% endif %}
+        {% endfor %}
 
         <h3>This Week</h3>
         <p><a href="{% url 'history:play_artists_index' 'all' %}"><i class="fa fa-music"></i> Artist Plays</a></p>
