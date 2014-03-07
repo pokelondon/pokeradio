@@ -21,3 +21,6 @@ class TrackManager(Manager):
     def plays(self, **kwargs):
         return super(TrackManager, self).get_query_set()\
                 .annotate(plays=Count('play')).order_by('-plays')
+
+    def by_album_code(self, code, **kwargs):
+        return self.get_query_set().filter(spotify_album_href__endswith=code)

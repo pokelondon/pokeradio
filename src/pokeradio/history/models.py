@@ -4,6 +4,9 @@
    being played
 """
 
+import random
+import os
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -34,6 +37,9 @@ class ArchiveTrack(Base):
     spotify_href = models.CharField(max_length=255, unique=True)
     length = models.FloatField(null=True)
     spotify_album_href = models.CharField(max_length=255)
+    no_artwork = models.BooleanField(default=False,
+            help_text="This track is known to return no artwork from the "
+                      "lookup service. Prevents additional lookups")
 
     artist = models.ForeignKey(Artist)
 
@@ -44,6 +50,23 @@ class ArchiveTrack(Base):
 
     @property
     def artwork_url(self):
+        """ Return the URL to the artwork lookup view.
+        This will query an external API if the file does not exist, so if the
+        album (identified by code; a subset of spotify_album_href) will be
+        marked as having no artwork so as to prevent further unnecesary
+        lookups
+        """
+        if self.no_artwork:
+            static = settings.STATIC_ROOT
+            # Dev uses a single static folder thats not collectstatic'ed
+            if not static:
+                static = os.path.join(settings.PROJECT_ROOT, 'public')
+
+            filename = random.choice(os.listdir(os.path.join(static, 'img',
+                                                             'artwork')))
+            return os.path.join(settings.STATIC_URL, 'img', 'artwork',
+                                filename)
+
         album_id = self.spotify_album_href.split(':')[2]
         return reverse('albumart:getimage', args=(album_id, ))
 

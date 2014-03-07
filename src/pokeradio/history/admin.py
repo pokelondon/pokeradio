@@ -32,7 +32,8 @@ class ArtistAdmin(admin.ModelAdmin):
 
 class ArchiveTrackAdmin(admin.ModelAdmin):
     inlines = (PlayInline, )
-    list_display = ('name', 'artist', 'plays')
+    list_display = ('name', 'artist', 'plays', 'created')
+    search_fields = ('name', 'artist__name')
 
     def plays(self, obj):
         return obj.play_set.all().count()
