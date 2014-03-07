@@ -74,4 +74,27 @@
 </div>
 
 
-{% endblock%}
+{% endblock %}
+
+{% block dragdrop %}
+<div id='Search-dragDrop' class='js-Search-dragDrop Search-dragDrop' style='display:none' >
+    
+    <div class='Search-dragDrop-inner js-dropzone'>
+        <div class='Search-dragDrop-content'>
+            
+            <div class='Search-dragDrop-images'>
+           
+                <img src='{{ STATIC_URL }}img/spotify-logo.png'/>
+                <span class='Search-dragDrop-images-pulse'></span>
+                <span class='Search-dragDrop-images-pulse'></span>
+                <span class='Search-dragDrop-images-pulse'></span>
+            </div>
+            <p>Incoming!<br/>Drop your spotify track</p>
+            <span class='Search-dragDrop-throb'></span>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+

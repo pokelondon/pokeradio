@@ -47,12 +47,14 @@
                 {% endif %}
             </div>
         </header>
-            <div class="container">
-            {% block container %}
-            {% endblock %}
-            </div>
+        <div class="container">
+        {% block container %}
+        {% endblock %}
+        </div>
             {% block footer_scripts %}
                 <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
             {% endblock %}
+        </div>
+        {% block dragdrop %}{% endblock %}
     </body>
 </html>

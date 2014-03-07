@@ -34,6 +34,12 @@ define(['jquery',
                     this.on('open', this.focusInput, this);
                     // Non [backbone] delegated event bind for opening and closing the search view
                     this.bindKeys();
+                    $('html').on('drag dragenter dragover dragleave drop', 'body', this.ignoreEvent);
+
+                    $('html').on('drop', 'body', _(this.drop).bind(this));
+
+                    //Validate spotify uris
+                    this.spotify_validate = new RegExp('^spotify:track:([a-zA-Z0-9]{22})$', 'i');
                 },
 
                 /**
@@ -94,6 +100,9 @@ define(['jquery',
                         var view = new TrackView(model);
                         self.$list.append(view.render().el);
                     });
+                    if(this.collection.endpoint == 'lookup') {
+                        $('#searchInput').val(this.collection.at(0).attributes.name);
+                    }
                     return this;
                 },
 
@@ -146,6 +155,61 @@ define(['jquery',
                  */
                 bindKeys: function() {
                     $(window).on('keyup', _(this.windowKeyup).bind(this));
+                },
+                /**
+                 * Drop
+                 */
+                drop: function(evt) {
+                    if($(evt.target).parents('.js-dropzone').length) {
+                        evt.stopPropagation();
+                        evt.preventDefault();
+                        uri = this.parseSpotifyUri(evt);
+                        if(uri) {
+                            this.collection.lookup(uri);
+                            this.openView();
+                        }else {
+                            alert('Only single tracks from Spotify\xAE are allowed');
+                        }
+                    }
+                    $('.js-Search-dragDrop').fadeOut(300, function(){
+                        $('body').removeClass('on-drag');
+                    });
+                },
+                ignoreEvent: function(evt) {
+                    switch (evt.type) {
+                        case 'dragenter':
+                            lastenter = evt.target;
+                            $('.js-Search-dragDrop').fadeIn();
+                             $('body').addClass('on-drag');
+                            break;
+                        case 'dragleave':
+                            if (lastenter === evt.target) {
+                                $('.js-Search-dragDrop').fadeOut(300, function(){
+                                    $('body').removeClass('on-drag');
+                                });
+                            }
+                            break;
+                    }
+                    evt.stopPropagation();
+                    evt.preventDefault();
+                },
+                parseSpotifyUri: function(evt){
+                    var uri = evt.originalEvent.dataTransfer.getData('text/uri-list');
+                    if(this.spotify_validate.test(uri)) {
+                        return uri;
+                    } else {
+                        var dndData = evt.originalEvent.dataTransfer.getData('Text');
+                        dndData_uri = (dndData.split('/'));
+                        // removing "http://open.spotify.com/"
+                        dndData_uri.splice(0,3);
+                        dndData_uri.splice(0,0,'spotify');
+                        uri = dndData_uri.join(':');
+
+                        if (this.spotify_validate.test(uri)) {
+                         return uri;
+                        }
+                    }
+                    return false;
                 }
             });
             return SearchView;
