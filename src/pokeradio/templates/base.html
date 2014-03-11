@@ -15,7 +15,11 @@
         <title>{% block page_title %}POKERadio{% endblock %}</title>
         <!-- Styles -->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
+        <!-- Owl Carousel Assets -->
+        <link rel="stylesheet" href="{{ STATIC_URL }}lib/owl-carousel/owl.carousel.css">
+        <link rel="stylesheet" href="{{ STATIC_URL }}lib/owl-carousel/owl.theme.css">
         <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/font-awesome.min.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
         <!-- Favicon -->
 
@@ -23,29 +27,34 @@
 
         {% block scripts %}
         {% endblock %}
+        {% block head %}
+        {% endblock %}
     </head>
     <body>
-        <div id='main'>
-            <Header class="Header">
-                <div class="container">
-                    <a href="/"><div class="Header-logo"></div></a>
-                    {%  if request.user.is_authenticated %}
-                    <div class='Header-userControls'>
-                        <img class="Header-userControls-image" src="/profilepictures/{{ request.user.id }}.jpg"/>
-                        <div class="Header-userControls-info">
-                            <span class="bold">{{ request.user.first_name }}</span>
-                            <div><a href="{% url 'logout' %}" >Logout</a> | <a href="{% url 'history:index' %}">Dashboard</a></div>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-            </Header>
+        <header class="Header">
             <div class="container">
-            {% block container %}
-            {% endblock %}
+                {% block leaderboard %}
+                {% endblock %}
+                <a href="/"><div class="Header-logo"></div></a>
+                {%  if request.user.is_authenticated %}
+                <div class='Header-userControls'>
+                    <img class="Header-userControls-image" src="/profilepictures/{{ request.user.id }}.jpg"/>
+                    <div class="Header-userControls-info">
+                        <span class="bold">{{ request.user.first_name }}</span>
+                        <div><a href="{% url 'logout' %}" >Logout</a> | <a href="{% url 'history:index' %}">Dashboard</a></div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
+        </header>
+        <div class="container">
+        {% block container %}
+        {% endblock %}
+        </div>
+            {% block footer_scripts %}
+                <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
+            {% endblock %}
         </div>
         {% block dragdrop %}{% endblock %}
-        <script data-main="{{ STATIC_URL }}js/main" src="{{ STATIC_URL }}js/lib/requirejs/require.js"></script>
     </body>
 </html>

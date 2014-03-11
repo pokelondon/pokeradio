@@ -3,6 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.views.generic import TemplateView, RedirectView, ListView
 from django.views.generic.dates import _date_from_string
+from django.views.generic.base import ContextMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -12,6 +13,24 @@ from pokeradio.views import WeekArchiveRedirect
 
 from .models import Play, Artist, ArchiveTrack
 from .patched_generic_views import PatchedWeekArchiveView
+
+
+class Dashboard(TemplateView, ContextMixin):
+    template_name = 'history/index.html'
+
+    def get_user_favs(self):
+        qs = ArchiveTrack.objects\
+            .filter(Q(point__isnull=False) &
+                    Q(point__vote_from=self.request.user))\
+            .annotate(number=Sum('point__value'))\
+            .order_by('-number')[:20]
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        context['object_list'] = self.get_user_favs()
+        context.update(kwargs)
+        return super(Dashboard, self).get_context_data(**context)
 
 
 class WeekView(PatchedWeekArchiveView):
@@ -146,57 +165,6 @@ class WeekViewVoteArtists(WeekView):
                            .order_by('-number')[:20]
 
 
-class UserWeekView(PatchedWeekArchiveView):
-    """ Week view for user report
-    """
-    template_name = 'history/user_archive_week.html'
-    fk_date_field = 'play__created' # from patched base class
-    date_field = 'created' # from patched base class
-    allow_empty = True
-    make_object_list = True
-    allow_future = False
-    model = User
-    uses_datetime_field = True
-
-    def get_dated_items(self):
-        qs = self.model.objects.exclude(last_name="")
-
-        year = self.get_year()
-        week = self.get_week()
-        week_format = self.get_week_format()
-        week_start = {
-            '%W': '1',
-            '%U': '0',
-        }[week_format]
-        date = _date_from_string(year, self.get_year_format(),
-                            week_start, '%w',
-                            week, week_format)
-        since = self._make_date_lookup_arg(date)
-        until = self._make_date_lookup_arg(self._get_next_week(date))
-
-        lookup = {
-            '%s__gte' % self.fk_date_field: since,
-            '%s__lt' % self.fk_date_field: until,
-        }
-
-        object_list = []
-        for i in qs:
-            item = {}
-            item['user'] = i
-            item['tracks'] = ArchiveTrack.objects\
-                    .filter(Q(play__user=i) & Q(**lookup))\
-                    .annotate(plays=Count('play'))\
-                    .order_by('-plays')
-
-            object_list.append(item)
-
-        return (None, object_list, {
-            'week': date,
-            'next_week': self.get_next_week(date),
-            'previous_week': self.get_previous_week(date),
-        })
-
-
 # WeekView archive of the top tracks for the logged in user or everyone
 play_archive_tracks = login_required(WeekView.as_view())
 
@@ -207,12 +175,8 @@ play_archive_artists = login_required(WeekViewArtists.as_view())
 vote_archive_tracks = login_required(WeekViewVoteTracks.as_view())
 vote_archive_artists = login_required(WeekViewVoteArtists.as_view())
 
-# Leaderboard for a week
-leaderboard = login_required(UserWeekView.as_view())
-
 # Dashboard page, links to the current week redirector for different archives
-index = login_required(
-        TemplateView.as_view(template_name='history/index.html'))
+index = login_required(Dashboard.as_view())
 
 # Redirects to different archives, depending on URL for the current week
 play_tracks_index = login_required(WeekArchiveRedirect.as_view(
@@ -224,7 +188,3 @@ vote_tracks_index = login_required(WeekArchiveRedirect.as_view(
     pattern='history:vote_archive_tracks', who='me'))
 vote_artists_index = login_required(WeekArchiveRedirect.as_view(
     pattern='history:vote_archive_artists', who='me'))
-
-# Leaderboard week URL redirect
-leaderboard_index = login_required(WeekArchiveRedirect.as_view(
-    pattern='history:leaderboard', who=None))

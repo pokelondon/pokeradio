@@ -56,6 +56,7 @@
 
     &:hover {
         color: @poke-blue;
+        box-shadow: none;
     }
 }
 
@@ -148,12 +149,16 @@
 
 .Search-item-add {
     cursor: pointer;
-    border-radius: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 2em;
+    padding-right: 10px;
+    color: @poke-pink;
     &:hover {
-        box-shadow: 0 2px 3px #ccc;
+        text-shadow: 0 2px 3px #ccc;
     }
     &:active {
-        box-shadow: inset 0 2px 2px darken(#00c6ff, 10);
+        text-shadow: inset 0 2px 2px darken(#00c6ff, 10);
     }
     .transition(opacity 200ms);
 }
