@@ -67,5 +67,4 @@ Vagrant.configure("2") do |config|
         s.minion_config = "salt/config/minion.conf"      # Where the minion config lives
         s.install_type = "stable"
     end
-
 end
