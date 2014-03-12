@@ -65,7 +65,8 @@ Vagrant.configure("2") do |config|
     config.vm.provision :salt do |s|
         s.run_highstate = true                           # Always run the Salt Proviosining System
         s.minion_config = "salt/config/minion.conf"      # Where the minion config lives
-        s.install_type = "stable"
+        # Install version 0.17 of the salt minion for provisioning till we can sort out states out, they're a state!
+        s.install_type = "git"
+        s.install_args = "0.17"
     end
-
 end

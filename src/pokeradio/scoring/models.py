@@ -9,7 +9,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 
 from .managers import TransactionManager
-from .recievers import report_vote
+from .recievers import report_vote, send_light_vote
 
 
 class BaseTransaction(models.Model):
@@ -90,3 +90,4 @@ class Point(BaseTransaction):
         return settings.POKERADIO_SCORING_POINT.get(self.action, 0)
 
 post_save.connect(report_vote, sender=Point)
+post_save.connect(send_light_vote, sender=Point)
