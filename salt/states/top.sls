@@ -23,4 +23,4 @@ vagrant:
     # Project Specific States in salt/states/ (same level as this top.sls)
     - pokeradio
     # Developer states (mounted to ~/.salt-dev)
-    #- developer
+    - developer
