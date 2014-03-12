@@ -1,16 +1,17 @@
 import json
 import requests
+import logging
 
 from django.conf import settings
 from django.db import models
 
+logger = logging.getLogger('raven')
 
 payload = {
     "channel": "#general",
     "username": "Poke Radio",
     "fallback": "Track Vote",
 }
-
 
 def report_vote(sender, instance, created, **kwargs):
     from .models import Point
@@ -44,3 +45,19 @@ def report_vote(sender, instance, created, **kwargs):
     ]
 
     r = requests.post(settings.SLACK_WEBHOOK_URL, data=json.dumps(payload))
+
+
+def send_light_vote(sender, instance, created, **kwargs):
+    from .models import Point
+    if not created:
+        return
+
+    #send data to lights app
+    post_vars = {}
+    post_vars["action"] = instance.action
+    post_vars["colour"] = instance.vote_from.profile.colour
+    
+    try:
+        r = requests.post(settings.LIGHTS_WEBHOOK_URL, data=post_vars)
+    except Exception, e:
+        logger.warn('cannot send data to lights server')

@@ -11,6 +11,11 @@ from django.conf import settings
 from pokeradio.scoring.models import Credit, Point
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(User)
+    colour = models.CharField(max_length=6, default='FFFFFF')
+
+
 class Track(models.Model):
     """ A track in a playlist
     """
