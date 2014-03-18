@@ -44,7 +44,11 @@ def report_vote(sender, instance, created, **kwargs):
         },
     ]
 
-    r = requests.post(settings.SLACK_WEBHOOK_URL, data=json.dumps(payload))
+    try:
+        r = requests.post(settings.SLACK_WEBHOOK_URL, data=json.dumps(payload))
+    except Exception, e:
+        logger.warn('cannot send data to Slack')
+
 
 
 def send_light_vote(sender, instance, created, **kwargs):
