@@ -4,6 +4,7 @@ import logging
 
 from django.conf import settings
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 logger = logging.getLogger('raven')
 
@@ -59,7 +60,10 @@ def send_light_vote(sender, instance, created, **kwargs):
     #send data to lights app
     post_vars = {}
     post_vars["action"] = instance.action
-    post_vars["colour"] = instance.vote_from.profile.colour
+    try:
+        post_vars["colour"] = instance.vote_from.profile.colour
+    except ObjectDoesNotExist:
+        post_vars["colour"] = 'FFFFFF'
     
     try:
         r = requests.post(settings.LIGHTS_WEBHOOK_URL, data=post_vars)
