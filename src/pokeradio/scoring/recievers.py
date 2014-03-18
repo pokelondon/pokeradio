@@ -53,8 +53,10 @@ def report_vote(sender, instance, created, **kwargs):
 
 
 def send_light_vote(sender, instance, created, **kwargs):
+    logger.info("send_light_vote called")
     from .models import Point
     if not created:
+        logger.warn("send_light_vote - point was not created")
         return
 
     #send data to lights app
@@ -66,6 +68,7 @@ def send_light_vote(sender, instance, created, **kwargs):
         post_vars["colour"] = 'FFFFFF'
     
     try:
+        logger.info("send_light_vote - requesting light url")
         r = requests.post(settings.LIGHTS_WEBHOOK_URL, data=post_vars)
     except Exception, e:
         logger.warn('cannot send data to lights server')
