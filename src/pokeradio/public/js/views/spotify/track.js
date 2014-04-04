@@ -30,9 +30,9 @@ define(['jquery',
                  * When clicked, queue the track via socket message.
                  */
                 queueTrack: function(evt) {
-                    evt.preventDefault();
+                    evt && evt.preventDefault();
                     if(this.model.checkInBlacklist()) {
-                        alert('Think about what you\'re doing here ' + window.PRAD.first_name);
+                        alert('Think about what you\'re doing here, ' + window.PRAD.first_name);
                     }
                     this.model.queue();
                 },

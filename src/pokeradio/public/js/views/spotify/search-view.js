@@ -87,7 +87,10 @@ define(['jquery',
                  * Repopulate listign with new track view instances when the
                  * collection changes
                  */
-                render: function() {
+                render: function(opts) {
+                    if (typeof opts === undefined) opts = {};
+                    opts = $.extend({}, { queue: false }, opts);
+
                     var self = this;
                     this.$list.html('');
                     if(this.collection.length) {
@@ -99,6 +102,13 @@ define(['jquery',
                     _(this.collection.models).each(function(model) {
                         var view = new TrackView(model);
                         self.$list.append(view.render().el);
+
+                        // trigger queueTrack on this track if it was dropped in
+                        // (it'll be the only track in the result set)
+                        if (opts.queue) {
+                            view.queueTrack();
+                            self.closeView();
+                        }
                     });
                     if(this.collection.endpoint == 'lookup') {
                         $('#searchInput').val(this.collection.at(0).attributes.name);
