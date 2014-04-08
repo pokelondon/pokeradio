@@ -79,9 +79,23 @@
     display: inline-block;
     vertical-align: middle;
     margin-right: 20px;
+
     .btn {
         font-size: 1em;
         padding: 1px 5px;
+
+        .transition(opacity 0.2s);
+        .opacity(0.8);
+    }
+}
+
+.Playlist-item:hover,
+.Playlist-item:active,
+.Playlist-item:focus {
+    .Playlist-item-trackActions {
+        .btn {
+            .opacity(1);
+        }
     }
 }
 
