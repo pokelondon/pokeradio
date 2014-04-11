@@ -22,7 +22,7 @@ define(['jquery',
                     BaseTrackView.prototype.initialize.apply(this, arguments);
 
                     _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses', 'ttpIn');
-                    this.model.on('change:played', this.updatePlayedState, this);
+                    this.model.on('change:played change:isPlaying', this.updatePlayedState, this);
                     this.model.on('remove', this.onTrackRemoved, this);
                     this.model.on('change:liked', this.onVote, this);
                     this.model.on('change:disliked', this.onVote, this);
@@ -151,4 +151,3 @@ define(['jquery',
             });
             return TrackView;
         });
-
