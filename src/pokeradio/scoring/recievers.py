@@ -66,9 +66,30 @@ def send_light_vote(sender, instance, created, **kwargs):
         post_vars["colour"] = instance.vote_from.profile.colour
     except ObjectDoesNotExist:
         post_vars["colour"] = 'FFFFFF'
-    
+
     try:
         logger.info("send_light_vote - requesting light url")
         r = requests.post(settings.LIGHTS_WEBHOOK_URL, data=post_vars)
     except Exception, e:
         logger.warn('cannot send data to lights server')
+
+
+def send_dweet(sender, instance, created, **kwargs):
+    from .models import Point
+    if not created:
+        return
+
+    #send data to lights app
+    params = {'key': instance.action}
+    data = json.dumps({
+        'track': instance.archive_track.name,
+        'artist': instance.archive_track.artist.name,
+        'dj': instance.user.get_full_name(),
+    })
+    headers = {'content-type': 'application/json'}
+
+    try:
+        r = requests.post('https://dweet.io:443/dweet/for/pokeradio',
+                          data=data, params=params, headers=headers)
+    except Exception, e:
+        logger.warn('Cannot send data to lights Dweet')

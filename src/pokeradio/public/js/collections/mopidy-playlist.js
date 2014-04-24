@@ -17,6 +17,7 @@ define([
                 // Socket Events
                 this.ioBind('load', this.playlistFetch, this);
                 this.ioBind('update', this.playlistUpdate, this);
+                this.ioBind('change:played', this.trimPlayed, this);
                 this.ioBind('message', this.displayMessage, this);
                 this.ioBind('deleted', this.itemDeleted, this);
                 this.ioBind('expired', this.sessionExpired, this);
@@ -44,12 +45,23 @@ define([
              */
             playlistUpdate: function(data){
                 // Single track is passed so we check if its a new track or played track.
-                var data = $.parseJSON(data);
+                data = $.parseJSON(data);
                 if(data.played){
                     var item = this.findWhere({id: parseInt(data.id)});
                     item.set('played', true);
                 }else {
                     this.add(data);
+                }
+            },
+
+            /**
+             * Trim the played items if necessary
+             */
+            trimPlayed: function() {
+                var count = this.where({ played: true }).length;
+                if (count > 3) {
+                    // might be at risk of an event loop
+                    this.shift();
                 }
             },
 

@@ -29,6 +29,9 @@ define(['jquery',
 
                 checkIsPlaying: function() {
                     // Find next unplayed track
+                    // Suppress errors from any track that's just been shifted out (see trimPlayed in mopidy-playlist.js)
+                    if (!this.collection) return false;
+
                     var current_track = this.collection.findWhere({played: false});
                     if(!current_track) {
                         return;
