@@ -86,9 +86,10 @@ def send_dweet(sender, instance, created, **kwargs):
         'artist': instance.archive_track.artist.name,
         'dj': instance.user.get_full_name(),
     })
+    headers = {'content-type': 'application/json'}
 
     try:
         r = requests.post('https://dweet.io:443/dweet/for/pokeradio',
-                          data=data, params=params)
+                          data=data, params=params, headers=headers)
     except Exception, e:
         logger.warn('Cannot send data to lights Dweet')
