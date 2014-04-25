@@ -111,6 +111,7 @@ def send_push(sender, instance, created, **kwargs):
         'track': instance.archive_track.name,
         'artist': instance.archive_track.artist.name,
         'dj': instance.user.get_full_name(),
+        'action': instance.action,
     })
-    p['poke_radio'].trigger(instance.action, data)
+    p['poke_radio'].trigger('vote', data)
 
