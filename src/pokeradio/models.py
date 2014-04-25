@@ -1,15 +1,12 @@
 from calendar import timegm
-import simplejson as json
-import redis
+
 
 from django.db import models
-from django.db.models.signals import post_save, post_delete, pre_save
+from django.db.models.signals import post_save, post_delete
 from django.contrib.auth.models import User
-from django.dispatch import receiver
-from django.conf import settings
 
-from pokeradio.scoring.models import Credit, Point
-
+from pokeradio.scoring.models import Point
+from .recievers import track_saved, track_deleted
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -68,32 +65,5 @@ class Track(models.Model):
         self.save()
 
 
-@receiver(post_save, sender=Track)
-def track_saved(sender, instance, created, **kwargs):
-    r = redis.Redis(host=settings.REDIS_HOST,
-                    port=settings.REDIS_PORT,
-                    db=settings.REDIS_DB)
-
-    if created:
-        # Deduct a credit for this play
-        c = Credit.objects.create(user=instance.user, action='TRACK_ADD',
-                track_name=str(instance)[:100])
-
-        r.publish('pr:track_add', json.dumps(instance.to_dict()))
-    else:
-        # Updating a track record, must be marking it as played
-        r.publish('pr:track_played', json.dumps(instance.to_dict()))
-
-
-@receiver(post_delete, sender=Track)
-def track_deleted(sender, instance, **kwargs):
-    r = redis.Redis(host=settings.REDIS_HOST,
-                    port=settings.REDIS_PORT,
-                    db=settings.REDIS_DB)
-
-    if not instance.played:
-        # Refund the user a credit
-        c = Credit.objects.create(user=instance.user, action='REFUND',
-                track_name=str(instance)[:100])
-
-        r.publish('pr:track_delete', instance.id)
+post_save.connect(track_saved, sender=Track)
+post_delete.connect(track_deleted, sender=Track)

@@ -4,6 +4,7 @@ import tornado
 import tornadoredis
 import simplejson as json
 import tornado.gen
+import pusher 
 
 from datetime import datetime
 from itertools import chain
@@ -80,7 +81,25 @@ class PlayerConnection(SocketConnection):
     @event('track_playback_started')
     def on_track_playback_started(self, href):
         # TODO Mark track as playing in DB
-        pass
+        try:
+            track = Track.objects.filter(href=href, played=False)[0]
+           #Send notification to pusher
+            p = pusher.Pusher(
+                app_id = settings.PUSHER_APP_ID,
+                key= settings.PUSHER_KEY,
+                secret= settings.PUSHER_SECRET
+            )
+
+            data = json.dumps({
+                'track': track.name,
+                'artist': track.artist,
+                'dj': track.user.get_full_name(),
+            })
+
+            p['poke_radio'].trigger('on_playing', data)
+
+        except (Track.DoesNotExist, IndexError):
+            pass
 
     @event('track_playback_ended')
     def on_track_playback_ended(self, href):
