@@ -75,6 +75,7 @@ class PlayerConnection(SocketConnection):
             self.emit('mopidy_play_track', payload)
 
             # Save to archive and count play
+            # TODO, maybe this should be a post save signal that checks the played state
             record_track_play(track)
 
     @event('track_playback_started')

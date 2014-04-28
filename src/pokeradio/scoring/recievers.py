@@ -64,7 +64,7 @@ def send_light_vote(sender, instance, created, **kwargs):
     post_vars["action"] = instance.action
     try:
         post_vars["colour"] = instance.vote_from.profile.colour
-    except ObjectDoesNotExist:
+    except:
         post_vars["colour"] = 'FFFFFF'
 
     try:
@@ -74,14 +74,13 @@ def send_light_vote(sender, instance, created, **kwargs):
         logger.warn('cannot send data to lights server')
 
 
-def send_dweet(sender, instance, created, **kwargs):
-    from .models import Point
+def send_dweet_vote(sender, instance, created, **kwargs):
     if not created:
         return
 
-    #send data to lights app
     params = {'key': instance.action}
     data = json.dumps({
+        'action': instance.action,
         'track': instance.archive_track.name,
         'artist': instance.archive_track.artist.name,
         'dj': instance.user.get_full_name(),

@@ -79,6 +79,3 @@ class Play(Base):
 
     def __unicode__(self):
         return u'{0} played by {1}'.format(self.track, self.user)
-
-
-

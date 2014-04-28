@@ -1,5 +1,7 @@
 from calendar import timegm
 import simplejson as json
+
+import requests
 import redis
 
 from django.db import models
@@ -66,6 +68,32 @@ class Track(models.Model):
         """
         self.played = True
         self.save()
+
+    def __init__(self, *args, **kwargs):
+        super(Track, self).__init__(*args, **kwargs)
+        self.old_play_state = self.played
+
+    def save(self, *args, **kwargs):
+        if self.played != self.old_play_state:
+            self.send_dweet_play()
+        super(Track, self).save(*args, **kwargs)
+
+
+    def send_dweet_play(self):
+        params = {'key': 'played'}
+        data = json.dumps({
+            'action': 'played',
+            'track': self.name,
+            'artist': self.artist,
+            'dj': self.user.get_full_name(),
+        })
+        headers = {'content-type': 'application/json'}
+
+        try:
+            r = requests.post('https://dweet.io:443/dweet/for/pokeradio',
+                            data=data, params=params, headers=headers)
+        except Exception, e:
+            pass
 
 
 @receiver(post_save, sender=Track)
