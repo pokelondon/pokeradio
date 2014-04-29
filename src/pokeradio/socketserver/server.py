@@ -93,6 +93,7 @@ class PlayerConnection(SocketConnection):
             data = json.dumps({
                 'track': track.name,
                 'artist': track.artist,
+                'album_href' : track.album_href,
                 'dj': track.user.get_full_name(),
             })
 
