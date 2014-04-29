@@ -1,5 +1,8 @@
 from calendar import timegm
 
+import simplejson as json
+
+import requests
 
 from django.db import models
 from django.db.models.signals import post_save, post_delete
@@ -63,7 +66,6 @@ class Track(models.Model):
         """
         self.played = True
         self.save()
-
 
 post_save.connect(track_saved, sender=Track)
 post_delete.connect(track_deleted, sender=Track)

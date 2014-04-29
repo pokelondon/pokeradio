@@ -5,6 +5,7 @@ import tornadoredis
 import simplejson as json
 import tornado.gen
 import pusher 
+import requests
 
 from datetime import datetime
 from itertools import chain
@@ -12,7 +13,6 @@ from tornadio2 import SocketConnection
 from tornadio2 import event, router, server, gen
 from raven import Client
 from raven.middleware import Sentry
-
 from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
@@ -76,11 +76,13 @@ class PlayerConnection(SocketConnection):
             self.emit('mopidy_play_track', payload)
 
             # Save to archive and count play
+            # TODO, maybe this should be a post save signal that checks the played state
             record_track_play(track)
 
     @event('track_playback_started')
     def on_track_playback_started(self, href):
         # TODO Mark track as playing in DB
+
         try:
             track = Track.objects.filter(href=href, played=False)[0]
            #Send notification to pusher
@@ -91,6 +93,7 @@ class PlayerConnection(SocketConnection):
             )
 
             data = json.dumps({
+                'action': 'playing',
                 'track': track.name,
                 'artist': track.artist,
                 'album_href' : track.album_href,
@@ -98,6 +101,14 @@ class PlayerConnection(SocketConnection):
             })
 
             p['poke_radio'].trigger('on_playing', data)
+            
+            params = {'key': 'played'}
+            headers = {'content-type': 'application/json'}
+            try :
+                requests.post('https://dweet.io:443/dweet/for/pokeradio',
+                            data=data, params=params, headers=headers)
+            except Exception, e:
+                pass
 
         except (Track.DoesNotExist, IndexError):
             pass
