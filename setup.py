@@ -34,6 +34,8 @@ install_dependencies = [
     'Pillow == 2.3.0',
     'requests==2.0.0',
     'plotly',
+    'pusher==0.8',
+    
 ]
 
 # Test Dependencies
