@@ -92,3 +92,25 @@ def send_dweet_vote(sender, instance, created, **kwargs):
                           data=data, params=params, headers=headers)
     except Exception, e:
         logger.warn('Cannot send data to lights Dweet')
+
+
+def send_push(sender, instance, created, **kwargs):
+    import pusher
+    if not created:
+        return
+    
+    #Send notification to pusher    
+    p = pusher.Pusher(
+      app_id = settings.PUSHER_APP_ID,
+      key= settings.PUSHER_KEY,
+      secret= settings.PUSHER_SECRET
+    )
+
+    data = json.dumps({
+        'track': instance.archive_track.name,
+        'artist': instance.archive_track.artist.name,
+        'dj': instance.user.get_full_name(),
+        'action': instance.action,
+    })
+    p['poke_radio'].trigger('vote', data)
+

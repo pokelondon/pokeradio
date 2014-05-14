@@ -4,6 +4,8 @@ import tornado
 import tornadoredis
 import simplejson as json
 import tornado.gen
+import pusher
+import requests
 
 from datetime import datetime
 from itertools import chain
@@ -11,7 +13,6 @@ from tornadio2 import SocketConnection
 from tornadio2 import event, router, server, gen
 from raven import Client
 from raven.middleware import Sentry
-
 from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
@@ -81,7 +82,38 @@ class PlayerConnection(SocketConnection):
     @event('track_playback_started')
     def on_track_playback_started(self, href):
         # TODO Mark track as playing in DB
-        pass
+
+        try:
+            track = Track.objects.filter(href=href, played=False)[0]
+           #Send notification to pusher
+            p = pusher.Pusher(
+                app_id = settings.PUSHER_APP_ID,
+                key= settings.PUSHER_KEY,
+                secret= settings.PUSHER_SECRET
+            )
+
+            data = json.dumps({
+                'action': 'playing',
+                'id': track.pk,
+                'href': track.href,
+                'track': track.name,
+                'artist': track.artist,
+                'album_href' : track.album_href,
+                'dj': track.user.get_full_name(),
+            })
+
+            p['poke_radio'].trigger('on_playing', data)
+            
+            params = {'key': 'played'}
+            headers = {'content-type': 'application/json'}
+            try :
+                requests.post('https://dweet.io:443/dweet/for/pokeradio',
+                            data=data, params=params, headers=headers)
+            except Exception, e:
+                pass
+
+        except (Track.DoesNotExist, IndexError):
+            pass
 
     @event('track_playback_ended')
     def on_track_playback_ended(self, href):
