@@ -22,6 +22,7 @@ def vote(request):
     """
 
     token = request.POST.get('token')
+    id = request.POST.get('id')
     vote = request.POST.get('vote')
 
     # flip this to disable this endpoint
@@ -32,7 +33,7 @@ def vote(request):
         return response
 
     # validate POST data
-    if token is None or vote is None:
+    if token is None or vote is None or id is None:
         return HttpResponseBadRequest('Malformed request, sorry. Needs to '
                                       'contain token and vote.',
                                       content_type='text/plain')
@@ -51,12 +52,13 @@ def vote(request):
         return HttpResponseForbidden('Invalid voting token, sorry.',
                                      content_type='text/plain')
 
-    # get 'current' track
-    # 'current' playing track as earliest added unplayed track
-    track = Track.objects.filter(played=False).order_by('timestamp').first()
-    if track is None:
-        # or... most recently played track, if nothing playing
-        track = Track.objects.filter(played=True).order_by('timestamp').last()
+    # validate track
+    id = int(id)
+    try:
+        track = Track.objects.get(pk=id)
+    except Track.DoesNotExist:
+        return HttpResponseForbidden('Invalid track, sorry.',
+                                     content_type='text/plain')
 
     # check this isn't one of the user's tracks
     if track.user == token.user:
