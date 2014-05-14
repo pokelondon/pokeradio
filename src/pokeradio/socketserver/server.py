@@ -316,6 +316,17 @@ class AppConnection(SocketConnection):
                                          playlist_track=track,
                                          archive_track=archive_track,
                                          vote_from=self.user)
+                #check the current number of downvotes for this track -
+                #if it exceeds the threshold then send a socket message to skip
+                points = Point.objects.filter(playlist_track=track)
+                score = 0
+                for point in points:
+                    score += point.value
+
+                if score <= settings.POKERADIO_SKIP_THRESHOLD:
+                    #dispatch the skip event
+                    self.emit('playlist:skip', 'skip {0}'.format(track))
+                    logger.info('Skip {0}'.format(track))
             except IntegrityError:
                 # User has already voted for this track
                 self.emit('playlist:message',
