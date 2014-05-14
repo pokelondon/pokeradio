@@ -4,7 +4,7 @@ import tornado
 import tornadoredis
 import simplejson as json
 import tornado.gen
-import pusher 
+import pusher
 import requests
 
 from datetime import datetime
@@ -94,6 +94,8 @@ class PlayerConnection(SocketConnection):
 
             data = json.dumps({
                 'action': 'playing',
+                'id': track.pk,
+                'href': track.href,
                 'track': track.name,
                 'artist': track.artist,
                 'album_href' : track.album_href,
