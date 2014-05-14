@@ -40,6 +40,9 @@
     <div class="col-md-8">
         <h2><i class="fa fa-user"></i> My stuff</h2>
         <a href="{% url 'scoring:points_index' %}" class="btn"><i class="fa fa-star-o"></i> Fake internet points</a>
+        {% if request.user.tokens.all %}
+        <p><strong>Your API token:</strong> {{ request.user.tokens.all.0.token }}</p>
+        {% endif %}
 
         <h3><i class="fa fa-heart"></i> My Favorites</h3>
         <ul id="owlFavs">
