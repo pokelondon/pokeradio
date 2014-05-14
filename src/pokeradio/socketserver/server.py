@@ -107,7 +107,7 @@ class PlayerConnection(SocketConnection):
             params = {'key': 'played'}
             headers = {'content-type': 'application/json'}
             try :
-                requests.post('https://dweet.io:443/dweet/for/%s' % settings.DWEET_NAME,
+                requests.post('https://dweet.io:443/dweet/for/{0}'.format(settings.DWEET_NAME),
                             data=data, params=params, headers=headers)
             except Exception, e:
                 pass

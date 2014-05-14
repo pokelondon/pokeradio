@@ -88,7 +88,7 @@ def send_dweet_vote(sender, instance, created, **kwargs):
     headers = {'content-type': 'application/json'}
 
     try:
-        r = requests.post('https://dweet.io:443/dweet/for/%s' % settings.DWEET_NAME,
+        r = requests.post('https://dweet.io:443/dweet/for/{0}'.format(settings.DWEET_NAME),
                           data=data, params=params, headers=headers)
     except Exception, e:
         logger.warn('Cannot send data to lights Dweet')
