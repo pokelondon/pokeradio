@@ -84,6 +84,8 @@ class Track(models.Model):
         data = json.dumps({
             'action': 'played',
             'track': self.name,
+            'id': self.pk,
+            'href': self.href,
             'artist': self.artist,
             'dj': self.user.get_full_name(),
         })
