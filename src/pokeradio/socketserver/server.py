@@ -102,7 +102,8 @@ class PlayerConnection(SocketConnection):
                 'dj': track.user.get_full_name(),
             })
 
-            p['poke_radio'].trigger('on_playing', data)
+            if settings.USE_PUSHER:
+                p['poke_radio'].trigger('on_playing', data)
 
             params = {'key': 'played'}
             headers = {'content-type': 'application/json'}

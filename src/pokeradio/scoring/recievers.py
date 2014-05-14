@@ -99,6 +99,9 @@ def send_push(sender, instance, created, **kwargs):
     if not created:
         return
 
+    if not settings.USE_PUSHER:
+        return
+
     #Send notification to pusher
     p = pusher.Pusher(
       app_id = settings.PUSHER_APP_ID,
