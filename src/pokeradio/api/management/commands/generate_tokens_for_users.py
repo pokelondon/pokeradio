@@ -14,10 +14,19 @@ class Command(BaseCommand):
             dest='dry_run',
             default=False,
             help='Report token operations without carrying them out'),
+        make_option('--user',
+                    action='store',
+                    dest='generate_only',
+                    help='Generate only for this screen name'),
         )
 
     def handle(self, *args, **options):
-        for user in User.objects.all():
+        if options['generate_only']:
+            only = User.objects.get(username=options['generate_only'])
+            users = [only,]
+        else:
+            users = User.objects.all()
+        for user in users:
             self.stdout.write('%s... ' % user)
             if user.tokens.filter(enabled=True).count() == 0:
                 if options['dry_run']:
