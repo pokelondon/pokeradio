@@ -76,6 +76,9 @@ define(['jquery',
                  * Usefull for splitting off before and after a certain item
                  */
                 getCollectionIndex: function() {
+
+                    if (!this.collection) return false;
+
                     return this.collection.indexOf(this) || 0;
                 },
 
@@ -84,6 +87,7 @@ define(['jquery',
                  */
                 timeTillPlay: function(mins) {
                     var index = this.getCollectionIndex();
+                    if (index === false) return false;
                     var _preceeding_tracks = this.collection.chain().slice(0, index);
                     var _unplayed = _preceeding_tracks.filter(function(i) { return !i.get('played'); });
                     var t = _unplayed.reduce(function(memo, i) { return memo + i.get('length'); }, 0);

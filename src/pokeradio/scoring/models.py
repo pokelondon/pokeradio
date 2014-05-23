@@ -10,7 +10,7 @@ from django.db.models.signals import post_save
 
 from .managers import TransactionManager
 
-from .recievers import report_vote, send_light_vote, send_dweet_vote, send_push
+from .recievers import report_vote, send_light_vote, send_dweet_vote, send_push, track_skip
 
 
 
@@ -95,4 +95,5 @@ post_save.connect(report_vote, sender=Point)
 post_save.connect(send_light_vote, sender=Point)
 post_save.connect(send_push, sender=Point)
 post_save.connect(send_dweet_vote, sender=Point)
+post_save.connect(track_skip, sender=Point)
 

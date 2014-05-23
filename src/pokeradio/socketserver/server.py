@@ -31,9 +31,9 @@ class PlayerConnection(SocketConnection):
     """ Socket connection for Mopidy client to connect to
     Bridged to browser connections via Redis PubSub
     """
-
+    current_track = None
     waiting_for_more_tracks = False
-    CHANNELS = ['pr:track_add', ]
+    CHANNELS = ['pr:track_add', 'pr:track_skip']
 
     def __init__(self, *args, **kwargs):
         super(PlayerConnection, self).__init__(*args, **kwargs)
@@ -92,6 +92,8 @@ class PlayerConnection(SocketConnection):
                 secret= settings.PUSHER_SECRET
             )
 
+            self.current_track = track
+
             data = json.dumps({
                 'action': 'playing',
                 'id': track.pk,
@@ -108,7 +110,7 @@ class PlayerConnection(SocketConnection):
             params = {'key': 'played'}
             headers = {'content-type': 'application/json'}
             try :
-                requests.post('https://dweet.io:443/dweet/for/pokeradio',
+                requests.post('https://dweet.io:443/dweet/for/{0}'.format(settings.DWEET_NAME),
                             data=data, params=params, headers=headers)
             except Exception, e:
                 pass
@@ -128,6 +130,12 @@ class PlayerConnection(SocketConnection):
 
         self.on_request_track()
 
+    def mopidy_skip_track(self, track):
+        if track.get('id') == self.current_track.id:
+            self.current_track.set_played()
+            self.emit('mopidy_skip_track', 'None')
+            
+      
     @event('player_update')
     def on_player_update(self, data):
         """ Player state change, pass message onto redis channel
@@ -147,6 +155,9 @@ class PlayerConnection(SocketConnection):
         if data.kind == 'message':
             if data.channel == 'pr:track_add':
                 self.on_new_track()
+            if data.channel == 'pr:track_skip':
+                data_dict = json.loads(data.body)
+                self.mopidy_skip_track(data_dict)
 
 
 class AppConnection(SocketConnection):
@@ -154,7 +165,8 @@ class AppConnection(SocketConnection):
     websocket. Connection to the player socket server is via redis
     """
     CHANNELS = ['pr:track_add', 'pr:track_delete', 'pr:progress',
-                'pr:track_played']
+                'pr:track_played', 'pr:track_skip']
+
     current_state = None
 
     def __init__(self, *args, **kwargs):
@@ -231,6 +243,17 @@ class AppConnection(SocketConnection):
             if data.channel == 'pr:track_played':
                 # Same socket evemt playlist is updated
                 self.emit('playlist:update', data.body)
+           
+            if data.channel == 'pr:track_skip':
+                data_dict = json.loads(data.body)
+                if self.user_id == data_dict.get('user').get('id'):
+                    self.emit('playlist:message', '{0} has been voted down too many times and will be skiped.'.format(data_dict.get('name')) )
+           
+            if data.channel == 'pr:track_voted':
+                vote_data = json.loads(data.body)
+                if self.user_id == vote_data.get('user').get('id'):
+                    self.emit('message:info', data.body)  
+
 
     def check_expiry(self):
         """ Check the session hasnt expired before doing any events
@@ -319,9 +342,9 @@ class AppConnection(SocketConnection):
                                          playlist_track=track,
                                          archive_track=archive_track,
                                          vote_from=self.user)
+
                 #see if we should skip this track
                 self.check_skip_threshold(track)
-                        
 
             except IntegrityError:
                 # User has already voted for this track
@@ -332,24 +355,20 @@ class AppConnection(SocketConnection):
             else:
                 return True
 
+
     def check_skip_threshold(self, track):
-        self.emit('mopidy_skip_track')
-        return
         #check the cumulative score for this track -
         #if it is lower than the threshold then delete or skip
         score = Point.objects.total(playlist_track=track)
         if score <= settings.POKERADIO_SKIP_THRESHOLD:
-        #get the latest unplayed track in the playlist
+            #get the latest unplayed track in the playlist
             try:
                 current_track = Track.objects.filter(played__exact=False)[:1][0]
-                if track.id == current_track.id \
-                and self.current_state == 'playing':
-                    payload = json.dumps({'id': track.id, 'href': track.href})
-                    self.emit('mopidy_skip_track', payload)
-                elif not track.played:
+                if track.id != current_track.id \
+                and not track.played \
+                or self.current_state != 'playing':
                     #the track hasn't been played yet - just delete it from
                     #the playlist
-                    self.emit('playlist:message', '{0} deleted'.format(track))
                     track.delete()
             except IndexError:
                 pass

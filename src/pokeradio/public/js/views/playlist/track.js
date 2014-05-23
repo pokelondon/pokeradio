@@ -112,6 +112,8 @@ define(['jquery',
                     var update = function(seconds) {
                         var ttp = self.model.timeTillPlay();
                         // Check track isnt already played or playing
+                        if (ttp === false ) return false;
+
                         if(1 > ttp) {
                             if(self.model.get('played')) {
                                 self.countdownText = '';
