@@ -72,9 +72,13 @@ body {
 }
 
 body {
-    background: url('../img/pokeradiomon/background.jpg') top center no-repeat #ebebeb;
+    background: url('../img/pokeradiomon/background_tile.jpg') top left repeat-x #dee1e6;
 
     font-family: 'Fira Sans', sans-serif;
+}
+
+.Container-outer {
+    background: url('../img/pokeradiomon/background.jpg') top center no-repeat;
 }
 
 .Container {
@@ -157,8 +161,8 @@ body {
     text-transform: uppercase;
 
 
-  -webkit-transition: all 0.3s ease-out;
-          transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
 }
 
 .Button:hover,
@@ -172,6 +176,9 @@ body {
 
 .Button[disabled] {
     margin-left: 5px;
+
+    font-weight: lighter;
+    cursor: not-allowed;
 }
 
 .Button--arrow {

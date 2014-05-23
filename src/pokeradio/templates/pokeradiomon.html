@@ -18,29 +18,31 @@
         <link rel="shortcut icon" href="{{ STATIC_URL }}/favicon.ico" />
     </head>
     <body>
-        <div class='Container'>
-            <div class='Sidebar'>
-                <img src='{{ STATIC_URL }}img/pokeradiomon/logo.png' class='Logo' alt='Poke Radio Monitor'>
-                <blockquote class='Quote'>
-                    I can&#8217;t believe you fucking made this on my last day.
-                    <cite class='Citation'><strong>Martin Senyszak</strong> &mdash; DJ</cite>
-                </blockquote>
-            </div>
-            <div class='CTA'>
-                <p class='CTA-copy'>
-                    Vote from the comfort of your statusbar.
-                </p>
-                <div class='CTA-buttons'>
-                    <a href='https://pokeradio.s3.amazonaws.com/dist/PokeRadioMon.zip' class='Button Button--arrow'>Download OSX</a>
-                    <a class='Button' disabled>Windows*</a>
+        <div class='Container-outer'>
+            <div class='Container'>
+                <div class='Sidebar'>
+                    <img src='{{ STATIC_URL }}img/pokeradiomon/logo.png' class='Logo' alt='Poke Radio Monitor'>
+                    <blockquote class='Quote'>
+                        I can&#8217;t believe you fucking made this on my last day.
+                        <cite class='Citation'><strong>Martin Senyszak</strong> &mdash; DJ</cite>
+                    </blockquote>
                 </div>
-            </div>
-            <div class='Footer'>
-                <div class='Footer-copy'>
-                    * Windows version is currently in closed private made-up beta
+                <div class='CTA'>
+                    <p class='CTA-copy'>
+                        Vote from the comfort of your statusbar.
+                    </p>
+                    <div class='CTA-buttons'>
+                        <a href='https://pokeradio.s3.amazonaws.com/dist/PokeRadioMon.zip' class='Button Button--arrow'>Download OSX</a>
+                        <a class='Button' disabled>Windows*</a>
+                    </div>
                 </div>
-                <div class='Footer-logos'>
-                    <img src='{{ STATIC_URL }}img/pokeradiomon/sponsors.png' alt='Thanks to our partners'>
+                <div class='Footer'>
+                    <div class='Footer-copy'>
+                        * Windows version is currently in closed private made-up beta
+                    </div>
+                    <div class='Footer-logos'>
+                        <img src='{{ STATIC_URL }}img/pokeradiomon/sponsors.png' alt='Thanks to our partners'>
+                    </div>
                 </div>
             </div>
         </div>
