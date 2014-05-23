@@ -36,17 +36,23 @@ def get_image_url(code):
 
 
 def musicbrainz_get_image(barcode, artistname, release):
-    m = musicbrainzngs.search_releases(
-        barcode=barcode,
-        artistname=artistname,
-        release=release
-        ).get('release-list', 0)
+    try:
+        m = musicbrainzngs.search_releases(
+            barcode=barcode,
+            artistname=artistname,
+            release=release
+            ).get('release-list', 0)
+    except musicbrainzngs.NetworkError:
+        raise Http404()
 
     id = m[0].get('release-group').get('id')
 
     url  = settings.COVERART_ENDPOINT.format(id)
 
-    r = requests.get(url)
+    try:
+        r = requests.get(url)
+    except requests.exceptions.ConnectionError:
+        raise Http404()
 
     if 404 == r.status_code:
         raise Http404()
