@@ -247,7 +247,7 @@ class AppConnection(SocketConnection):
             if data.channel == 'pr:track_skip':
                 data_dict = json.loads(data.body)
                 if self.user_id == data_dict.get('user').get('id'):
-                    self.emit('playlist:message', '{0} has been voted down too many times and will be skiped.'.format(data_dict.get('name')) )
+                    self.emit('playlist:message', "Sorry! The crowd didn't like {0} and it's being skipped.".format(data_dict.get('name')) )
            
             if data.channel == 'pr:track_voted':
                 vote_data = json.loads(data.body)
