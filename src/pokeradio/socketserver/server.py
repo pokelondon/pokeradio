@@ -327,7 +327,7 @@ class AppConnection(SocketConnection):
         """
         # Score a point to the user
         try:
-            # Get the track being liked, but  not if its queued by the
+            # Get the track being liked, but not if its queued by the
             # current user
             track = Track.objects.exclude(user=self.user).get(id=int(track_id))
         except Track.DoesNotExist:
