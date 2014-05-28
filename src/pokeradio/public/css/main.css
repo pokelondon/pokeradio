@@ -3464,6 +3464,9 @@ progress.paused::-webkit-progress-bar {
 .Listing-date {
   float: right;
 }
+.Leaderboard {
+  display: none;
+}
 .Leaderboard-items {
   margin: 0;
   padding: 0;
@@ -3671,4 +3674,9 @@ progress.paused::-webkit-progress-bar {
 }
 .Bar--dislikes .Bar-number {
   float: left;
+}
+@media (min-width: 768px) {
+  .Leaderboard {
+    display: block;
+  }
 }
