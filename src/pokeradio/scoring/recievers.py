@@ -1,7 +1,7 @@
 import json
 import requests
 import logging
-
+import redis
 from django.conf import settings
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
@@ -116,3 +116,38 @@ def send_push(sender, instance, created, **kwargs):
         'action': instance.action,
     })
     p['poke_radio'].trigger('vote', data)
+
+
+def track_voted(sender, instance, created, **kwargs):
+    """
+    When a track has been voted up or down send redis message to the socket server to alert connect clients
+    """     
+    r = redis.Redis(host=settings.REDIS_HOST,
+                    port=settings.REDIS_PORT,
+                    db=settings.REDIS_DB)
+    
+    data = json.dumps({
+        "track": {
+            "id": instance.playlist_track.id,
+            "name": instance.archive_track.name,
+            "artist": instance.archive_track.artist.name, 
+        },
+        "user": {
+            "full_name": instance.user.get_full_name(),
+            "id":instance.user.id,
+        },
+        "action": instance.action,
+        "value": instance.user.point_set.all().aggregate(models.Sum('value'))['value__sum']
+        })
+    r.publish('pr:track_voted', data)
+
+def track_skip(sender, instance, created, **kwargs):
+    r = redis.Redis(host=settings.REDIS_HOST,
+                    port=settings.REDIS_PORT,
+                    db=settings.REDIS_DB)
+    #check the cumulative score for this track -
+    #if it is lower than the threshold then delete or skip
+    score = instance.playlist_track.point_set.all().aggregate(models.Sum('value'))['value__sum'],
+    if score[0] <= settings.POKERADIO_SKIP_THRESHOLD:
+    #get the latest unplayed track in the playlist
+        r.publish('pr:track_skip', json.dumps( instance.playlist_track.to_dict() ) )
