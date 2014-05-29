@@ -3411,6 +3411,7 @@ progress.paused::-webkit-progress-bar {
 @media (min-width: 768px) {
   .btn-preview {
     display: inline-block;
+    margin-right: 10px;
   }
 }
 .Listing-list {
