@@ -3690,8 +3690,3 @@ progress.paused::-webkit-progress-bar {
     float: left;
   }
 }
-@media (min-width: 992px) {
-  .Leaderboard {
-    float: none;
-  }
-}
