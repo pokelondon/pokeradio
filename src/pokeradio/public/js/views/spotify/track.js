@@ -34,6 +34,9 @@ define(['jquery',
                     if(this.model.checkInBlacklist()) {
                         alert('Think about what you\'re doing here, ' + window.PRAD.first_name);
                     }
+                    if (typeof ga !== 'undefined') {
+                        ga('send', 'event', 'track', 'queue', 'source: search');
+                    }
                     this.model.queue();
                 },
 
@@ -43,6 +46,9 @@ define(['jquery',
                 preview: function(evt) {
                     evt.preventDefault();
                     evt.stopPropagation();
+                    if (typeof ga !== 'undefined') {
+                        ga('send', 'event', 'track', 'preview');
+                    }
                     var $iframe = $('<iframe width="80" height="80" frameborder="0" allowtransparency="true"></iframe>');
                     $iframe.attr('src', 'https://embed.spotify.com/?uri=' + this.model.get('href'));
                     this.$('.js-search-item-details-preview').html($iframe);

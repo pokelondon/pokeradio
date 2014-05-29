@@ -46,11 +46,17 @@ define(['jquery',
                 },
 
                 unQueue: function() {
+                    if (typeof ga !== 'undefined') {
+                        ga('send', 'event', 'track', 'unqueue');
+                    }
                     socket.emit('remove_track', this.get('id'));
                 },
 
                 likeTrack: function() {
                     if(this.canLike()) {
+                        if (typeof ga !== 'undefined') {
+                            ga('send', 'event', 'track', 'vote', 'like');
+                        }
                         socket.emit('like_track', this.get('id'));
                         this.set('liked', true);
                     }
@@ -58,6 +64,9 @@ define(['jquery',
 
                 dislikeTrack: function() {
                     if(this.canLike()) {
+                        if (typeof ga !== 'undefined') {
+                            ga('send', 'event', 'track', 'vote', 'dislike');
+                        }
                         socket.emit('dislike_track', this.get('id'));
                         this.set('disliked', true);
                     }

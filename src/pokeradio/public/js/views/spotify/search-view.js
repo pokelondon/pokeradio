@@ -76,6 +76,9 @@ define(['jquery',
                             evt.stopPropagation();
                             var model = self.collection.findWhere({'is-focused': true});
                             if(model) {
+                                if (typeof ga !== 'undefined') {
+                                    ga('send', 'event', 'track', 'queue', 'source: search');
+                                }
                                 model.queue();
                                 self.enterToQueue = false;
                             }
@@ -106,6 +109,9 @@ define(['jquery',
                         // trigger queueTrack on this track if it was dropped in
                         // (it'll be the only track in the result set)
                         if (opts.queue) {
+                            if (typeof ga !== 'undefined') {
+                                ga('send', 'event', 'track', 'queue', 'source: drag');
+                            }
                             view.queueTrack();
                             self.closeView();
                         }
@@ -120,6 +126,9 @@ define(['jquery',
                  * DO search query
                  */
                 search: function(evt){
+                    if (typeof ga !== 'undefined') {
+                        ga('send', 'event', 'search');
+                    }
                     this.collection.search($('#searchInput').val());
                     evt.preventDefault();
                 },
@@ -130,6 +139,9 @@ define(['jquery',
                 },
 
                 openView: function(){
+                    if (typeof ga !== 'undefined') {
+                        ga('send', 'pageview', '/search/');
+                    }
                     this.$el.fadeIn();
                     this.trigger('open');
                 },
