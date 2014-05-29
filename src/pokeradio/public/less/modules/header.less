@@ -1,6 +1,6 @@
 .Header {
-    height: 170px;;
-    padding-top: 25px;
+    height: 210px;
+    padding-top: 65px;
 
     background-color: @white;
 
@@ -13,22 +13,27 @@
 .Header-logo {
     width: 153px;
     height: 77px;
-
+    margin-top: 40px;
     background-image: url('../img/poke-radio-logo.png');
 
     .center-block();
 }
 
 .Header-userControls {
-    float: right;
-    margin-top: -40px;
+  height: 40px;
+  width: 92%;
+  top: 0px;
+  margin-top: 5px;
+  position: absolute;
 
-    a {
-        font-size: 12px;
-        color: #505262;
-    }
+
 }
-
+.Header-userControls-info {
+    margin-top: 5px;
+}
+.Header-userControls-cta {
+    float: right;
+}
 .Header-userControls-image {
     width: 35px;
     height: 35px;
@@ -37,9 +42,7 @@
     margin-right: 10px;
 }
 
-.Header-userControls-info {
-    float: left;
-}
+
 
 #owlFavs {
     padding: 0;
@@ -71,4 +74,35 @@
         color: @purple;
         font-style: normal;
     }
+}
+
+@media (min-width: @screen-sm) {
+    .Header {
+        height: 170px;
+        padding-top: 25px;
+    }
+    .Header-userControls {
+        width: initial;
+        position: inherit;
+        float: right;
+        margin-top: -40px;
+
+        a {
+            font-size: 12px;
+            color: #505262;
+        }
+    }
+
+    .Header-userControls-info {
+        margin: 0;
+        float: left;
+    }
+
+    .Header-logo { 
+        margin-top: 0;
+    }
+    .Header-userControls-cta {
+        float: none;
+    }
+
 }
