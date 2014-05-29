@@ -55,7 +55,7 @@ define(['jquery',
                 likeTrack: function() {
                     if(this.canLike()) {
                         if (typeof ga !== 'undefined') {
-                            ga('send', 'event', 'track', 'vote', 'like');
+                            ga('send', 'event', 'track', 'vote', 'source: web', 1);
                         }
                         socket.emit('like_track', this.get('id'));
                         this.set('liked', true);
@@ -65,7 +65,7 @@ define(['jquery',
                 dislikeTrack: function() {
                     if(this.canLike()) {
                         if (typeof ga !== 'undefined') {
-                            ga('send', 'event', 'track', 'vote', 'dislike');
+                            ga('send', 'event', 'track', 'vote', 'source: web', 0);
                         }
                         socket.emit('dislike_track', this.get('id'));
                         this.set('disliked', true);
