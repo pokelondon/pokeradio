@@ -33,8 +33,8 @@ def report_vote(sender, instance, created, **kwargs):
 
     payload["fields"] = [
         {
-            "title": '{0} - {1}'.format(instance.archive_track.name,
-                instance.archive_track.artist.name),
+            "title": '{0} - {1}'.format(unicode(instance.archive_track.name),
+                unicode(instance.archive_track.artist.name)),
             "value": instance.archive_track.point_set.all().aggregate(models.Sum('value'))['value__sum'],
             "short": True
         },
@@ -110,8 +110,8 @@ def send_push(sender, instance, created, **kwargs):
     )
 
     data = json.dumps({
-        'track': instance.archive_track.name,
-        'artist': instance.archive_track.artist.name,
+        'track': unicode(instance.archive_track.name),
+        'artist': unicode(instance.archive_track.artist.name),
         'dj': instance.user.get_full_name(),
         'action': instance.action,
     })
@@ -121,16 +121,16 @@ def send_push(sender, instance, created, **kwargs):
 def track_voted(sender, instance, created, **kwargs):
     """
     When a track has been voted up or down send redis message to the socket server to alert connect clients
-    """     
+    """
     r = redis.Redis(host=settings.REDIS_HOST,
                     port=settings.REDIS_PORT,
                     db=settings.REDIS_DB)
-    
+
     data = json.dumps({
         "track": {
             "id": instance.playlist_track.id,
-            "name": instance.archive_track.name,
-            "artist": instance.archive_track.artist.name, 
+            "name": unicode(instance.archive_track.name),
+            "artist": unicode(instance.archive_track.artist.name),
         },
         "user": {
             "full_name": instance.user.get_full_name(),
