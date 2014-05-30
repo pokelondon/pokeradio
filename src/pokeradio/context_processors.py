@@ -24,3 +24,16 @@ def domain(request):
         'site': current_site,
         'socketio_client_url': settings.SOCKETIO_CLIENT_URL,
     }
+
+
+def analytics(request):
+    """ Get ANALYTICS_ENABLED setting.
+
+    :param request: HTTP request data
+    :type request: object
+
+    :returns: dict -- analytics setting
+    """
+    return {
+        'ANALYTICS_ENABLED': settings.ANALYTICS_ENABLED,
+    }

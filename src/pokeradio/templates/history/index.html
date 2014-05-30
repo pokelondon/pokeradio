@@ -48,7 +48,7 @@
         <ul id="owlFavs">
         {% for object in object_list %}
             <li>
-                <a title="Open in Spotify locally" href="{{ object.spotify_href }}">
+                <a title="Open in Spotify locally" class="js-spotifyLink js-spotifyLink--track" href="{{ object.spotify_href }}">
                 <img src="{{ object.artwork_url }}" alt="Artwork" />
                 </a>
                 <span class="label">
