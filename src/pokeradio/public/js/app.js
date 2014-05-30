@@ -4,9 +4,10 @@ define([
     'underscore',
     'views/spotify/search-view',
     'views/playlist/playlist-view',
-    'views/progress-bar'
+    'views/progress-bar',
+    'helpers/analytics'
     ],
-    function($, Backbone, _, SearchView, PlaylistView, ProgressBar){
+    function($, Backbone, _, SearchView, PlaylistView, ProgressBar, Analytics){
         window.PRAD = window.PRAD || {};
         window.PRAD.is_fox = (navigator.appVersion.indexOf("Win")!=-1);
         window.PRAD.app = {
@@ -23,18 +24,12 @@ define([
                 label;
             if ($link.hasClass('js-spotifyLink--track')) label = 'track';
             else if ($link.hasClass('js-spotifyLink--artist')) label = 'artist';
-            if (typeof ga !== 'undefined') {
-                ga('send', 'event', 'track', 'spotifyLinkClick', label);
-            }
+            Analytics.trackEvent('track', 'spotifyLinkClick', label);
         });
 
         // global handler for JS exceptions
         window.onerror = function(message, file, line) {
-            if (typeof ga !== 'undefined') {
-                ga('send', 'exception', {
-                    'exDescription': file + " (" + line + "): " + message
-                });
-            }
+            Analytics.trackException(file + " (" + line + "): " + message);
         };
 
         return window.PRAD.app;

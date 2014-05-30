@@ -4,9 +4,10 @@ define(['jquery',
         'collections/spotify-tracks',
         'iobind',
         'utils',
-        'views/spotify/track'
+        'views/spotify/track',
+        'helpers/analytics'
         ],
-        function($, Backbone,_ , spotifyTracks, ioBind, utils, TrackView){
+        function($, Backbone,_ , spotifyTracks, ioBind, utils, TrackView, Analytics){
             var SearchView = Backbone.View.extend({
                 el: $('#addTrackView'),
                 searchKey: 191, // '/' search key
@@ -76,9 +77,7 @@ define(['jquery',
                             evt.stopPropagation();
                             var model = self.collection.findWhere({'is-focused': true});
                             if(model) {
-                                if (typeof ga !== 'undefined') {
-                                    ga('send', 'event', 'track', 'queue', 'source: search');
-                                }
+                                Analytics.trackEvent('track', 'queue', 'source: search');
                                 model.queue();
                                 self.enterToQueue = false;
                             }
@@ -109,9 +108,7 @@ define(['jquery',
                         // trigger queueTrack on this track if it was dropped in
                         // (it'll be the only track in the result set)
                         if (opts.queue) {
-                            if (typeof ga !== 'undefined') {
-                                ga('send', 'event', 'track', 'queue', 'source: drag');
-                            }
+                            Analytics.trackEvent('track', 'queue', 'source: drag');
                             view.queueTrack();
                             self.closeView();
                         }
@@ -126,9 +123,7 @@ define(['jquery',
                  * DO search query
                  */
                 search: function(evt){
-                    if (typeof ga !== 'undefined') {
-                        ga('send', 'event', 'search');
-                    }
+                    Analytics.trackEvent('track', 'search');
                     this.collection.search($('#searchInput').val());
                     evt.preventDefault();
                 },
@@ -139,9 +134,7 @@ define(['jquery',
                 },
 
                 openView: function(){
-                    if (typeof ga !== 'undefined') {
-                        ga('send', 'pageview', '/search/');
-                    }
+                    Analytics.trackPageview('/search/');
                     this.$el.fadeIn();
                     this.trigger('open');
                 },

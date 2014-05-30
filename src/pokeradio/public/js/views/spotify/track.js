@@ -7,8 +7,9 @@ define(['jquery',
         'underscore',
         'views/_base_track',
         'text!template/spotify/track.html',
+        'helpers/analytics'
         ],
-        function($, Backbone, _, BaseTrackView, template){
+        function($, Backbone, _, BaseTrackView, template, Analytics){
             var TrackView = BaseTrackView.extend({
                 className: 'media Search-item',
                 template: template,
@@ -34,9 +35,7 @@ define(['jquery',
                     if(this.model.checkInBlacklist()) {
                         alert('Think about what you\'re doing here, ' + window.PRAD.first_name);
                     }
-                    if (typeof ga !== 'undefined') {
-                        ga('send', 'event', 'track', 'queue', 'source: search');
-                    }
+                    Analytics.trackEvent('track', 'queue', 'source: search');
                     this.model.queue();
                 },
 
@@ -46,9 +45,7 @@ define(['jquery',
                 preview: function(evt) {
                     evt.preventDefault();
                     evt.stopPropagation();
-                    if (typeof ga !== 'undefined') {
-                        ga('send', 'event', 'track', 'preview');
-                    }
+                    Analytics.trackEvent('track', 'preview');
                     var $iframe = $('<iframe width="80" height="80" frameborder="0" allowtransparency="true"></iframe>');
                     $iframe.attr('src', 'https://embed.spotify.com/?uri=' + this.model.get('href'));
                     this.$('.js-search-item-details-preview').html($iframe);
