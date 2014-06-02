@@ -5,9 +5,10 @@ define(['jquery',
         'iobind',
         'utils',
         'views/spotify/track',
+        'views/messaging/controller',
         'helpers/analytics'
         ],
-        function($, Backbone,_ , spotifyTracks, ioBind, utils, TrackView, Analytics){
+        function($, Backbone,_ , spotifyTracks, ioBind, utils, TrackView, MessagingController, Analytics){
             var SearchView = Backbone.View.extend({
                 el: $('#addTrackView'),
                 searchKey: 191, // '/' search key
@@ -179,11 +180,13 @@ define(['jquery',
                         evt.stopPropagation();
                         evt.preventDefault();
                         uri = this.parseSpotifyUri(evt);
-                        if(uri) {
+                        if (uri) {
                             this.collection.lookup(uri);
                             this.openView();
-                        }else {
-                            alert('Only single tracks from Spotify\xAE are allowed');
+                        } else {
+                            MessagingController.createMessage({
+                                text: "Only single tracks from Spotify\xAE are allowed"
+                            });
                         }
                     }
                     $('.js-Search-dragDrop').fadeOut(300, function(){

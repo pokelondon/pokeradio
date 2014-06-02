@@ -4,9 +4,10 @@ define([
     'urls',
     'underscore',
     'iobind',
-    'models/mopidy-track'
+    'models/mopidy-track',
+    'views/messaging/controller'
     ],
-    function($, Backbone, urls, _, ioBind, MopidyTrack){
+    function($, Backbone, urls, _, ioBind, MopidyTrack, MessagingController){
         var Collection = Backbone.Collection.extend({
             url: 'playlist',
             socket: window.socket,
@@ -28,7 +29,10 @@ define([
             },
 
             displayMessage: function(message) {
-                alert(message);
+                // TODO: is this required, or ever used?
+                MessagingController.createMessage({
+                    text: message
+                });
             },
 
             /**
@@ -78,7 +82,10 @@ define([
              * This happens when the socket server realises the session's exipred
              */
             sessionExpired: function() {
-                alert('Soz, session\'s expired');
+                MessagingController.createMessage({
+                    text: "Soz, session's expired",
+                    modal: true
+                });
                 // Redirect to logout page just in case, so we don't start a loop
                 window.location.href = '/logout/';
             }

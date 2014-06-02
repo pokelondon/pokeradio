@@ -15,7 +15,7 @@ define([
             init: function(){
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();
-                this.messagingcontroller = new MessagingController();
+                this.messagingcontroller = MessagingController; // singleton
                 this.progressbar = new ProgressBar();
             }
         };

@@ -1,9 +1,10 @@
 define(['jquery',
         'backbone',
         'underscore',
-        'collections/mopidy-playlist'
+        'collections/mopidy-playlist',
+        'views/messaging/controller'
         ],
-        function($, Backbone, _, mopidyPlaylist){
+        function($, Backbone, _, mopidyPlaylist, MessagingController){
             var Track = Backbone.Model.extend({
                 idAttribute: "href",
                 defaults: {
@@ -25,8 +26,10 @@ define(['jquery',
                  * this track queued
                  */
                 queue: function() {
-                    if(this.checkInPlaylist()) {
-                        alert(this.get('name') + ' is already queued');
+                    if (this.checkInPlaylist()) {
+                        MessagingController.createMessage({
+                            text: this.get('name') + " is already queued"
+                        });
                         return;
                     }
                     var track_payload = {

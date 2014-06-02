@@ -33,6 +33,6 @@ define(
                 return this;
             }
         });
-        return MessageController;
+        return new MessageController();
     }
 );
