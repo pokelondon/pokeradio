@@ -1,8 +1,9 @@
 define(['jquery',
         'backbone',
         'underscore',
+        'helpers/analytics'
         ],
-        function($,Backbone,_){
+        function($, Backbone, _, Analytics){
             MopidyTrack = Backbone.Model.extend({
                 idAttribute: "id",
                 wasPlaying: false,
@@ -46,11 +47,13 @@ define(['jquery',
                 },
 
                 unQueue: function() {
+                    Analytics.trackEvent('track', 'unqueue');
                     socket.emit('remove_track', this.get('id'));
                 },
 
                 likeTrack: function() {
                     if(this.canLike()) {
+                        Analytics.trackEvent('track', 'vote', 'source: web', 1);
                         socket.emit('like_track', this.get('id'));
                         this.set('liked', true);
                     }
@@ -58,6 +61,7 @@ define(['jquery',
 
                 dislikeTrack: function() {
                     if(this.canLike()) {
+                        Analytics.trackEvent('track', 'vote', 'source: web', 0);
                         socket.emit('dislike_track', this.get('id'));
                         this.set('disliked', true);
                     }
