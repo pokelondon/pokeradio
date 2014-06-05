@@ -25,10 +25,15 @@ urls = [
     url(r'^$', 'pokeradio.views.home', name='home'),
     url(r'^login/$', 'pokeradio.accounts.views.login_view', name='login'),
     url(r'^logout/$', 'pokeradio.accounts.views.logout_view', name='logout'),
+
     (r'^admin/', include(admin.site.urls)),
     (r'^scoring/', include('pokeradio.scoring.urls', namespace='scoring')),
     (r'^history/', include('pokeradio.history.urls', namespace='history')),
     (r'^albumart/', include('pokeradio.albumart.urls', namespace='albumart')),
+    (r'^api/', include('pokeradio.api.urls', namespace='api')),
+
+    (r'^monitor/$', TemplateView.as_view(template_name="pokeradiomon.html")),
+
     (r'^', include('social.apps.django_app.urls', namespace='social')),
 ]
 urlpatterns += patterns('', *urls)

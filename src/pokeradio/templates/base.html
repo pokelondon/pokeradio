@@ -13,6 +13,7 @@
     <head>
         <meta charset="utf-8"/>
         <title>{% block page_title %}POKERadio{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Styles -->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,300' rel='stylesheet' type='text/css'>
         <!-- Owl Carousel Assets -->
@@ -24,6 +25,18 @@
         <!-- Favicon -->
 
         <link rel="shortcut icon" href="{{ STATIC_URL }}/favicon.ico" />
+
+        {% if ANALYTICS_ENABLED %}
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-51468000-1', 'pokerad.io');
+            ga('send', 'pageview');
+        </script>
+        {% endif %}
 
         {% block scripts %}
         {% endblock %}
@@ -41,7 +54,7 @@
                     <img class="Header-userControls-image" src="/profilepictures/{{ request.user.id }}.jpg"/>
                     <div class="Header-userControls-info">
                         <span class="bold">{{ request.user.first_name }}</span>
-                        <div><a href="{% url 'logout' %}" >Logout</a> | <a href="{% url 'history:index' %}">Dashboard</a></div>
+                        <div class='Header-userControls-cta'><a href="{% url 'logout' %}" >Logout</a> | <a href="{% url 'history:index' %}">Dashboard</a></div>
                     </div>
                 </div>
                 {% endif %}

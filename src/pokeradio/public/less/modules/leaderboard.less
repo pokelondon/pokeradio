@@ -1,7 +1,7 @@
 @unit: 4%;
 
 .Leaderboard {
-
+    display: none;
 }
 
 .Leaderboard-items {
@@ -149,3 +149,10 @@
         float: left;
     }
 }
+@media (min-width: @screen-sm) {
+    .Leaderboard {
+        display: block;
+        float: left;
+    }
+}
+

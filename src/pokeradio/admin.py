@@ -15,7 +15,7 @@ from .models import Track, Profile
 class TrackAdmin(admin.ModelAdmin):
     search_fields = ('name', 'artist', 'user__first_name', 'user__last_name')
     list_display = ('name', 'artist', 'played', 'user', 'length')
-    list_filter = ('artist', 'user', 'played')
+    list_filter = ('played',)
 
 
 # Define an inline admin descriptor for Profile model
@@ -36,4 +36,3 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Track, TrackAdmin)
 
 admin.site.unregister(Site)
-

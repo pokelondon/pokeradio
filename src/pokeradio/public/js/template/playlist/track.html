@@ -8,6 +8,7 @@
             <div class="Playlist-item-artist"><%= artist %></div>
         </div>
         <div class="Playlist-item-duration"><%= _(length).convertToMinutes()%></div>
+        <span class="Playlist-item-separator"></span>
         <div class="Playlist-item-user">
             <img class="Playlist-item-profileImage media-object" src="/profilepictures/<%= user.id %>.jpg">
             <div class="Playlist-item-userFullname"><%= user.full_name %></div>
