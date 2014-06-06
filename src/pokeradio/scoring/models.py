@@ -10,8 +10,8 @@ from django.db.models.signals import post_save
 
 from .managers import TransactionManager
 
-from .recievers import report_vote, send_light_vote, send_dweet_vote, send_push, track_skip
-
+from .recievers import (report_vote, send_light_vote, send_dweet_vote,
+                        send_push, track_skip)
 
 
 class BaseTransaction(models.Model):
