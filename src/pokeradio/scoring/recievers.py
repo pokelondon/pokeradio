@@ -2,19 +2,21 @@ import json
 import requests
 import logging
 import redis
+
 from django.conf import settings
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
+from .slack import Slack
+
 logger = logging.getLogger('raven')
 
-payload = {
-    "channel": "#general",
-    "username": "Poke Radio",
-    "fallback": "Track Vote",
-}
 
 def report_vote(sender, instance, created, **kwargs):
+    """ Accepts an instance of pokeradio.Track
+    Sends a message to the Dev slack channel when one of us gets a vote
+    """
+
     from .models import Point
     if not created:
         return
@@ -22,34 +24,29 @@ def report_vote(sender, instance, created, **kwargs):
     if not instance.user.groups.filter(name='Slack'):
         return
 
+    msg = Slack('Track Disliked',
+                'Track Dissed: {0}'.format(instance.archive_track.name),
+                Slack.PINK,
+                Slack.GENERAL,
+                Slack.DEV)
+
     if instance.action == Point.TRACK_LIKED:
-        payload["fallback"] =  "Track Liked: {0}".format(instance.archive_track.name)
-        payload["pretext"] = "Track Liked"
-        payload["color"] = "#f5007f"
-    else:
-        payload["fallback"] =  "Track Dissed: {0}".format(instance.archive_track.name)
-        payload["pretext"] = "Track Disliked"
-        payload["color"] = "#f5007f"
+        msg.pretext = 'Track Liked'
+        msg.fallback = 'Track Liked: {0}'.format(instance.archive_track.name)
 
-    payload["fields"] = [
-        {
-            "title": '{0} - {1}'.format(unicode(instance.archive_track.name),
-                unicode(instance.archive_track.artist.name)),
-            "value": instance.archive_track.point_set.all().aggregate(models.Sum('value'))['value__sum'],
-            "short": True
-        },
-        {
-            "title": instance.user.get_full_name(),
-            "value": instance.user.point_set.all().aggregate(models.Sum('value'))['value__sum'],
-            "short": True
-        },
-    ]
 
-    try:
-        r = requests.post(settings.SLACK_WEBHOOK_URL, data=json.dumps(payload))
-    except Exception, e:
-        logger.warn('cannot send data to Slack')
+    user_votes = instance.user.point_set.all().aggregate(
+            models.Sum('value'))['value__sum']
+    track_votes = instance.archive_track.point_set.all().aggregate(
+            models.Sum('value'))['value__sum']
+    title = '{0} - {1}'.format(unicode(instance.archive_track.name),
+                               unicode(instance.archive_track.artist.name))
 
+    msg.add_field(title=title, value=track_votes, short=True)
+    msg.add_field(title=instance.user.get_full_name(), value=user_votes,
+                  short=True)
+
+    msg.send()
 
 
 def send_light_vote(sender, instance, created, **kwargs):
@@ -141,13 +138,37 @@ def track_voted(sender, instance, created, **kwargs):
         })
     r.publish('pr:track_voted', data)
 
+
 def track_skip(sender, instance, created, **kwargs):
+    """ Triggered by downvotes, Takes an instance of Point
+    """
     r = redis.Redis(host=settings.REDIS_HOST,
                     port=settings.REDIS_PORT,
                     db=settings.REDIS_DB)
-    #check the cumulative score for this track -
-    #if it is lower than the threshold then delete or skip
-    score = instance.playlist_track.point_set.all().aggregate(models.Sum('value'))['value__sum'],
-    if score[0] <= settings.POKERADIO_SKIP_THRESHOLD:
-    #get the latest unplayed track in the playlist
-        r.publish('pr:track_skip', json.dumps( instance.playlist_track.to_dict() ) )
+
+    # Check the cumulative score for this track -
+    # if it is lower than the threshold then delete or skip
+    score = instance.playlist_track.point_set.all().aggregate(
+            models.Sum('value'))['value__sum']
+
+
+    if score <= settings.POKERADIO_SKIP_THRESHOLD:
+        # Get the latest unplayed track in the playlist
+        r.publish('pr:track_skip',
+                  json.dumps(instance.playlist_track.to_dict()))
+
+        msg = Slack('Track Skipped',
+                    'Track Skipped: {0}'.format(instance.archive_track.name),
+                    Slack.PINK,
+                    '#music',
+                    Slack.PUBLIC)
+
+        total_votes = instance.archive_track.point_set.all().aggregate(
+                models.Sum('value'))['value__sum']
+        title = '{0} - {1}'.format(unicode(instance.archive_track.name),
+                                   unicode(instance.archive_track.artist.name))
+
+        msg.add_field(title=title, value=total_votes, short=True)
+        msg.add_field(title=instance.user.get_full_name(), value=score, short=True)
+
+        msg.send()
