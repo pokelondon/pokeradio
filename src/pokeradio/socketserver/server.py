@@ -16,7 +16,7 @@ from raven.middleware import Sentry
 from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
-from django.db import IntegrityError
+from django.db import IntegrityError, OperationalError, close_connection
 
 from pokeradio.models import Track, Point
 from pokeradio.history.utils import record_track_play, get_or_create_track
@@ -64,7 +64,11 @@ class PlayerConnection(SocketConnection):
         """ Mopidy wants a track to play
         Find the next track in the playlist
         """
-        flush_transaction()
+        try:
+            flush_transaction()
+        except OperationalError:
+            close_connection()
+
         try:
             track = Track.objects.filter(played__exact=False)[:1][0]
         except IndexError:
@@ -188,7 +192,15 @@ class AppConnection(SocketConnection):
         """ Get the user ID from the session and save it to the connection
         instance
         """
-        flush_transaction()
+
+        """ Fix for (2006, 'MySQL server has gone away') 
+            If an OperationalError is thrown throw away the connection.
+            The next db query will start a new connection
+        """
+        try:
+            flush_transaction()
+        except OperationalError:
+            close_connection()
 
         try:
             cookie = request.get_cookie('sessionid')
