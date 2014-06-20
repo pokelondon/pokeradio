@@ -200,6 +200,7 @@ class AppConnection(SocketConnection):
         try:
             flush_transaction()
         except OperationalError:
+            print "Restart connection"
             close_connection()
 
         try:
