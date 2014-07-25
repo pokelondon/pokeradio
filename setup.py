@@ -35,7 +35,7 @@ install_dependencies = [
     'requests==2.0.0',
     'plotly',
     'pusher==0.8',
-    
+    'newrelic == 2.22.1.20',
 ]
 
 # Test Dependencies
