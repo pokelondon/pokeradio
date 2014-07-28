@@ -1,4 +1,6 @@
 import os
+
+import requests
 from fabric.api import env
 from fabric.state import output
 
@@ -10,6 +12,8 @@ from velcro.service.supervisord import list_programs, start, stop, restart
 from velcro.scm.git import deploy as _deploy
 from velcro.target import live, stage
 from velcro.py.django import syncdb, migrate
+
+NR_API_KEY = '***REMOVED***'
 
 # Silence Output
 output['running'] = False
@@ -91,4 +95,13 @@ def bootstrap():
 )
 def deploy(branch, **kwargs):
     _deploy(branch)
+
+    if 'live' == env.target:
+        notify_new_relic()
+
+def notify_new_relic():
+    requests.post('https://api.newrelic.com/deployments.xml',
+            params={'deployment[app_name]': 'Python Application'},
+            headers={'x-api-key': NR_API_KEY})
+
 
