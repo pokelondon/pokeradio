@@ -44,20 +44,33 @@
         {% endblock %}
     </head>
     <body>
+
+        {% if request.user.is_authenticated %}
+        <div class="NavBar">
+            <div class="container">
+                <a href="#na">Full Leaderboard</a>
+                <a href="#na">Top 40</a>
+
+                <div class="NavBar-user col-md-3 pull-right">
+                    <div class="inner">
+                        <img class="Header-userControls-image" src="/profilepictures/{{ request.user.id }}.jpg"/>
+                        <span class="bold">{{ request.user.first_name }}</span>
+                    </div>
+
+                    <ul class="NavBar-dropdown">
+                        <li><a href="{% url 'logout' %}" >Logout</a></li>
+                        <li><a href="{% url 'history:index' %}">Dashboard</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <header class="Header">
             <div class="container">
                 {% block leaderboard %}
                 {% endblock %}
                 <a href="/"><div class="Header-logo"></div></a>
-                {%  if request.user.is_authenticated %}
-                <div class='Header-userControls'>
-                    <img class="Header-userControls-image" src="/profilepictures/{{ request.user.id }}.jpg"/>
-                    <div class="Header-userControls-info">
-                        <span class="bold">{{ request.user.first_name }}</span>
-                        <div class='Header-userControls-cta'><a href="{% url 'logout' %}" >Logout</a> | <a href="{% url 'history:index' %}">Dashboard</a></div>
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </header>
         <div class="container">

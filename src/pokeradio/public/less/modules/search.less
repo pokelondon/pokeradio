@@ -9,6 +9,14 @@
     background: fade(#000, 70%);
 
 }
+.add-track {
+    background: @poke-blue;
+    color: #fff;
+    font-size: 25px;
+    font-weight: lighter;
+    padding: 10px 10px;
+    line-height: 1em;
+}
 
 .Search-wrapper {
     background: @poke-blue;
@@ -58,7 +66,7 @@
         color: @poke-blue;
         box-shadow: none;
     }
-   
+
 }
 
 .Search-input {
@@ -162,28 +170,28 @@
         text-shadow: inset 0 2px 2px darken(#00c6ff, 10);
     }
     .transition(opacity 200ms);
-   
+
 }
 
 .on-drag {
     .Search-dragDrop {
-        display: block;  
+        display: block;
 
     }
     .Search-dragDrop-throb {
      -webkit-animation: throb 1s ease-in-out alternate;
-    -webkit-animation-iteration-count: infinite; 
+    -webkit-animation-iteration-count: infinite;
     }
 
     .Search-dragDrop-images-pulse {
         -webkit-animation: pulse 3s ease-in-out;
-        -webkit-animation-iteration-count: infinite; 
+        -webkit-animation-iteration-count: infinite;
 
         &:nth-child(2) {
-           -webkit-animation-delay: 1s; 
+           -webkit-animation-delay: 1s;
         }
         &:nth-child(3) {
-           -webkit-animation-delay: 2s; 
+           -webkit-animation-delay: 2s;
         }
     }
 }
@@ -237,11 +245,11 @@
     width: @dnd_wh;
     height: @dnd_wh;
     top: 50%;
-    left: 50%; 
-    margin-top: -(@dnd_wh / 2);  
+    left: 50%;
+    margin-top: -(@dnd_wh / 2);
     margin-left: -(@dnd_wh / 2);
     background: @poke-blue;
-    
+
     color: @white;
     text-align: center;
     border-radius: 50%;
@@ -285,12 +293,12 @@
 
 }
 
-@media (min-width: @screen-sm) { 
+@media (min-width: @screen-sm) {
 
     .btn-preview {
         display: inline-block;
         margin-right: 10px;
     }
-  
+
 }
 
