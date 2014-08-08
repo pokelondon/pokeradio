@@ -4,17 +4,17 @@
 define(['jquery',
         'backbone',
         'underscore',
-        'collections/progress-proxy',
+        'collections/progress-proxy'
         ],
         function($, Backbone, _, Collection){
             var View = Backbone.View.extend({
                 tagName: 'progress',
+                className: 'progress-bar',
                 interval: null,
                 percentage_interpolated: 0,
                 period: 1000, // MS period between prog bar updates (interpolated)
 
                 initialize: function() {
-                    this.$el = $('.progress-bar');
                     _.bindAll(this, 'update', 'updateProgressBar');
                     this.collection = new Collection();
 
@@ -23,6 +23,15 @@ define(['jquery',
                     this.listenTo(this.collection, 'play:progress', this.update);
                     this.on('play:progress:interpolated', this.updateProgressBar, this);
                     this.on('play:progress:interpolated', this.updateVar, this);
+                    console.log('Hi im a progress bar');
+                },
+
+                // TODO unload
+                // Clear interval and remove $el
+
+                render: function() {
+                    this.$el.attr('max', 100);
+                    return this;
                 },
 
                 /**

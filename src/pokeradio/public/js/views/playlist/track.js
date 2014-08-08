@@ -2,9 +2,10 @@ define(['jquery',
         'backbone',
         'underscore',
         'views/_base_track',
-        'text!template/playlist/track.html'
+        'text!template/playlist/track.html',
+        'views/progress-bar'
         ],
-        function($, Backbone, _, BaseTrackView, template){
+        function($, Backbone, _, BaseTrackView, template, ProgressBar){
             var TrackView = BaseTrackView.extend({
                 tagName: 'li',
                 template: template,
@@ -21,20 +22,34 @@ define(['jquery',
                 initialize: function(model) {
                     BaseTrackView.prototype.initialize.apply(this, arguments);
 
-                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses', 'ttpIn');
+                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses', 'ttpIn', 'attachProgressBar');
                     this.model.on('change:played change:isPlaying', this.updatePlayedState, this);
                     this.model.on('remove', this.onTrackRemoved, this);
                     this.model.on('change:liked', this.onVote, this);
                     this.model.on('change:disliked', this.onVote, this);
                     this.on('render', this.setVotedClasses, this);
+                    this.on('render', this.attachProgressBar, this);
 
                     // Get inital State
                     this.updatePlayedState();
+
                     $(window).on('ttpIn', _.bind(this.ttpOut, this));
                     // Proxy event to each instance of this model so it can be unsubed
                     $(window).on('play:progress:interpolated:seconds', _.bind(function(evt, data) {
                         this.trigger('update:countdown', data);
                     }, this));
+                },
+
+                attachProgressBar: function() {
+
+                    if(!this.model.checkIsPlaying()) {
+                        return;
+                    }
+
+                    this.progressbar = new ProgressBar();
+                    console.log('playing', this.model.get('name'), this.progressbar.$el[0], this.$el[0]);
+
+                    this.$el.append(this.progressbar.render().$el);
                 },
 
                 /**

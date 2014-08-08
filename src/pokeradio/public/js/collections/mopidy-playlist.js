@@ -11,6 +11,7 @@ define([
             url: 'playlist',
             socket: window.socket,
             model: MopidyTrack,
+            SHOW_NUM_PLAYED: 1,
 
             initialize: function(){
                 _.bindAll(this, 'playlistFetch', 'playlistUpdate', 'itemDeleted');
@@ -59,7 +60,7 @@ define([
              */
             trimPlayed: function() {
                 var count = this.where({ played: true }).length;
-                if (count > 3) {
+                if (count > this.SHOW_NUM_PLAYED) {
                     // might be at risk of an event loop
                     this.shift();
                 }

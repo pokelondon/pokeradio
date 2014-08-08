@@ -5,7 +5,7 @@
     font-weight: lighter;
 }
 
-.Playlist-item-wrapper{
+.Playlist-item-wrapper {
     padding: 15px 10px;
     margin-top: 0;
     background-color: @media-list-bg;
@@ -116,10 +116,9 @@
 
 .played {
     .Playlist-item-wrapper{
-        border-bottom: 1px #e1e3dc solid;
         background-color: transparent;
         min-height: inherit;
-        padding: 4px 10px;
+        padding: 10px 10px;
     }
     .Playlist-item-name {
         font-size: @font-size-small;
@@ -170,6 +169,10 @@
 
     .Playlist-item-user {
         width: 71%;
+    }
+
+    .Playlist-item-wrapper {
+        border-bottom: none;
     }
 }
 @media (min-width: @screen-sm) {

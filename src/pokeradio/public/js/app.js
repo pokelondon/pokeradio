@@ -4,17 +4,15 @@ define([
     'underscore',
     'views/spotify/search-view',
     'views/playlist/playlist-view',
-    'views/progress-bar',
     'helpers/analytics'
     ],
-    function($, Backbone, _, SearchView, PlaylistView, ProgressBar, Analytics){
+    function($, Backbone, _, SearchView, PlaylistView, Analytics){
         window.PRAD = window.PRAD || {};
         window.PRAD.is_fox = (navigator.appVersion.indexOf("Win")!=-1);
         window.PRAD.app = {
             init: function(){
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();
-                this.progressbar = new ProgressBar();
             }
         };
 

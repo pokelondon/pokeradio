@@ -317,7 +317,7 @@ class AppConnection(SocketConnection):
         # the playlist
         flush_transaction()
         tracks_new = Track.objects.filter(played__exact=False)
-        tracks_played = Track.objects.filter(played__exact=True).reverse()[:3]
+        tracks_played = Track.objects.filter(played__exact=True).reverse()[:1]
         tracks = list(chain(tracks_played, tracks_new))
         output = [track.to_dict() for track in tracks]
         self.emit('playlist:load', json.dumps(output))

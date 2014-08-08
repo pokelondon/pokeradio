@@ -2860,6 +2860,7 @@ body {
   font-weight: normal;
   color: #5e5d64;
   font-size: 14px;
+  text-rendering: optimizeLegibility;
 }
 .Header {
   height: 270px;
@@ -3131,10 +3132,9 @@ body {
   opacity: 0.8;
 }
 .played .Playlist-item-wrapper {
-  border-bottom: 1px #e1e3dc solid;
   background-color: transparent;
   min-height: inherit;
-  padding: 4px 10px;
+  padding: 10px 10px;
 }
 .played .Playlist-item-name {
   font-size: 12px;
@@ -3179,6 +3179,9 @@ body {
 }
 .is-playing .Playlist-item-user {
   width: 71%;
+}
+.is-playing .Playlist-item-wrapper {
+  border-bottom: none;
 }
 @media (min-width: 768px) {
   .Playlist-item {
@@ -3254,15 +3257,11 @@ body {
 .progress-bar {
   width: auto;
   float: none;
-  height: 12px;
+  height: 5px;
   display: block;
   clear: left;
   background: #fff;
   margin: 0 0 15px;
-}
-.Playlist-item + .progress-bar {
-  margin-top: -20px;
-  margin-bottom: 25px;
 }
 .progress-bar--small {
   width: 150px;
@@ -3277,10 +3276,10 @@ body {
   background-color: #eee;
 }
 progress::-webkit-progress-value {
-  background-color: #f84646;
+  background-color: #1a966c;
 }
 progress::-webkit-progress-bar {
-  background-color: #bbb;
+  background-color: #e5e5e5;
 }
 progress.stopped::-webkit-progress-value,
 progress.paused::-webkit-progress-value {
@@ -3633,7 +3632,7 @@ progress.paused::-webkit-progress-bar {
   -moz-transition: width 300ms;
   -o-transition: width 300ms;
   transition: width 300ms;
-  background: #19d0f1;
+  background: #61dfb4;
 }
 .Leaderboard-bar--dislikes {
   position: absolute;
@@ -3645,7 +3644,7 @@ progress.paused::-webkit-progress-bar {
   -moz-transition: width 300ms;
   -o-transition: width 300ms;
   transition: width 300ms;
-  background: #19d0f1;
+  background: #61dfb4;
   background: #f84646;
 }
 .w--1 {
