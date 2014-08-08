@@ -1,8 +1,20 @@
+.Playlist-items {
+    perspective: 1000px;
+    perspective-origin: 50% 100%;
+}
+
 .Playlist-item {
     margin-top: 0;
     list-style-type: none;
     margin: 0;
     font-weight: lighter;
+    transition: transform 400ms, opacity 200ms;
+    opacity: 1;
+
+    &.new {
+        .transform(translateY( -100% ) rotateX( -90deg ));
+        opacity: 0;
+    }
 }
 
 .Playlist-item-wrapper {

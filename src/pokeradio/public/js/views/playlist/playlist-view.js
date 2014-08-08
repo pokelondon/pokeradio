@@ -48,7 +48,7 @@ define(['jquery',
                  */
                 append: function(model){
                     var view = new TrackView(model);
-                    this.$list.append(view.render().el);
+                    this.$list.append(view.render().$el);
                 }
 
             });

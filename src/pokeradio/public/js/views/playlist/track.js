@@ -47,7 +47,6 @@ define(['jquery',
                     }
 
                     this.progressbar = new ProgressBar();
-                    console.log('playing', this.model.get('name'), this.progressbar.$el[0], this.$el[0]);
 
                     this.$el.append(this.progressbar.render().$el);
                 },
@@ -116,9 +115,10 @@ define(['jquery',
 
                 onTrackRemoved: function() {
                     var self = this;
-                    this.$el.slideUp(function() {
+                    this.$el.addClass('new');
+                    setTimeout(function() {
                         self.$el.remove();
-                    });
+                    }, 400);
                 },
 
 
