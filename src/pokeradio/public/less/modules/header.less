@@ -41,9 +41,10 @@
 }
 
 .NavBar {
+    font-weight: normal;
+    letter-spacing: 1.2px;
     background: @darkGray;
     padding: 10px;
-    margin-bottom: 15px;
     font-size: 18px;
     color: #fff;
     vertical-align: baseline;
@@ -68,7 +69,7 @@
     }
     &:hover .NavBar-dropdown {
         .transform(translateY(0));
-        box-shadow: 0 2px 0 rgba(0, 0, 0, .2);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
     }
 }
 
@@ -139,8 +140,8 @@
 
 @media (min-width: @screen-sm) {
     .Header {
-        height: 170px;
-        padding-top: 25px;
+        height: 220px;
+        padding-top: 50px;
     }
     .Header-userControls {
         width: initial;

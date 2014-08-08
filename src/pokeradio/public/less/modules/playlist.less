@@ -1,12 +1,12 @@
-.Playlist-item{
-
+.Playlist-item {
     margin-top: 0;
     list-style-type: none;
     margin: 0;
+    font-weight: lighter;
 }
 
 .Playlist-item-wrapper{
-    padding: 10px;
+    padding: 15px 10px;
     margin-top: 0;
     background-color: @media-list-bg;
     border-bottom: 2px @grey solid;
@@ -35,31 +35,29 @@
     margin-right: 20px;
     display: inline-block;
     vertical-align: middle;
-    font-weight: medium;
 }
 
 .Playlist-item-name {
     font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: normal;
 }
 
 .Playlist-item-artist {
     display: block;
-    font-size: @font-size-small;
-    color: @gray-light;
 }
 .Playlist-item-duration {
     display: inline-block;
     vertical-align: middle;
-    font-size: @font-size-small;
     float: right;
-    font-weight: lighter;
 }
 
 .Playlist-item-user {
     margin-right: 20px;
     display: inline-block;
     vertical-align: middle;
-
 }
 .Playlist-item-profileImage {
     width:16px;
@@ -70,8 +68,6 @@
 
 .Playlist-item-userFullname {
     display: inline-block;
-    font-size: @font-size-small;
-    color: @gray-light;
 }
 
 .Playlist-item-trackActions {
@@ -125,11 +121,11 @@
         min-height: inherit;
         padding: 4px 10px;
     }
-    .Playlist-item-name{
+    .Playlist-item-name {
         font-size: @font-size-small;
         color: @gray-light;
     }
-    .Playlist-item-track{
+    .Playlist-item-track {
         font-size: @font-size-small;
         color: @gray-light;
     }
