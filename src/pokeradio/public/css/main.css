@@ -3593,6 +3593,8 @@ progress.paused::-webkit-progress-bar {
 }
 .Leaderboard {
   display: none;
+  font-weight: lighter;
+  color: #5e5d64;
 }
 .Leaderboard-items {
   margin: 0;
@@ -3603,22 +3605,22 @@ progress.paused::-webkit-progress-bar {
 }
 .Leaderboard-item {
   margin: 0;
-  padding: 0;
-  letter-spacing: -4px;
+  padding: 2px 0;
 }
 .Leaderboard-item--name {
-  font-size: 10px;
-  text-transform: uppercase;
-  text-align: right;
-  letter-spacing: 0;
-  width: 120px;
   display: inline-block;
   margin-right: 10px;
+  width: 110px;
+}
+.Leaderboard-item-number {
+  color: #61dfb4;
+  width: 1em;
+  display: inline-block;
 }
 .Leaderboard-bar {
   position: relative;
   height: 10px;
-  width: 150px;
+  width: 120px;
   display: inline-block;
   vertical-align: middle;
 }

@@ -28,11 +28,12 @@ class HomeView(TemplateView, ContextMixin):
             points = i.point_set.filter(created__range=period)
             likes = points.filter(action=Point.TRACK_LIKED).count()
             dislikes = points.filter(action=Point.TRACK_DISLIKED).count()
-            if likes < 1 or likes - dislikes < 1:
+            net = likes - dislikes
+            if likes < 1 or net < 1:
                 continue
-            object_list.append({'user': i, 'likes': likes,
+            object_list.append({'user': i, 'likes': likes, 'net': net,
                                 'dislikes': dislikes})
-        items = sorted(object_list, key=lambda i: i['likes'])
+        items = sorted(object_list, key=lambda i: i['net'])
         items.reverse()
         return items[:5]
 

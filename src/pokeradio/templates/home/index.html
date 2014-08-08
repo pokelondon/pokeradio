@@ -17,10 +17,10 @@
         <ul class="Leaderboard-items">
             {% for object in leaderboard %}
             <li class="Leaderboard-item">
-            <span class="Leaderboard-item--name">{{ object.user.get_full_name }}</span>
+                <span class="Leaderboard-item--name">{{ object.user.get_full_name }}</span>
+                <span class="Leaderboard-item-number">{{ object.net }}</span>
                 <span class="Leaderboard-bar">
-                    <span class="Leaderboard-bar--likes w--{{ object.likes }}"></span>
-                    <span class="Leaderboard-bar--dislikes w--{{ object.dislikes }}"></span>
+                    <span class="Leaderboard-bar--likes w--{{ object.net }}"></span>
                 </span>
             </li>
             {% endfor %}
