@@ -23,7 +23,6 @@ define(['jquery',
                     this.listenTo(this.collection, 'play:progress', this.update);
                     this.on('play:progress:interpolated', this.updateProgressBar, this);
                     this.on('play:progress:interpolated', this.updateVar, this);
-                    console.log('Hi im a progress bar');
                 },
 
                 // TODO unload

@@ -3297,6 +3297,9 @@ progress::-webkit-progress-value {
   background-color: #1a966c;
 }
 progress::-webkit-progress-bar {
+  background-color: #888;
+}
+progress.playing::-webkit-progress-bar {
   background-color: #e5e5e5;
 }
 progress.stopped::-webkit-progress-value,
@@ -3305,7 +3308,7 @@ progress.paused::-webkit-progress-value {
 }
 progress.stopped::-webkit-progress-bar,
 progress.paused::-webkit-progress-bar {
-  background-color: #ddd;
+  background-color: #888;
 }
 .Search {
   width: 100%;
@@ -3827,4 +3830,91 @@ progress.paused::-webkit-progress-bar {
     display: block;
     float: left;
   }
+}
+.Alert-list {
+  position: absolute;
+  right: 0;
+  width: 200px;
+}
+@-webkit-keyframes swingdown {
+  0% {
+    opacity: .99999;
+    transform: perspective(600px) rotateX(90deg);
+  }
+  30% {
+    opacity: 1;
+    transform: rotateX(-20deg) rotateY(5deg);
+    animation-timing-function: ease-in-out;
+  }
+  65% {
+    transform: rotateX(20deg) rotateY(-3deg);
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    transform: rotateX(0);
+    animation-timing-function: ease-in-out;
+  }
+}
+@-webkit-keyframes swingaway {
+  0% {
+    opacity: 1;
+    transform: rotateX(0);
+  }
+  30% {
+    transform: rotateX(-20deg) rotateY(5deg);
+    animation-timing-function: ease-in-out;
+  }
+  65% {
+    transform: rotateX(20deg) rotateY(-3deg);
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    transform: translateY(600px);
+    opacity: 0;
+    animation-timing-function: ease-in;
+  }
+}
+.Alert {
+  border: 2px solid #ccc;
+  padding: 10px 10px;
+  margin: 10px 10px;
+  width: 200px;
+  height: auto;
+  float: right;
+  opacity: 0;
+  transform-origin: 50% 0;
+}
+.Alert.show {
+  -webkit-animation-name: swingdown;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-direction: forwards;
+  opacity: 1;
+}
+.Alert.remove {
+  -webkit-animation-name: swingaway;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-direction: forwards;
+  opacity: 0;
+}
+.Alert i {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.Alert p {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+.Alert--good {
+  border-color: #61dfb4;
+}
+.Alert--good i {
+  color: #61dfb4;
+}
+.Alert--bad {
+  border-color: #f84646;
+}
+.Alert--bad i {
+  color: #f84646;
 }
