@@ -11,8 +11,11 @@ define(['jquery',
                 tagName: 'li',
                 className: 'media',
 
-                initialize: function(model){
+                initialize: function(model, is_new){
                     this.model = model;
+                    if(is_new) {
+                        this.className += ' is-new';
+                    }
                 },
 
                 render: function() {

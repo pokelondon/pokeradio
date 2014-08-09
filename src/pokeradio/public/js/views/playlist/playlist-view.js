@@ -23,10 +23,6 @@ define(['jquery',
                     _.mixin({
                         convertToMinutes: utils.convertToMinutes
                     });
-
-                    if(PRAD.is_fox) {
-                        $('body').addClass('is-pc');
-                    }
                 },
 
                 /**
@@ -47,8 +43,11 @@ define(['jquery',
                  * Make a view for it and append it to the list
                  */
                 append: function(model){
-                    var view = new TrackView(model);
-                    this.$list.append(view.render().$el);
+                    var view = new TrackView(model, true);
+                    this.$list.append(view.render().$el.addClass('is-new'));
+                    setTimeout(function() {
+                        view.$el.removeClass('is-new');
+                    }, 100);
                 }
 
             });

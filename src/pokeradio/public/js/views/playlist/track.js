@@ -115,10 +115,10 @@ define(['jquery',
 
                 onTrackRemoved: function() {
                     var self = this;
-                    this.$el.addClass('new');
-                    setTimeout(function() {
+                    this.$el.addClass('is-removed');
+                    this.$el.on(PRAD.transitionEndEvent, function() {
                         self.$el.remove();
-                    }, 400);
+                    });
                 },
 
 

@@ -3038,16 +3038,19 @@ body {
   list-style-type: none;
   margin: 0;
   font-weight: lighter;
-  transition: transform 400ms, opacity 200ms;
+  transition-timing-function: cubic-bezier(0.55, -0.04, 0.91, 0.94);
+  transition: transform 400ms, opacity 300ms, margin 500ms;
   opacity: 1;
 }
-.Playlist-item.new {
-  -webkit-transform: translateY(-100%) rotateX(-90deg);
-  -moz-transform: translateY(-100%) rotateX(-90deg);
-  -ms-transform: translateY(-100%) rotateX(-90deg);
-  -o-transform: translateY(-100%) rotateX(-90deg);
-  transform: translateY(-100%) rotateX(-90deg);
+.Playlist-item.is-new {
   opacity: 0;
+  transform: translateY(-600px) rotateX(90deg);
+}
+.Playlist-item.is-removed {
+  opacity: 0;
+  transform-origin: 0% 100%;
+  transform: translateY(600px) rotateZ(90deg);
+  margin-bottom: -100px;
 }
 .Playlist-item-wrapper {
   padding: 15px 10px;

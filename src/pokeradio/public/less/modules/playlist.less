@@ -8,12 +8,19 @@
     list-style-type: none;
     margin: 0;
     font-weight: lighter;
-    transition: transform 400ms, opacity 200ms;
+    transition-timing-function:  cubic-bezier(0.55, -0.04, 0.91, 0.94);
+    transition: transform 400ms, opacity 300ms, margin 500ms;
     opacity: 1;
 
-    &.new {
-        .transform(translateY( -100% ) rotateX( -90deg ));
+    &.is-new {
         opacity: 0;
+        transform: translateY(-600px) rotateX(90deg);
+    }
+    &.is-removed {
+        opacity: 0;
+        transform-origin: 0% 100%;
+        transform: translateY(600px) rotateZ(90deg);
+        margin-bottom: -100px;
     }
 }
 
