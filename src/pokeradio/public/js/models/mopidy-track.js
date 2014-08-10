@@ -1,9 +1,10 @@
 define(['jquery',
         'backbone',
         'underscore',
-        'helpers/analytics'
+        'helpers/analytics',
+        'views/messaging/controller'
         ],
-        function($, Backbone, _, Analytics){
+        function($, Backbone, _, Analytics, MessagingController){
             MopidyTrack = Backbone.Model.extend({
                 idAttribute: "id",
                 wasPlaying: false,
@@ -68,8 +69,10 @@ define(['jquery',
                 },
 
                 canLike: function() {
-                    if(PRAD.user_id == this.get('user')['id']) {
-                        alert('You cant like your own track');
+                    if (PRAD.user_id == this.get('user')['id']) {
+                        MessagingController.createMessage({
+                            text: "You can't like your own track"
+                        });
                         return false;
                     }
                     return true;

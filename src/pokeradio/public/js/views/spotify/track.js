@@ -6,10 +6,11 @@ define(['jquery',
         'backbone',
         'underscore',
         'views/_base_track',
+        'views/messaging/controller',
         'text!template/spotify/track.html',
         'helpers/analytics'
         ],
-        function($, Backbone, _, BaseTrackView, template, Analytics){
+        function($, Backbone, _, BaseTrackView, MessagingController, template, Analytics){
             var TrackView = BaseTrackView.extend({
                 className: 'media Search-item',
                 template: template,
@@ -32,8 +33,10 @@ define(['jquery',
                  */
                 queueTrack: function(evt) {
                     evt && evt.preventDefault();
-                    if(this.model.checkInBlacklist()) {
-                        alert('Think about what you\'re doing here, ' + window.PRAD.first_name);
+                    if (this.model.checkInBlacklist()) {
+                        MessagingController.createMessage({
+                            text: "Think about what you're doing here, " + window.PRAD.first_name
+                        });
                     }
                     Analytics.trackEvent('track', 'queue', 'source: search');
                     this.model.queue();

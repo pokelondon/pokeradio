@@ -4,9 +4,10 @@ define([
     'underscore',
     'views/spotify/search-view',
     'views/playlist/playlist-view',
-    'helpers/analytics'
+    'helpers/analytics',
+    'views/messaging/controller',
     ],
-    function($, Backbone, _, SearchView, PlaylistView, Analytics){
+    function($, Backbone, _, SearchView, PlaylistView, Analytics, MessagingController){
 
         /**
         * Sniff for a suitably named transition end event
@@ -52,6 +53,8 @@ define([
             init: function(){
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();
+                this.messagingcontroller = MessagingController; // singleton
+                this.progressbar = new ProgressBar();
             }
         };
 

@@ -44,7 +44,6 @@
         {% endblock %}
     </head>
     <body>
-
         {% if request.user.is_authenticated %}
         <div class="NavBar">
             <div class="container">
@@ -66,7 +65,7 @@
         </div>
         {% endif %}
 
-        <div class="Alerts-list">
+        <div class="Alerts-list" id='MessagingContainer'>
             <div class="Alert Alert--good">
                 <i class="fa fa-thumbs-up"></i>
                 <p>Your track Scattman was upvoted</p>
