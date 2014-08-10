@@ -54,7 +54,6 @@ define([
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();
                 this.messagingcontroller = MessagingController; // singleton
-                this.progressbar = new ProgressBar();
             }
         };
 

@@ -8,18 +8,20 @@ define(
         var MessageView = Backbone.View.extend({
             model: Message,
             tagName: 'div',
-            className: 'MessageItem',
+            className: 'Alert',
             timer: false,
             events: {},
 
             initialize: function() {
                 // set initial hidden state
-                this.$el.hide();
+                //this.$el.hide();
+
+                this.listenTo(this.model, 'remove', this.onRemove);
             },
 
             render: function() {
                 // TODO: render behaviour
-                this.$el.addClass('MessageItem--' + this.model.get('type'));
+                this.$el.addClass('Alert--' + this.model.get('type'));
                 if (this.model.get('modal') === true) {
                     this.$el.addClass('MessageItem--modal');
                 }
@@ -37,7 +39,7 @@ define(
             show: function() {
                 // TODO: show behaviour
                 // `modal` is different
-                this.$el.slideDown();
+                this.$el.addClass('show');
 
                 // hide after a short interval if a timeout is set
                 if (typeof this.model.get('timeout') === 'number') {
@@ -51,12 +53,19 @@ define(
             hide: function() {
                 // TODO: hide behaviour
                 // `modal` is different
-                this.$el.slideUp();
                 if (this.timer !== false) window.clearTimeout(this.timer);
                 this.model.destroy();
-                this.unbind();
-                this.remove();
+                //this.unbind();
+                //this.remove();
                 return this;
+            },
+
+            onRemove: function() {
+                var self = this;
+                this.$el.addClass('remove');
+                this.$el.on(PRAD.animationEndEvent, function() {
+                    self.$el.remove();
+                });
             },
 
             renderPromptButtons: function(callback) {
