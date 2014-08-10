@@ -1,7 +1,10 @@
-.Alert-list {
+.Alerts-list {
     position: absolute;
     right: 0;
-    width: 200px;
+    width: 250px;
+    /*float: right;*/
+    z-index: 2;
+    overflow-y: visible;
 }
 
 @-webkit-keyframes swingdown {
@@ -14,11 +17,13 @@
         opacity: 1;
         transform: rotateX(-20deg) rotateY(5deg);
         animation-timing-function: ease-in-out;
+        box-shadow: 0 1px 8px rgba(0, 0, 0, .3);
     }
 
     65% {
         transform: rotateX(20deg) rotateY(-3deg);
         animation-timing-function: ease-in-out;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
     }
 
     100% {
@@ -35,12 +40,16 @@
     30% {
         transform: rotateX(-20deg) rotateY(5deg);
         animation-timing-function: ease-in-out;
+        margin-bottom: 0;
+        box-shadow: 0 1px 8px rgba(0, 0, 0, .4);
     }
 
     65% {
         transform: rotateX(20deg) rotateY(-3deg);
         opacity: 1;
         animation-timing-function: ease-in-out;
+        margin-bottom: -60px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, .4);
     }
 
     100% {
@@ -51,13 +60,14 @@
 }
 
 .Alert {
+    background: #fff;
     border: 2px solid #ccc;
     padding: 10px 10px;
     margin: 10px 10px;
-    width: 200px;
+    /*width: 180px;*/
     height: auto;
-    float: right;
     opacity: 0;
+    .box-sizing(border-box);
 
     transform-origin: 50% 0;
     &.show {
@@ -94,5 +104,12 @@
     border-color: @poke-pink;
     i {
         color:  @poke-pink;
+    }
+}
+
+.Alert--info {
+    border-color: @poke-blue;
+    i {
+        color:  @poke-blue;
     }
 }
