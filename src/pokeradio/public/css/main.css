@@ -2923,7 +2923,7 @@ body {
 .NavBar-user .inner {
   position: relative;
   background: #2d2c32;
-  z-index: 1;
+  z-index: 3;
   padding: 10px 15px 10px 0;
   margin: -10px -15px -10px 0;
 }
@@ -2951,7 +2951,7 @@ body {
   -moz-transition: transform 200ms;
   -o-transition: transform 200ms;
   transition: transform 200ms;
-  z-index: 0;
+  z-index: 2;
 }
 .NavBar-dropdown li {
   display: block;
@@ -3316,6 +3316,7 @@ progress.paused::-webkit-progress-bar {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 3;
   background: rgba(0, 0, 0, 0.7);
 }
 .add-track {
@@ -3834,10 +3835,9 @@ progress.paused::-webkit-progress-bar {
 .Alerts-list {
   position: absolute;
   right: 0;
-  width: 250px;
   /*float: right;*/
 
-  z-index: 2;
+  z-index: 1;
   overflow-y: visible;
 }
 @-webkit-keyframes swingdown {
@@ -3865,6 +3865,7 @@ progress.paused::-webkit-progress-bar {
   0% {
     opacity: 1;
     transform: rotateX(0);
+    z-index: 0;
   }
   30% {
     transform: rotateX(-20deg) rotateY(5deg);
@@ -3876,13 +3877,13 @@ progress.paused::-webkit-progress-bar {
     transform: rotateX(20deg) rotateY(-3deg);
     opacity: 1;
     animation-timing-function: ease-in-out;
-    margin-bottom: -60px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
   }
   100% {
     transform: translateY(600px);
     opacity: 0;
     animation-timing-function: ease-in;
+    margin-bottom: -60px;
   }
 }
 .Alert {
@@ -3890,13 +3891,13 @@ progress.paused::-webkit-progress-bar {
   border: 2px solid #ccc;
   padding: 10px 10px;
   margin: 10px 10px;
-  /*width: 180px;*/
-
   height: auto;
+  width: 200px;
   opacity: 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  z-index: 1;
   transform-origin: 50% 0;
 }
 .Alert.show {
@@ -3919,6 +3920,34 @@ progress.paused::-webkit-progress-bar {
   margin: 0;
   padding: 0;
   font-weight: normal;
+}
+.Alert--modal {
+  position: absolute;
+  top: 100px;
+  left: 20%;
+  right: 20%;
+  width: auto;
+  z-index: 4;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+.MessageItem-buttons {
+  margin-top: 10px;
+}
+.Alert-mask {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 400ms, visibility 1ms;
+}
+.modal-open .Alert-mask {
+  opacity: 1;
+  visibility: visible;
 }
 .Alert--good {
   border-color: #61dfb4;

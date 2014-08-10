@@ -19,12 +19,16 @@ define(
                 this.createMessage({
                     text: "An message",
                     modal: true,
-                    type: 'bad'
+                    type: 'bad',
+                    timeout: false,
+                    promptCallback: function() {
+                        console.log(arguments);
+                    }
                 });
                 setTimeout(function() {
                     self.createMessage({
                         text: "An uva message this one is a bit longer to see what happens when its a bit longer than what the other ones are",
-                        modal: true,
+                        modal: false,
                         type: 'good'
                     });
                 }, 400);
@@ -33,14 +37,12 @@ define(
                 setTimeout(function() {
                     self.createMessage({
                         text: "An uva nuva message",
-                        modal: true,
                         type: 'bad'
                     });
                 }, 600);
                 setTimeout(function() {
                     self.createMessage({
-                        text: "An uva aaanuvanuva message",
-                        modal: true
+                        text: "An uva aaanuvanuva message"
                     });
                 }, 1600);
             },
@@ -55,7 +57,11 @@ define(
                 var subview = new MessageView({
                     model: model
                 });
-                this.$el.append(subview.render().el);
+                if(model.get('modal')) {
+                    this.$el.parent().append(subview.render().el);
+                } else {
+                    this.$el.append(subview.render().el);
+                }
                 subview.show();
                 return this;
             }

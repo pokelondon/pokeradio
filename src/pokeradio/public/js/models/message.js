@@ -12,7 +12,7 @@ define(
                 type: 'info', // affects appearance
                 modal: false, // affects display method and appearance
                 promptCallback: false, // supply a callback and this message becomes a prompt
-                timeout: 10000, // message will auto-hide in this many ms, or pass false to persist
+                timeout: 20000, // message will auto-hide in this many ms, or pass false to persist
             },
 
             // override methods to allow using this model in the Messages collection
