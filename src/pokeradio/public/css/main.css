@@ -3883,7 +3883,6 @@ progress.paused::-webkit-progress-bar {
     transform: translateY(600px);
     opacity: 0;
     animation-timing-function: ease-in;
-    margin-bottom: -60px;
   }
 }
 .Alert {
