@@ -3215,8 +3215,7 @@ progress.paused::-webkit-progress-bar {
   color: #19d0f1;
 }
 .btn-search:hover {
-  color: #19d0f1;
-  box-shadow: none;
+  background: #f84646;
 }
 .Search-input {
   width: 100%;
@@ -3405,10 +3404,9 @@ progress.paused::-webkit-progress-bar {
   box-sizing: border-box;
   z-index: -1;
 }
-@media (min-width: 768px) {
-  .btn-preview {
-    display: inline-block;
-    margin-right: 10px;
+@media (max-width: 768px) {
+  .Search-item--album {
+    display: none;
   }
 }
 .Listing-list {
@@ -3690,13 +3688,15 @@ progress.paused::-webkit-progress-bar {
     float: left;
   }
 }
-.Alerts-list {
-  position: absolute;
-  right: 0;
-  /*float: right;*/
-
-  z-index: 1;
-  overflow-y: visible;
+@media (min-width: 768px) {
+  .Alerts-list {
+    position: absolute;
+    right: 0;
+    /*float: right;*/
+  
+    z-index: 1;
+    overflow-y: visible;
+  }
 }
 @-webkit-keyframes swingdown {
   0% {
@@ -3744,19 +3744,23 @@ progress.paused::-webkit-progress-bar {
   }
 }
 .Alert {
-  position: relative;
   background: #fff;
   border: 2px solid #ccc;
   padding: 20px 10px 10px;
   margin: 10px 10px;
-  height: auto;
-  width: 200px;
   opacity: 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   z-index: 1;
   transform-origin: 50% 0;
+}
+@media (min-width: 768px) {
+  .Alert {
+    height: auto;
+    width: 200px;
+    position: relative;
+  }
 }
 .Alert.show {
   -webkit-animation-name: swingdown;
@@ -3844,4 +3848,11 @@ progress.paused::-webkit-progress-bar {
 }
 .Alert--info i {
   color: #19d0f1;
+}
+@media (max-width: 768px) {
+  .Alert--modal {
+    left: 10px;
+    right: 10px;
+    font-size: 20px;
+  }
 }

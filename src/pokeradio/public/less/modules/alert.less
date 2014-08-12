@@ -1,9 +1,11 @@
 .Alerts-list {
-    position: absolute;
-    right: 0;
-    /*float: right;*/
-    z-index: 1;
-    overflow-y: visible;
+    @media (min-width: @screen-sm) {
+        position: absolute;
+        right: 0;
+        /*float: right;*/
+        z-index: 1;
+        overflow-y: visible;
+    }
 }
 
 @-webkit-keyframes swingdown {
@@ -58,13 +60,16 @@
 }
 
 .Alert {
-    position: relative;
+
+    @media (min-width: @screen-sm) {
+        height: auto;
+        width: 200px;
+        position: relative;
+    }
     background: #fff;
     border: 2px solid #ccc;
     padding: 20px 10px 10px;
     margin: 10px 10px;
-    height: auto;
-    width: 200px;
     opacity: 0;
     .box-sizing(border-box);
     z-index: 1;
@@ -166,4 +171,13 @@
     i {
         color:  @poke-blue;
     }
+}
+
+@media (max-width: @screen-sm) {
+    .Alert--modal {
+        left: 10px;
+        right: 10px;
+        font-size: 20px;
+    }
+
 }

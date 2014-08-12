@@ -69,8 +69,7 @@
     color: @poke-blue;
 
     &:hover {
-        color: @poke-blue;
-        box-shadow: none;
+        background: @poke-pink;
     }
 
 }
@@ -315,12 +314,11 @@
 
 }
 
-@media (min-width: @screen-sm) {
+@media (max-width: @screen-sm) {
 
-    .btn-preview {
-        display: inline-block;
-        margin-right: 10px;
+    .Search-item--album {
+        display: none;
+
     }
-
 }
 
