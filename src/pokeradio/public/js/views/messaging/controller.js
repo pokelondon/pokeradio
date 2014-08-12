@@ -17,19 +17,23 @@ define(
 
                 // TODO: listen for socket events to show messages
                 this.createMessage({
-                    text: "An message",
+                    title: 'Alert!',
+                    text: "Etiam porta sem malesuada magna mollis euismod. Vestibulum id ligula porta felis euismod semper",
                     modal: true,
-                    type: 'bad',
                     timeout: false,
                     promptCallback: function() {
                         console.log(arguments);
-                    }
+                    },
+                    closable: true,
+                    buttons: ['Yes, please', 'No thanks']
                 });
                 setTimeout(function() {
                     self.createMessage({
+                        title: 'Alert!',
                         text: "An uva message this one is a bit longer to see what happens when its a bit longer than what the other ones are",
                         modal: false,
-                        type: 'good'
+                        type: 'good',
+                        closable: true
                     });
                 }, 400);
 

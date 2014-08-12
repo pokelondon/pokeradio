@@ -2,16 +2,18 @@ define(
     [   'jquery',
         'backbone',
         'underscore',
-        'models/message'
+        'models/message',
+        'events'
         ],
-    function($, Backbone,_ , Message){
+    function($, Backbone,_ , Message, _events){
         var MessageView = Backbone.View.extend({
             model: Message,
             tagName: 'div',
             className: 'Alert',
             timer: false,
             events: {
-                'click': 'click'
+                'click': 'click',
+                'click .js-close': 'hide'
             },
 
             initialize: function() {
@@ -19,6 +21,7 @@ define(
                 _.bindAll(this, 'hide');
 
                 this.listenTo(this.model, 'remove', this.onRemove);
+                this.$closeButton = $('<a href="#na" class="btn-close js-close">&times;</a>');
             },
 
             render: function() {
@@ -27,12 +30,23 @@ define(
                 if (this.model.get('modal') === true) {
                     this.$el.addClass('Alert--modal');
                 }
-                this.$el.html('<p>' + this.model.get('text') + '</p>');
+
+                if(this.model.get('title')) {
+                    this.$el.append('<h2>' + this.model.get('title') + '</h2>');
+                }
+
+                if(this.model.get('text')) {
+                    this.$el.append('<p>' + this.model.get('text') + '</p>');
+                }
 
                 if('good' === this.model.get('type')) {
                     this.$el.prepend($('<i class="fa fa-thumbs-up"></i>'));
                 } else if('bad' === this.model.get('type')) {
                     this.$el.prepend($('<i class="fa fa-thumbs-down"></i>'));
+                }
+
+                if(this.model.get('closable') && this.model.get('modal')) {
+                    this.$el.prepend(this.$closeButton);
                 }
 
                 if (typeof this.model.get('promptCallback') === 'function') {
@@ -50,7 +64,7 @@ define(
                 // `modal` is different
                 this.$el.addClass('show');
 
-                if (this.model.get('modal') === true) {
+                if (this.model.get('modal')) {
                     $('body').addClass('modal-open');
                 }
 
@@ -94,14 +108,17 @@ define(
                 // TODO: some nicer markup would be good
                 var $buttons = $("<div class='MessageItem-buttons' />"),
                     $yes = $("<button class='btn'>Yes</button>"),
-                    $no = $("<button class='btn btn-danger'>No</button>");
+                    $no = $("<button class='btn btn--secondary'>No</button>");
+
                 $yes.on('click', $.proxy(function(e) {
                     callback();
                     this.hide();
                 }, this));
+
                 $no.on('click', $.proxy(function(e) {
                     this.hide();
                 }, this));
+
                 $buttons.append($yes, $no);
                 return $buttons;
             }

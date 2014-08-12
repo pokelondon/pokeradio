@@ -5,9 +5,10 @@ define([
     'underscore',
     'iobind',
     'models/mopidy-track',
-    'views/messaging/controller'
+    'views/messaging/controller',
+    'events'
     ],
-    function($, Backbone, urls, _, ioBind, MopidyTrack, MessagingController){
+    function($, Backbone, urls, _, ioBind, MopidyTrack, MessagingController, _events){
         var Collection = Backbone.Collection.extend({
             url: 'playlist',
             socket: window.socket,

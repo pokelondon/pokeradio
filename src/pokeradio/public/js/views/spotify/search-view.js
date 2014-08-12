@@ -25,7 +25,7 @@ define(['jquery',
                     this.collection = spotifyTracks;
                     this.collection.on('results', this.render, this);
 
-                    this.$container = this.$('.js-search-results-wrapper');
+                    this.$container = this.$('.js-search-results-container');
                     this.$list = this.$('.js-search-items');
                     this.$input = this.$('#searchInput');
 

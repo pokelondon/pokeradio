@@ -50,23 +50,27 @@
         <header class="Header Header--noBg">
             <div class="container">
                 <div class="Header-logo"></div>
+
+                <form role="form" id="searchForm" class="form-inline Search-form clearfix">
+                    <div class="Search-input-wrapper">
+                        <input type='search' autocomplete="off" name="search" class="Search-input" id="searchInput" placeholder="Start typing&#8230;">
+                    </div>
+                    <input type="submit" id="doSearch" class="btn btn-search" value="Go" class="btn btn-default"/>
+                </form>
             </div>
         </header>
-        <div class="container">
-            <form role="form" id="searchForm" class="form-inline Search-form">
-                <div class="Search-input-wrapper">
-                    <input type='search' autocomplete="off" name="search" class="Search-input" id="searchInput" placeholder="Start typing&#8230;">
+
+        <div class="Search-results-container js-search-results-container">
+            <div class="container">
+                <div class="Search-results-wrapper">
+                    <header class="Search-results-header">
+                        <div class="row">
+                            <div class="col-md-10">Use arrow keys to navigate &#11014; &#11015;</div>
+                            <div class="col-md-2">ESC to close</div>
+                        </header>
+                    </div>
+                    <ul class="Search-items js-search-items"></ul>
                 </div>
-                <input type="submit" id="doSearch" class="btn btn-search" value="Go" class="btn btn-default"/>
-            </form>
-            <div class="Search-results-wrapper js-search-results-wrapper">
-                <header class="Search-results-header">
-                    <div class="row">
-                        <div class="col-md-10">Use arrow keys to navigate &#11014; &#11015;</div>
-                        <div class="col-md-2">ESC to close</div>
-                    </header>
-                </div>
-                <ul class="Search-items js-search-items"></ul>
             </div>
         </div>
     </div>

@@ -13,6 +13,7 @@ define(
                 modal: false, // affects display method and appearance
                 promptCallback: false, // supply a callback and this message becomes a prompt
                 timeout: 20000, // message will auto-hide in this many ms, or pass false to persist
+                closable: false
             },
 
             // override methods to allow using this model in the Messages collection
