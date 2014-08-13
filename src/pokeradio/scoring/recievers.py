@@ -27,8 +27,8 @@ def report_vote(sender, instance, created, **kwargs):
     msg = Slack('Track Disliked',
                 'Track Dissed: {0}'.format(instance.archive_track.name),
                 Slack.PINK,
-                Slack.GENERAL,
-                Slack.DEV)
+                'tech',
+                Slack.PUBLIC)
 
     if instance.action == Point.TRACK_LIKED:
         msg.pretext = 'Track Liked'
