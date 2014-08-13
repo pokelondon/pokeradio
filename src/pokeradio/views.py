@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import RedirectView, TemplateView
 from django.views.generic.base import ContextMixin
 
+from pokeradio.models import Message
 from pokeradio.history.models import ArchiveTrack
 from pokeradio.scoring.models import Point
 
@@ -37,6 +38,13 @@ class HomeView(TemplateView, ContextMixin):
         items.reverse()
         return items[:5]
 
+    def get_messages(self):
+        messages = Message.objects.exclude(seenby=self.request.user)
+        for m in messages:
+            m.seenby.add(self.request.user)
+
+        return json.dumps([m.to_dict() for m in messages])
+
     def get_context_data(self, **kwargs):
         c = super(HomeView, self).get_context_data(**kwargs)
 
@@ -47,6 +55,7 @@ class HomeView(TemplateView, ContextMixin):
 
         c['blacklist'] = json.dumps(map(str, blacklist))
         c['leaderboard'] = self.get_leaderboard()
+        c['alerts'] = self.get_messages()
         return c
 
 

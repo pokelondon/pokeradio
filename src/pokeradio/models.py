@@ -69,3 +69,33 @@ class Track(models.Model):
 
 post_save.connect(track_saved, sender=Track)
 post_delete.connect(track_deleted, sender=Track)
+
+
+class Message(models.Model):
+    title = models.CharField(max_length=300, blank=True, null=True)
+    text = models.CharField(max_length=300, blank=True, null=True)
+    timeout = models.IntegerField(blank=True, null=True)
+    callback = models.TextField(blank=True, null=True)
+
+    seenby = models.ManyToManyField('auth.User', blank=True, null=True)
+
+    def __unicode__(self):
+        return self.title
+
+    def to_dict(self):
+
+        as_dict = {
+            'title': self.title,
+            'text': self.text,
+            'modal': True,
+            'timeout': False,
+            'closable': True,
+        }
+
+        if self.timeout:
+            as_dict['timeout'] = self.timeout
+
+        #if self.callback:
+            #as_dict['promptCallback'] = "function() { {0} }".format(self.callback)
+
+        return as_dict

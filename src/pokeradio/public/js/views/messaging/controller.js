@@ -14,41 +14,9 @@ define(
             initialize: function() {
                 this.collection = messages;
                 this.collection.on('add', this.displayMessage, this);
+                this.displayInitial();
 
                 // TODO: listen for socket events to show messages
-                this.createMessage({
-                    title: 'Alert!',
-                    text: "Etiam porta sem malesuada magna mollis euismod. Vestibulum id ligula porta felis euismod semper",
-                    modal: true,
-                    timeout: false,
-                    promptCallback: function() {
-                        console.log(arguments);
-                    },
-                    closable: true,
-                    buttons: ['Yes, please', 'No thanks']
-                });
-                setTimeout(function() {
-                    self.createMessage({
-                        title: 'Alert!',
-                        text: "An uva message this one is a bit longer to see what happens when its a bit longer than what the other ones are",
-                        modal: false,
-                        type: 'good',
-                        closable: true
-                    });
-                }, 400);
-
-                var self = this;
-                setTimeout(function() {
-                    self.createMessage({
-                        text: "An uva nuva message",
-                        type: 'bad'
-                    });
-                }, 600);
-                setTimeout(function() {
-                    self.createMessage({
-                        text: "An uva aaanuvanuva message"
-                    });
-                }, 1600);
             },
 
             createMessage: function(options) {
@@ -68,6 +36,16 @@ define(
                 }
                 subview.show();
                 return this;
+            },
+
+            /**
+             * On load, display any messages rendered into the page by the view
+             */
+            displayInitial: function() {
+                var self = this;
+                _(this.collection.models).each(function(model) {
+                    self.displayMessage(model);
+                });
             }
         });
         return new MessageController();

@@ -10,7 +10,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Track, Profile
+from .models import Track, Profile, Message
 
 class TrackAdmin(admin.ModelAdmin):
     search_fields = ('name', 'artist', 'user__first_name', 'user__last_name')
@@ -34,5 +34,6 @@ admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 admin.site.register(Track, TrackAdmin)
+admin.site.register(Message)
 
 admin.site.unregister(Site)
