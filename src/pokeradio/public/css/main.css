@@ -3203,12 +3203,11 @@ progress.paused::-webkit-progress-bar {
   margin: 70px 0 30px 0;
 }
 .Search-input-wrapper {
-  width: 90%;
+  width: 60%;
   float: left;
 }
 .btn-search {
   padding: 15px 20px;
-  width: 9%;
   float: right;
   background: #fff;
   vertical-align: top;
