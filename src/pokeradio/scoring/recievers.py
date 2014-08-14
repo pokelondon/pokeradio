@@ -27,8 +27,8 @@ def report_vote(sender, instance, created, **kwargs):
     msg = Slack('Track Disliked',
                 'Track Dissed: {0}'.format(instance.archive_track.name),
                 Slack.PINK,
-                Slack.GENERAL,
-                Slack.DEV)
+                'tech',
+                Slack.PUBLIC)
 
     if instance.action == Point.TRACK_LIKED:
         msg.pretext = 'Track Liked'
@@ -96,7 +96,7 @@ def send_push(sender, instance, created, **kwargs):
     if not settings.USE_PUSHER:
         return
 
-    #Send notification to pusher
+    # Send notification to pusher
     p = pusher.Pusher(
       app_id = settings.PUSHER_APP_ID,
       key= settings.PUSHER_KEY,
