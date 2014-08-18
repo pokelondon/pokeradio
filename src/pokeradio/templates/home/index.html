@@ -7,6 +7,7 @@
             PRAD.user_id = {{ request.user.id }};
             PRAD.blacklist = {{ blacklist|safe }};
             PRAD.first_name = '{{ request.user.first_name }}';
+            PRAD.playlist = {{ initial_playlist }};
         </script>
 {% endblock %}
 
