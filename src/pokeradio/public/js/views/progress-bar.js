@@ -3,10 +3,9 @@
  */
 define(['jquery',
         'backbone',
-        'underscore',
-        'collections/progress-proxy'
+        'underscore'
         ],
-        function($, Backbone, _, Collection){
+        function($, Backbone, _){
             var View = Backbone.View.extend({
                 tagName: 'progress',
                 className: 'progress-bar',
@@ -16,13 +15,12 @@ define(['jquery',
 
                 initialize: function() {
                     _.bindAll(this, 'update', 'updateProgressBar');
-                    this.collection = new Collection();
 
-                    // Get events from the collection, which gets them from the
-                    // socket connection.
-                    this.listenTo(this.collection, 'play:progress', this.update);
+                    // Global Mediator events triggered by socket message
+                    this.listenTo(Backbone, 'play:progress', this.update);
                     this.on('play:progress:interpolated', this.updateProgressBar, this);
                     this.on('play:progress:interpolated', this.updateVar, this);
+
                 },
 
                 // TODO unload

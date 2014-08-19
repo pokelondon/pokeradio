@@ -1,3 +1,6 @@
+import json
+from itertools import chain
+
 from django.db import IntegrityError
 from django.http import (HttpResponse,
                          HttpResponseForbidden,
@@ -6,11 +9,13 @@ from django.http import (HttpResponse,
                          HttpResponseNotAllowed)
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView, DetailView
+from django.conf import settings
 
 from pokeradio.history.utils import get_or_create_track
 from pokeradio.models import Track
 from pokeradio.scoring.models import Point
-
+from pokeradio.responses import JSONResponse
 
 from .models import Token
 
@@ -80,3 +85,49 @@ def vote(request):
         return HttpResponseNotModified()
 
     return HttpResponse('Got it.', content_type='text/plain')
+
+
+class Playlist(ListView):
+    model = Track
+
+    http_method_names = ['get', 'post']
+
+    def get(self, request, *args, **kwargs):
+        tracks_new = self.model.objects.filter(played__exact=False)
+        tracks_played = self.model.objects.filter(played__exact=True)\
+                .reverse()[:1]
+        tracks = list(chain(tracks_played, tracks_new))
+        data = [track.to_dict() for track in tracks]
+        return JSONResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+
+        # Remove defaults from Backbone Model
+        for prop in ['liked', 'disliked', 'isMine', 'isPlaying']:
+            data.pop(prop)
+
+        data['album_href'] = data.pop('album').get('href')
+        data['user'] = request.user
+
+        t = self.model.objects.create(**data)
+        return JSONResponse(t.to_dict())
+
+
+class PlaylistTrack(DetailView):
+    model = Track
+    http_method_names = ['get', 'delete', 'put']
+
+    def delete(self, request, pk):
+        try:
+            track = Track.objects.get(user=request.user, id=int(pk),
+                                      played=False)
+        except Track.DoesNotExist:
+            return JSONResponseError('You cant do that')
+        else:
+            track.delete()
+            return JSONResponse({'status': 'OK'})
+
+
+playlist = csrf_exempt(Playlist.as_view())
+playlist_track = csrf_exempt(PlaylistTrack.as_view())

@@ -32,7 +32,7 @@ define(['jquery',
                         });
                         return;
                     }
-                    var track_payload = {
+                    var track_data = {
                         'name': this.attributes.name,
                         'href': this.get('href'),
                         'artist': this.get('artists')[0].name,
@@ -40,9 +40,16 @@ define(['jquery',
                         'length': this.get('length'),
                         'album': {
                             'href': this.get('album').href,
+                        },
+                        'user': {
+                            'id': PRAD.user_id,
+                            'full_name': PRAD.first_name
                         }
                     };
-                    socket.emit('add_track', JSON.stringify(track_payload));
+                    // Create a new track object and post it to the server via create method
+                    mopidyPlaylist.create(track_data, {wait: true, error: function(e) {
+                        alert(e);
+                    }});
                     this.set('is-selected', true);
                     this.collection.trigger('queued');
                 },

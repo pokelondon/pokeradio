@@ -9,6 +9,48 @@ define([
     'events'
     ],
     function($, Backbone, _, SearchView, PlaylistView, Analytics, MessagingController, _events){
+
+        Backbone.trigger('socket:connected');
+
+        socket.on('disconnect', function(){
+            console.log('disconnected');
+            Backbone.trigger('socket:disconnected');
+        });
+
+        socket.on('play:progress', function(data) {
+            data = JSON.parse(data);
+            Backbone.trigger('play:progress', data);
+        });
+
+        socket.on('playlist:add', function(data) {
+            data = JSON.parse(data);
+            Backbone.trigger('playlist:add', data);
+        });
+
+        socket.on('playlist:played', function(data) {
+            data = JSON.parse(data);
+            Backbone.trigger('playlist:played', data);
+        });
+
+        socket.on('playlist:delete', function(data) {
+            data = JSON.parse(data);
+            Backbone.trigger('playlist:delete', data);
+        });
+
+        socket.on('error', function(data) {
+            data = JSON.parse(data);
+            console.error(data);
+        });
+
+        socket.on('connect_error', function(data) {
+            data = JSON.parse(data);
+            console.error(data);
+        });
+
+        socket.on('reconnecting', function() {
+            console.error('reconnection');
+        });
+
         window.PRAD = window.PRAD || {};
         window.PRAD.is_fox = (navigator.appVersion.indexOf("Win")!=-1);
         window.PRAD.app = {
