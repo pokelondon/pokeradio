@@ -27,6 +27,8 @@ define(['jquery',
                     if(PRAD.is_fox) {
                         $('body').addClass('is-pc');
                     }
+
+                    this.collection.parseInitialData();
                 },
 
                 /**

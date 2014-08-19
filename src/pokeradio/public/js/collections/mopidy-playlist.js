@@ -23,8 +23,14 @@ define([
                 this.ioBind('expired', this.sessionExpired, this);
 
                 // Request initial playlist data
-                socket.emit('fetch_playlist');
+                //socket.emit('fetch_playlist');
                 this.comparator = 'id';
+
+            },
+
+            parseInitialData: function() {
+                //parse the initial data into the collection
+                this.reset(window.PRAD.playlist);
             },
 
             displayMessage: function(message) {
