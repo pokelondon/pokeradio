@@ -43,7 +43,7 @@ env.scm = 'git'
 
 # Hosts to deploy too
 env.hosts = [
-    'oddish.pokedev.net'
+    'bidoof.pokedev.net'
 ]
 
 # Config path

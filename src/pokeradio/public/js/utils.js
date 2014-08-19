@@ -1,19 +1,19 @@
 define(['jquery',
         'underscore',
         'backbone'],
-        function ($, _, Backbone) {
-            obj = _.extend({
-                convertToMinutes: function(length){
-                    //Length in seconds given
-                    toseconds = Math.ceil(length);
-                    minutes = Math.floor(toseconds / 60);
-                    seconds = toseconds%60;
-                    if (10 > seconds){
-                        seconds = '0'+seconds;
-                    }
+    function ($, _, Backbone) {
+        obj = _.extend({
+            convertToMinutes: function(length){
+                //Length in seconds given
+                toseconds = Math.ceil(length);
+                minutes = Math.floor(toseconds / 60);
+                seconds = toseconds%60;
+                if (10 > seconds){
+                    seconds = '0'+seconds;
+                }
 
-                    return minutes + ':' + seconds;
-                },
+                return minutes + ':' + seconds;
+            },
             toggleFade: function(el){
                 el.fadeToggle();
             },
@@ -25,10 +25,10 @@ define(['jquery',
                 }
             }
 
-            }, Backbone.Events);
+        }, Backbone.Events);
 
-            _.bindAll(obj, 'onPageBottom');
+        _.bindAll(obj, 'onPageBottom');
 
-            return obj;
-
-        });
+        return obj;
+    }
+);

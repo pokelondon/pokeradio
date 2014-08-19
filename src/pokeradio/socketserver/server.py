@@ -28,6 +28,7 @@ logger = logging.getLogger('socketserver')
 
 
 class PlayerConnection(SocketConnection):
+
     """ Socket connection for Mopidy client to connect to
     Bridged to browser connections via Redis PubSub
     """
@@ -89,11 +90,11 @@ class PlayerConnection(SocketConnection):
 
         try:
             track = Track.objects.filter(href=href, played=False)[0]
-           #Send notification to pusher
+           # Send notification to pusher
             p = pusher.Pusher(
-                app_id = settings.PUSHER_APP_ID,
-                key= settings.PUSHER_KEY,
-                secret= settings.PUSHER_SECRET
+                app_id=settings.PUSHER_APP_ID,
+                key=settings.PUSHER_KEY,
+                secret=settings.PUSHER_SECRET
             )
 
             self.current_track = track
@@ -104,7 +105,7 @@ class PlayerConnection(SocketConnection):
                 'href': track.href,
                 'track': track.name,
                 'artist': track.artist,
-                'album_href' : track.album_href,
+                'album_href': track.album_href,
                 'dj': track.user.get_full_name(),
             })
 
@@ -113,9 +114,11 @@ class PlayerConnection(SocketConnection):
 
             params = {'key': 'played'}
             headers = {'content-type': 'application/json'}
-            try :
-                requests.post('https://dweet.io:443/dweet/for/{0}'.format(settings.DWEET_NAME),
-                            data=data, params=params, headers=headers)
+            try:
+                requests.post(
+                    'https://dweet.io:443/dweet/for/{0}'.format(
+                        settings.DWEET_NAME),
+                    data=data, params=params, headers=headers)
             except Exception, e:
                 pass
 
@@ -138,8 +141,7 @@ class PlayerConnection(SocketConnection):
         if track.get('id') == self.current_track.id:
             self.current_track.set_played()
             self.emit('mopidy_skip_track', 'None')
-            
-      
+
     @event('player_update')
     def on_player_update(self, data):
         """ Player state change, pass message onto redis channel
@@ -165,6 +167,7 @@ class PlayerConnection(SocketConnection):
 
 
 class AppConnection(SocketConnection):
+
     """ Instances of this class represent connections to the browsers via
     websocket. Connection to the player socket server is via redis
     """
@@ -176,8 +179,8 @@ class AppConnection(SocketConnection):
     def __init__(self, *args, **kwargs):
         super(AppConnection, self).__init__(*args, **kwargs)
         self.connection_pool = tornadoredis.connection.ConnectionPool(
-                host=settings.REDIS_HOST,
-                port=settings.REDIS_PORT)
+            host=settings.REDIS_HOST,
+            port=settings.REDIS_PORT)
         self.client = tornadoredis.Client(connection_pool=self.connection_pool,
                                           selected_db=settings.REDIS_DB)
         self.listen()
@@ -210,7 +213,7 @@ class AppConnection(SocketConnection):
             session = Session.objects.get(session_key=session_key)
         except Session.DoesNotExist:
             logger.error('Session expired', exc_info=True,
-                    extra={'session_key': session_key})
+                         extra={'session_key': session_key})
             return False
         except AttributeError:
             logger.error('No Cookie Found')
@@ -221,21 +224,19 @@ class AppConnection(SocketConnection):
             self.user = User.objects.get(pk=self.user_id)
             self.session_expire = session.expire_date
             logger.debug('Webapp connected', exc_info=True,
-                    extra={'user': self.user, 'expires': self.session_expire})
+                         extra={'user': self.user, 'expires': self.session_expire})
             return True
 
     def on_open(self, request):
         """ Websocket connection opened with the browser
         """
-        #self.client.listen(self.on_redis_message)
+        # self.client.listen(self.on_redis_message)
         return self._get_user_id(request)
-
 
     def on_close(self):
         if self.client.subscribed:
             self.client.unsubscribe(self.CHANNELS)
             self.client.disconnect()
-
 
     def on_redis_message(self, data):
         """ Player events, emit them back down to the browsers
@@ -256,17 +257,17 @@ class AppConnection(SocketConnection):
             if data.channel == 'pr:track_played':
                 # Same socket evemt playlist is updated
                 self.emit('playlist:update', data.body)
-           
+
             if data.channel == 'pr:track_skip':
                 data_dict = json.loads(data.body)
                 if self.user_id == data_dict.get('user').get('id'):
-                    self.emit('playlist:message', "Sorry! The crowd didn't like {0} and it's being skipped.".format(data_dict.get('name')) )
-           
+                    self.emit(
+                        'playlist:message', "Sorry! The crowd didn't like {0} and it's being skipped.".format(data_dict.get('name')))
+
             if data.channel == 'pr:track_voted':
                 vote_data = json.loads(data.body)
                 if self.user_id == vote_data.get('user').get('id'):
-                    self.emit('message:info', data.body)  
-
+                    self.emit('message:info', data.body)
 
     def check_expiry(self):
         """ Check the session hasnt expired before doing any events
@@ -289,7 +290,6 @@ class AppConnection(SocketConnection):
         t = Track.objects.create(**data)
 
         logger.debug('{0} has queued {1}'.format(self.user, t))
-
 
     @event('remove_track')
     def do_remove_track(self, track_id):
@@ -349,42 +349,44 @@ class AppConnection(SocketConnection):
             try:
                 archive_track = get_or_create_track(track)
                 # Make a point, but catch the exception raised by the
-                # violation of unique_togetherness of (playlist) track and voter
+                # violation of unique_togetherness of (playlist) track and
+                # voter
                 p = Point.objects.create(user=track.user, action=action,
                                          track_name=str(track)[:100],
                                          playlist_track=track,
                                          archive_track=archive_track,
                                          vote_from=self.user)
 
-                #see if we should skip this track
+                # see if we should skip this track
                 self.check_skip_threshold(track)
 
             except IntegrityError:
                 # User has already voted for this track
                 self.emit('playlist:message',
-                          'Thanks, you appear to have already voiced an '\
+                          'Thanks, you appear to have already voiced an '
                           'opinion on {0}\'s choice to play {1}'
                           .format(track.user.first_name, track))
             else:
                 return True
 
-
     def check_skip_threshold(self, track):
-        #check the cumulative score for this track -
-        #if it is lower than the threshold then delete or skip
+        # check the cumulative score for this track -
+        # if it is lower than the threshold then delete or skip
         score = Point.objects.total(playlist_track=track)
         if score <= settings.POKERADIO_SKIP_THRESHOLD:
-            #get the latest unplayed track in the playlist
+            # get the latest unplayed track in the playlist
             try:
-                current_track = Track.objects.filter(played__exact=False)[:1][0]
+                current_track = Track.objects.filter(
+                    played__exact=False)[:1][0]
                 if track.id != current_track.id \
-                and not track.played \
-                or self.current_state != 'playing':
-                    #the track hasn't been played yet - just delete it from
-                    #the playlist
+                    and not track.played \
+                    or self.current_state != 'playing':
+                    # the track hasn't been played yet - just delete it from
+                    # the playlist
                     track.delete()
             except IndexError:
                 pass
+
 
 class RouterConnection(SocketConnection):
     __endpoints__ = {'/player': PlayerConnection,

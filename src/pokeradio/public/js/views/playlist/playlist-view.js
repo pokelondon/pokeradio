@@ -23,6 +23,9 @@ define(['jquery',
                     _.mixin({
                         convertToMinutes: utils.convertToMinutes
                     });
+
+                    // Load initial playlist
+                    this.collection.parseInitialData();
                 },
 
                 /**
