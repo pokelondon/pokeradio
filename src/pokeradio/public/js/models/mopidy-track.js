@@ -49,7 +49,7 @@ define(['jquery',
 
                 unQueue: function() {
                     Analytics.trackEvent('track', 'unqueue');
-                    //socket.emit('remove_track', this.get('id'));
+
                     this.destroy({wait: true, error: function() {
                         MessagingController.createMessage({
                             text: 'Could not delete this track',

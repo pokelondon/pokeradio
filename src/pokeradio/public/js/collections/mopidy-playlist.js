@@ -26,10 +26,8 @@ define([
                 // Socket events, via the mediator
                 this.listenTo(Backbone, 'playlist:delete', this.itemDeleted, this);
                 this.listenTo(Backbone, 'playlist:add', this.itemAdded, this);
+                this.listenTo(Backbone, 'playlist:played', this.itemPlayed, this);
 
-                this.on('change', function() {
-                    console.log('playlist changed');
-                });
                 this.on('add', function() {
                     // Tracks not added to the UI yet, they should listen for the socket event playlist:add
                     console.log('playlist add');
@@ -45,27 +43,6 @@ define([
                 //this.fetch();
             },
 
-            //displayMessage: function(message) {
-                //// TODO: is this required, or ever used?
-                //MessagingController.createMessage({
-                    //text: message
-                //});
-            //},
-
-            /**
-             * Remote playlist has been updated. Add new item
-             */
-            playlistupdate: function(data){
-                // single track is passed so we check if its a new track or played track.
-                data = $.parsejson(data);
-                if(data.played){
-                    var item = this.findwhere({id: parseint(data.id)});
-                    item.set('played', true);
-                }else {
-                    this.add(data);
-                }
-            },
-
             /**
              * Trim the played items if necessary
              */
@@ -79,7 +56,6 @@ define([
 
             itemAdded: function(data){
                 // single track is passed so we check if its a new track or played track.
-                data = $.parsejson(data);
                 this.add(data);
             },
 
@@ -91,6 +67,12 @@ define([
                 console.log('item deleted');
                 var item = this.findWhere({id: parseInt(id)});
                 this.remove(item);
+            },
+
+            itemPlayed: function(data) {
+                var item = this.findWhere({id: parseInt(data['id'])});
+                console.log(item.get('name'), 'played');
+                item.set('played', true);
             },
 
             /**
