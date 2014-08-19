@@ -46,14 +46,12 @@ nsp_app.on('connection', function(socket){
     });
 
     interv = setInterval(function() {
-        console.log(percent);
-        nsp_app.emit('play:progress', JSON.stringify({playback_state: 'playing', percentage: percent ++ }));
-    }, 2000);
-});
-
-io.on('playlist:delete', function(data) {
-    console.log('deleted track', data);
-    nsp_app.emit('playlist:delete', data);
+        if(percent >= 100) {
+            percent = 0;
+        }
+        nsp_app.emit('play:progress', JSON.stringify({playback_state: 'playing', 'length': 500, percentage: percent ++ }));
+    }, 5000);
+    console.log('setting interval', interv);
 });
 
 http.listen(PORT, function(){

@@ -30,6 +30,8 @@ define(['jquery',
                     this.on('render', this.setVotedClasses, this);
                     this.on('render', this.attachProgressBar, this);
 
+                    this.listenTo(Backbone, 'play:progress', this.updateProgress);
+
                     // Get inital State
                     this.updatePlayedState();
 
@@ -41,14 +43,17 @@ define(['jquery',
                 },
 
                 attachProgressBar: function() {
+                    this.progressbar = new ProgressBar();
+                    this.$el.append(this.progressbar.render().$el);
+                },
 
-                    if(!this.model.checkIsPlaying()) {
+                detachProgressBar: function() {
+                    if(!this.progressbar) {
                         return;
                     }
-
-                    this.progressbar = new ProgressBar();
-
-                    this.$el.append(this.progressbar.render().$el);
+                    console.log('detaching progress bar');
+                    this.progressbar.$el.remove();
+                    this.progressbar = null;
                 },
 
                 /**
@@ -64,8 +69,10 @@ define(['jquery',
 
                     if(this.model.checkIsPlaying()) {
                         this.$el.addClass('is-playing');
+                        this.attachProgressBar();
                     } else {
                         this.$el.removeClass('is-playing');
+                        this.detachProgressBar();
                     }
                 },
 

@@ -6,9 +6,10 @@ define([
     'views/playlist/playlist-view',
     'helpers/analytics',
     'views/messaging/controller',
-    'events'
+    'events',
+    'models/app_state'
     ],
-    function($, Backbone, _, SearchView, PlaylistView, Analytics, MessagingController, _events){
+    function($, Backbone, _, SearchView, PlaylistView, Analytics, MessagingController, _events, appState){
 
         Backbone.trigger('socket:connected');
 
@@ -19,6 +20,7 @@ define([
 
         socket.on('play:progress', function(data) {
             data = JSON.parse(data);
+            console.log(data);
             Backbone.trigger('play:progress', data);
         });
 
@@ -38,7 +40,6 @@ define([
         });
 
         socket.on('error', function(data) {
-            data = JSON.parse(data);
             console.error(data);
         });
 
@@ -55,6 +56,7 @@ define([
         window.PRAD.is_fox = (navigator.appVersion.indexOf("Win")!=-1);
         window.PRAD.app = {
             init: function(){
+                this.appState = appState;
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();
                 this.messagingcontroller = MessagingController; // singleton
