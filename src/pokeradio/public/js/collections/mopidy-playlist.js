@@ -54,7 +54,6 @@ define([
              * Delete it from the collection here
              */
             itemDeleted: function(id) {
-                console.log('item deleted');
                 var item = this.findWhere({id: parseInt(id)});
                 this.remove(item);
             },

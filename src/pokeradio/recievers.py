@@ -17,6 +17,7 @@ def track_saved(sender, instance, created, **kwargs):
         c = Credit.objects.create(user=instance.user, action='TRACK_ADD',
                 track_name=str(instance)[:100])
 
+        print json.dumps(instance.to_dict())
         io.Of('/app').Emit('playlist:add', json.dumps(instance.to_dict()))
     else:
         # Updating a track record, must be marking it as played
