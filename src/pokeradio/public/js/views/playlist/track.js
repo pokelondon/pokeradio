@@ -3,9 +3,10 @@ define(['jquery',
         'underscore',
         'views/_base_track',
         'text!template/playlist/track.html',
-        'views/progress-bar'
+        'views/progress-bar',
+        'models/app_state'
         ],
-        function($, Backbone, _, BaseTrackView, template, ProgressBar){
+        function($, Backbone, _, BaseTrackView, template, ProgressBar, appState){
             var TrackView = BaseTrackView.extend({
                 tagName: 'li',
                 template: template,
@@ -16,13 +17,13 @@ define(['jquery',
                     'click .btn-remove-track': 'removeTrack',
                     'click .btn-like': 'likeTrack',
                     'click .btn-dislike': 'dislikeTrack',
-                    'mouseenter .media-wrapper': 'ttpIn',
+                    'mouseenter .media-wrapper': 'start_ttp_countdown',
                 },
 
                 initialize: function(model) {
                     BaseTrackView.prototype.initialize.apply(this, arguments);
 
-                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses', 'ttpIn', 'attachProgressBar');
+                    _.bindAll(this, 'removeTrack', 'likeTrack', 'dislikeTrack', 'onVote', 'setVotedClasses', 'start_ttp_countdown', 'attachProgressBar');
                     this.model.on('change:played change:isPlaying', this.updatePlayedState, this);
                     this.model.on('remove', this.onTrackRemoved, this);
                     this.model.on('change:liked', this.onVote, this);
@@ -35,11 +36,7 @@ define(['jquery',
                     // Get inital State
                     this.updatePlayedState();
 
-                    $(window).on('ttpIn', _.bind(this.ttpOut, this));
-                    // Proxy event to each instance of this model so it can be unsubed
-                    $(window).on('play:progress:interpolated:seconds', _.bind(function(evt, data) {
-                        this.trigger('update:countdown', data);
-                    }, this));
+                    Backbone.on('stop_ttp_countdown', this.stop_ttp_countdown, this);
                 },
 
                 attachProgressBar: function() {
@@ -129,9 +126,14 @@ define(['jquery',
                 },
 
 
-                ttpIn: function(evt) {
+                /**
+                 * Mouse goes over this element, so start the countodowner
+                 */
+                start_ttp_countdown: function(evt) {
                     var self = this;
+
                     var update = function(seconds) {
+                        seconds = seconds | appState.get('time');
                         var ttp = self.model.timeTillPlay();
                         // Check track isnt already played or playing
                         if (ttp === false ) return false;
@@ -151,12 +153,18 @@ define(['jquery',
                     update(0);
                     // Display the counting text
                     this.$playingin.fadeIn();
-                    // Proxied event from the progressbar interpolator
-                    this.on('update:countdown', update, this);
+                    // Event from the progressbar interpolator
+                    this.listenTo(appState, 'change:progress', function() {
+                        update();
+                    }, this);
+
                     // Update if the playlist changes (delete or played)
-                    this.model.collection.on('change', update, this);
+                    this.model.collection.on('change', function() {
+                        update();
+                    }, this);
+
                     // Trigger 'in' event to close other counters
-                    $(window).trigger('ttpIn', this.model.get('id'));
+                    Backbone.trigger('stop_ttp_countdown', this.model.get('id'));
                 },
 
                 /**
@@ -164,13 +172,11 @@ define(['jquery',
                  * Only use this to do the hide sequence if its not this
                  * one being mouseovered.
                  */
-                ttpOut: function(evt, id) {
+                stop_ttp_countdown: function(id) {
                     if(this.model.get('id') === id) {
                         return;
                     }
                     this.$playingin.fadeOut();
-                    // Unsubscribe from ticking event
-                    this.off('update:countdown');
                 }
             });
             return TrackView;

@@ -21,10 +21,7 @@ define(
 
                 // Percentage reported from server, update interpolation
                 this.on('change:percentage', this.percentage, this);
-
-                this.on('change:time', function() {
-                    console.log('Time', this.get('time'));
-                }, this);
+                this.on('change:progress', this.updateTime, this);
             },
 
             /**
@@ -47,7 +44,7 @@ define(
                 }
                 this.percent_per_ms = 1 / (this.get('length') * 1000);
 
-                this.percent_per_period = this.percent_per_ms * this.period;
+                this.percent_per_period = this.percent_per_ms * this.period * 100;
 
                 if('playing' !== this.get('state')) {
                     return;
@@ -61,19 +58,26 @@ define(
             startInterval: function() {
                 var self = this;
 
-                this.interval = setInterval(function() {
-                    var time = self.get('length') * (self.get('progress') / 100);
-                    self.set('time', time);
+                this.interval = setInterval(_.bind(function() {
 
-                    self.set('progress', self.get('progress', 0) + self.percent_per_period);
+                    this.set('progress', this.get('progress', 0) + this.percent_per_period);
 
-                    if(self.get('progress') > 100) {
-                        self.set('progress', 0);
-                        self.clearInterval();
+                    if(this.get('progress') > 100) {
+                        this.set('progress', 0);
+                        this.clearInterval();
                     }
-                }, this.period);
+                }, this), this.period);
 
                 return this;
+            },
+
+            /**
+             * Whenever progress changes (interpolated or from socket)
+             * update time property
+             */
+            updateTime: function() {
+                var time = this.get('length') * (this.get('progress') / 100);
+                this.set('time', time);
             },
 
             clearInterval: function() {
