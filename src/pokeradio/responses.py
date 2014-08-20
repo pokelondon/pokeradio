@@ -17,10 +17,13 @@ class JSONResponseError(JSONResponse):
     An optional message can be passed along as well, so we know whats acutally
     going on
     """
-    def __init__(self, exception=None, *args, **kwargs):
+    def __init__(self, exception=None, message=None, *args, **kwargs):
         data = {'success': False, 'error': self.reason_phrase}
         if exception and exception.message:
             data['message'] = exception.message
+
+        if message:
+            data['message'] = message
         payload = json.dumps(data)
         kwargs['content_type'] = 'text/json'
         super(JSONResponse, self).__init__(payload, *args, **kwargs)
@@ -44,4 +47,3 @@ class JSONResponseBadRequest(JSONResponseError):
 class JSONResponseNotImplemented(JSONResponseError):
     status_code = 501
     reason_phrase = 'NOT IMPLEMENTED'
-

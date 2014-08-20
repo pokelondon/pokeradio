@@ -15,7 +15,10 @@ from django.conf import settings
 from pokeradio.history.utils import get_or_create_track
 from pokeradio.models import Track
 from pokeradio.scoring.models import Point
-from pokeradio.responses import JSONResponse, JSONResponseError
+from pokeradio.responses import (JSONResponse,
+                                 JSONResponseError,
+                                 JSONResponseNotFound,
+                                 JSONResponseBadRequest)
 
 from .models import Token
 
@@ -120,26 +123,57 @@ class PlaylistTrack(DetailView):
 
     def delete(self, request, pk):
         try:
-            track = Track.objects.get(user=request.user, id=int(pk),
-                                      played=False)
+            track = Track.objects.get(user=request.user, id=pk, played=False)
         except Track.DoesNotExist:
-            return JSONResponseError('You cant do that')
+            return JSONResponseBadRequest(message='You cant do that')
         else:
             track.delete()
             return JSONResponse({'status': 'OK'})
 
     def patch(self, request, pk):
         data = json.loads(request.body)
-        print data
+        self.user = request.user
+
+        if 'vote' in data:
+            return self.vote(pk, data['vote'])
+
+    def vote(self, pk, action):
+
         try:
-            track = Track.objects.get(id=int(pk))
+            # Get the track being liked, but not if its queued by the
+            # current user
+            track = Track.objects.get(id=pk)
         except Track.DoesNotExist:
-            return JSONResponseError('Track not found')
+            return JSONResponseNotFound()
         else:
-            if track.user == request.user:
-                return JSONResponseError('You cant vote for your own track')
-            print 'Vote'
-            return JSONResponse({'status': 'OK'})
+            # Check not self vote
+            if track.user == self.user:
+                return JSONResponseBadRequest(message='You cant vote for your own track')
+
+            try:
+                archive_track = get_or_create_track(track)
+
+                # Make a point, but catch the exception raised by the
+                # violation of unique_togetherness of (playlist) track and
+                # voter
+                p = Point.objects.create(user=track.user, action=action,
+                                         track_name=str(track)[:100],
+                                         playlist_track=track,
+                                         archive_track=archive_track,
+                                         vote_from=self.user)
+
+                # see if we should skip this track
+                # TODO
+                #self.check_skip_threshold(track)
+
+            except IntegrityError:
+                # User has already voted for this track
+                return JSONResponseBadRequest(message=
+                          'Thanks, you appear to have already voiced an '
+                          'opinion on {0}\'s choice to play {1}'
+                          .format(track.user.first_name, track))
+            else:
+                return JSONResponse({'status': 'OK'})
 
 
 playlist = csrf_exempt(Playlist.as_view())

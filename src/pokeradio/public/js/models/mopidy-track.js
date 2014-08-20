@@ -78,9 +78,9 @@ define(['jquery',
                     var self = this;
 
                     if(this.get('liked')) {
-                        vote = 1;
+                        vote = 'TRACK_LIKED';
                     } else if (this.get('disliked')) {
-                        vote = -1;
+                        vote = 'TRACK_DISLIKED';
                         verb = 'downvoted';
                     } else {
                         return this;
@@ -90,7 +90,7 @@ define(['jquery',
                             patch: true,
                             error: function(model, xhr) {
                                 MessagingController.createMessage({
-                                    text: xhr.responseText,
+                                    text: JSON.parse(xhr.responseText).message,
                                     type: 'bad',
                                     modal: true,
                                     closable: true
