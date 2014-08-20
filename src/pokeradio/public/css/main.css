@@ -3128,6 +3128,12 @@ body {
   background: #fff;
   margin: 0 0 15px;
 }
+.Playlist-item .progress-bar {
+  display: none;
+}
+.Playlist-item.is-playing .progress-bar {
+  display: block;
+}
 .progress-bar--small {
   width: 150px;
   height: 10px;

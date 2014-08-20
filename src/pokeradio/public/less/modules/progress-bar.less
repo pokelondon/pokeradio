@@ -7,7 +7,13 @@
     background: #fff;
     margin: 0 0 15px;
 }
-.Playlist-item .progress-bar {
+.Playlist-item {
+    .progress-bar {
+        display: none;
+    }
+    &.is-playing .progress-bar {
+        display: block;
+    }
 }
 
 .progress-bar--small {
