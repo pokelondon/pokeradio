@@ -44,15 +44,6 @@ define(['jquery',
                     this.$el.append(this.progressbar.render().$el);
                 },
 
-                detachProgressBar: function() {
-                    if(!this.progressbar) {
-                        return;
-                    }
-                    console.log('detaching progress bar');
-                    this.progressbar.$el.remove();
-                    this.progressbar = null;
-                },
-
                 /**
                  * Reflect model's played state in UI
                  */
@@ -69,7 +60,6 @@ define(['jquery',
                         this.attachProgressBar();
                     } else {
                         this.$el.removeClass('is-playing');
-                        this.detachProgressBar();
                     }
                 },
 
