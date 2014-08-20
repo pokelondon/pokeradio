@@ -15,7 +15,7 @@ from django.conf import settings
 from pokeradio.history.utils import get_or_create_track
 from pokeradio.models import Track
 from pokeradio.scoring.models import Point
-from pokeradio.responses import JSONResponse
+from pokeradio.responses import JSONResponse, JSONResponseError
 
 from .models import Token
 
@@ -116,7 +116,7 @@ class Playlist(ListView):
 
 class PlaylistTrack(DetailView):
     model = Track
-    http_method_names = ['get', 'delete', 'put']
+    http_method_names = ['get', 'delete', 'patch']
 
     def delete(self, request, pk):
         try:
@@ -126,6 +126,19 @@ class PlaylistTrack(DetailView):
             return JSONResponseError('You cant do that')
         else:
             track.delete()
+            return JSONResponse({'status': 'OK'})
+
+    def patch(self, request, pk):
+        data = json.loads(request.body)
+        print data
+        try:
+            track = Track.objects.get(id=int(pk))
+        except Track.DoesNotExist:
+            return JSONResponseError('Track not found')
+        else:
+            if track.user == request.user:
+                return JSONResponseError('You cant vote for your own track')
+            print 'Vote'
             return JSONResponse({'status': 'OK'})
 
 

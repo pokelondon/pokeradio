@@ -61,17 +61,50 @@ define(['jquery',
                 likeTrack: function() {
                     if(this.canLike()) {
                         Analytics.trackEvent('track', 'vote', 'source: web', 1);
-                        socket.emit('like_track', this.get('id'));
-                        this.set('liked', true);
+                        this.set('liked', true).saveVote();
                     }
                 },
 
                 dislikeTrack: function() {
                     if(this.canLike()) {
                         Analytics.trackEvent('track', 'vote', 'source: web', 0);
-                        socket.emit('dislike_track', this.get('id'));
-                        this.set('disliked', true);
+                        this.set('disliked', true).saveVote();
                     }
+                },
+
+                saveVote: function() {
+                    var vote = 1;
+                    var verb = 'upvoted';
+                    var self = this;
+
+                    if(this.get('liked')) {
+                        vote = 1;
+                    } else if (this.get('disliked')) {
+                        vote = -1;
+                        verb = 'downvoted';
+                    } else {
+                        return this;
+                    }
+
+                    this.save('vote', vote, {
+                            patch: true,
+                            error: function(model, xhr) {
+                                MessagingController.createMessage({
+                                    text: xhr.responseText,
+                                    type: 'bad',
+                                    modal: true,
+                                    closable: true
+                                });
+                            },
+                            success: function() {
+                                MessagingController.createMessage({
+                                    text: 'You ' + verb + ' ' + self.get('name'),
+                                    type: 'good',
+                                    timeout: 5000
+                                });
+                            }
+                        });
+                    return this;
                 },
 
                 canLike: function() {
