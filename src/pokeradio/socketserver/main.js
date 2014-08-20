@@ -49,9 +49,9 @@ nsp_app.on('connection', function(socket){
         if(percent >= 100) {
             percent = 0;
         }
-        nsp_app.emit('play:progress', JSON.stringify({playback_state: 'playing', 'length': 500, percentage: percent ++ }));
+        percent ++;
+        nsp_app.emit('play:progress', JSON.stringify({'playback_state': 'playing', 'track_length': 500, 'percentage': percent }).toString());
     }, 5000);
-    console.log('setting interval', interv);
 });
 
 http.listen(PORT, function(){

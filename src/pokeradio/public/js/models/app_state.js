@@ -7,7 +7,6 @@ define(
         var Model = Backbone.Model.extend({
             interval: null,
 
-            percentage_interpolated: 0,
             period: 1000, // MS period between prog bar updates (interpolated)
 
             defaults: {
@@ -22,6 +21,10 @@ define(
 
                 // Percentage reported from server, update interpolation
                 this.on('change:percentage', this.percentage, this);
+
+                this.on('change:time', function() {
+                    console.log('Time', this.get('time'));
+                }, this);
             },
 
             /**
@@ -31,18 +34,25 @@ define(
                 // TODO set other props
                 this.set('state', data.playback_state);
                 this.set('percentage', data.percentage);
-                this.set('length', data.length);
+                this.set('length', data.track_length);
             },
 
-            percentage: function(data) {
-                console.log(this.get('percentage'));
+            /**
+             * Percentage has been updated by socket message
+             * Set up interpolation till the next one given what we know now
+             */
+            percentage: function() {
+                if (!this.get('length')) {
+                    return;
+                }
+                this.percent_per_ms = 1 / (this.get('length') * 1000);
 
-                this.percent_per_ms = 1 / this.get('length') * 100;
-                var increment_per_period = this.percent_per_ms * this.period;
+                this.percent_per_period = this.percent_per_ms * this.period;
 
                 if('playing' !== this.get('state')) {
                     return;
                 }
+
                 this.set('progress', this.get('percentage'));
 
                 this.clearInterval().startInterval();
@@ -50,11 +60,13 @@ define(
 
             startInterval: function() {
                 var self = this;
+
                 this.interval = setInterval(function() {
-                    var time = 1 / self.percent_per_ms * self.get('percentage') / 1000;
+                    var time = self.get('length') * (self.get('progress') / 100);
                     self.set('time', time);
 
-                    self.set('progress', self.get('progress') + increment_per_period);
+                    self.set('progress', self.get('progress', 0) + self.percent_per_period);
+
                     if(self.get('progress') > 100) {
                         self.set('progress', 0);
                         self.clearInterval();
@@ -66,6 +78,7 @@ define(
 
             clearInterval: function() {
                 clearInterval(this.interval);
+                return this;
             }
 
         });

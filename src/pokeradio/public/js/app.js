@@ -15,12 +15,12 @@ define([
 
         socket.on('disconnect', function(){
             console.log('disconnected');
+            $('.Header-logo').css('opacity', '0.3');
             Backbone.trigger('socket:disconnected');
         });
 
         socket.on('play:progress', function(data) {
             data = JSON.parse(data);
-            console.log(data);
             Backbone.trigger('play:progress', data);
         });
 
@@ -44,12 +44,15 @@ define([
         });
 
         socket.on('connect_error', function(data) {
-            data = JSON.parse(data);
             console.error(data);
         });
 
         socket.on('reconnecting', function() {
-            console.error('reconnection');
+            $('.Header-logo').css('opacity', '0.8');
+        });
+
+        socket.on('reconnect', function() {
+            $('.Header-logo').css('opacity', '1');
         });
 
         window.PRAD = window.PRAD || {};
