@@ -89,9 +89,14 @@ class Message(models.Model):
     title = models.CharField(max_length=300, blank=True, null=True)
     text = models.CharField(max_length=300, blank=True, null=True)
     timeout = models.IntegerField(blank=True, null=True)
-    callback = models.TextField(blank=True, null=True)
+    target_to_individuals = models.BooleanField(default=False,
+            help_text='Select "To be seen by" for people to show the message to')
 
-    seenby = models.ManyToManyField('auth.User', blank=True, null=True)
+    seenby = models.ManyToManyField('auth.User', related_name='seenby',
+                                    blank=True, null=True)
+    to_be_seen_by = models.ManyToManyField('auth.User',
+                                           related_name='to_be_seen_by',
+                                           blank=True, null=True)
 
     def __unicode__(self):
         return self.title

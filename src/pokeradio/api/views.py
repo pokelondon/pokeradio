@@ -225,8 +225,8 @@ class MopidyPlaylistTrack(View):
 
     # Next track
     def get(self, request):
-        self.object = self.model.objects.next()
-        payload = {'id': track.id, 'href': track.href}
+        self.object = Track.objects.new()
+        payload = {'id': self.object.id, 'href': self.object.href}
         return JSONResponse(payload)
 
     # Update progress

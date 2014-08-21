@@ -11,59 +11,65 @@ define([
     ],
     function($, Backbone, _, SearchView, PlaylistView, Analytics, MessagingController, _events, appState){
 
-        Backbone.trigger('socket:connected');
+        if(socket) {
+            Backbone.trigger('socket:connected');
 
-        socket.on('disconnect', function(){
-            console.log('disconnected');
+            socket.on('disconnect', function(){
+                console.log('disconnected');
+                $('.Header-logo').css('opacity', '0.3');
+                Backbone.trigger('socket:disconnected');
+            });
+
+            socket.on('play:progress', function(data) {
+                data = JSON.parse(data);
+                Backbone.trigger('play:progress', data);
+            });
+
+            socket.on('playlist:add', function(data) {
+                data = JSON.parse(data);
+                Backbone.trigger('playlist:add', data);
+            });
+
+            socket.on('playlist:played', function(data) {
+                data = JSON.parse(data);
+                Backbone.trigger('playlist:played', data);
+            });
+
+            socket.on('playlist:delete', function(data) {
+                data = JSON.parse(data);
+                Backbone.trigger('playlist:delete', data);
+            });
+
+            socket.on('playlist:skip', function(data) {
+                data = JSON.parse(data);
+                Backbone.trigger('playlist:skip', data);
+            });
+
+            socket.on('playlist:scratch', function(data) {
+                data = JSON.parse(data);
+                Backbone.trigger('playlist:scratch', data);
+            });
+
+            socket.on('error', function(data) {
+                console.error(data);
+            });
+
+            socket.on('connect_error', function(data) {
+                console.error(data);
+            });
+
+            socket.on('reconnecting', function() {
+                $('.Header-logo').css('opacity', '0.8');
+            });
+
+            socket.on('reconnect', function() {
+                $('.Header-logo').css('opacity', '1');
+            });
+
+        } else {
             $('.Header-logo').css('opacity', '0.3');
             Backbone.trigger('socket:disconnected');
-        });
-
-        socket.on('play:progress', function(data) {
-            data = JSON.parse(data);
-            Backbone.trigger('play:progress', data);
-        });
-
-        socket.on('playlist:add', function(data) {
-            data = JSON.parse(data);
-            Backbone.trigger('playlist:add', data);
-        });
-
-        socket.on('playlist:played', function(data) {
-            data = JSON.parse(data);
-            Backbone.trigger('playlist:played', data);
-        });
-
-        socket.on('playlist:delete', function(data) {
-            data = JSON.parse(data);
-            Backbone.trigger('playlist:delete', data);
-        });
-
-        socket.on('playlist:skip', function(data) {
-            data = JSON.parse(data);
-            Backbone.trigger('playlist:skip', data);
-        });
-
-        socket.on('playlist:scratch', function(data) {
-            data = JSON.parse(data);
-            Backbone.trigger('playlist:scratch', data);
-        });
-
-        socket.on('error', function(data) {
-            console.error(data);
-        });
-
-        socket.on('connect_error', function(data) {
-            console.error(data);
-        });
-
-        socket.on('reconnecting', function() {
-            $('.Header-logo').css('opacity', '0.8');
-        });
-
-        socket.on('reconnect', function() {
-            $('.Header-logo').css('opacity', '1');
-        });
+        }
 
         window.PRAD = window.PRAD || {};
         window.PRAD.is_fox = (navigator.appVersion.indexOf("Win")!=-1);

@@ -2,9 +2,12 @@
 {% block scripts %}
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            var socket = io.connect('{{ socketio_client_url }}', {
-                transports: ['websocket']
-            });
+            var socket = false;
+            try {
+                socket = io.connect('{{ socketio_client_url }}', {
+                    transports: ['websocket']
+                });
+            } catch(e) {}
             var PRAD = PRAD || {};
             PRAD.user_id = {{ request.user.id }};
             PRAD.blacklist = {{ blacklist|safe }};

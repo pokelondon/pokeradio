@@ -29,11 +29,25 @@ class ProfileInline(admin.StackedInline):
 class UserAdmin(UserAdmin):
     inlines = (ProfileInline, )
 
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'target_to_individuals', )
+    search_fields = ('to_be_seen_by__first_name', 'to_be_seen_by__last_name',
+                     'text', 'title')
+
+    fieldsets = (
+        ('',
+            {'fields': ('title', 'text', 'timeout')}),
+        ('Broadcast',
+            {'fields': ('seenby', )}),
+        ('Targeted',
+            {'fields': ('target_to_individuals', 'to_be_seen_by')}),
+    )
+
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 admin.site.register(Track, TrackAdmin)
-admin.site.register(Message)
+admin.site.register(Message, MessageAdmin)
 
 admin.site.unregister(Site)

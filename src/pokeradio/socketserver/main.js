@@ -45,13 +45,13 @@ nsp_app.on('connection', function(socket){
         clearInterval(interv);
     });
 
-    interv = setInterval(function() {
-        if(percent >= 100) {
-            percent = 0;
-        }
-        percent ++;
-        nsp_app.emit('play:progress', JSON.stringify({'playback_state': 'playing', 'track_length': 500, 'percentage': percent }).toString());
-    }, 5000);
+    //interv = setInterval(function() {
+        //if(percent >= 100) {
+            //percent = 0;
+        //}
+        //percent ++;
+        //nsp_app.emit('play:progress', JSON.stringify({'playback_state': 'playing', 'track_length': 500, 'percentage': percent }).toString());
+    //}, 5000);
 });
 
 nsp_player.on('connection', function(socket){
