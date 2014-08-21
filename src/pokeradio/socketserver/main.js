@@ -54,6 +54,26 @@ nsp_app.on('connection', function(socket){
     }, 5000);
 });
 
+nsp_player.on('connection', function(socket){
+    var interv = null;
+
+    console.log('Something\'s connected');
+
+    socket.on('message', function(data) {
+        console.log(data);
+    });
+
+    socket.on('disconnect', function() {
+        console.log('disconnected');
+    });
+
+    interv = setInterval(function() {
+        console.log('sending message');
+        nsp_app.emit('playlist:track_play', JSON.stringify({'track': '123'}));
+    }, 5000);
+
+});
+
 http.listen(PORT, function(){
     console.log('Listening on *:' + PORT);
 });

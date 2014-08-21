@@ -13,10 +13,10 @@ from django.http import (HttpResponse,
                          HttpResponseNotAllowed)
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View
 from django.conf import settings
 
-from pokeradio.history.utils import get_or_create_track
+from pokeradio.history.utils import get_or_create_track, record_track_play
 from pokeradio.models import Track
 from pokeradio.scoring.models import Point
 from pokeradio.responses import (JSONResponse,
@@ -178,7 +178,98 @@ class PlaylistTrack(DetailView):
             else:
                 return JSONResponse({'status': 'OK'})
 
+def track_played_dweet(track):
+
+    data = json.dumps({
+        'action': 'playing',
+        'id': track.pk,
+        'href': track.href,
+        'track': track.name,
+        'artist': track.artist,
+        'album_href': track.album_href,
+        'dj': track.user.get_full_name(),
+    })
+
+    headers = {'content-type': 'application/json'}
+    try:
+        requests.post(
+            'https://dweet.io:443/dweet/for/{0}'.format(
+                settings.DWEET_NAME),
+            data=data, params=params, headers=headers)
+    except Exception, e:
+        pass
+
+def track_played_pusher(track):
+    p = pusher.Pusher(
+        app_id=settings.PUSHER_APP_ID,
+        key=settings.PUSHER_KEY,
+        secret=settings.PUSHER_SECRET
+    )
+
+    data = json.dumps({
+        'action': 'playing',
+        'id': track.pk,
+        'href': track.href,
+        'track': track.name,
+        'artist': track.artist,
+        'album_href': track.album_href,
+        'dj': track.user.get_full_name(),
+    })
+
+    p['poke_radio'].trigger('on_playing', data)
+
+
+class MopidyPlaylistTrack(View):
+
+    http_method_names = ['get', 'put', 'post']
+
+    # Next track
+    def get(self, request):
+        self.object = self.model.objects.next()
+        payload = {'id': track.id, 'href': track.href}
+        return JSONResponse(payload)
+
+    # Update progress
+    def put(self, request, pk):
+        data = json.loads(request.body)
+
+        href = data['href']
+
+        # Find first unplayed instance of the track by href
+        try:
+            self.object = Track.objects.filter(href=href, played=False)[0]
+        except (Track.DoesNotExist, IndexError):
+            pass
+        else:
+
+            if 'started' == data['action']:
+                record_track_play(self.object)
+
+                if settings.USE_PUSHER:
+                    track_played_pusher(self.object)
+
+                if settings.DWEET_NAME:
+                    track_played_dweet(self.object)
+
+                print 'Track started', self.object.name
+                return JSONResponse({'status': 'OK'})
+
+            if 'ended' == data['action']:
+                self.object.set_played()
+                print 'Track ended', self.object.name
+                return JSONResponse({'status': 'OK'})
+
+    def post(self, request):
+        data = json.loads(request.body)
+
+        if 'progress' == data['action']:
+            io.Of('/app').Emit('play:progress', request.body)
+            print 'Progress event'
+            return JSONResponse({'status': 'OK'})
+
 
 
 playlist = csrf_exempt(Playlist.as_view())
 playlist_track = csrf_exempt(PlaylistTrack.as_view())
+
+mopidy = csrf_exempt(MopidyPlaylistTrack.as_view())

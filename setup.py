@@ -21,7 +21,6 @@ install_dependencies = [
     'raven == 3.3.5',
     'gunicorn == 18.0',
     'django-extensions == 1.2.2',
-    'socketIO-client == 0.4',
     'python-social-auth == 0.1.14',
     'TornadIO2 == 0.0.4',
     'redis == 2.8.0',

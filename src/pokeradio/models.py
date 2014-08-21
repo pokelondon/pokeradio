@@ -7,7 +7,9 @@ from django.db.models.signals import post_save, post_delete
 from django.contrib.auth.models import User
 
 from pokeradio.scoring.models import Point
+
 from .recievers import track_saved, track_deleted
+from .managers import TrackManager
 
 
 class Profile(models.Model):
@@ -28,6 +30,8 @@ class Track(models.Model):
     length = models.FloatField(null=True)
     album_href = models.CharField(max_length=255)
     artist_href = models.CharField(max_length=255)
+
+    objects = TrackManager()
 
     class Meta:
         ordering = ['timestamp']
