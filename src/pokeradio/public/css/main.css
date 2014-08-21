@@ -2767,6 +2767,13 @@ body {
   display: inline-block;
   margin-right: 30px;
 }
+.NavBar a:hover {
+  color: #19d0f1;
+  text-decoration: none;
+}
+.NavBar a.is-active {
+  color: #61dfb4;
+}
 .NavBar-user {
   display: inline-block;
   vertical-align: baseline;

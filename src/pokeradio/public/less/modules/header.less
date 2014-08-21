@@ -53,7 +53,15 @@
         color: #fff;
         display: inline-block;
         margin-right: 30px;
+        &:hover {
+            color: @poke-blue;
+            text-decoration: none;
+        }
+        &.is-active {
+            color: @poke-green;
+        }
     }
+
 }
 .NavBar-user {
     display: inline-block;

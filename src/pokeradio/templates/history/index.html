@@ -21,6 +21,7 @@
             <a href="{% url 'history:vote_tracks_index' 'all' %}" class="btn"><i class="fa fa-heart"></i> Most liked tracks</a>
             <a href="{% url 'scoring:leaderboard_index' %}" class="btn"><i class="fa fa-bar-chart-o"></i> Leaderboard</a>
         </p>
+
         {% for group in request.user.groups.all %}
             {% if group.name == 'Graph' %}
                 <p>
@@ -31,11 +32,6 @@
                 </p>
             {% endif %}
         {% endfor %}
-
-        <h3>This Week</h3>
-        <p><a href="{% url 'history:play_artists_index' 'all' %}"><i class="fa fa-music"></i> Artist Plays</a></p>
-        <p><a href="{% url 'history:play_tracks_index' 'all' %}"><i class="fa fa-music"></i> Track Plays</a></p>
-        <p><a href="{% url 'history:vote_artists_index' 'all' %}"><i class="fa fa-heart"></i> Artist Likes</a></p>
     </div>
     <div class="col-md-8">
         <h2><i class="fa fa-user"></i> My stuff</h2>
