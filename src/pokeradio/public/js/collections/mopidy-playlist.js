@@ -21,6 +21,9 @@ define([
                 this.listenTo(Backbone, 'playlist:add', this.itemAdded, this);
                 this.listenTo(Backbone, 'playlist:played', this.itemPlayed, this);
 
+                this.listenTo(Backbone, 'playlist:skip', this.itemSkipped, this);
+                this.listenTo(Backbone, 'playlist:scratch', this.itemScratched, this);
+
                 this.on('change:played', this.trimPlayed, this)
 
                 this.comparator = 'id';
@@ -73,6 +76,27 @@ define([
                 });
                 // Redirect to logout page just in case, so we don't start a loop
                 window.location.href = '/logout/';
+            },
+
+            itemScratched: function(item) {
+                if(item.user.id === PRAD.user_id) {
+                    MessagingController.createMessage({
+                        title: 'Scratch',
+                        text: 'Oh dear, ' + item.name + ' didn\'t go down too well :(',
+                        type: 'bad'
+                    });
+                }
+            },
+
+            itemSkipped: function(item) {
+                if(item.user.id === PRAD.user_id) {
+                    MessagingController.createMessage({
+                        title: 'Skipped',
+                        text: item.name + ' never saw the light of day! Try harder :-p',
+                        type: 'bad'
+                    });
+                }
+
             }
 
         });

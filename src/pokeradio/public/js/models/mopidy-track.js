@@ -98,6 +98,7 @@ define(['jquery',
                             },
                             success: function() {
                                 MessagingController.createMessage({
+                                    title: verb,
                                     text: 'You ' + verb + ' ' + self.get('name'),
                                     type: 'good',
                                     timeout: 5000

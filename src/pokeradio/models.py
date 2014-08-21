@@ -67,6 +67,16 @@ class Track(models.Model):
         self.played = True
         self.save()
 
+    def is_playing(self):
+        # get the latest unplayed track in the playlist
+        try:
+            current_track = Track.objects.filter(played__exact=False)[:1][0]
+
+            if self.id == current_track.id and not self.played:
+                return True
+        except IndexError:
+            return False
+
 post_save.connect(track_saved, sender=Track)
 post_delete.connect(track_deleted, sender=Track)
 

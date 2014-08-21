@@ -39,6 +39,16 @@ define([
             Backbone.trigger('playlist:delete', data);
         });
 
+        socket.on('playlist:skip', function(data) {
+            data = JSON.parse(data);
+            Backbone.trigger('playlist:skip', data);
+        });
+
+        socket.on('playlist:scratch', function(data) {
+            data = JSON.parse(data);
+            Backbone.trigger('playlist:scratch', data);
+        });
+
         socket.on('error', function(data) {
             console.error(data);
         });

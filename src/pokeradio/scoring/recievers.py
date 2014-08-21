@@ -1,7 +1,11 @@
+from __future__ import unicode_literals
+
 import json
 import requests
 import logging
 import redis
+
+from emitter import Emitter
 
 from django.conf import settings
 from django.db import models
@@ -10,6 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .slack import Slack
 
 logger = logging.getLogger('raven')
+io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
 
 
 def report_vote(sender, instance, created, **kwargs):
@@ -139,29 +144,42 @@ def track_voted(sender, instance, created, **kwargs):
 def track_skip(sender, instance, created, **kwargs):
     """ Triggered by downvotes, Takes an instance of Point
     """
-    r = redis.Redis(host=settings.REDIS_HOST,
-                    port=settings.REDIS_PORT,
-                    db=settings.REDIS_DB)
+    #r = redis.Redis(host=settings.REDIS_HOST,
+                    #port=settings.REDIS_PORT,
+                    #db=settings.REDIS_DB)
 
     # Check the cumulative score for this track -
     # if it is lower than the threshold then delete or skip
     score = instance.playlist_track.point_set.all().aggregate(
             models.Sum('value'))['value__sum']
 
-
     if score <= settings.POKERADIO_SKIP_THRESHOLD:
-        # Get the latest unplayed track in the playlist
-        r.publish('pr:track_skip',
-                  json.dumps(instance.playlist_track.to_dict()))
+        # TODO send message to mopidy
 
-        msg = Slack('Track Skipped',
-                    'Track Skipped: {0}'.format(instance.archive_track.name),
+        # Get the latest unplayed track in the playlist
+        #r.publish('pr:track_skip',
+                  #json.dumps(instance.playlist_track.to_dict()))
+
+        verb = 'Scratched'
+
+        if instance.playlist_track.is_playing():
+            io.Of('/app').Emit('playlist:scratch',
+                    json.dumps(instance.playlist_track.to_dict()))
+        else:
+            io.Of('/app').Emit('playlist:skip',
+                    json.dumps(instance.playlist_track.to_dict()))
+            verb = 'Skipped'
+
+
+        msg = Slack('Track {0}'.format(verb),
+                    'Track {0}: {1}'.format(verb, instance.archive_track.name),
                     Slack.PINK,
                     '#music',
                     Slack.PUBLIC)
 
         total_votes = instance.archive_track.point_set.all().aggregate(
                 models.Sum('value'))['value__sum']
+
         title = '{0} - {1}'.format(unicode(instance.archive_track.name),
                                    unicode(instance.archive_track.artist.name))
 

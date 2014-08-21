@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import simplejson as json
 
 from emitter import Emitter

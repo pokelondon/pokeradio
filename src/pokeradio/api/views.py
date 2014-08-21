@@ -1,5 +1,9 @@
+from __future__ import unicode_literals
+
 import json
 from itertools import chain
+
+from emitter import Emitter
 
 from django.db import IntegrityError
 from django.http import (HttpResponse,
@@ -21,6 +25,9 @@ from pokeradio.responses import (JSONResponse,
                                  JSONResponseBadRequest)
 
 from .models import Token
+
+
+io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
 
 
 @csrf_exempt
@@ -162,10 +169,6 @@ class PlaylistTrack(DetailView):
                                          archive_track=archive_track,
                                          vote_from=self.user)
 
-                # see if we should skip this track
-                # TODO
-                #self.check_skip_threshold(track)
-
             except IntegrityError:
                 # User has already voted for this track
                 return JSONResponseBadRequest(message=
@@ -174,6 +177,7 @@ class PlaylistTrack(DetailView):
                           .format(track.user.first_name, track))
             else:
                 return JSONResponse({'status': 'OK'})
+
 
 
 playlist = csrf_exempt(Playlist.as_view())
