@@ -170,6 +170,9 @@ def track_skip(sender, instance, created, **kwargs):
                     json.dumps(instance.playlist_track.to_dict()))
             verb = 'Skipped'
 
+            # Removes the track from the playlist if not yet played
+            instance.playlist_track.delete()
+
 
         msg = Slack('Track {0}'.format(verb),
                     'Track {0}: {1}'.format(verb, instance.archive_track.name),
