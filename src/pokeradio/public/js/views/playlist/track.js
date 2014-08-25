@@ -57,7 +57,6 @@ define(['jquery',
 
                     if(this.model.checkIsPlaying()) {
                         this.$el.addClass('is-playing');
-                        this.attachProgressBar();
                     } else {
                         this.$el.removeClass('is-playing');
                     }
