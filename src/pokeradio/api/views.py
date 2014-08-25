@@ -147,15 +147,15 @@ class PlaylistTrack(DetailView):
     def vote(self, pk, action):
 
         try:
-            # Get the track being liked, but not if its queued by the
-            # current user
+            # Get the track being liked
             track = Track.objects.get(id=pk)
         except Track.DoesNotExist:
             return JSONResponseNotFound()
         else:
             # Check not self vote
             if track.user == self.user:
-                return JSONResponseBadRequest(message='You cant vote for your own track')
+                return JSONResponseBadRequest(
+                        message='You cant vote for your own track')
 
             try:
                 archive_track = get_or_create_track(track)
@@ -163,7 +163,8 @@ class PlaylistTrack(DetailView):
                 # Make a point, but catch the exception raised by the
                 # violation of unique_togetherness of (playlist) track and
                 # voter
-                p = Point.objects.create(user=track.user, action=action,
+                p = Point.objects.create(user=track.user,
+                                         action=action,
                                          track_name=str(track)[:100],
                                          playlist_track=track,
                                          archive_track=archive_track,
@@ -171,10 +172,10 @@ class PlaylistTrack(DetailView):
 
             except IntegrityError:
                 # User has already voted for this track
-                return JSONResponseBadRequest(message=
-                          'Thanks, you appear to have already voiced an '
-                          'opinion on {0}\'s choice to play {1}'
-                          .format(track.user.first_name, track))
+                return JSONResponseBadRequest(
+                    message='Thanks, you appear to have already voiced an '
+                            'opinion on {0}\'s choice to play {1}'
+                            .format(track.user.first_name, track))
             else:
                 return JSONResponse({'status': 'OK'})
 
@@ -230,9 +231,11 @@ class MopidyPlaylistTrack(View):
         return JSONResponse(payload)
 
     # Update progress
-    def put(self, request, pk):
+    def put(self, request):
+        print request.body
         data = json.loads(request.body)
 
+        print data
         href = data['href']
 
         # Find first unplayed instance of the track by href

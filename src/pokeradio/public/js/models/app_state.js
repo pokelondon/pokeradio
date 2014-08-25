@@ -31,7 +31,7 @@ define(
                 // TODO set other props
                 this.set('state', data.playback_state);
                 this.set('percentage', data.percentage);
-                this.set('length', data.track_length);
+                this.set('length', data['length']);
             },
 
             /**
@@ -42,7 +42,7 @@ define(
                 if (!this.get('length')) {
                     return;
                 }
-                this.percent_per_ms = 1 / (this.get('length') * 1000);
+                this.percent_per_ms = 1 / (this.get('length') * 10);
 
                 this.percent_per_period = this.percent_per_ms * this.period * 100;
 

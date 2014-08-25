@@ -4,7 +4,7 @@ var REDIS = { host: 'localhost', port: 6379 };
 var redis = require('socket.io-redis');
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {transports: 'websocket'});
 
 var nsp_app = io.of('/app');
 var nsp_player = io.of('/player');
@@ -13,6 +13,10 @@ io.adapter(redis(REDIS));
 
 var users = {};
 
+io.use(function(socket, next) {
+    console.log('Something happening', socket.request);
+    next();
+});
 
 nsp_app.on('connection', function(socket){
     var addedUser = false;
@@ -22,26 +26,8 @@ nsp_app.on('connection', function(socket){
     console.log('Connected to app');
     socket.emit('connected', 'connected to app');
 
-    socket.on('add user', function (username) {
-        // we store the username in the socket session for this client
-        socket.username = username;
-        // add the client's username to the global list
-        users[username] = username;
-        addedUser = true;
-
-        // echo globally (all clients) that a person has connected
-        socket.broadcast.emit('user joined', {
-            username: socket.username
-        });
-    });
-
     socket.on('disconnect', function() {
-        console.log('user disconnected', socket.username);
-
-        if(addedUser) {
-            delete users[socket.username];
-        }
-
+        console.log('user disconnected');
         clearInterval(interv);
     });
 
@@ -57,10 +43,14 @@ nsp_app.on('connection', function(socket){
 nsp_player.on('connection', function(socket){
     var interv = null;
 
-    console.log('Something\'s connected');
+    console.log('Connecte to player endpoint');
 
     socket.on('message', function(data) {
         console.log(data);
+    });
+
+    socket.on('hi', function(data) {
+        console.log('HI EVENT');
     });
 
     socket.on('disconnect', function() {
