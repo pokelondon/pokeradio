@@ -2917,6 +2917,10 @@ body {
   background-color: #ffffff;
   border-bottom: 2px #ebede5 solid;
   min-height: 80px;
+  -webkit-transition: background 300ms;
+  -moz-transition: background 300ms;
+  -o-transition: background 300ms;
+  transition: background 300ms;
 }
 .Playlist-item-album-art {
   width: 60px;
@@ -3003,8 +3007,7 @@ body {
   display: block;
   margin: 10px auto;
 }
-/*-----Played tracks --*/
-.Playlist-item.played {
+.played {
   font-size: 12px;
   opacity: 0.8;
 }
@@ -3134,17 +3137,20 @@ body {
 .progress-bar {
   width: auto;
   float: none;
-  height: 5px;
   display: block;
   clear: left;
   background: #fff;
   margin: 0 0 15px;
-}
-.Playlist-item .progress-bar {
+  height: 0;
   display: none;
+  -webkit-transition: height 200ms;
+  -moz-transition: height 200ms;
+  -o-transition: height 200ms;
+  transition: height 200ms;
 }
 .Playlist-item.is-playing .progress-bar {
   display: block;
+  height: 5px;
 }
 .progress-bar--small {
   width: 150px;

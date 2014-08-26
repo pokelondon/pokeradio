@@ -30,6 +30,7 @@
     background-color: @media-list-bg;
     border-bottom: 2px @grey solid;
     min-height: 80px;
+    .transition(background 300ms);
 }
 
 .Playlist-item-album-art {
@@ -128,13 +129,10 @@
 
 }
 
-/*-----Played tracks --*/
-.Playlist-item.played {
+.played {
     font-size: @font-size-small;
     opacity: 0.8;
-}
 
-.played {
     .Playlist-item-wrapper{
         background-color: transparent;
         min-height: inherit;

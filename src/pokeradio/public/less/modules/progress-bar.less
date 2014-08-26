@@ -1,18 +1,18 @@
 .progress-bar {
     width: auto;
     float: none;
-    height: 5px;
     display: block;
     clear: left;
     background: #fff;
     margin: 0 0 15px;
+    height: 0;
+    display: none;
+    .transition(height 200ms);
 }
 .Playlist-item {
-    .progress-bar {
-        display: none;
-    }
     &.is-playing .progress-bar {
         display: block;
+        height: 5px;
     }
 }
 
