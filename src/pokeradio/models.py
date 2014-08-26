@@ -78,6 +78,7 @@ class Track(models.Model):
 
             if self.id == current_track.id and not self.played:
                 return True
+            return False
         except IndexError:
             return False
 

@@ -20,5 +20,7 @@ urls = [
 
     # Endpoints for mopidy
     url(r'^mopidy/$', 'mopidy', name='mopidy'),
+    url(r'^mopidy/instruction/$', 'mopidy_instruction',
+        name='mopidy_instruction'),
 ]
 urlpatterns += patterns('pokeradio.api.views', *urls)

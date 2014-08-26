@@ -14,7 +14,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from .slack import Slack
 
 logger = logging.getLogger('raven')
+
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
+
+r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT)
 
 
 def report_vote(sender, instance, created, **kwargs):
@@ -121,10 +124,6 @@ def track_voted(sender, instance, created, **kwargs):
     """
     When a track has been voted up or down send redis message to the socket server to alert connect clients
     """
-    r = redis.Redis(host=settings.REDIS_HOST,
-                    port=settings.REDIS_PORT,
-                    db=settings.REDIS_DB)
-
     data = json.dumps({
         "track": {
             "id": instance.playlist_track.id,
@@ -138,33 +137,25 @@ def track_voted(sender, instance, created, **kwargs):
         "action": instance.action,
         "value": instance.user.point_set.all().aggregate(models.Sum('value'))['value__sum']
         })
-    r.publish('pr:track_voted', data)
 
 
 def track_skip(sender, instance, created, **kwargs):
     """ Triggered by downvotes, Takes an instance of Point
     """
-    #r = redis.Redis(host=settings.REDIS_HOST,
-                    #port=settings.REDIS_PORT,
-                    #db=settings.REDIS_DB)
-
     # Check the cumulative score for this track -
     # if it is lower than the threshold then delete or skip
     score = instance.playlist_track.point_set.all().aggregate(
             models.Sum('value'))['value__sum']
 
     if score <= settings.POKERADIO_SKIP_THRESHOLD:
-        # TODO send message to mopidy
-
-        # Get the latest unplayed track in the playlist
-        #r.publish('pr:track_skip',
-                  #json.dumps(instance.playlist_track.to_dict()))
 
         verb = 'Scratched'
 
         if instance.playlist_track.is_playing():
             io.Of('/app').Emit('playlist:scratch',
                     json.dumps(instance.playlist_track.to_dict()))
+            r_conn.set('mopidy_instruction', 'mopdiy:track_skip')
+            instance.playlist_track.set_played()
         else:
             io.Of('/app').Emit('playlist:skip',
                     json.dumps(instance.playlist_track.to_dict()))

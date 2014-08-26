@@ -11,7 +11,6 @@ from pokeradio.scoring.models import Credit
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
 
-
 def track_saved(sender, instance, created, **kwargs):
 
     if created:

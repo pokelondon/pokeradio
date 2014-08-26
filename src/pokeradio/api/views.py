@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import json
+import redis
 from itertools import chain
 
 from emitter import Emitter
@@ -28,6 +29,8 @@ from .models import Token
 
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
+
+r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT)
 
 
 @csrf_exempt
@@ -267,12 +270,19 @@ class MopidyPlaylistTrack(View):
 
         if 'progress' == data['action']:
             io.Of('/app').Emit('play:progress', request.body)
-            print 'Progress event'
             return JSONResponse({'status': 'OK'})
 
+
+
+class MopidyInstruction(View):
+    def get(self, request):
+        action = r_conn.get('mopidy_instruction')
+        r_conn.delete('mopidy_instruction')
+        return JSONResponse({'action': action})
 
 
 playlist = csrf_exempt(Playlist.as_view())
 playlist_track = csrf_exempt(PlaylistTrack.as_view())
 
 mopidy = csrf_exempt(MopidyPlaylistTrack.as_view())
+mopidy_instruction = csrf_exempt(MopidyInstruction.as_view())
