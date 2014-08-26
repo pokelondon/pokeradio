@@ -30,7 +30,8 @@ from .models import Token
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
 
-r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT)
+r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
+                           db=settings.REDIS_DB)
 
 
 @csrf_exempt
@@ -229,8 +230,20 @@ class MopidyPlaylistTrack(View):
 
     # Next track
     def get(self, request):
+        """ If there is no track to play, set a redis key.
+        On the save signal, this key is checked, and a pubsub message is issued
+        if a track is created while the waiting flag is set
+        """
         self.object = Track.objects.new()
-        payload = {'id': self.object.id, 'href': self.object.href}
+        is_waiting = r_conn.get('mopidy:track_waiting')
+
+        if self.object:
+            r_conn.delete('mopidy:track_waiting')
+            payload = {'id': self.object.id, 'href': self.object.href}
+        else:
+            payload = {'status': 'empty'}
+            r_conn.set('mopidy:track_waiting', True)
+
         return JSONResponse(payload)
 
     # Update progress

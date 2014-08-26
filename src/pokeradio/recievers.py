@@ -11,6 +11,9 @@ from pokeradio.scoring.models import Credit
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
 
+r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
+                           db=settings.REDIS_DB)
+
 def track_saved(sender, instance, created, **kwargs):
 
     if created:
@@ -18,8 +21,11 @@ def track_saved(sender, instance, created, **kwargs):
         c = Credit.objects.create(user=instance.user, action='TRACK_ADD',
                 track_name=str(instance)[:100])
 
-        print json.dumps(instance.to_dict())
-        io.Of('/app').Emit('playlist:add', json.dumps(instance.to_dict()))
+        data = json.dumps(instance.to_dict())
+        io.Of('/app').Emit('playlist:add', data)
+
+        if r_conn.get('mopidy:track_waiting'):
+            r_conn.publish('mopdiy:track_add', data)
     else:
         # Updating a track record, must be marking it as played
         io.Of('/app').Emit('playlist:played', json.dumps(instance.to_dict()))

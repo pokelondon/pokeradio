@@ -15,9 +15,12 @@ from .slack import Slack
 
 logger = logging.getLogger('raven')
 
+# for Emiting events to be sent to browers via socket server
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
 
-r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT)
+# for publishing events to be sent to mopidy on the Pi
+r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
+                           db=settings.REDIS_DB)
 
 
 def report_vote(sender, instance, created, **kwargs):
@@ -150,15 +153,16 @@ def track_skip(sender, instance, created, **kwargs):
     if score <= settings.POKERADIO_SKIP_THRESHOLD:
 
         verb = 'Scratched'
+        data = json.dumps(instance.playlist_track.to_dict())
 
         if instance.playlist_track.is_playing():
-            io.Of('/app').Emit('playlist:scratch',
-                    json.dumps(instance.playlist_track.to_dict()))
-            r_conn.set('mopidy_instruction', 'mopdiy:track_skip')
+            # Notify browsers
+            io.Of('/app').Emit('playlist:scratch', data)
+            # Notify mopidy
+            r_conn.publish('mopdiy:track_skip', data)
             instance.playlist_track.set_played()
         else:
-            io.Of('/app').Emit('playlist:skip',
-                    json.dumps(instance.playlist_track.to_dict()))
+            io.Of('/app').Emit('playlist:skip', data)
             verb = 'Skipped'
 
             # Removes the track from the playlist if not yet played
