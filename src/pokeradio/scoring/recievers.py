@@ -159,7 +159,7 @@ def track_skip(sender, instance, created, **kwargs):
             # Notify browsers
             io.Of('/app').Emit('playlist:scratch', data)
             # Notify mopidy
-            r_conn.publish('mopdiy:track_skip', data)
+            r_conn.publish('mopdiy:track_scratch', data)
             instance.playlist_track.set_played()
         else:
             io.Of('/app').Emit('playlist:skip', data)

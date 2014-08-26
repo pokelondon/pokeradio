@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import simplejson as json
 
+import redis
 from emitter import Emitter
 
 from django.conf import settings
