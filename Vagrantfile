@@ -21,6 +21,8 @@ Vagrant.configure("2") do |config|
     # Ipython notebook
     config.vm.network :forwarded_port, guest: 8888, host: 8888
     config.vm.network :forwarded_port, guest: 8001, host: 8001
+    config.vm.network :forwarded_port, guest: 6379, host: 6379
+
     config.vm.network :private_network, ip: "10.10.10.10"
 
     #
