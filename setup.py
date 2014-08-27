@@ -72,7 +72,7 @@ setup(
         'develop': development_dependencies,
         'test': test_dependencies,
     },
-    dependency_links = ['https://github.com/ziyasal/socket.io-python-emitter.git#egg=socket.io-emitter'],
+    dependency_links = ['git@github.com:ziyasal/socket.io-python-emitter.git@master#egg=socket.io-emitter'],
     classifiers=[
         'Environment :: Console',
         'Development Status :: 5 - Production/Stable',
