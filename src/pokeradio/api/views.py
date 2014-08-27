@@ -235,7 +235,6 @@ class MopidyPlaylistTrack(View):
         if a track is created while the waiting flag is set
         """
         self.object = Track.objects.new()
-        is_waiting = r_conn.get('mopidy:track_waiting')
 
         if self.object:
             r_conn.delete('mopidy:track_waiting')
@@ -248,10 +247,11 @@ class MopidyPlaylistTrack(View):
 
     # Update progress
     def put(self, request):
-        print request.body
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except ValueError:
+            return JSONResponse({'status': 'Not JSON'})
 
-        print data
         href = data['href']
 
         # Find first unplayed instance of the track by href
@@ -270,12 +270,11 @@ class MopidyPlaylistTrack(View):
                 if settings.DWEET_NAME:
                     track_played_dweet(self.object)
 
-                print 'Track started', self.object.name
+                # TODO maybe set started flag on model?
                 return JSONResponse({'status': 'OK'})
 
             if 'ended' == data['action']:
                 self.object.set_played()
-                print 'Track ended', self.object.name
                 return JSONResponse({'status': 'OK'})
 
     def post(self, request):
@@ -286,16 +285,7 @@ class MopidyPlaylistTrack(View):
             return JSONResponse({'status': 'OK'})
 
 
-
-class MopidyInstruction(View):
-    def get(self, request):
-        action = r_conn.get('mopidy_instruction')
-        r_conn.delete('mopidy_instruction')
-        return JSONResponse({'action': action})
-
-
 playlist = csrf_exempt(Playlist.as_view())
 playlist_track = csrf_exempt(PlaylistTrack.as_view())
 
 mopidy = csrf_exempt(MopidyPlaylistTrack.as_view())
-mopidy_instruction = csrf_exempt(MopidyInstruction.as_view())
