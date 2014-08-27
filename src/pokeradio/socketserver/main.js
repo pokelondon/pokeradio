@@ -1,6 +1,8 @@
-var PORT = 8001;
-var SOCKET = 'unix:/tmp/poke_pokeradio_sockets_live.sock';
-var REDIS = { host: 'localhost', port: 6379, db: 1 };
+var env = process.argv.slice(2) | 'dev';
+var config = require('../config/' + dev + '/socket');
+
+var PORT = config.port;
+var REDIS = { host: config.redis_host, port: config.redis_port, db: config.redis_db };
 
 var redis = require('socket.io-redis');
 var app = require('express')();
@@ -20,8 +22,6 @@ nsp_app.on('connection', function(socket){
 
 });
 
-
 http.listen(PORT, function(){
     console.log('Listening on *:' + PORT);
 });
-

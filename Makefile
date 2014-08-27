@@ -32,7 +32,7 @@ notebook:
 	django-admin.py shell_plus --notebook
 
 run_socket:
-	node src/pokeradio/socketserver/main.js
+	node src/pokeradio/socketserver/main.js dev
 
 run_mopidy:
 	PYTHONPATH=/usr/lib/python2.7/dist-packages/:/home/vagrant/.virtualenvs/pokeradio/local/lib/python2.7/site-packages/ /home/vagrant/.virtualenvs/pokeradio/bin/mopidy --config /home/vagrant/pokeradio/src/mopidy-pokeradio/mopidy_pokeradio/config/dev/mopidy.conf
