@@ -16,7 +16,8 @@ from .slack import Slack
 logger = logging.getLogger('raven')
 
 # for Emiting events to be sent to browers via socket server
-io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
+io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
+              'db': settings.REDIS_DB})
 
 # for publishing events to be sent to mopidy on the Pi
 r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,

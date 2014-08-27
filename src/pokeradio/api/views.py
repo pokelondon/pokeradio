@@ -28,7 +28,8 @@ from pokeradio.responses import (JSONResponse,
 from .models import Token
 
 
-io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
+io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
+              'db': settings.REDIS_DB})
 
 r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
                            db=settings.REDIS_DB)

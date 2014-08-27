@@ -10,7 +10,8 @@ from django.conf import settings
 from pokeradio.scoring.models import Credit
 
 
-io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT})
+io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
+              'db': settings.REDIS_DB})
 
 r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
                            db=settings.REDIS_DB)
