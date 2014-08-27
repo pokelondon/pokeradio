@@ -2551,6 +2551,15 @@ body {
 a {
   color: #09849b;
 }
+.img--big {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 230px;
+  display: block;
+  width: 100%;
+  height: auto;
+}
 /*------- transitions --------------*/
 /*------- common rules -------*/
 .clearfix:before,
