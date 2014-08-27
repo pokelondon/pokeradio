@@ -34,6 +34,7 @@ install_dependencies = [
     'plotly',
     'pusher==0.8',
     'newrelic == 2.22.1.20',
+    'socket.io-emitter',
 ]
 
 # Test Dependencies
@@ -71,6 +72,7 @@ setup(
         'develop': development_dependencies,
         'test': test_dependencies,
     },
+    dependency_links = ['https://github.com/ziyasal/socket.io-python-emitter.git#egg=socket.io-emitter']
     classifiers=[
         'Environment :: Console',
         'Development Status :: 5 - Production/Stable',
