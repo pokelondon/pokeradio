@@ -1,6 +1,6 @@
 var PORT = 8001;
 var SOCKET = 'unix:/tmp/poke_pokeradio_sockets_live.sock';
-var REDIS = { host: 'localhost', port: 6379 };
+var REDIS = { host: 'localhost', port: 6379, db: 1 };
 
 var redis = require('socket.io-redis');
 var app = require('express')();
