@@ -1,5 +1,5 @@
 var env = process.argv.slice(2) | 'dev';
-var config = require('../config/' + dev + '/socket');
+var config = require('../config/' + env + '/socket');
 
 var PORT = config.port;
 var REDIS = { host: config.redis_host, port: config.redis_port, db: config.redis_db };
