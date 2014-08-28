@@ -124,25 +124,6 @@ def send_push(sender, instance, created, **kwargs):
     p['poke_radio'].trigger('vote', data)
 
 
-def track_voted(sender, instance, created, **kwargs):
-    """
-    When a track has been voted up or down send redis message to the socket server to alert connect clients
-    """
-    data = json.dumps({
-        "track": {
-            "id": instance.playlist_track.id,
-            "name": unicode(instance.archive_track.name),
-            "artist": unicode(instance.archive_track.artist.name),
-        },
-        "user": {
-            "full_name": instance.user.get_full_name(),
-            "id":instance.user.id,
-        },
-        "action": instance.action,
-        "value": instance.user.point_set.all().aggregate(models.Sum('value'))['value__sum']
-        })
-
-
 def track_skip(sender, instance, created, **kwargs):
     """ Triggered by downvotes, Takes an instance of Point
     """
@@ -151,38 +132,39 @@ def track_skip(sender, instance, created, **kwargs):
     score = instance.playlist_track.point_set.all().aggregate(
             models.Sum('value'))['value__sum']
 
-    if score <= settings.POKERADIO_SKIP_THRESHOLD:
+    if score >= settings.POKERADIO_SKIP_THRESHOLD:
+        return
 
-        verb = 'Scratched'
-        data = json.dumps(instance.playlist_track.to_dict())
+    verb = 'Scratched'
+    data = json.dumps(instance.playlist_track.to_dict())
 
-        if instance.playlist_track.is_playing():
-            # Notify browsers
-            io.Of('/app').Emit('playlist:scratch', data)
-            # Notify mopidy
-            r_conn.publish('mopdiy:track_scratch', data)
-            instance.playlist_track.set_played()
-        else:
-            io.Of('/app').Emit('playlist:skip', data)
-            verb = 'Skipped'
+    if instance.playlist_track.is_playing():
+        # Notify browsers
+        io.Of('/app').Emit('playlist:scratch', data)
+        # Notify mopidy
+        r_conn.publish('mopdiy:track_scratch', data)
+        instance.playlist_track.set_played()
+    else:
+        io.Of('/app').Emit('playlist:skip', data)
+        verb = 'Skipped'
 
-            # Removes the track from the playlist if not yet played
-            instance.playlist_track.delete()
+        # Removes the track from the playlist if not yet played
+        instance.playlist_track.delete()
 
 
-        msg = Slack('Track {0}'.format(verb),
-                    'Track {0}: {1}'.format(verb, instance.archive_track.name),
-                    Slack.PINK,
-                    '#music',
-                    Slack.PUBLIC)
+    msg = Slack('Track {0}'.format(verb),
+                'Track {0}: {1}'.format(verb, instance.archive_track.name),
+                Slack.PINK,
+                '#music',
+                Slack.PUBLIC)
 
-        total_votes = instance.archive_track.point_set.all().aggregate(
-                models.Sum('value'))['value__sum']
+    total_votes = instance.archive_track.point_set.all().aggregate(
+            models.Sum('value'))['value__sum']
 
-        title = '{0} - {1}'.format(unicode(instance.archive_track.name),
-                                   unicode(instance.archive_track.artist.name))
+    title = '{0} - {1}'.format(unicode(instance.archive_track.name),
+                                unicode(instance.archive_track.artist.name))
 
-        msg.add_field(title=title, value=total_votes, short=True)
-        msg.add_field(title=instance.user.get_full_name(), value=score, short=True)
+    msg.add_field(title=title, value=total_votes, short=True)
+    msg.add_field(title=instance.user.get_full_name(), value=score, short=True)
 
-        msg.send()
+    msg.send()

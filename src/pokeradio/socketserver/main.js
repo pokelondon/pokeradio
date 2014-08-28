@@ -1,4 +1,4 @@
-var env = process.argv.slice(2) | 'dev';
+var env = process.argv.slice(2)[0];
 var config = require('../config/' + env + '/socket');
 
 var PORT = config.port;
