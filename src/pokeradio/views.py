@@ -39,11 +39,24 @@ class HomeView(TemplateView, ContextMixin):
         return items[:5]
 
     def get_messages(self):
-        messages = Message.objects.exclude(seenby=self.request.user)
+        # General messages for everyone that this user hasn't seen
+        messages = Message.objects.exclude(seenby=self.request.user)\
+                .filter(target_to_individuals=False)
         for m in messages:
             m.seenby.add(self.request.user)
 
-        return json.dumps([m.to_dict() for m in messages])
+        data = [m.to_dict() for m in messages]
+
+        # Specific messages for this user
+        messages = Message.objects.filter(target_to_individuals=True,
+                                          to_be_seen_by=self.request.user)
+
+        for m in messages:
+            m.to_be_seen_by.remove(self.request.user)
+
+        data += [m.to_dict() for m in messages]
+
+        return json.dumps(data)
 
     def get_context_data(self, **kwargs):
         c = super(HomeView, self).get_context_data(**kwargs)

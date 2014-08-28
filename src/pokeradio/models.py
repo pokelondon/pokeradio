@@ -115,7 +115,4 @@ class Message(models.Model):
         if self.timeout:
             as_dict['timeout'] = self.timeout
 
-        #if self.callback:
-            #as_dict['promptCallback'] = "function() { {0} }".format(self.callback)
-
         return as_dict

@@ -17,6 +17,7 @@ vagrant:
     - python2
     - mysql
     - node
+    - redis
 
     #
     # Stuff to setup this project

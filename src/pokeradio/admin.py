@@ -38,7 +38,8 @@ class MessageAdmin(admin.ModelAdmin):
         ('',
             {'fields': ('title', 'text', 'timeout')}),
         ('Broadcast',
-            {'fields': ('seenby', )}),
+            {'fields': ('seenby', ),
+             'description': 'Ignore this if it\'s meant for an indiviudal'}),
         ('Targeted',
             {'fields': ('target_to_individuals', 'to_be_seen_by')}),
     )
