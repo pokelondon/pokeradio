@@ -17,6 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView, View
 from django.conf import settings
 
+from .push import track_played_dweet, track_played_pusher
+
 from pokeradio.history.utils import get_or_create_track, record_track_play
 from pokeradio.models import Track
 from pokeradio.scoring.models import Point
@@ -103,6 +105,8 @@ def vote(request):
 
 
 class Playlist(ListView):
+    """ RESTish endpoints for the (web)app for the Playlist
+    """
     model = Track
 
     http_method_names = ['get', 'post']
@@ -130,6 +134,8 @@ class Playlist(ListView):
 
 
 class PlaylistTrack(DetailView):
+    """ RESTish endpoints for the (web)app for the Tracks
+    """
     model = Track
     http_method_names = ['get', 'delete', 'patch']
 
@@ -184,48 +190,10 @@ class PlaylistTrack(DetailView):
             else:
                 return JSONResponse({'status': 'OK'})
 
-def track_played_dweet(track):
-
-    data = json.dumps({
-        'action': 'playing',
-        'id': track.pk,
-        'href': track.href,
-        'track': track.name,
-        'artist': track.artist,
-        'album_href': track.album_href,
-        'dj': track.user.get_full_name(),
-    })
-
-    headers = {'content-type': 'application/json'}
-    try:
-        requests.post(
-            'https://dweet.io:443/dweet/for/{0}'.format(
-                settings.DWEET_NAME),
-            data=data, params=params, headers=headers)
-    except Exception, e:
-        pass
-
-def track_played_pusher(track):
-    p = pusher.Pusher(
-        app_id=settings.PUSHER_APP_ID,
-        key=settings.PUSHER_KEY,
-        secret=settings.PUSHER_SECRET
-    )
-
-    data = json.dumps({
-        'action': 'playing',
-        'id': track.pk,
-        'href': track.href,
-        'track': track.name,
-        'artist': track.artist,
-        'album_href': track.album_href,
-        'dj': track.user.get_full_name(),
-    })
-
-    p['poke_radio'].trigger('on_playing', data)
-
 
 class MopidyPlaylistTrack(View):
+    """ RESTish endpoints for the Raspberry Pi
+    """
 
     http_method_names = ['get', 'put', 'post']
 

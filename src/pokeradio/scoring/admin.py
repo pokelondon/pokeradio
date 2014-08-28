@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Credit, Point
+from .models import Point
 
 
 class TransactionAdmin(admin.ModelAdmin):
@@ -18,5 +18,4 @@ class TransactionAdmin(admin.ModelAdmin):
     readonly_fields = ('value', 'track_name', 'action', 'user')
 
 
-admin.site.register(Credit, TransactionAdmin)
 admin.site.register(Point, TransactionAdmin)

@@ -15,7 +15,7 @@ from django.db.models import Sum
 
 from pokeradio.views import WeekArchiveRedirect
 
-from .models import Point, Credit
+from .models import Point
 
 
 class StatementView(WeekArchiveView):

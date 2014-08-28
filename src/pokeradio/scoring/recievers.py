@@ -24,7 +24,7 @@ r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
                            db=settings.REDIS_DB)
 
 
-def report_vote(sender, instance, created, **kwargs):
+def send_slack_vote(sender, instance, created, **kwargs):
     """ Accepts an instance of pokeradio.Track
     Sends a message to the Dev slack channel when one of us gets a vote
     """
@@ -62,11 +62,12 @@ def report_vote(sender, instance, created, **kwargs):
 
 
 def send_light_vote(sender, instance, created, **kwargs):
-    from .models import Point
+    """ post_save on instance of Point
+    Send vote to lights server
+    """
     if not created:
         return
 
-    #send data to lights app
     post_vars = {}
     post_vars["action"] = instance.action
     try:
@@ -80,51 +81,7 @@ def send_light_vote(sender, instance, created, **kwargs):
         logger.warn('cannot send data to lights server')
 
 
-def send_dweet_vote(sender, instance, created, **kwargs):
-    if not created:
-        return
-
-    params = {'key': instance.action}
-    data = json.dumps({
-        'action': instance.action,
-        'track': instance.archive_track.name,
-        'artist': instance.archive_track.artist.name,
-        'dj': instance.user.get_full_name(),
-    })
-    headers = {'content-type': 'application/json'}
-
-    try:
-        r = requests.post('https://dweet.io:443/dweet/for/{0}'.format(settings.DWEET_NAME),
-                          data=data, params=params, headers=headers)
-    except Exception, e:
-        logger.warn('Cannot send data to lights Dweet')
-
-
-def send_push(sender, instance, created, **kwargs):
-    import pusher
-    if not created:
-        return
-
-    if not settings.USE_PUSHER:
-        return
-
-    # Send notification to pusher
-    p = pusher.Pusher(
-      app_id = settings.PUSHER_APP_ID,
-      key= settings.PUSHER_KEY,
-      secret= settings.PUSHER_SECRET
-    )
-
-    data = json.dumps({
-        'track': unicode(instance.archive_track.name),
-        'artist': unicode(instance.archive_track.artist.name),
-        'dj': instance.user.get_full_name(),
-        'action': instance.action,
-    })
-    p['poke_radio'].trigger('vote', data)
-
-
-def track_skip(sender, instance, created, **kwargs):
+def check_track_skip(sender, instance, created, **kwargs):
     """ Triggered by downvotes, Takes an instance of Point
     """
     # Check the cumulative score for this track -
