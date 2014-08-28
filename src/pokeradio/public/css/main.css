@@ -3835,6 +3835,12 @@ progress.paused::-webkit-progress-bar {
   z-index: 4;
   border: none;
   font-size: 30px;
+  background: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.2);
+  -webkit-transition: color 300ms, background 300ms;
+  -moz-transition: color 300ms, background 300ms;
+  -o-transition: color 300ms, background 300ms;
+  transition: color 300ms, background 300ms;
 }
 .Alert--modal p {
   font-weight: lighter;
@@ -3843,6 +3849,11 @@ progress.paused::-webkit-progress-bar {
   font-size: 60px;
   top: 10px;
   right: 20px;
+}
+.Alert--modal:last-child {
+  z-index: 5;
+  background: #fff;
+  color: #5e5d64;
 }
 .MessageItem-buttons {
   margin-top: 10px;

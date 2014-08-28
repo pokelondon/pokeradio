@@ -60,7 +60,6 @@
 }
 
 .Alert {
-
     @media (min-width: @screen-sm) {
         height: auto;
         width: 200px;
@@ -120,6 +119,8 @@
     z-index: 4;
     border: none;
     font-size: 30px;
+    background: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.2);
     p {
         font-weight: lighter;
     }
@@ -128,6 +129,16 @@
         font-size: 60px;
         top: 10px;
         right: 20px;
+    }
+    -webkit-transition: color 300ms, background 300ms;
+    -moz-transition: color 300ms, background 300ms;
+    -o-transition: color 300ms, background 300ms;
+    transition: color 300ms, background 300ms;
+
+    &:last-child {
+        z-index: 5;
+        background: #fff;
+        color: @txtGray;
     }
 }
 
