@@ -13,11 +13,15 @@ var nsp_app = io.of('/app');
 
 io.adapter(redis(REDIS));
 
+var connections = 0;
+
 nsp_app.on('connection', function(socket){
-    console.log('Connected to app');
+    connections ++;
+    console.log('Connected to app', connections);
 
     socket.on('disconnect', function() {
-        console.log('User disconnected');
+        connections --;
+        console.log('User disconnected', connections);
     });
 
 });
