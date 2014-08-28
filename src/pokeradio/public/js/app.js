@@ -79,6 +79,40 @@ define([
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();
                 this.messagingcontroller = MessagingController; // singleton
+
+                (function() {
+                    var from = new Date('2015-04-01 00:00:00');
+                    var to = new Date('2015-04-01 12:00:00');
+                    var options = ['Scatman (ski-ba-bop-ba-dop-bop)    ... adiba diba dibadib   ',
+                                'Pokémon Theme   ',
+                                'Hakuna Matata   ',
+                                'Everything is AWESOME!!! #LOL #YOLO HAsHTaG #totes   '];
+                    var $input = $('#searchInput');
+                    var getWord = function getWord() {
+                        var key = _.random(0, options.length -1);
+                        return options[key].split("");
+                    };
+
+                    $(window).on('search:focus', function() {
+                        if(new Date() > to || new Date() < from) {
+                            return;
+                        }
+                        $input.val("");
+                        var word = getWord();
+                        $input.off('keydown').on('keydown', function(evt) {
+                            evt.preventDefault();
+                            var val = $input.val();
+                            var letter = word.shift();
+                            if (!letter) {
+                                return;
+                            }
+                            $input.val(val + letter);
+                            if(!word.length) {
+                                $input.off('keydown');
+                            }
+                        });
+                    });
+                }());
             }
         };
 
