@@ -150,6 +150,7 @@ define(['jquery',
                 },
 
                 focusInput: function(evt) {
+                    $(window).trigger('search:focus');
                     this.$input.focus();
                 },
 
