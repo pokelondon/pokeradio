@@ -42,9 +42,9 @@ define(
                 if (!this.get('length')) {
                     return;
                 }
-                this.percent_per_ms = 1 / (this.get('length') * 10);
+                this.percent_per_ms = 100 / (this.get('length'));
 
-                this.percent_per_period = this.percent_per_ms * this.period * 100;
+                this.percent_per_period = this.percent_per_ms * this.period;
 
                 if('playing' !== this.get('state')) {
                     return;
@@ -76,7 +76,7 @@ define(
              * update time property
              */
             updateTime: function() {
-                var time = this.get('length') * (this.get('progress') / 100);
+                var time = (this.get('length') / 1000) * (this.get('progress') / 100);
                 this.set('time', time);
             },
 
