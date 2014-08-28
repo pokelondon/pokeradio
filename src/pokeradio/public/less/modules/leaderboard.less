@@ -2,6 +2,8 @@
 
 .Leaderboard {
     display: none;
+    font-weight: normal;
+    color: @txtGray;
 }
 
 .Leaderboard-items {
@@ -13,25 +15,23 @@
 }
 .Leaderboard-item {
     margin: 0;
-    padding: 0;
-
-    letter-spacing: -4px;
+    padding: 2px 0;
 }
 
 .Leaderboard-item--name {
-    font-size: 10px;
-    text-transform: uppercase;
-    text-align: right;
-    letter-spacing: 0;
-
-    width: 120px;
     display: inline-block;
     margin-right: 10px;
+    width: 110px;
+}
+.Leaderboard-item-number {
+    color: @poke-green;
+    width: 1em;
+    display: inline-block;
 }
 .Leaderboard-bar {
     position: relative;
     height: 10px;
-    width: 150px;
+    width: 120px;
     display: inline-block;
     vertical-align: middle;
 }
@@ -42,7 +42,7 @@
     bottom: 0;
     height: 10px;
     .transition(width 300ms);
-    background: @poke-blue;
+    background: @poke-green;
 }
 .Leaderboard-bar--dislikes {
     .Leaderboard-bar--likes;

@@ -46,52 +46,86 @@
     font-weight: bold;
 }
 
-.btn{
+.btn {
+    margin-right: 3px;
+    padding: 10px 20px;
+    background: @poke-blue;
+    border: none;
+
     background-color: @poke-blue;
     color: #fff;
+
+    &:focus {
+        outline: none;
+        color: #fff;
+    }
     &:hover {
         color: #fff;
-        box-shadow: 0 2px 3px #ccc;
+        background: darken(@poke-blue, 5);
     }
     &:active {
-        box-shadow: inset 0 2px 2px darken(@poke-blue, 10);
-        border-color: darken(@poke-blue, 5);
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, .2);
     }
-    &.btn-danger {
-        .button-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
-        &:active {
-            box-shadow: inset 0 2px 2px darken(@btn-danger-bg, 10);
-        }
+}
+
+.btn--secondary {
+    background: @muddy;
+
+    &:hover {
+        background: darken(@muddy, 5);
     }
-    &.btn-orange {
-        .button-variant(#fff; @orange; @orange);
-        &:active {
-            box-shadow: inset 0 2px 2px darken(@orange, 10);
-        }
-    }
-    &.btn-green {
-        .button-variant(#fff; @green; @green);
-        &:active {
-            box-shadow: inset 0 2px 2px darken(@green, 10);
-        }
-    }
-    &.btn-purple {
-        .button-variant(#fff; @purple; @purple);
-        &:active {
-            box-shadow: inset 0 2px 2px darken(@purple, 10);
-        }
-    }
-    &.voted {
-        .button-variant(#fff; @poke-pink; darken(@poke-pink, 5));
+}
+.btn--good {
+    background: @poke-green;
+
+    &:hover {
+        background: darken(@poke-green, 5);
     }
 
+    &.voted {
+        background: darken(@poke-green, 5);
+    }
+}
+.btn--bad {
+    background: @poke-pink;
+
+    &:hover {
+        background: darken(@poke-pink, 5);
+    }
+
+    &.voted {
+        background: darken(@poke-pink, 5);
+    }
+}
+
+body .btn {
+    &.disabled,
+    &.voted {
+        background: #444;
+    }
+}
+
+.btn .fa {
+    line-height: 1em;
+    vertical-align: middle;
+}
+
+.btn-close {
+    font-weight: lighter;
+    font-size: 20px;
+    line-height: 1em;
+    color: @poke-blue;
+    &:hover {
+        text-decoration: none;
+        color: darken(@poke-blue, 10);
+    }
 }
 
 .u-btn--large {
     width: 100%;
     padding: 0;
     border: none;
-    margin-top: -25px;
+    margin-top: -40px;
 
     span {
         line-height: 50px;

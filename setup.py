@@ -15,13 +15,12 @@ def read(fname):
 # Installation Dependencies
 install_dependencies = [
     'Django >= 1.6, < 1.7',
-    'MySQL-python == 1.2.4',
+    'MySQL-python == 1.2.5',
     'South == 0.7.6',
     'django-picklefield == 0.3.0',
     'raven == 3.3.5',
     'gunicorn == 18.0',
     'django-extensions == 1.2.2',
-    'socketIO-client == 0.4',
     'python-social-auth == 0.1.14',
     'TornadIO2 == 0.0.4',
     'redis == 2.8.0',
@@ -29,13 +28,13 @@ install_dependencies = [
     'django-debug-toolbar == 0.9.4',
     'tornado == 3.1',
     'simplejson == 3.3.1',
-    'tornado-redis == 2.4.15',
     'musicbrainzngs == 0.4',
     'Pillow == 2.3.0',
     'requests==2.0.0',
     'plotly',
     'pusher==0.8',
     'newrelic == 2.22.1.20',
+    'socket.io-emitter',
 ]
 
 # Test Dependencies
@@ -73,6 +72,7 @@ setup(
         'develop': development_dependencies,
         'test': test_dependencies,
     },
+    dependency_links = ['git@github.com:ziyasal/socket.io-python-emitter.git@master#egg=socket.io-emitter'],
     classifiers=[
         'Environment :: Console',
         'Development Status :: 5 - Production/Stable',

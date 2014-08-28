@@ -1,16 +1,20 @@
     <div class="media-body Search-item-body">
         <div class="row Search-item-details">
             <div class="Search-item-details-preview js-search-item-details-preview"></div>
-            <div class="col-md-4 col-offset-1 Search-item-details-track">
-                <span><%= name %></span><br />
+
+            <div class="col-sm-10 col-md-6 Search-item-details-track">
+                <span class="Search-item-details-track-name"><%= name %></span>
                 <span class="Search-item-secondaryText"><%= artists[0].name %></span><br />
-                <progress class="progress-bar progress-bar--small" value="<%= popularity %>" max="1"></progress>
             </div>
-             <div class="Search-item-details-actions col-md-2 pull-right">
-                 <a class="Search-item-add js-queue-track pull-right"><i class="fa fa-plus"></i></a>
-                 <button class="btn btn-preview">Preview</button>
+
+
+
+             <div class="Search-item-details-actions col-sm-2 col-md-6">
+                <div class="Search-item-details-duration col-md-2"><%= _(length).convertToMinutes() %>
+                    <a class="btn-preview">open preview</a>
+                </div>
+                <div class="Search-item-secondaryText Search-item--album col-md-8"><%= album.name %> <span>Released: <%= album.released %></span></div>
+                <a class="Search-item-add js-queue-track col-md-1 pull-right">+</a>
              </div>
-            <div class="Search-item-details-duration col-md-1 pull-right"><%= _(length).convertToMinutes() %></div>
-            <div class="Search-item-secondaryText col-md-3 pull-right"><%= album.name %> <span>Released: <%= album.released %></span></div>
         </div>
     </div>

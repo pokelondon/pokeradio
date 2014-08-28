@@ -44,6 +44,9 @@ class Slack:
 
     def send(self):
         payload = self._get_payload()
+        if not settings.SLACK:
+            print 'Slack message', payload
+            return
         try:
             r = requests.post(self.url, data=json.dumps(payload))
         except Exception, e:

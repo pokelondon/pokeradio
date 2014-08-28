@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import RedirectView, TemplateView
 from django.views.generic.base import ContextMixin
 
+from pokeradio.models import Message
 from pokeradio.history.models import ArchiveTrack
 from pokeradio.scoring.models import Point
 from pokeradio.utils import current_playlist
@@ -28,13 +29,34 @@ class HomeView(TemplateView, ContextMixin):
             points = i.point_set.filter(created__range=period)
             likes = points.filter(action=Point.TRACK_LIKED).count()
             dislikes = points.filter(action=Point.TRACK_DISLIKED).count()
-            if likes < 1 or likes - dislikes < 1:
+            net = likes - dislikes
+            if likes < 1 or net < 1:
                 continue
-            object_list.append({'user': i, 'likes': likes,
+            object_list.append({'user': i, 'likes': likes, 'net': net,
                                 'dislikes': dislikes})
-        items = sorted(object_list, key=lambda i: i['likes'])
+        items = sorted(object_list, key=lambda i: i['net'])
         items.reverse()
         return items[:5]
+
+    def get_messages(self):
+        # General messages for everyone that this user hasn't seen
+        messages = Message.objects.exclude(seenby=self.request.user)\
+                .filter(target_to_individuals=False)
+        for m in messages:
+            m.seenby.add(self.request.user)
+
+        data = [m.to_dict() for m in messages]
+
+        # Specific messages for this user
+        messages = Message.objects.filter(target_to_individuals=True,
+                                          to_be_seen_by=self.request.user)
+
+        for m in messages:
+            m.to_be_seen_by.remove(self.request.user)
+
+        data += [m.to_dict() for m in messages]
+
+        return json.dumps(data)
 
     def get_context_data(self, **kwargs):
         c = super(HomeView, self).get_context_data(**kwargs)
@@ -48,6 +70,7 @@ class HomeView(TemplateView, ContextMixin):
         c['initial_playlist'] = mark_safe(json.dumps(initial_playlist))
         c['blacklist'] = json.dumps(map(str, blacklist))
         c['leaderboard'] = self.get_leaderboard()
+        c['alerts'] = self.get_messages()
         return c
 
 

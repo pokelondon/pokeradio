@@ -1,9 +1,10 @@
 define(['jquery',
         'backbone',
         'underscore',
-        'helpers/analytics'
+        'helpers/analytics',
+        'views/messaging/controller'
         ],
-        function($, Backbone, _, Analytics){
+        function($, Backbone, _, Analytics, MessagingController){
             MopidyTrack = Backbone.Model.extend({
                 idAttribute: "id",
                 wasPlaying: false,
@@ -48,28 +49,70 @@ define(['jquery',
 
                 unQueue: function() {
                     Analytics.trackEvent('track', 'unqueue');
-                    socket.emit('remove_track', this.get('id'));
+
+                    this.destroy({wait: true, error: function() {
+                        MessagingController.createMessage({
+                            text: 'Could not delete this track',
+                            type: 'bad'
+                        });
+                    }});
                 },
 
                 likeTrack: function() {
                     if(this.canLike()) {
                         Analytics.trackEvent('track', 'vote', 'source: web', 1);
-                        socket.emit('like_track', this.get('id'));
-                        this.set('liked', true);
+                        this.set('liked', true).saveVote();
                     }
                 },
 
                 dislikeTrack: function() {
                     if(this.canLike()) {
                         Analytics.trackEvent('track', 'vote', 'source: web', 0);
-                        socket.emit('dislike_track', this.get('id'));
-                        this.set('disliked', true);
+                        this.set('disliked', true).saveVote();
                     }
                 },
 
+                saveVote: function() {
+                    var vote = 1;
+                    var verb = 'upvoted';
+                    var self = this;
+
+                    if(this.get('liked')) {
+                        vote = 'TRACK_LIKED';
+                    } else if (this.get('disliked')) {
+                        vote = 'TRACK_DISLIKED';
+                        verb = 'downvoted';
+                    } else {
+                        return this;
+                    }
+
+                    this.save('vote', vote, {
+                            patch: true,
+                            error: function(model, xhr) {
+                                MessagingController.createMessage({
+                                    text: JSON.parse(xhr.responseText).message,
+                                    type: 'bad',
+                                    modal: true,
+                                    closable: true
+                                });
+                            },
+                            success: function() {
+                                MessagingController.createMessage({
+                                    title: verb,
+                                    text: 'You ' + verb + ' ' + self.get('name'),
+                                    type: 'good',
+                                    timeout: 5000
+                                });
+                            }
+                        });
+                    return this;
+                },
+
                 canLike: function() {
-                    if(PRAD.user_id == this.get('user')['id']) {
-                        alert('You cant like your own track');
+                    if (PRAD.user_id == this.get('user')['id']) {
+                        MessagingController.createMessage({
+                            text: "You can't like your own track"
+                        });
                         return false;
                     }
                     return true;

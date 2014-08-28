@@ -10,8 +10,7 @@ from django.db.models.signals import post_save
 
 from .managers import TransactionManager
 
-from .recievers import (report_vote, send_light_vote, send_dweet_vote,
-                        send_push, track_skip)
+from .recievers import (send_slack_vote, send_light_vote, check_track_skip)
 
 
 class BaseTransaction(models.Model):
@@ -36,25 +35,6 @@ class BaseTransaction(models.Model):
         if not self.pk:
             self.value = self._get_cost()
         super(BaseTransaction, self).save(*args, **kwargs)
-
-
-class Credit(BaseTransaction):
-    """ Credits are earnt doing good stuff, and spent by adding tracks.
-    """
-
-    TYPES = (
-        ('TRACK_ADD', 'Add track'),
-        ('TRACK_DISLIKE', 'Disliked a track'),
-        ('CREDIT', 'Credit allowance'),
-        ('REFUND', 'Refund'),
-    )
-
-    action = models.CharField(max_length=20, choices=TYPES)
-
-    def _get_cost(self):
-        """ Considering the action, caculate the cost of this transaction
-        """
-        return settings.POKERADIO_SCORING_CREDIT.get(self.action, 0)
 
 
 class Point(BaseTransaction):
@@ -91,9 +71,8 @@ class Point(BaseTransaction):
         """
         return settings.POKERADIO_SCORING_POINT.get(self.action, 0)
 
-post_save.connect(report_vote, sender=Point)
-post_save.connect(send_light_vote, sender=Point)
-post_save.connect(send_push, sender=Point)
-post_save.connect(send_dweet_vote, sender=Point)
-post_save.connect(track_skip, sender=Point)
 
+# Notify Various services when a vote is cast
+post_save.connect(send_slack_vote, sender=Point)
+post_save.connect(send_light_vote, sender=Point)
+post_save.connect(check_track_skip, sender=Point)

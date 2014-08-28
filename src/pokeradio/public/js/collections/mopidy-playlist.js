@@ -3,61 +3,37 @@ define([
     'backbone',
     'urls',
     'underscore',
-    'iobind',
-    'models/mopidy-track'
+    'models/mopidy-track',
+    'views/messaging/controller',
+    'events'
     ],
-    function($, Backbone, urls, _, ioBind, MopidyTrack){
+    function($, Backbone, urls, _, MopidyTrack, MessagingController, _events){
         var Collection = Backbone.Collection.extend({
-            url: 'playlist',
-            socket: window.socket,
+            url: 'api/playlist/',
             model: MopidyTrack,
+            SHOW_NUM_PLAYED: 1,
 
             initialize: function(){
-                _.bindAll(this, 'playlistFetch', 'playlistUpdate', 'itemDeleted');
-                // Socket Events
-                this.ioBind('load', this.playlistFetch, this);
-                this.ioBind('update', this.playlistUpdate, this);
-                this.ioBind('change:played', this.trimPlayed, this);
-                this.ioBind('message', this.displayMessage, this);
-                this.ioBind('deleted', this.itemDeleted, this);
-                this.ioBind('expired', this.sessionExpired, this);
+                _.bindAll(this, 'itemAdded', 'itemDeleted', 'itemPlayed');
 
-                // Request initial playlist data
-                //socket.emit('fetch_playlist');
+                // Socket events, via the mediator
+                this.listenTo(Backbone, 'playlist:delete', this.itemDeleted, this);
+                this.listenTo(Backbone, 'playlist:add', this.itemAdded, this);
+                this.listenTo(Backbone, 'playlist:played', this.itemPlayed, this);
+
+                this.listenTo(Backbone, 'playlist:skip', this.itemSkipped, this);
+                this.listenTo(Backbone, 'playlist:scratch', this.itemScratched, this);
+
+                this.on('change:played', this.trimPlayed, this)
+
                 this.comparator = 'id';
-
             },
 
             parseInitialData: function() {
                 //parse the initial data into the collection
                 this.reset(window.PRAD.playlist);
-            },
-
-            displayMessage: function(message) {
-                alert(message);
-            },
-
-            /**
-             * Gets all items in the playlist
-             * for use on init
-             */
-            playlistFetch: function(data){
-                this.reset($.parseJSON(data));
-                //console.table(_(this.models).pluck('attributes'));
-            },
-
-            /**
-             * Remote playlist has been updated. Add new item
-             */
-            playlistUpdate: function(data){
-                // Single track is passed so we check if its a new track or played track.
-                data = $.parseJSON(data);
-                if(data.played){
-                    var item = this.findWhere({id: parseInt(data.id)});
-                    item.set('played', true);
-                }else {
-                    this.add(data);
-                }
+                // this works too!
+                //this.fetch();
             },
 
             /**
@@ -65,10 +41,15 @@ define([
              */
             trimPlayed: function() {
                 var count = this.where({ played: true }).length;
-                if (count > 3) {
+                if (count > this.SHOW_NUM_PLAYED) {
                     // might be at risk of an event loop
                     this.shift();
                 }
+            },
+
+            itemAdded: function(data){
+                // single track is passed so we check if its a new track or played track.
+                this.add(data);
             },
 
             /**
@@ -80,13 +61,42 @@ define([
                 this.remove(item);
             },
 
+            itemPlayed: function(data) {
+                var item = this.findWhere({id: parseInt(data['id'])});
+                item.set('played', true);
+            },
+
             /**
              * This happens when the socket server realises the session's exipred
              */
             sessionExpired: function() {
-                alert('Soz, session\'s expired');
+                MessagingController.createMessage({
+                    text: "Soz, session's expired",
+                    modal: true
+                });
                 // Redirect to logout page just in case, so we don't start a loop
                 window.location.href = '/logout/';
+            },
+
+            itemScratched: function(item) {
+                if(item.user.id === PRAD.user_id) {
+                    MessagingController.createMessage({
+                        title: 'Scratch',
+                        text: 'Oh dear, ' + item.name + ' didn\'t go down too well :(',
+                        type: 'bad'
+                    });
+                }
+            },
+
+            itemSkipped: function(item) {
+                if(item.user.id === PRAD.user_id) {
+                    MessagingController.createMessage({
+                        title: 'Skipped',
+                        text: item.name + ' never saw the light of day! Try harder :-p',
+                        type: 'bad'
+                    });
+                }
+
             }
 
         });

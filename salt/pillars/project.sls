@@ -3,14 +3,10 @@
 
 # Project
 user: vagrant
-project_client: ''
+project_client: 'poke'
 project_name: 'pokeradio'
 
 # Paths
 root_dir: /home/vagrant
 virtualenv_dir: /home/vagrant/.virtualenvs
 home_dir: /home/vagrant
-
-# Config
-nginx_conf: /home/vagrant/pokeradio/src/pokeradio/config/dev/nginx.conf
-post_activate: /home/vagrant/.virtualenvs/pokeradio/bin/postactivate

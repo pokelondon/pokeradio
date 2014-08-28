@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Top 40 for {{ week }} | {{ block.super }}{% endblock %}
+
+
+{% block container %}
+<div class="box">
+    <h1>This week's Top 40</h1>
+    <h3>Week Commencing: {{ week }}</h3>
+</div>
+
+{% include 'history/_week_links.html' with pattern='history:vote_archive_tracks' %}
+
+<div class="Listing-list">
+    {% for object in object_list %}
+    <div class="Listing">
+        <span class="Listing-number"><i class="fa fa-thumbs-{% if object.number > 0 %}up{% else %}down{% endif %}"></i></span>
+
+        <img class="Listing-artwork" src="{{ object.artwork_url }}" alt="Artwork" width="100" height="100" />
+        <span class="Listing-title"><a title="Open in Spotify locally" class="js-spotifyLink js-spotifyLink--track" href="{{ object.spotify_href }}">{{ object.name }}</a></span>
+        <span class="Listing-sub"><a title="Open in Spotify locally" class="js-spotifyLink js-spotifyLink--artist" href="{{ object.artist.spotify_artist_href }}">{{ object.artist }}</a></span>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

@@ -1,26 +1,60 @@
 #
-# Top File
-# States to run for this Virtual Machine.
+# Vagrant Environment
+# Defined in the minion-config on the Vagrant project template.
 #
 
-# Vagrant Environment
 vagrant:
+
   '*':
+
+    #
     # Required States - Poke standard configuration / packages
-    - poke.bash
-    - poke.packages
-    # Extra Packages
+    #
+
+    - poke
+    - libs
     - nginx
-    - ntp
-    # Libs - Required for some Python modules
-    - libjpeg
-    - libxslt
-    - libevent
-    - redis
-    # States for this vm, based on project requirements, for example: python2
     - python2
     - mysql
-    # Project Specific States in salt/states/ (same level as this top.sls)
-    - pokeradio
+    - node
+    - redis
+
+    #
+    # Stuff to setup this project
+    # EG folders, DB, venv etc.
+    #
+
+    - vagrant-dev
+
+    #
     # Developer states (mounted to ~/.salt-dev)
+    # Eg Vimrc, ZSHrc, SSH keys etc.
+    #
+
     - developer
+
+    #
+    # Any other states to be included for the project
+    # that aren't part of a standard role.
+    # These should probably just be used for testing stuff
+    # out, otherwise they should be a new role.
+    #
+
+    - project
+
+  #
+  # Roles for including extra bundles of requirements.
+  # Eg, some projects need Redis
+  #
+
+  'roles:celery':
+    - match: grain
+    - redis
+
+  'roles:imaging':
+    - match: grain
+    - imagemagick
+
+  'roles:memcached':
+    - match: grain
+    - memcached

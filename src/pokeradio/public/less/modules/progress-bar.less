@@ -1,11 +1,19 @@
 .progress-bar {
     width: auto;
     float: none;
-    height: 20px;
     display: block;
     clear: left;
     background: #fff;
-    margin: 10px 15px;
+    margin: 0 0 15px;
+    height: 0;
+    display: none;
+    .transition(height 200ms);
+}
+.Playlist-item {
+    &.is-playing .progress-bar {
+        display: block;
+        height: 5px;
+    }
 }
 
 .progress-bar--small {
@@ -23,10 +31,16 @@
 }
 progress {
     &::-webkit-progress-value {
-        background-color: @poke-pink;
+        background-color: @darkMint;
     }
     &::-webkit-progress-bar {
-        background-color: #bbb;
+        background-color: #888;
+    }
+}
+
+progress.playing {
+    &::-webkit-progress-bar {
+        background-color: #e5e5e5;
     }
 }
 
@@ -36,6 +50,6 @@ progress.paused {
         background-color: #bbb;
     }
     &::-webkit-progress-bar {
-        background-color: #ddd;
+        background-color: #888;
     }
 }

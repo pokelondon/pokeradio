@@ -1,7 +1,11 @@
-# Top File
-# Project pillars (variables) used by the salte states.
+#
+# Pillars for this Vagrant project
+#
 
-# Vagrant Environment
 vagrant:
   '*':
-    - pokeradio
+    # Paths and project name etc
+    - project
+
+    # DB Creds
+    - mysql

@@ -1,9 +1,10 @@
 define(['jquery',
         'backbone',
         'underscore',
-        'collections/mopidy-playlist'
+        'collections/mopidy-playlist',
+        'views/messaging/controller'
         ],
-        function($, Backbone, _, mopidyPlaylist){
+        function($, Backbone, _, mopidyPlaylist, MessagingController){
             var Track = Backbone.Model.extend({
                 idAttribute: "href",
                 defaults: {
@@ -25,11 +26,13 @@ define(['jquery',
                  * this track queued
                  */
                 queue: function() {
-                    if(this.checkInPlaylist()) {
-                        alert(this.get('name') + ' is already queued');
+                    if (this.checkInPlaylist()) {
+                        MessagingController.createMessage({
+                            text: this.get('name') + " is already queued"
+                        });
                         return;
                     }
-                    var track_payload = {
+                    var track_data = {
                         'name': this.attributes.name,
                         'href': this.get('href'),
                         'artist': this.get('artists')[0].name,
@@ -37,9 +40,16 @@ define(['jquery',
                         'length': this.get('length'),
                         'album': {
                             'href': this.get('album').href,
+                        },
+                        'user': {
+                            'id': PRAD.user_id,
+                            'full_name': PRAD.first_name
                         }
                     };
-                    socket.emit('add_track', JSON.stringify(track_payload));
+                    // Create a new track object and post it to the server via create method
+                    mopidyPlaylist.create(track_data, {wait: true, error: function(e) {
+                        alert(e);
+                    }});
                     this.set('is-selected', true);
                     this.collection.trigger('queued');
                 },

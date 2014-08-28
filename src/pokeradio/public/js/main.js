@@ -26,6 +26,6 @@ require.config({
     }
 });
 
-define(['app'],function(app){
+require(['app'], function(app) {
     app.init();
-    });
+});

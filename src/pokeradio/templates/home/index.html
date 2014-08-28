@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 {% block scripts %}
-        <script src="{{ STATIC_URL }}js/lib/socket.io/socket.io.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
         <script>
-            var socket = io.connect('{{ socketio_client_url }}');
+            var socket = false;
+            try {
+                socket = io.connect('{{ socketio_client_url }}', {
+                    transports: ['websocket']
+                });
+            } catch(e) {}
             var PRAD = PRAD || {};
             PRAD.user_id = {{ request.user.id }};
             PRAD.blacklist = {{ blacklist|safe }};
             PRAD.first_name = '{{ request.user.first_name }}';
-            PRAD.playlist = {{ initial_playlist }};
+            PRAD.messages = '{{ alerts|safe }}';
+            PRAD.playlist = {{ initial_playlist|safe }};
         </script>
 {% endblock %}
 
@@ -18,10 +24,10 @@
         <ul class="Leaderboard-items">
             {% for object in leaderboard %}
             <li class="Leaderboard-item">
-            <span class="Leaderboard-item--name">{{ object.user.get_full_name }}</span>
+                <span class="Leaderboard-item--name">{{ object.user.get_full_name }}</span>
+                <span class="Leaderboard-item-number">{{ object.net }}</span>
                 <span class="Leaderboard-bar">
-                    <span class="Leaderboard-bar--likes w--{{ object.likes }}"></span>
-                    <span class="Leaderboard-bar--dislikes w--{{ object.dislikes }}"></span>
+                    <span class="Leaderboard-bar--likes w--{{ object.net }}"></span>
                 </span>
             </li>
             {% endfor %}
@@ -35,10 +41,9 @@
 <div class="row">
     <div class="col-md-12">
         <a class='btn add-track u-btn--large'>
-            <span class="u-icon--search"></span><span>Type "/" to open search</span>
+            <span class="u-icon--search"></span><span>Search / Drag choons here</span>
         </a>
     </div>
-    <progress class="progress-bar" value="0" max="100"></progress>
     <section class="col-md-12 Playlist">
         <ul id="playlist" class="Playlist-items media-list">
             <!-- Backbone template js/template/playlist.html
@@ -52,23 +57,29 @@
         <header class="Header Header--noBg">
             <div class="container">
                 <div class="Header-logo"></div>
+
+                <form role="form" id="searchForm" class="form-inline Search-form clearfix">
+                    <div class="Search-input-wrapper">
+                        <input type='search' autocomplete="off" name="search" class="Search-input" id="searchInput" placeholder="Start typing&#8230;">
+                    </div>
+                    <input type="submit" id="doSearch" class="btn btn-search" value="Find tracks" />
+                </form>
             </div>
         </header>
-        <div class="container">
-            <form role="form" id="searchForm" class="form-inline Search-form">
-                <div class="Search-input-wrapper">
-                    <input type='search' autocomplete="off" name="search" class="Search-input" id="searchInput" placeholder="Start typing&#8230;">
+
+        <div class="Search-results-container js-search-results-container">
+            <div class="container">
+                <div class="Search-results-wrapper">
+                    <header class="Search-results-header">
+                        <div class="row">
+                            <div class="col-md-10">Use arrow keys to navigate &#11014; &#11015;</div>
+                            <div class="col-md-2">
+                                <div class="pull-right">ESC to close</div>
+                            </div>
+                        </header>
+                    </div>
+                    <ul class="Search-items js-search-items"></ul>
                 </div>
-                <input type="submit" id="doSearch" class="btn btn-search" value="Go" class="btn btn-default"/>
-            </form>
-            <div class="Search-results-wrapper js-search-results-wrapper">
-                <header class="Search-results-header">
-                    <div class="row">
-                        <div class="col-md-10">Use arrow keys to navigate &#11014; &#11015;</div>
-                        <div class="col-md-2">ESC to close</div>
-                    </header>
-                </div>
-                <ul class="Search-items js-search-items"></ul>
             </div>
         </div>
     </div>
@@ -79,12 +90,12 @@
 
 {% block dragdrop %}
 <div id='Search-dragDrop' class='js-Search-dragDrop Search-dragDrop' style='display:none' >
-    
+
     <div class='Search-dragDrop-inner js-dropzone'>
         <div class='Search-dragDrop-content'>
-            
+
             <div class='Search-dragDrop-images'>
-           
+
                 <img src='{{ STATIC_URL }}img/spotify-logo.png'/>
                 <span class='Search-dragDrop-images-pulse'></span>
                 <span class='Search-dragDrop-images-pulse'></span>

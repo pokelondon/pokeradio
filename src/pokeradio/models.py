@@ -7,7 +7,9 @@ from django.db.models.signals import post_save, post_delete
 from django.contrib.auth.models import User
 
 from pokeradio.scoring.models import Point
+
 from .recievers import track_saved, track_deleted
+from .managers import TrackManager
 
 
 class Profile(models.Model):
@@ -28,6 +30,8 @@ class Track(models.Model):
     length = models.FloatField(null=True)
     album_href = models.CharField(max_length=255)
     artist_href = models.CharField(max_length=255)
+
+    objects = TrackManager()
 
     class Meta:
         ordering = ['timestamp']
@@ -67,5 +71,48 @@ class Track(models.Model):
         self.played = True
         self.save()
 
+    def is_playing(self):
+        # get the latest unplayed track in the playlist
+        try:
+            current_track = Track.objects.filter(played__exact=False)[:1][0]
+
+            if self.id == current_track.id and not self.played:
+                return True
+            return False
+        except IndexError:
+            return False
+
 post_save.connect(track_saved, sender=Track)
 post_delete.connect(track_deleted, sender=Track)
+
+
+class Message(models.Model):
+    title = models.CharField(max_length=300, blank=True, null=True)
+    text = models.CharField(max_length=300, blank=True, null=True)
+    timeout = models.IntegerField(blank=True, null=True)
+    target_to_individuals = models.BooleanField(default=False,
+            help_text='Select "To be seen by" for people to show the message to')
+
+    seenby = models.ManyToManyField('auth.User', related_name='seenby',
+                                    blank=True, null=True)
+    to_be_seen_by = models.ManyToManyField('auth.User',
+                                           related_name='to_be_seen_by',
+                                           blank=True, null=True)
+
+    def __unicode__(self):
+        return self.title
+
+    def to_dict(self):
+
+        as_dict = {
+            'title': self.title,
+            'text': self.text,
+            'modal': True,
+            'timeout': False,
+            'closable': True,
+        }
+
+        if self.timeout:
+            as_dict['timeout'] = self.timeout
+
+        return as_dict

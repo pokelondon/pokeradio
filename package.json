@@ -2,7 +2,7 @@
   "name": "pokeradio",
   "version": "0.0.0-ignored",
   "engines": {
-    "node": ">= 0.8.14"
+    "node": ">= 0.10.0"
   },
   "scripts": {
     "test": "grunt test",
@@ -14,5 +14,10 @@
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-less": "~0.6.4",
     "grunt-contrib-watch": "~0.4.3"
+  },
+  "dependencies": {
+    "socket.io": "~1.0.5",
+    "express": "~4.4.3",
+    "socket.io-redis": "~0.1.3"
   }
 }
