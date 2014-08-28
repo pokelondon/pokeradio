@@ -43,7 +43,8 @@ class HomeView(TemplateView, ContextMixin):
         messages = Message.objects.exclude(seenby=self.request.user)\
                 .filter(target_to_individuals=False)
         for m in messages:
-            m.seenby.add(self.request.user)
+            #m.seenby.add(self.request.user)
+            pass
 
         data = [m.to_dict() for m in messages]
 

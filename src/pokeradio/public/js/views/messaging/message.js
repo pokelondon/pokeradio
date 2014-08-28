@@ -99,7 +99,7 @@ define(
                     self.$el.remove();
                 });
 
-                if (this.model.get('modal')) {
+                if (this.model.get('modal') && this.model.collection.where({'modal': true}).length <= 0) {
                     $('body').removeClass('modal-open');
                 }
             },
