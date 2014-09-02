@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import spotipy
 from spotipy import oauth2
 
@@ -10,10 +12,11 @@ from django.core.urlresolvers import reverse
 from .utils import get_spotify_api, get_or_create_cred
 from .models import Credential
 
+
 oa = oauth2.SpotifyOAuth(
         settings.SPOTIFY_CLIENT_ID,
         settings.SPOTIFY_CLIENT_SECRET,
-        'http://dev.errkk.co/spotify/oauth_callback/')
+        settings.SPOTIFY_OAUTH_REDIRECT)
 
 
 class Index(TemplateView):
@@ -22,7 +25,9 @@ class Index(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(Index, self).get_context_data(*args, **kwargs)
         sp = get_spotify_api(self.request.user)
+
         playlists = sp.user_playlists('***REMOVED***')
+
         context.update({'sp': sp, 'playlists': playlists})
         return context
 
@@ -34,7 +39,8 @@ def authorize(request):
 
 
 def oauth_callback(request):
-    """ Handle Oauth Callback
+    """ Handle Oauth Callback, Redirect to the Spotify site if the reponse
+    code is not valid
     """
     auth_code = request.GET.get('code')
     try:
@@ -44,10 +50,12 @@ def oauth_callback(request):
 
     access_token = res['access_token']
     refresh_token = res['refresh_token']
+    expires_at = res['expires_at']
 
     cred = get_or_create_cred(request.user)
     cred.access_token = access_token
     cred.refresh_token = refresh_token
+    cred.expires_at = datetime.fromtimestamp(int(expires_at))
     cred.save()
 
     return HttpResponseRedirect(reverse('spotify_playlist:index'))

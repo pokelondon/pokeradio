@@ -1,3 +1,7 @@
+from spotipy import oauth2
+
+from django.conf import settings
+
 from .models import Credential
 
 
