@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    {% url 'spotify_playlist:authorize' %}
+{% block container %}
+<p>Token: {{ cred.access_token }}</p>
+<p>Created: {{ cred.modified }}</p>
+<a class="btn" href="{% url 'spotify_playlist:authorize' %}">Authorise</a>
+{% for item in playlists.items %}
+    {{ item.name }}
+    {{ item }}
+{% endfor %}
 {% endblock %}
