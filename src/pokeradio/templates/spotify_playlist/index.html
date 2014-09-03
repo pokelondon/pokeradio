@@ -4,8 +4,5 @@
 <p>Token: {{ cred.access_token }}</p>
 <p>Created: {{ cred.modified }}</p>
 <a class="btn" href="{% url 'spotify_playlist:authorize' %}">Authorise</a>
-{% for item in playlists.items %}
-    {{ item.name }}
-    {{ item }}
-{% endfor %}
+<a href="http://open.spotify.com/user/{{ cred.spotify_id }}/playlist/{{ cred.playlist_id }}">View My Playlist</a>
 {% endblock %}

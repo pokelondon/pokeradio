@@ -21,8 +21,10 @@ class Credential(models.Model):
     access_token = models.CharField(max_length=200, blank=True, null=True)
     refresh_token = models.CharField(max_length=200, blank=True, null=True)
     expires = models.DateTimeField(blank=True, null=True)
-    playlist_id = models.CharField(max_length=20, blank=True, null=True)
+    playlist_id = models.CharField(max_length=200, blank=True, null=True)
     expires_at = models.DateTimeField(blank=True, null=True)
+    spotify_id = models.CharField(max_length=20, blank=True, null=True)
+
 
     def __unicode__(self):
         return self.user.get_full_name()
@@ -34,7 +36,13 @@ class Credential(models.Model):
         if datetime.now() > self.expires_at:
             self._refresh_access_token()
 
-        return spotipy.Spotify(auth=self.access_token)
+        sp = spotipy.Spotify(auth=self.access_token)
+
+        if not self.spotify_id:
+            self.spotify_id = sp.me()['id']
+            self.save()
+
+        return sp
 
     def _refresh_access_token(self):
         """ Same process as on the oauth callback view. Using the refresh

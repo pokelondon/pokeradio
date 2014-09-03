@@ -9,14 +9,17 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from .utils import get_spotify_api, get_or_create_cred
+from .utils import get_or_create_cred
 from .models import Credential
 
 
 oa = oauth2.SpotifyOAuth(
         settings.SPOTIFY_CLIENT_ID,
         settings.SPOTIFY_CLIENT_SECRET,
-        settings.SPOTIFY_OAUTH_REDIRECT)
+        settings.SPOTIFY_OAUTH_REDIRECT,
+        scope='playlist-modify-public')
+
+PLAYLIST_NAME = 'Poke Radio'
 
 
 class Index(TemplateView):
@@ -24,11 +27,20 @@ class Index(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(Index, self).get_context_data(*args, **kwargs)
-        sp = get_spotify_api(self.request.user)
+        cred = get_or_create_cred(self.request.user)
+        sp = cred.get_spotify_api()
 
-        playlists = sp.user_playlists('***REMOVED***')
+        # Get or create Prad Playlist
+        if cred.playlist_id:
+            # Check its on sp
+            res = sp.user_playlist(cred.spotify_id, cred.playlist_id)
+        else:
+            # Create playlist
+            res = sp.user_playlist_create(cred.spotify_id, PLAYLIST_NAME, True)
+            cred.playlist_id = res['id']
+            cred.save()
 
-        context.update({'sp': sp, 'playlists': playlists})
+        context.update({'sp': sp, 'cred': cred})
         return context
 
 
