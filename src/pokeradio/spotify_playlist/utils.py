@@ -5,6 +5,9 @@ from django.conf import settings
 from .models import Credential
 
 
+PLAYLIST_NAME = 'Poke Radio'
+
+
 def get_or_create_cred(user):
     """ Access or create the Credential model for the user
     """

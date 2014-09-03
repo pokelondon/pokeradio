@@ -19,8 +19,6 @@ oa = oauth2.SpotifyOAuth(
         settings.SPOTIFY_OAUTH_REDIRECT,
         scope='playlist-modify-public')
 
-PLAYLIST_NAME = 'Poke Radio'
-
 
 class Index(TemplateView):
     template_name = 'spotify_playlist/index.html'

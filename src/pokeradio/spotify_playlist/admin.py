@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Credential
+
+
+class CredentialAdmin(admin.ModelAdmin):
+    list_display = ('user', 'created', 'playlist_id')
+
+
+admin.site.register(Credential, CredentialAdmin)

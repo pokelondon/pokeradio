@@ -38,6 +38,7 @@ class Credential(models.Model):
             return None
 
         if self.expires_at and datetime.now() > self.expires_at:
+            print 'Refreshing Token'
             self._refresh_access_token()
 
         sp = spotipy.Spotify(auth=self.access_token)

@@ -140,9 +140,6 @@ def add_to_personal_playlist(sender, instance, created, **kwargs):
         return
 
     cred = get_or_create_cred(instance.vote_from)
-    print 'Trying to post to spotify'
-    print cred, cred.playlist_id
-
 
     if not cred.playlist_id:
         return
@@ -153,6 +150,3 @@ def add_to_personal_playlist(sender, instance, created, **kwargs):
     sp = cred.get_spotify_api()
     res = sp.user_playlist_add_tracks(cred.spotify_id, cred.playlist_id,
                                       [instance.playlist_track.href, ])
-
-    print res
-
