@@ -21,8 +21,9 @@ class Credential(models.Model):
     access_token = models.CharField(max_length=200, blank=True, null=True)
     refresh_token = models.CharField(max_length=200, blank=True, null=True)
     expires = models.DateTimeField(blank=True, null=True)
-    playlist_id = models.CharField(max_length=200, blank=True, null=True)
     expires_at = models.DateTimeField(blank=True, null=True)
+
+    playlist_id = models.CharField(max_length=200, blank=True, null=True)
     spotify_id = models.CharField(max_length=20, blank=True, null=True)
 
 
@@ -33,7 +34,10 @@ class Credential(models.Model):
         """ Get a scoped, authorised instance of spotipi API wrapper
         refreshing the access token if necessary
         """
-        if datetime.now() > self.expires_at:
+        if not self.access_token:
+            return None
+
+        if self.expires_at and datetime.now() > self.expires_at:
             self._refresh_access_token()
 
         sp = spotipy.Spotify(auth=self.access_token)
@@ -60,3 +64,14 @@ class Credential(models.Model):
         self.refresh_token = refresh_token
         self.expires_at = datetime.fromtimestamp(int(expires_at))
         self.save()
+
+    def token_valid(self):
+
+        if not self.access_token:
+            return False
+
+        if self.expires_at and datetime.now() > self.expires_at:
+            return False
+
+        return True
+

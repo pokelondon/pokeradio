@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from .utils import get_or_create_cred
+from .utils import get_or_create_cred, get_or_create_spotify_playlist
 from .models import Credential
 
 
@@ -30,15 +30,8 @@ class Index(TemplateView):
         cred = get_or_create_cred(self.request.user)
         sp = cred.get_spotify_api()
 
-        # Get or create Prad Playlist
-        if cred.playlist_id:
-            # Check its on sp
-            res = sp.user_playlist(cred.spotify_id, cred.playlist_id)
-        else:
-            # Create playlist
-            res = sp.user_playlist_create(cred.spotify_id, PLAYLIST_NAME, True)
-            cred.playlist_id = res['id']
-            cred.save()
+        if sp:
+            get_or_create_spotify_playlist(cred, sp)
 
         context.update({'sp': sp, 'cred': cred})
         return context

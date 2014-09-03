@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
 {% block container %}
-<p>Token: {{ cred.access_token }}</p>
-<p>Created: {{ cred.modified }}</p>
-<a class="btn" href="{% url 'spotify_playlist:authorize' %}">Authorise</a>
-<a href="http://open.spotify.com/user/{{ cred.spotify_id }}/playlist/{{ cred.playlist_id }}">View My Playlist</a>
+<h1>Spotify Playlists</h1>
+<p>You can link your Spotify account to your P-Rad account! Tracks you upvote will appear in a special Spotify playlist, so you can listen to them on your headphones while Chas &amp; Dave is playing</p>
+<p>Token Expires: {{ cred.expires_at }}</p>
+<a class="btn{% if cred.token_valid %} btn--secondary{% endif %}" href="{% url 'spotify_playlist:authorize' %}">Link My Spotify Acccount</a>
+{% if cred.playlist_id %}
+    <a class="btn" href="http://open.spotify.com/user/{{ cred.spotify_id }}/playlist/{{ cred.playlist_id }}">View My Playlist &rarr;</a>
+{% endif %}
 {% endblock %}

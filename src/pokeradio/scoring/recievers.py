@@ -11,6 +11,8 @@ from django.conf import settings
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
+from ..spotify_playlist.utils import get_or_create_cred
+
 from .slack import Slack
 
 logger = logging.getLogger('raven')
@@ -125,3 +127,32 @@ def check_track_skip(sender, instance, created, **kwargs):
     msg.add_field(title=instance.user.get_full_name(), value=score, short=True)
 
     msg.send()
+
+
+def add_to_personal_playlist(sender, instance, created, **kwargs):
+    """ If the user casting an upvote has a connected spotify account,
+    post the track to their poke radio playlist
+    """
+    if not created:
+        return
+
+    if instance.value < 0:
+        return
+
+    cred = get_or_create_cred(instance.vote_from)
+    print 'Trying to post to spotify'
+    print cred, cred.playlist_id
+
+
+    if not cred.playlist_id:
+        return
+
+    # TODO, if this doesnt work, and the token is the problem
+    # queue a message to the user telling them to reauthorise
+
+    sp = cred.get_spotify_api()
+    res = sp.user_playlist_add_tracks(cred.spotify_id, cred.playlist_id,
+                                      [instance.playlist_track.href, ])
+
+    print res
+

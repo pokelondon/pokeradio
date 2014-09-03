@@ -10,7 +10,10 @@ from django.db.models.signals import post_save
 
 from .managers import TransactionManager
 
-from .recievers import (send_slack_vote, send_light_vote, check_track_skip)
+from .recievers import (send_slack_vote,
+                        send_light_vote,
+                        check_track_skip,
+                        add_to_personal_playlist)
 
 
 class BaseTransaction(models.Model):
@@ -76,3 +79,4 @@ class Point(BaseTransaction):
 post_save.connect(send_slack_vote, sender=Point)
 post_save.connect(send_light_vote, sender=Point)
 post_save.connect(check_track_skip, sender=Point)
+post_save.connect(add_to_personal_playlist, sender=Point)
