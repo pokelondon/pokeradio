@@ -2627,21 +2627,27 @@ a {
 .btn--secondary:hover {
   background: #a8af97;
 }
+.btn--green,
 .btn--good {
   background: #61dfb4;
 }
+.btn--green:hover,
 .btn--good:hover {
   background: #4cdbaa;
 }
+.btn--green.voted,
 .btn--good.voted {
   background: #4cdbaa;
 }
+.btn--pink,
 .btn--bad {
   background: #f84646;
 }
+.btn--pink:hover,
 .btn--bad:hover {
   background: #f72d2d;
 }
+.btn--pink.voted,
 .btn--bad.voted {
   background: #f72d2d;
 }
@@ -2723,6 +2729,26 @@ body {
   font-size: 14px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+h1 {
+  font-size: 3em;
+  color: #2d2c32;
+  margin-bottom: 0;
+}
+h1.extra-pad {
+  padding-bottom: 10px;
+}
+p.intro {
+  font-size: 1.5em;
+  font-weight: normal;
+  margin: 0.8em 0;
+}
+h1 + p.intro {
+  margin-top: 0.5em;
+}
+.u-Baseline--spotify {
+  vertical-align: baseline;
+  margin-bottom: -20px;
 }
 .Header {
   height: 270px;
