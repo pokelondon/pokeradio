@@ -3505,6 +3505,7 @@ progress.paused::-webkit-progress-bar {
   display: none;
   font-weight: normal;
   color: #5e5d64;
+  margin-top: -20px;
 }
 .Leaderboard-items {
   margin: 0;
@@ -3520,7 +3521,7 @@ progress.paused::-webkit-progress-bar {
 .Leaderboard-item--name {
   display: inline-block;
   margin-right: 10px;
-  width: 110px;
+  width: 150px;
 }
 .Leaderboard-item-number {
   color: #61dfb4;
