@@ -76,3 +76,15 @@ class Credential(models.Model):
 
         return True
 
+
+class PlaylistItem(models.Model):
+    """ TO keep track of what's in the spotify playlist.
+    Items in here wont be sent to the API. To prevent deduping.
+    If a track is removed remotely, then its probably best not to re-send it
+    """
+    created = models.DateTimeField(auto_now_add=True)
+    href = models.CharField(max_length=200, unique=True)
+    user = models.ForeignKey('auth.User')
+
+    def __unicode__(self):
+        return self.href

@@ -8,10 +8,11 @@ import redis
 from emitter import Emitter
 
 from django.conf import settings
-from django.db import models
+from django.db import models, IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
 from ..spotify_playlist.utils import get_or_create_cred
+from ..spotify_playlist.models import PlaylistItem
 
 from .slack import Slack
 
@@ -147,6 +148,17 @@ def add_to_personal_playlist(sender, instance, created, **kwargs):
     # TODO, if this doesnt work, and the token is the problem
     # queue a message to the user telling them to reauthorise
 
-    sp = cred.get_spotify_api()
-    res = sp.user_playlist_add_tracks(cred.spotify_id, cred.playlist_id,
-                                      [instance.playlist_track.href, ])
+    try:
+        playlist_item = PlaylistItem.objects.create(
+                user=instance.vote_from,
+                href=instance.playlist_track.href)
+    except IntegrityError:
+        # Already probably in their playlist
+        return
+
+    try:
+        sp = cred.get_spotify_api()
+        res = sp.user_playlist_add_tracks(cred.spotify_id, cred.playlist_id,
+                                          [instance.playlist_track.href, ])
+    except:
+        playlist_item.delete()
