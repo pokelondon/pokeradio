@@ -4,6 +4,7 @@
 }
 
 .Playlist-item {
+    position: relative;
     margin-top: 0;
     list-style-type: none;
     margin: 0;
@@ -11,6 +12,7 @@
     transition-timing-function:  cubic-bezier(0.55, -0.04, 0.91, 0.94);
     transition: transform 400ms, opacity 300ms, margin 500ms;
     opacity: 1;
+    overflow: visible;
 
     &.is-new {
         opacity: 0;
@@ -119,8 +121,23 @@
 }
 
 .Track-item-until {
-    color: #999;
+    color: #fff;
+    position: absolute;
+    top: 33px;
     font-size: 0.8em;
+    font-weight: bolder;
+    background: @darkGray;
+    padding: 8px 8px 6px;
+    line-height: 1em;
+    .border-radius(10px);
+
+    .transition(all 200ms);
+    transform: scale(0) translateX(0);
+    opacity: 0;
+    &.visible {
+        transform: scale(1) translateX(-60px);
+        opacity: 1;
+    }
 }
 .Playlist-item-separator {
     width: 90%;

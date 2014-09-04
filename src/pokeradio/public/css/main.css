@@ -2928,6 +2928,7 @@ h1 + p.intro {
   perspective-origin: 50% 100%;
 }
 .Playlist-item {
+  position: relative;
   margin-top: 0;
   list-style-type: none;
   margin: 0;
@@ -2935,6 +2936,7 @@ h1 + p.intro {
   transition-timing-function: cubic-bezier(0.55, -0.04, 0.91, 0.94);
   transition: transform 400ms, opacity 300ms, margin 500ms;
   opacity: 1;
+  overflow: visible;
 }
 .Playlist-item.is-new {
   opacity: 0;
@@ -3034,8 +3036,30 @@ h1 + p.intro {
   filter: alpha(opacity=65);
 }
 .Track-item-until {
-  color: #999;
+  color: #fff;
+  position: absolute;
+  top: 33px;
   font-size: 0.8em;
+  font-weight: bolder;
+  background: #2d2c32;
+  padding: 8px 8px 6px;
+  line-height: 1em;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-transition: all 200ms;
+  -moz-transition: all 200ms;
+  -o-transition: all 200ms;
+  transition: all 200ms;
+  transform: scale(0) translateX(0);
+  opacity: 0;
+}
+.Track-item-until.visible {
+  transform: scale(1) translateX(-60px);
+  opacity: 1;
 }
 .Playlist-item-separator {
   width: 90%;

@@ -103,7 +103,7 @@ define(['jquery',
                     if(this.model.get('disliked')) {
                         this.$('.btn-dislike').addClass('voted');
                     }
-                    this.$playingin = this.$('.js-playing-in').hide();
+                    this.$playingin = this.$('.js-playing-in');
                 },
 
                 onTrackRemoved: function() {
@@ -134,14 +134,14 @@ define(['jquery',
                                 self.countdownText = '▶';
                             }
                         }else{
-                            self.countdownText = 'Playing in: ' + _(ttp - seconds).convertToMinutes();
+                            self.countdownText = _(ttp - seconds).convertToMinutes();
                         }
                         self.$playingin.text(self.countdownText);
                     };
                     // Set initial text before a progress event happens
                     update(0);
                     // Display the counting text
-                    this.$playingin.fadeIn();
+                    this.$playingin.addClass('visible');
                     // Event from the progressbar interpolator
                     this.listenTo(appState, 'change:progress', function() {
                         update();
@@ -165,7 +165,7 @@ define(['jquery',
                     if(this.model.get('id') === id) {
                         return;
                     }
-                    this.$playingin.fadeOut();
+                    this.$playingin.removeClass('visible');
                 }
             });
             return TrackView;
