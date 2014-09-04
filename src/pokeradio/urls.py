@@ -31,6 +31,8 @@ urls = [
     (r'^history/', include('pokeradio.history.urls', namespace='history')),
     (r'^albumart/', include('pokeradio.albumart.urls', namespace='albumart')),
     (r'^api/', include('pokeradio.api.urls', namespace='api')),
+    (r'^spotify/', include('pokeradio.spotify_playlist.urls',
+        namespace='spotify_playlist')),
 
     (r'^monitor/$', TemplateView.as_view(template_name="pokeradiomon.html")),
 
