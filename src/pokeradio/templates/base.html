@@ -60,11 +60,7 @@
                     <ul class="NavBar-dropdown">
                         <li><a href="{% url 'logout' %}" >Logout</a></li>
                         <li class="{% if 'history' == request.resolver_match.namespace and 'index' == route %}is-active{% endif %}"><a href="{% url 'history:index' %}">Dashboard</a></li>
-                        {% for group in request.user.groups.all %}
-                            {% if group.name == 'Spotify' %}
-                                <li class="{% if 'poke_pokeradio' == request.resolver_match.namespace and 'index' == route %}is-active{% endif %}"><a href="{% url 'spotify_playlist:index' %}">Setup Spotify</a></li>
-                            {% endif %}
-                        {% endfor %}
+                        <li class="{% if 'poke_pokeradio' == request.resolver_match.namespace and 'index' == route %}is-active{% endif %}"><a href="{% url 'spotify_playlist:index' %}">Setup Spotify</a></li>
                     </ul>
                 </div>
                 {% endwith %}

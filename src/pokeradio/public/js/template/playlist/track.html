@@ -1,10 +1,11 @@
+<span class="Track-item-until js-playing-in"></span>
 <div class="Playlist-item-wrapper media-wrapper">
     <% if (!played){ %>
     <img class="Playlist-item-album-art media-object" src="/albumart/<%= album_href.split(':')[2] %>.jpg">
     <% } %>
     <div class="Playlist-item-body media-body">
         <div class="Playlist-item-track">
-            <div class="Playlist-item-name"><%= name %> <span class="Track-item-until js-playing-in"></span></div>
+            <div class="Playlist-item-name"><%= name %></div>
             <div class="Playlist-item-artist"><%= artist %></div>
         </div>
         <div class="Playlist-item-duration"><%= _(length).convertToMinutes()%></div>
