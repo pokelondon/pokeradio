@@ -83,8 +83,11 @@ class PlaylistItem(models.Model):
     If a track is removed remotely, then its probably best not to re-send it
     """
     created = models.DateTimeField(auto_now_add=True)
-    href = models.CharField(max_length=200, unique=True)
+    href = models.CharField(max_length=200)
     user = models.ForeignKey('auth.User')
+
+    class Meta:
+        unique_together = ('user', 'href')
 
     def __unicode__(self):
         return self.href

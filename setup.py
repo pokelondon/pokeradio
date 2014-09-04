@@ -35,6 +35,7 @@ install_dependencies = [
     'pusher==0.8',
     'newrelic == 2.22.1.20',
     'socket.io-emitter',
+    'spotipy == 2.0.2',
 ]
 
 # Test Dependencies
