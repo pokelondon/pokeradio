@@ -12,7 +12,7 @@
             PRAD.user_id = {{ request.user.id }};
             PRAD.blacklist = {{ blacklist|safe }};
             PRAD.first_name = '{{ request.user.first_name }}';
-            PRAD.messages = '{{ alerts|safe }}';
+            PRAD.messages = '{{ alerts|escapejs }}';
             PRAD.playlist = {{ initial_playlist|safe }};
         </script>
 {% endblock %}
