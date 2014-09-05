@@ -4,5 +4,3 @@
 {% if next_week %}
 <a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' %}" class="btn">Next Week &rarr;</a>
 {% endif %}
-
-<a href="{% url 'history:index' %}" class="btn btn-purple pull-right"><i class="fa fa-dashboard"></i> Dashboard</a>

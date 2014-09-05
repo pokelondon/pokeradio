@@ -5,8 +5,7 @@
 
 {% block container %}
 <div class="box">
-    <h1>Leaderboard <small>Week Commencing: *{{ week }}</small></h1>
-    <p>*Maconomy week number: {{ week|date:'W' }}</p>
+    <h1>Leaderboard <small>W/C: {{ week }}</small></h1>
 </div>
 
 {% include 'scoring/_week_links.html' with pattern='scoring:leaderboard' %}
@@ -14,10 +13,11 @@
 <div class="Listing-list">
     {% for object in object_list|dictsortreversed:"net" %}
     <div class="Listing Listing--bar{% if object.net < 0 %} Listing--minus{% elif object.net > 0 %} Listing--plus{% endif %}">
-        <span class="Listing-number">{{ object.net }}</span>
         <h3 class="Listing-title">{{ object.user.get_full_name }}</h3>
-        <div class="Bar Bar--likes" style="width: {{ object.likes_percent }}%;"><span class="Bar-number">{{ object.likes }}</span></div>
-        <div class="Bar Bar--dislikes" style="width: {{ object.dislikes_percent }}%; margin-left: -{{ object.dislikes_percent }}%;"><span class="Bar-number">{{ object.dislikes }}</span></div>
+        <div class="Bar-number">{{ object.net }}</div>
+        <div class="Bar Bar--net" style="width: {{ object.net_percent }}%;">
+        </div>
+        <div class="Bar Bar--dislikes" style="width: {{ object.dislikes_percent }}%;"></div>
     </div>
     {% endfor %}
 </div>
