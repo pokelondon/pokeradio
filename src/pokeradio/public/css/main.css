@@ -3602,6 +3602,7 @@ progress.paused::-webkit-progress-bar {
 .Listing {
   padding: 15px;
   margin: 0;
+  position: relative;
   background: #fff;
   border-bottom: 1px solid #eee;
 }
@@ -3687,6 +3688,13 @@ progress.paused::-webkit-progress-bar {
 }
 .Listing-date {
   float: right;
+}
+.Listing-score {
+  font-weight: lighter;
+  font-size: 3em;
+  position: absolute;
+  right: 20px;
+  top: 25px;
 }
 .Leaderboard {
   display: none;
