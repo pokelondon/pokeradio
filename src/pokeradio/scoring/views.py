@@ -44,6 +44,11 @@ class Leaderboard(WeekArchiveView):
     model = Point
     date_field = 'created'
 
+    def get(self, request, *args, **kwargs):
+        if not request.user.groups.filter(name='Leaderboard'):
+            self.template_name = 'coming_soon.html'
+        return super(Leaderboard, self).get(request, *args, **kwargs)
+
     def get_dated_items(self):
         """ Special dated query, that filters on the foreign key model Point,
         rather than the main model of the queryset User
@@ -75,15 +80,28 @@ class Leaderboard(WeekArchiveView):
             if likes + dislikes > 0:
                 object_list.append({'user': i, 'likes': likes,
                     'dislikes': dislikes, 'net': likes - dislikes})
+        if len(object_list) < 1:
+            return (None, object_list, {
+                'week': date,
+                'next_week': self.get_next_week(date),
+                'previous_week': self.get_previous_week(date),
+            })
+
 
         # Get the highest value
-        max_value = float(max(object_list, key=lambda i: i['likes'])['likes'])
+        max_value_net = float(max(object_list, key=lambda i: i['net'])['net'])
+        max_value_dis = float(max(object_list, key=lambda i: i['dislikes'])['dislikes'])
+
+        max_value = max(max_value_net, max_value_dis)
+
+
 
         # Find percentage of max value for the week
         for k, v in enumerate(object_list):
-            # Percent. /2 to fill half the width
-            object_list[k]['dislikes_percent'] = v['dislikes'] / max_value * 50
-            object_list[k]['likes_percent'] = v['likes'] / max_value * 50
+            # max is 90 % to give room for arrows
+            object_list[k]['dislikes_percent'] = v['dislikes'] / max_value * 90
+            object_list[k]['likes_percent'] = v['likes'] / max_value * 90
+            object_list[k]['net_percent'] = v['net'] / max_value * 90
 
         # Return navidational datetime objects as well for traversing other
         # weeks in the template

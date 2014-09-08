@@ -72,6 +72,12 @@ class ArchiveTrack(Base):
         album_id = self.spotify_album_href.split(':')[2]
         return reverse('albumart:getimage', args=(album_id, ))
 
+    @property
+    def score(self):
+        """ Total net score for this track
+        """
+        return self.point_set.all().aggregate(models.Sum('value'))['value__sum']
+
 
 class Play(Base):
     track = models.ForeignKey(ArchiveTrack)
