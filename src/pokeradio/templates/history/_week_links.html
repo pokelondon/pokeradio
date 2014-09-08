@@ -1,17 +1,15 @@
 {% if who %}
     {% if previous_week %}
-    <a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' who=who %}" class="btn secondary">&larr; Previous Week</a>
+    <a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' who=who %}" class="btn--back"></a>
     {% endif %}
     {% if next_week %}
-    <a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' who=who %}" class="btn primary">Next Week &rarr;</a>
+    <a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' who=who %}" class="btn--forward"></a>
     {% endif %}
 {% else %}
     {% if previous_week %}
-    <a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' %}" class="btn secondary">&larr; Previous Week</a>
+    <a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' %}" class="btn--back"></a>
     {% endif %}
     {% if next_week %}
-    <a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' %}" class="btn primary">Next Week &rarr;</a>
+    <a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' %}" class="btn--forward"></a>
     {% endif %}
 {% endif %}
-
-<a href="{% url 'history:index' %}" class="btn btn-purple pull-right"><i class="fa fa-dashboard"></i> Dashboard</a>

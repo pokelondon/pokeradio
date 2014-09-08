@@ -19,11 +19,9 @@ urls = [
         name='points_week'),
 
     # Leaderboard
-    url(r'^playas/$', TemplateView.as_view(template_name='coming_soon.html'),
-        name='leaderboard_index'),
-    #url(r'^playas/$', 'leaderboard_index', name='leaderboard_index'),
-    #url(r'^playas/(?P<year>\d{4})/(?P<week>\d+)/$', 'leaderboard',
-        #name='leaderboard'),
+    url(r'^playas/$', 'leaderboard_index', name='leaderboard_index'),
+    url(r'^playas/(?P<year>\d{4})/(?P<week>\d+)/$', 'leaderboard',
+        name='leaderboard'),
 
     # Graphs
     url(r'^graph/force/$',
