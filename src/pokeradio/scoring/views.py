@@ -44,11 +44,6 @@ class Leaderboard(WeekArchiveView):
     model = Point
     date_field = 'created'
 
-    def get(self, request, *args, **kwargs):
-        if not request.user.groups.filter(name='Leaderboard'):
-            self.template_name = 'coming_soon.html'
-        return super(Leaderboard, self).get(request, *args, **kwargs)
-
     def get_dated_items(self):
         """ Special dated query, that filters on the foreign key model Point,
         rather than the main model of the queryset User
