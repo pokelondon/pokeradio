@@ -3696,6 +3696,12 @@ progress.paused::-webkit-progress-bar {
   right: 20px;
   top: 25px;
 }
+a.spotify-link {
+  padding-right: 20px;
+}
+a.spotify-link:hover {
+  background: url(../img/ico-spotify.png) 100% 0 no-repeat;
+}
 .Leaderboard {
   display: none;
   font-weight: normal;
