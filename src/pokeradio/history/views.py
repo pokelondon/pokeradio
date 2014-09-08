@@ -56,6 +56,7 @@ class TopTracks(PatchedWeekArchiveView):
         else:
             return self.model.objects.filter(
                     Q(point__isnull=False) &
+                    Q(point__action='TRACK_LIKED') &
                     Q(point__vote_from=self.request.user) &
                     Q(**lookup))
 
