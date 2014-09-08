@@ -80,6 +80,13 @@ class Leaderboard(WeekArchiveView):
             if likes + dislikes > 0:
                 object_list.append({'user': i, 'likes': likes,
                     'dislikes': dislikes, 'net': likes - dislikes})
+        if len(object_list) < 1:
+            return (None, object_list, {
+                'week': date,
+                'next_week': self.get_next_week(date),
+                'previous_week': self.get_previous_week(date),
+            })
+
 
         # Get the highest value
         max_value = float(max(object_list, key=lambda i: i['net'])['net'])

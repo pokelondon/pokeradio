@@ -3,16 +3,28 @@
 }
 
 .Listing {
-    padding: 10px 20px 10px 75px;
+    padding: 15px;
     margin: 0;
-    overflow: hidden;
 
     background: #fff;
     border-bottom: 1px solid #eee;
+    .clearfix();
+
+    h2 {
+        padding: 0;
+        margin: 12px 0 0;
+        a {
+            color: @darkGray;
+        }
+    }
+
+    a {
+        color: @txtGray;
+    }
 }
 .Listing-number {
     padding: 0 10px 0 0;
-    margin: 0 0 0 -65px;
+    margin: 0 0 0 0;
     width: 80px;
     float: left;
 
@@ -59,7 +71,6 @@
     float: left;
 
     color: #888;
-    font-size: 0.8em;
 }
 .Listing-date {
     float: right;

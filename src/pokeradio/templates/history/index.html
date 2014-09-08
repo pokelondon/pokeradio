@@ -1,27 +1,21 @@
 {% extends 'base.html' %}
 
-{% block footer_scripts %}
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{{ STATIC_URL }}lib/owl-carousel/owl.carousel.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#owlFavs").owlCarousel({
-                items: 4,
-                });
-            });
-    </script>
-{% endblock %}
-
 {% block container %}
+<header class="Header--page">
+    <h1>Dashboard</h1>
+</header>
+
 <div class="row">
+    <div class="col-md-8">
+        <h2><i class="fa fa-user"></i> My stuff</h2>
+        <a href="{% url 'scoring:points_index' %}" class="btn"><i class="fa fa-star-o"></i> Fake internet points</a>
+        {% if request.user.tokens.all %}
+        <p><strong>Your API token:</strong> <pre>{{ request.user.tokens.all.0.token }}</pre></p>
+        {% endif %}
+    </div>
+
     <div class="col-md-4">
-
-        <h2><i class="fa fa-flask"></i> Data!</h2>
-        <p>
-            <a href="{% url 'history:vote_tracks_index' 'all' %}" class="btn"><i class="fa fa-heart"></i> Most liked tracks</a>
-            <a href="{% url 'scoring:leaderboard_index' %}" class="btn"><i class="fa fa-bar-chart-o"></i> Leaderboard</a>
-        </p>
-
+        <h2>Experimental Features</h2>
         {% for group in request.user.groups.all %}
             {% if group.name == 'Graph' %}
                 <p>
@@ -32,31 +26,6 @@
                 </p>
             {% endif %}
         {% endfor %}
-    </div>
-    <div class="col-md-8">
-        <h2><i class="fa fa-user"></i> My stuff</h2>
-        <a href="{% url 'scoring:points_index' %}" class="btn"><i class="fa fa-star-o"></i> Fake internet points</a>
-        {% if request.user.tokens.all %}
-        <p><strong>Your API token:</strong> {{ request.user.tokens.all.0.token }}</p>
-        {% endif %}
-
-        <h3><i class="fa fa-heart"></i> My Favorites</h3>
-        <ul id="owlFavs">
-        {% for object in object_list %}
-            <li>
-                <a title="Open in Spotify locally" class="js-spotifyLink js-spotifyLink--track" href="{{ object.spotify_href }}">
-                <img src="{{ object.artwork_url }}" alt="Artwork" />
-                </a>
-                <span class="label">
-                    <strong class="title">{{ object.name }}</strong>
-                    <span class="artist">{{ object.artist }}<span>
-                <span>
-            </li>
-        {% empty %}
-            <li>No Likes yet this week, come on! like some stuff!</li>
-        {% endfor %}
-        </ul>
-        <a href="{% url 'history:vote_tracks_index' 'me' %}" class="btn"><i class="fa fa-heart"></i> My Favs by week</a>
     </div>
 </div>
 {% endblock %}

@@ -2651,6 +2651,47 @@ a {
 .btn--bad.voted {
   background: #f72d2d;
 }
+.btn--back,
+.btn--forward {
+  background: #fff;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+.btn--back:after,
+.btn--forward:after {
+  width: 13px;
+  height: 22px;
+  content: " ";
+  display: block;
+  margin: 14px auto;
+  position: relative;
+  background: url('../img/arrows.png') 0 100% no-repeat;
+}
+.btn--back:hover,
+.btn--forward:hover {
+  background: #19d0f1;
+}
+.btn--back:hover:after,
+.btn--forward:hover:after {
+  background-position: 100% 100%;
+}
+.btn--forward {
+  float: right;
+}
+.btn--forward:after {
+  background-position: 0 0;
+  left: 2px;
+}
+.btn--forward:hover:after {
+  background-position: 100% 0;
+}
 body .btn.disabled,
 body .btn.voted {
   background: #444;
@@ -2749,6 +2790,22 @@ h1 + p.intro {
 .u-Baseline--spotify {
   vertical-align: baseline;
   margin-bottom: -20px;
+}
+.Header--page {
+  background: green;
+  margin-top: -40px;
+  margin-bottom: 40px;
+  padding: 20px 10px;
+  text-align: center;
+  background: #ebede5;
+}
+.Header--page h1 {
+  padding: 0;
+  margin: 0;
+}
+.Header--page .btn--back,
+.Header--page .btn--forward {
+  margin-top: -10px;
 }
 .Header {
   height: 270px;
@@ -3543,15 +3600,48 @@ progress.paused::-webkit-progress-bar {
   padding: 10px 0 20px;
 }
 .Listing {
-  padding: 10px 20px 10px 75px;
+  padding: 15px;
   margin: 0;
-  overflow: hidden;
   background: #fff;
   border-bottom: 1px solid #eee;
 }
+.Listing:before,
+.Listing:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.Listing:after {
+  clear: both;
+}
+.Listing:before,
+.Listing:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.Listing:after {
+  clear: both;
+}
+.Listing h2 {
+  padding: 0;
+  margin: 12px 0 0;
+}
+.Listing h2 a {
+  color: #2d2c32;
+}
+.Listing a {
+  color: #5e5d64;
+}
 .Listing-number {
   padding: 0 10px 0 0;
-  margin: 0 0 0 -65px;
+  margin: 0 0 0 0;
   width: 80px;
   float: left;
   font-size: 3em;
@@ -3594,7 +3684,6 @@ progress.paused::-webkit-progress-bar {
   margin: 4px 0 0;
   float: left;
   color: #888;
-  font-size: 0.8em;
 }
 .Listing-date {
   float: right;

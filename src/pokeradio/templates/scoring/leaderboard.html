@@ -4,20 +4,23 @@
 
 
 {% block container %}
-<div class="box">
+<header class="Header--page">
+    {% include 'scoring/_week_links.html' with pattern='scoring:leaderboard' %}
     <h1>Leaderboard <small>W/C: {{ week }}</small></h1>
-</div>
+</header>
 
-{% include 'scoring/_week_links.html' with pattern='scoring:leaderboard' %}
 
 <div class="Listing-list">
     {% for object in object_list|dictsortreversed:"net" %}
     <div class="Listing Listing--bar{% if object.net < 0 %} Listing--minus{% elif object.net > 0 %} Listing--plus{% endif %}">
         <h3 class="Listing-title">{{ object.user.get_full_name }}</h3>
         <div class="Bar-number">{{ object.net }}</div>
-        <div class="Bar Bar--net" style="width: {{ object.net_percent }}%;">
-        </div>
+        {% if object.likes %}
+        <div class="Bar Bar--net" style="width: {{ object.net_percent }}%;"></div>
+        {% endif %}
+        {% if object.dislikes %}
         <div class="Bar Bar--dislikes" style="width: {{ object.dislikes_percent }}%;"></div>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

@@ -100,6 +100,45 @@
     }
 }
 
+.btn--back,
+.btn--forward {
+    background: #fff;
+    .border-radius(50px);
+    width: 50px;
+    height: 50px;
+    float: left;
+    &:after {
+        width: 13px;
+        height: 22px;
+        content: " ";
+        display: block;
+        margin: 14px auto;
+        position: relative;
+        background: url('../img/arrows.png') 0 100% no-repeat;
+    }
+
+    &:hover {
+        background: @poke-blue;
+        &:after {
+            background-position: 100% 100%;
+        }
+    }
+}
+
+.btn--forward {
+    float: right;
+
+    &:after {
+        background-position: 0 0;
+        left: 2px;
+    }
+    &:hover {
+        &:after {
+            background-position: 100% 0;
+        }
+    }
+}
+
 body .btn {
     &.disabled,
     &.voted {

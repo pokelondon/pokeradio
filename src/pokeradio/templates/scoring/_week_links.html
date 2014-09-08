@@ -1,6 +1,6 @@
 {% if previous_week %}
-<a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' %}" class="btn">&larr; Previous Week</a>
+<a href="{% url pattern  year=previous_week|date:'Y' week=previous_week|date:'W' %}" class="btn--back"></a>
 {% endif %}
 {% if next_week %}
-<a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' %}" class="btn">Next Week &rarr;</a>
+<a href="{% url pattern year=next_week|date:'Y' week=next_week|date:'W' %}" class="btn--forward"></a>
 {% endif %}
