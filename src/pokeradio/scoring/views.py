@@ -76,11 +76,13 @@ class Leaderboard(WeekArchiveView):
                 .filter(action=Point.TRACK_DISLIKED, created__range=period)\
                 .aggregate(models.Sum('value'))['value__sum']
 
-            likes = likes if likes else 0
-            dislikes = dislikes if dislikes else 0
-            if likes + dislikes > 0:
+            likes = likes if (likes != None) else 0
+            dislikes = dislikes if (dislikes != None) else 0
+
+            if likes > 0 or dislikes < 0:
                 object_list.append({'user': i, 'likes': likes,
-                    'dislikes': dislikes, 'net': likes - dislikes})
+                    'dislikes': -1 * dislikes, 'net': likes + dislikes})
+
         if len(object_list) < 1:
             return (None, object_list, {
                 'week': date,

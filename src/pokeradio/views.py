@@ -38,7 +38,7 @@ class HomeView(TemplateView, ContextMixin):
             likes = likes if likes else 0
             dislikes = dislikes if dislikes else 0
 
-            net = likes - dislikes
+            net = likes + dislikes
             if likes < 1 or net < 1:
                 continue
             object_list.append({'user': i, 'likes': likes, 'net': net,
