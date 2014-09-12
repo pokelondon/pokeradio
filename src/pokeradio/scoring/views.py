@@ -10,7 +10,7 @@ from django.views.generic.dates import DateMixin, WeekMixin, _date_from_string
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.db import connection
+from django.db import connection, models
 from django.db.models import Sum
 
 from pokeradio.views import WeekArchiveRedirect
@@ -69,9 +69,15 @@ class Leaderboard(WeekArchiveView):
         object_list = []
 
         for i in qs:
-            points = i.point_set.filter(created__range=period)
-            likes = points.filter(action=Point.TRACK_LIKED).count()
-            dislikes = points.filter(action=Point.TRACK_DISLIKED).count()
+            likes = i.point_set\
+                .filter(action=Point.TRACK_LIKED, created__range=period)\
+                .aggregate(models.Sum('value'))['value__sum']
+            dislikes = i.point_set\
+                .filter(action=Point.TRACK_DISLIKED, created__range=period)\
+                .aggregate(models.Sum('value'))['value__sum']
+
+            likes = likes if likes else 0
+            dislikes = dislikes if dislikes else 0
             if likes + dislikes > 0:
                 object_list.append({'user': i, 'likes': likes,
                     'dislikes': dislikes, 'net': likes - dislikes})
