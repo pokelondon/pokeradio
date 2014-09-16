@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic import RedirectView, TemplateView
 from django.views.generic.base import ContextMixin
-from django.db.models import F, Q, Sum
 
 from pokeradio.models import Message
 from pokeradio.history.models import ArchiveTrack
@@ -26,7 +25,7 @@ class HomeView(TemplateView, ContextMixin):
         """ 
             Return id with a point instead of 
             User.objects.all()
-            
+
         """
         ids = Point.objects.values('user_id').filter(created__range=period)
         qs = User.objects.filter(pk__in=ids)
