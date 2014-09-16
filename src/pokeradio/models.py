@@ -41,8 +41,13 @@ class Track(models.Model):
         have liked and disliked a track. Only for FE to compare against
         logged in user id, as this model doesn't know who that is
         """
-        return map(int, self.point_set.filter(action=action)
-                   .values_list('vote_from__id', flat=True))
+
+        """Prevent hitting the DB"""
+        return [ p.vote_from_id for p in self.point_set.all() if p.action == action]
+        
+        """return map(int, self.point_set.all().filter(action=action)
+                   .values_list('vote_from__id', flat=True))"""
+        
 
     def to_dict(self):
         return {
