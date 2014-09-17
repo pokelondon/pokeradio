@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic import RedirectView, TemplateView
 from django.views.generic.base import ContextMixin
+from django.db import models
 
 from pokeradio.models import Message
 from pokeradio.history.models import ArchiveTrack
@@ -35,9 +36,18 @@ class HomeView(TemplateView, ContextMixin):
             """ if no points move prevent wasted cycle"""
             if not points.exists():
                 continue
-            likes = points.filter(action=Point.TRACK_LIKED).count()
-            dislikes = points.filter(action=Point.TRACK_DISLIKED).count()
-            net = likes - dislikes
+            likes = i.point_set\
+                .filter(action=Point.TRACK_LIKED, created__range=period)\
+                .aggregate(models.Sum('value'))['value__sum']
+            dislikes = i.point_set\
+                .filter(action=Point.TRACK_DISLIKED, created__range=period)\
+                .aggregate(models.Sum('value'))['value__sum']
+
+            likes = likes if likes else 0
+            dislikes = dislikes if dislikes else 0
+
+            net = likes + dislikes
+
             if likes < 1 or net < 1:
                 continue
             object_list.append({'user': i, 'likes': likes, 'net': net,
@@ -45,7 +55,6 @@ class HomeView(TemplateView, ContextMixin):
         items = sorted(object_list, key=lambda i: i['net'])
         items.reverse()
         return items[:5]
-        return []
         
 
     def get_messages(self):
