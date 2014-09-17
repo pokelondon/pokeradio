@@ -1,7 +1,6 @@
 from __future__ import unicode_literals
 
 import json
-import redis
 from itertools import chain
 
 from emitter import Emitter
@@ -32,9 +31,6 @@ from .models import Token
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
               'db': settings.REDIS_DB})
-
-r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
-                           db=settings.REDIS_DB)
 
 
 @csrf_exempt
@@ -206,11 +202,9 @@ class MopidyPlaylistTrack(View):
         self.object = Track.objects.new()
 
         if self.object:
-            r_conn.delete('mopidy:track_waiting')
             payload = {'id': self.object.id, 'href': self.object.href}
         else:
             payload = {'status': 'empty'}
-            r_conn.set('mopidy:track_waiting', True)
 
         return JSONResponse(payload)
 
