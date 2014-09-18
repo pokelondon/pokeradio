@@ -13,7 +13,7 @@ from .managers import TransactionManager
 from .recievers import (send_slack_vote,
                         send_light_vote,
                         check_track_skip,
-                        add_to_personal_playlist)
+                        add_to_personal_playlist, point_save)
 
 
 class BaseTransaction(models.Model):
@@ -76,6 +76,7 @@ class Point(BaseTransaction):
 
 
 # Notify Various services when a vote is cast
+post_save.connect(point_save, sender=Point)
 post_save.connect(send_slack_vote, sender=Point)
 post_save.connect(send_light_vote, sender=Point)
 post_save.connect(check_track_skip, sender=Point)

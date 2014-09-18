@@ -15,6 +15,7 @@ from ..spotify_playlist.utils import get_or_create_cred
 from ..spotify_playlist.models import PlaylistItem
 
 from .slack import Slack
+from tasks import send_slack_vote
 
 logger = logging.getLogger('raven')
 
@@ -27,11 +28,17 @@ r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
                            db=settings.REDIS_DB)
 
 
-def send_slack_vote(sender, instance, created, **kwargs):
-    """ Accepts an instance of pokeradio.Track
-    Sends a message to the Dev slack channel when one of us gets a vote
-    """
 
+def point_save(sender, instance, created, **kwargs):
+    point_id = instance.id
+    if created:
+        send_slack_vote.delay(point_id)
+
+"""
+def send_slack_vote(sender, instance, created, **kwargs):
+    Accepts an instance of pokeradio.Track
+    Sends a message to the Dev slack channel when one of us gets a vote
+    
     from .models import Point
     if not created:
         return
@@ -63,7 +70,7 @@ def send_slack_vote(sender, instance, created, **kwargs):
 
     msg.send()
 
-
+"""
 def send_light_vote(sender, instance, created, **kwargs):
     """ post_save on instance of Point
     Send vote to lights server
