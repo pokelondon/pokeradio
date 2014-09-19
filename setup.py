@@ -28,7 +28,6 @@ install_dependencies = [
     'django-debug-toolbar == 0.9.4',
     'tornado == 3.1',
     'simplejson == 3.3.1',
-    'musicbrainzngs == 0.4',
     'Pillow == 2.3.0',
     'requests==2.0.0',
     'plotly',
@@ -36,6 +35,7 @@ install_dependencies = [
     'newrelic == 2.22.1.20',
     'socket.io-emitter',
     'spotipy == 2.0.2',
+    'psycopg2',
 ]
 
 # Test Dependencies

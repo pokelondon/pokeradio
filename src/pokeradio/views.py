@@ -23,11 +23,19 @@ class HomeView(TemplateView, ContextMixin):
         td = timedelta(days=1)
         period = [today, today + td]
 
-        qs = User.objects.all()
+        """ 
+            Return id with a point instead of 
+            User.objects.all()
+
+        """
+        ids = Point.objects.values('user_id').filter(created__range=period)
+        qs = User.objects.filter(pk__in=ids)
         object_list = []
-
         for i in qs:
-
+            points = i.point_set.filter(created__range=period)
+            """ if no points move prevent wasted cycle"""
+            if not points.exists():
+                continue
             likes = i.point_set\
                 .filter(action=Point.TRACK_LIKED, created__range=period)\
                 .aggregate(models.Sum('value'))['value__sum']
@@ -39,6 +47,7 @@ class HomeView(TemplateView, ContextMixin):
             dislikes = dislikes if dislikes else 0
 
             net = likes + dislikes
+
             if likes < 1 or net < 1:
                 continue
             object_list.append({'user': i, 'likes': likes, 'net': net,
@@ -46,6 +55,7 @@ class HomeView(TemplateView, ContextMixin):
         items = sorted(object_list, key=lambda i: i['net'])
         items.reverse()
         return items[:5]
+        
 
     def get_messages(self):
         # General messages for everyone that this user hasn't seen
