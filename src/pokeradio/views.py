@@ -2,6 +2,7 @@ import json
 from datetime import datetime, timedelta
 
 from django.core.urlresolvers import reverse
+from django.core.cache import get_cache
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.generic import RedirectView, TemplateView
@@ -15,10 +16,17 @@ from pokeradio.utils import current_playlist
 from django.utils.safestring import mark_safe
 
 
+cache = get_cache('object_cache')
+
+
 class HomeView(TemplateView, ContextMixin):
     template_name = 'home/index.html'
 
     def get_leaderboard(self):
+        cached = cache.get('hp_leaderboard')
+        if cached:
+            return cached
+
         today = datetime.today().date()
         td = timedelta(days=1)
         period = [today, today + td]
@@ -65,6 +73,9 @@ class HomeView(TemplateView, ContextMixin):
 
         items = sorted(object_list, key=lambda i: i['net'])
         items.reverse()
+
+        cache.set('hp_leaderboard', items[:5], 20)
+
         return items[:5]
 
 
