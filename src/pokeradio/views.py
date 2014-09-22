@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import RedirectView, TemplateView
 from django.views.generic.base import ContextMixin
 from django.db import models
+from django.conf import settings
 
 from pokeradio.models import Message
 from pokeradio.history.models import ArchiveTrack
@@ -74,7 +75,7 @@ class HomeView(TemplateView, ContextMixin):
         items = sorted(object_list, key=lambda i: i['net'])
         items.reverse()
 
-        cache.set('hp_leaderboard', items[:5], 20)
+        cache.set('hp_leaderboard', items[:5], settings.CACHE_LEADERBOARD_HP)
 
         return items[:5]
 
