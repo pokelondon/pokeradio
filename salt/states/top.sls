@@ -18,6 +18,7 @@ vagrant:
     - mysql
     - node
     - redis
+    - memcached
 
     #
     # Stuff to setup this project

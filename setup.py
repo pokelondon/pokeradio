@@ -36,6 +36,7 @@ install_dependencies = [
     'socket.io-emitter',
     'spotipy == 2.0.2',
     'psycopg2',
+    'python-memcached == 1.53',
 ]
 
 # Test Dependencies
