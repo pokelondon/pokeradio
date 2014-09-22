@@ -12,8 +12,8 @@ from pokeradio.celery import app
 
 logger = logging.getLogger('raven')
 
-@app.task
-def send_slack_vote_task(point_id):
+@app.task(bind=True, default_retry_delay=5, max_retries=2)
+def send_slack_vote_task(self, point_id):
     from .models import Point
 
 
@@ -41,18 +41,20 @@ def send_slack_vote_task(point_id):
     msg.add_field(title=point.user.get_full_name(), value=user_votes,
                   short=True)
 
-    msg.send()
-
+    try:
+        msg.send()
+    except Exception as exc:
+        raise self.retry(exc=exc)
 
 @app.task
 def send_light_vote_task(post_vars):
     try:
         r = requests.post(settings.LIGHTS_WEBHOOK_URL, data=post_vars)
-    except Exception, e:
+    except Exception:
         logger.warn('cannot send data to lights server')
 
-@app.task
-def send_slack_skip_task(verb, score, point_id):
+@app.task(bind=True, default_retry_delay=5, max_retries=2)
+def send_slack_skip_task(self, verb, score, point_id):
     from .models import Point
 
     point = Point.objects.get(pk=point_id)
@@ -71,8 +73,10 @@ def send_slack_skip_task(verb, score, point_id):
     msg.add_field(title=title, value=total_votes, short=True)
     msg.add_field(title=point.user.get_full_name(), value=score, short=True)
 
-    msg.send()
-
+    try:
+        msg.send()
+    except Exception as exc:
+        raise self.retry(exc=exc)
 
 @app.task
 def add_to_personal_playlist_task(point_id):
