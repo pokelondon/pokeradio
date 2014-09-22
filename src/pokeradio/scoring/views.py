@@ -97,8 +97,6 @@ class Leaderboard(WeekArchiveView):
 
         max_value = max(max_value_net, max_value_dis)
 
-
-
         # Find percentage of max value for the week
         for k, v in enumerate(object_list):
             # max is 90 % to give room for arrows

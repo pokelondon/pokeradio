@@ -30,7 +30,9 @@ class HomeView(TemplateView, ContextMixin):
         """
         ids = Point.objects.values('user_id').filter(created__range=period)
         qs = User.objects.filter(pk__in=ids)
+
         object_list = []
+
         for i in qs:
             points = i.point_set.filter(created__range=period)
             """ if no points move prevent wasted cycle"""
@@ -50,12 +52,21 @@ class HomeView(TemplateView, ContextMixin):
 
             if likes < 1 or net < 1:
                 continue
-            object_list.append({'user': i, 'likes': likes, 'net': net,
-                                'dislikes': dislikes})
+
+            object_list.append({'user': i,'net': likes + dislikes})
+
+        # Get the highest value
+        max_value = float(max(object_list, key=lambda i: i['net'])['net'])
+
+        # Find percentage of max value for the week
+        for k, v in enumerate(object_list):
+            # max is 90 % to give room for arrows
+            object_list[k]['net_percent'] = v['net'] / max_value * 90
+
         items = sorted(object_list, key=lambda i: i['net'])
         items.reverse()
         return items[:5]
-        
+
 
     def get_messages(self):
         # General messages for everyone that this user hasn't seen
