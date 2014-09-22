@@ -10,3 +10,6 @@ project_name: 'pokeradio'
 root_dir: /home/vagrant
 virtualenv_dir: /home/vagrant/.virtualenvs
 home_dir: /home/vagrant
+
+# Set which type of DB you would like (mysql|postgres)
+db: mysql
