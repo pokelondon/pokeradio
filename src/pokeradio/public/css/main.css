@@ -3276,7 +3276,7 @@ h1 + p.intro {
     width: 24%;
   }
   .played .Playlist-item-track {
-    width: 450px;
+    width: 336px;
   }
 }
 @media (min-width: 992px) {
@@ -3299,7 +3299,7 @@ h1 + p.intro {
     width: 160px;
   }
   .played .Playlist-item-track {
-    width: 497px;
+    width: 537px;
   }
 }
 .progress-bar {
@@ -3448,8 +3448,8 @@ progress.paused::-webkit-progress-bar {
 .Search-item.is-selected .Search-item-add {
   background: #b4baa5;
 }
-.Search-item.is-focused {
-  background: #61dfb4;
+.Search-item.is-focused .Search-item-body {
+  background: #b6f0dc;
 }
 .Search-item-body {
   background: #fff;
@@ -3598,6 +3598,9 @@ progress.paused::-webkit-progress-bar {
 @media (max-width: 768px) {
   .Search-item--album {
     display: none;
+  }
+  .add-track {
+    font-size: 20px;
   }
 }
 .Listing-list {

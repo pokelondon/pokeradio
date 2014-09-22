@@ -125,8 +125,8 @@
         }
 
     }
-    &.is-focused {
-        background: @poke-green;
+    &.is-focused .Search-item-body {
+        background: lighten(@poke-green, 20);
     }
 }
 .Search-item-body {
@@ -316,7 +316,9 @@
 
     .Search-item--album {
         display: none;
-
+    }
+    .add-track {
+        font-size: 20px;
     }
 }
 
