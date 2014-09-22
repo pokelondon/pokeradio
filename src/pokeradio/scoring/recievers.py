@@ -37,6 +37,9 @@ def send_slack_vote(sender, instance, created, **kwargs):
 
     if not created:
         return
+    
+    if not instance.user.groups.filter(name='Slack'):
+        return
 
     send_slack_vote_task.delay(instance.id)
 
