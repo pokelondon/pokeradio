@@ -35,7 +35,8 @@ install_dependencies = [
     'newrelic == 2.22.1.20',
     'socket.io-emitter',
     'spotipy == 2.0.2',
-    'psycopg2',
+    'celery==3.1.15',
+    'psycopg2==2.5.4'
 ]
 
 # Test Dependencies
