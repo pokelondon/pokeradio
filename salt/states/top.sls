@@ -15,9 +15,15 @@ vagrant:
     - libs
     - nginx
     - python2
-    - mysql
     - node
     - redis
+    - memcached
+
+    {% if pillar['db'] == "mysql" %}
+    - mysql
+    {% elif pillar['db'] == "postgres" %}
+    - postgres
+    {% endif %}
 
     #
     # Stuff to setup this project

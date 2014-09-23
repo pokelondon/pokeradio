@@ -3003,7 +3003,6 @@ h1 + p.intro {
   opacity: 0;
   transform-origin: 0% 100%;
   transform: translateY(600px) rotateZ(90deg);
-  margin-bottom: -100px;
 }
 .Playlist-item-wrapper {
   padding: 15px 10px;
@@ -3244,19 +3243,23 @@ h1 + p.intro {
   .Playlist-item-profileImage {
     width: 35px;
     height: 35px;
+    float: left;
   }
   .Playlist-item-track {
-    width: 40%;
+    width: 250px;
   }
-  .Playlist-item-user {
-    width: 28%;
+  .Playlist-item-userFullname {
+    float: left;
+    padding: 6px 0 0 50px;
+    margin-left: -50px;
+    word-break: break-word;
+    width: 160px;
   }
   .Playlist-item-trackActions {
-    margin-right: 20px;
-    float: none;
+    padding-top: 10px;
   }
   .Playlist-item-duration {
-    margin-right: 20px;
+    width: 40px;
     float: none;
   }
   .is-playing .Playlist-item-body {
@@ -3266,18 +3269,18 @@ h1 + p.intro {
     width: 30%;
   }
   .is-playing .Playlist-item-track {
-    width: 32%;
+    width: 225px;
   }
   .played .Playlist-item-user {
     width: 24%;
   }
   .played .Playlist-item-track {
-    width: 47%;
+    width: 336px;
   }
 }
 @media (min-width: 992px) {
   .Playlist-item-track {
-    width: 400px;
+    width: 450px;
   }
   .Playlist-item-user {
     width: 160px;
@@ -3286,7 +3289,7 @@ h1 + p.intro {
     width: 84%;
   }
   .is-playing .Playlist-item-track {
-    width: 360px;
+    width: 425px;
   }
   .is-playing .Playlist-item-user {
     width: 160px;
@@ -3295,7 +3298,7 @@ h1 + p.intro {
     width: 160px;
   }
   .played .Playlist-item-track {
-    width: 497px;
+    width: 537px;
   }
 }
 .progress-bar {
@@ -3444,8 +3447,8 @@ progress.paused::-webkit-progress-bar {
 .Search-item.is-selected .Search-item-add {
   background: #b4baa5;
 }
-.Search-item.is-focused {
-  background: #61dfb4;
+.Search-item.is-focused .Search-item-body {
+  background: #b6f0dc;
 }
 .Search-item-body {
   background: #fff;
@@ -3594,6 +3597,9 @@ progress.paused::-webkit-progress-bar {
 @media (max-width: 768px) {
   .Search-item--album {
     display: none;
+  }
+  .add-track {
+    font-size: 20px;
   }
 }
 .Listing-list {
