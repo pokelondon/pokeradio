@@ -64,6 +64,9 @@ class HomeView(TemplateView, ContextMixin):
 
             object_list.append({'user': i,'net': likes + dislikes})
 
+        if not len(object_list):
+            return None
+
         # Get the highest value
         max_value = float(max(object_list, key=lambda i: i['net'])['net'])
 
