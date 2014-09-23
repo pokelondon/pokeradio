@@ -55,7 +55,6 @@ development_dependencies = test_dependencies + [
     'tornado == 3.1',
     'pyzmq == 13.1.0',
     'ipython == 0.13.1',
-    'velcro == 1.0.1',
 ]
 
 setup(
