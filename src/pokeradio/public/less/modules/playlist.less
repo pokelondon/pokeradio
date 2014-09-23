@@ -9,7 +9,7 @@
     list-style-type: none;
     margin: 0;
     font-weight: lighter;
-    transition-timing-function:  cubic-bezier(0.55, -0.04, 0.91, 0.94);
+    transition-timing-function: cubic-bezier(0.55, -0.04, 0.91, 0.94);
     transition: transform 400ms, opacity 300ms, margin 500ms;
     opacity: 1;
     overflow: visible;
@@ -22,7 +22,6 @@
         opacity: 0;
         transform-origin: 0% 100%;
         transform: translateY(600px) rotateZ(90deg);
-        margin-bottom: -100px;
     }
 }
 
@@ -275,24 +274,28 @@
         width: 84%;
     }
     .Playlist-item-profileImage {
-        width:35px;
-        height:35px;
+        width: 35px;
+        height: 35px;
+        float: left;
     }
-    .Playlist-item-track {
-        width: 40%;
+   .Playlist-item-track {
+        width: 250px;
     }
 
-    .Playlist-item-user {
-        width: 28%;
+    .Playlist-item-userFullname {
+        float: left;
+        padding: 6px 0 0 50px;
+        margin-left: -50px;
+        word-break: break-word;
+        width: 160px;
     }
 
     .Playlist-item-trackActions {
-        margin-right: 20px;
-        float: none;
+        padding-top: 10px;
     }
 
     .Playlist-item-duration {
-        margin-right: 20px;
+        width: 40px;
         float: none;
     }
 
@@ -305,7 +308,7 @@
             width: 30%;
         }
         .Playlist-item-track {
-            width: 32%;
+            width: 225px;
         }
     }
 
@@ -314,7 +317,7 @@
             width: 24%;
         }
         .Playlist-item-track {
-            width: 47%;
+            width: 336px;
         }
     }
 }
@@ -322,7 +325,7 @@
 
 
    .Playlist-item-track {
-        width: 400px;
+        width: 450px;
     }
 
     .Playlist-item-user {
@@ -334,7 +337,7 @@
             width: 84%;
         }
         .Playlist-item-track {
-           width: 360px;
+           width: 425px;
         }
         .Playlist-item-user {
             width: 160px;
@@ -346,7 +349,7 @@
             width: 160px;
         }
         .Playlist-item-track {
-            width: 497px;
+            width: 537px;
         }
     }
 }

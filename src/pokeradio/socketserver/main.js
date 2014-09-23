@@ -19,9 +19,29 @@ nsp_app.on('connection', function(socket){
     connections ++;
     console.log('Connected to app', connections);
 
+    var interval2;
+    //var ids = [
+        //18971, 18975, 18976, 18977, 18978, 18981, 18980, 18979, 18982, 18983, 18984
+    //];
+
+    //var interval2 = setInterval(function() {
+        //var id = ids.shift();
+        //if (!id) {
+            //clearInterval(interval2);
+            //console.log('Done');
+        //}
+        //var data = {
+            //"id": id,
+        //};
+        //console.log('played', id);
+        //socket.emit('playlist:played', JSON.stringify(data));
+    //}, 10000);
+
+
     socket.on('disconnect', function() {
         connections --;
         console.log('User disconnected', connections);
+        clearInterval(interval2);
     });
 
 });
