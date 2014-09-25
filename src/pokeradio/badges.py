@@ -1,6 +1,10 @@
 from datetime import datetime
 from django.db import IntegrityError
 
+NARRATIVE = {
+    'liam': "Stick with something good! We get it."
+}
+
 
 class BaseBadge(object):
     slug = ''
@@ -33,6 +37,12 @@ class BadgeManager(object):
     def __init__(self):
         # instantiate badges
         self._badges.append(LiamBadge())
+
+    def get_badge(slug):
+        for badge in self._badges:
+            if badge.slug == slug:
+                return badge
+        return None
 
     def trigger(self, event, instance, user):
         if event not in self._events:

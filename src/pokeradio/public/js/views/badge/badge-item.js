@@ -21,8 +21,10 @@ define(
             },
 
             inserted: function() {
-                this.$el.removeClass('is-new');
-                console.log(this.$el);
+                var self = this;
+                setTimeout(function() {
+                    self.$el.removeClass('is-new');
+                }, 200);
                 return this;
             }
         });

@@ -52,7 +52,7 @@ define([
             });
 
             socket.on('badge:add', function(user_id) {
-                Backbone.trigger('badge:add', user_id);
+                Backbone.trigger('badge:add', parseInt(user_id, 10));
             });
 
             socket.on('error', function(data) {

@@ -19,7 +19,7 @@ r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
 def badge_saved(sender, instance, created, **kwargs):
 
     if created:
-         io.Of('/app').Emit('badge:add', instance.user_id)
+         io.Of('/app').Emit('badge:add', str(instance.user_id))
 
 
 def track_saved(sender, instance, created, **kwargs):
