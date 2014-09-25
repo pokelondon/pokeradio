@@ -12,6 +12,8 @@
         {% if request.user.tokens.all %}
         <p><strong>Your API token:</strong> <pre>{{ request.user.tokens.all.0.token }}</pre></p>
         {% endif %}
+        <p><strong>Spotify account</strong> </p>
+        <a class="btn" href="{% url 'spotify_playlist:index' %}">Setup Spotify</a>
     </div>
 
     <div class="col-md-4">

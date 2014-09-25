@@ -17,6 +17,7 @@ urls = [
     # Endpoints for webapp
     url(r'^playlist/$', 'playlist', name='playlist'),
     url(r'^playlist/(?P<pk>\d+)$', 'playlist_track', name='playlist_track'),
+    url(r'^badges/(?P<user_id>\d+)/$', 'badges', name='badges'),
 
     # Endpoints for mopidy
     url(r'^mopidy/$', 'mopidy', name='mopidy'),

@@ -2878,6 +2878,26 @@ h1 + p.intro {
   padding: 10px 15px 10px 0;
   margin: -10px -15px -10px 0;
 }
+.NavBar-user .inner:after {
+  content: "\25BC";
+  display: block;
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  top: 0;
+  -webkit-transition: transform 200ms ease-in-out;
+  -moz-transition: transform 200ms ease-in-out;
+  -o-transition: transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out;
+  font-size: 0.8em;
+}
+.NavBar-user:hover .inner:after {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 .NavBar-user:hover .NavBar-dropdown {
   -webkit-transform: translateY(0);
   -moz-transform: translateY(0);
@@ -2903,13 +2923,16 @@ h1 + p.intro {
   -o-transition: transform 200ms;
   transition: transform 200ms;
   z-index: 2;
+  padding-top: 10px;
 }
 .NavBar-dropdown li {
   display: block;
   padding: 0;
-  border-top: 1px solid #444;
   line-height: 16px;
   font-size: 16px;
+}
+.NavBar-dropdown li.is-active a {
+  color: #61dfb4;
 }
 .NavBar-dropdown a {
   margin: 0;
@@ -2922,6 +2945,10 @@ h1 + p.intro {
 .NavBar-dropdown a:hover {
   background: #45444d;
   text-decoration: none;
+}
+.NavBar-dropdown .Nav-divider {
+  border-top: 1px solid #999;
+  margin: 5px 0;
 }
 #owlFavs {
   padding: 0;
@@ -4113,4 +4140,74 @@ a.spotify-link:hover {
     right: 10px;
     font-size: 20px;
   }
+}
+.Badge-container {
+  display: inline-block;
+  text-align: right;
+}
+.Badge {
+  background: green;
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: right;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  transition: margin 300ms ease-in-out, opacity 100ms 100ms ease-in, transform 200ms 100ms ease-in;
+  transform: scale(1);
+  opacity: 1;
+  margin-left: 0;
+}
+.Badge.is-new {
+  transform: scale(0);
+  opacity: 0;
+  margin-left: -50px;
+}
+.Badge-title {
+  position: absolute;
+  text-align: center;
+  background: #000;
+  top: 150%;
+  left: 50%;
+  margin-left: -40px;
+  height: 80px;
+  width: 80px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 12px;
+  line-height: 80px;
+  -webkit-border-radius: 80px;
+  -moz-border-radius: 80px;
+  border-radius: 80px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-transition: all 200ms;
+  -moz-transition: all 200ms;
+  -o-transition: all 200ms;
+  transition: all 200ms;
+  transform-origin: 50% 0;
+  transform: scale(0) translateY(-100%);
+  opacity: 0;
+}
+.Badge:hover .Badge-title {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+.Badge--liam {
+  background: orange;
+}
+.Badge--eno {
+  background: hotpink;
+}
+.Badge--other {
+  background: lime;
 }
