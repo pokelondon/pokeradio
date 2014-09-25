@@ -249,9 +249,9 @@ class MopidyPlaylistTrack(View):
 
 def badges(request, user_id):
     print 'Badges requested for', user_id
-    badges = AwardedBadge.objects.filter(user_id=user_id)
-    badges_json = [{ 'type': b.slug } for b in badges]
-    return JSONResponse(badges_json)
+    awarded_badges = AwardedBadge.objects.filter(user_id=user_id)
+    awarded_badges_json = [{ 'type': ab.badge } for ab in awarded_badges]
+    return JSONResponse(awarded_badges_json)
 
 
 playlist = csrf_exempt(Playlist.as_view())
