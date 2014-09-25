@@ -17,6 +17,7 @@ define(
             render: function() {
                 this.$el.addClass('Badge--' + this.model.get('type'));
                 this.$el.html($('<div></div>').addClass('Badge-title').text(this.model.get('type')));
+                console.log('rendering', this.model.cid);
                 return this;
             },
 

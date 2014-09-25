@@ -9,9 +9,7 @@ define(
     ],
     function($, Backbone, _) {
         var Model = Backbone.Model.extend({
-            defaults: {
-                type: 'info'
-            }
+            idAttribute: 'type'
         });
         return Model;
     }
