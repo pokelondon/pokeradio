@@ -27,7 +27,7 @@
                 <span class="Leaderboard-item--name">{{ object.user.get_full_name }}</span>
                 <span class="Leaderboard-item-number">{{ object.net }}</span>
                 <span class="Leaderboard-bar">
-                    <span class="Leaderboard-bar--likes w--{{ object.net }}"></span>
+                    <span class="Leaderboard-bar--likes" style="width: {{ object.net_percent }}%;"></span>
                 </span>
             </li>
             {% endfor %}
