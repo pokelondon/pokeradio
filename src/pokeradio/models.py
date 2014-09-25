@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 from pokeradio.scoring.models import Point
 
-from .recievers import track_saved, track_deleted
+from .recievers import track_saved, track_saved_badge_handler, track_deleted
 from .managers import TrackManager
 
 
@@ -44,10 +44,10 @@ class Track(models.Model):
 
         """Prevent hitting the DB"""
         return [ p.vote_from_id for p in self.point_set.all() if p.action == action]
-        
+
         """return map(int, self.point_set.all().filter(action=action)
                    .values_list('vote_from__id', flat=True))"""
-        
+
 
     def to_dict(self):
         return {
@@ -88,6 +88,7 @@ class Track(models.Model):
             return False
 
 post_save.connect(track_saved, sender=Track)
+post_save.connect(track_saved_badge_handler, sender=Track)
 post_delete.connect(track_deleted, sender=Track)
 
 

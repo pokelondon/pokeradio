@@ -1,13 +1,14 @@
 from datetime import datetime
 
-from pokeradio.models import Track
-
 
 class BaseBadge(object):
     slug = ''
     name = ''
     description = ''
     image = ''
+
+    def __unicode__(self):
+        return u'{0} badge'.format(self.name)
 
 
 class LiamBadge(BaseBadge):
@@ -17,8 +18,10 @@ class LiamBadge(BaseBadge):
     image = 'foo.png'
 
     def on_add(self, track):
+        from pokeradio.models import Track
         epoch = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        previous = Track.objects.filter(created__gt=epoch, href=track.href)
+        previous = Track.objects.filter(timestamp__gt=epoch, href=track.href) \
+                                .exclude(pk=track.pk)
         return previous.count() > 0
 
 
@@ -30,23 +33,19 @@ class BadgeManager(object):
         # instantiate badges
         self._badges.append(LiamBadge())
 
-    def trigger(self, event, instance, user_id):
+    def trigger(self, event, instance, user):
         if event not in self._events:
             raise KeyError("No such event")
         for badge in self._badges:
             try:
                 handler = getattr(badge, 'on_' + event)
                 if (handler(instance)) is True:
-                    self.apply_badge(badge, user_id)
+                    self.apply_badge(badge, user)
             except AttributeError:
                 pass
         return self
 
-    def apply_badge(self, badge, user_id):
+    def apply_badge(self, badge, user):
         # IOU some ORM code
+        print "Applying {0} to {1}".format(badge, user)
         return self
-
-
-# somewhere else in the app...
-#bm = BadgeManager()
-#bm.trigger('add', track, user_id)
