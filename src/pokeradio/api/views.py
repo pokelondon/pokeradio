@@ -247,6 +247,10 @@ class MopidyPlaylistTrack(View):
             io.Of('/app').Emit('play:progress', request.body)
             return JSONResponse({'status': 'OK'})
 
+def badges(request, user_id):
+    print 'Badges requested for', user_id
+    return JSONResponse([{'type': 'liam'}, ])
+
 
 playlist = csrf_exempt(Playlist.as_view())
 playlist_track = csrf_exempt(PlaylistTrack.as_view())

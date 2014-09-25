@@ -1,0 +1,71 @@
+@popup-radius: 80px;
+
+.Badge-container {
+    display: inline-block;
+    text-align: right;
+}
+
+.Badge {
+    background: green;
+
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+
+    text-align: right;
+    vertical-align: middle;
+    cursor: pointer;
+
+    .border-radius(20px);
+
+    transition: margin 300ms ease-in-out, opacity 100ms 100ms ease-in, transform 200ms 100ms ease-in;
+    transform: scale(1);
+    opacity: 1;
+    margin-left: 0;
+
+    &.is-new {
+        transform: scale(0);
+        opacity: 0;
+        margin-left: -50px;
+    }
+}
+
+.Badge-title {
+    position: absolute;
+    text-align: center;
+    background: #000;
+
+    top: 150%;
+    left: 50%;
+    margin-left: -@popup-radius/2;
+
+    height: @popup-radius;
+    width: @popup-radius;
+    .box-sizing(border-box);
+
+    font-size: 12px;
+    line-height: @popup-radius;
+
+    .border-radius(@popup-radius);
+
+    .transition(all 200ms);
+    transform-origin: 50% 0;
+    transform: scale(0) translateY(-100%);
+    opacity: 0;
+
+    .Badge:hover & {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.Badge--liam {
+    background: orange;
+}
+.Badge--eno {
+    background: hotpink;
+}
+.Badge--other {
+    background: lime;
+}

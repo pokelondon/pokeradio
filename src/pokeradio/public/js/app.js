@@ -6,10 +6,11 @@ define([
     'views/playlist/playlist-view',
     'helpers/analytics',
     'views/messaging/controller',
+    'views/badge/badges-list',
     'events',
     'models/app_state'
     ],
-    function($, Backbone, _, SearchView, PlaylistView, Analytics, MessagingController, _events, appState){
+    function($, Backbone, _, SearchView, PlaylistView, Analytics, messagingController, badgesList, _events, appState){
 
         if(socket) {
             Backbone.trigger('socket:connected');
@@ -50,6 +51,10 @@ define([
                 Backbone.trigger('playlist:scratch', data);
             });
 
+            socket.on('badge:add', function(user_id) {
+                Backbone.trigger('badge:add', user_id);
+            });
+
             socket.on('error', function(data) {
                 console.error(data);
             });
@@ -78,7 +83,8 @@ define([
                 this.appState = appState;
                 this.searchview = new SearchView();
                 this.playlistview = new PlaylistView();
-                this.messagingcontroller = MessagingController; // singleton
+                this.messagingcontroller = messagingController; // singleton
+                this.badgecontroller = badgesList; // singleton
 
                 //(function() {
                     //var from = new Date('2015-04-01 00:00:00');
