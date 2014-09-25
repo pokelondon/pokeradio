@@ -19,7 +19,7 @@ from django.conf import settings
 from .push import track_played_dweet, track_played_pusher
 
 from pokeradio.history.utils import get_or_create_track, record_track_play
-from pokeradio.models import Track
+from pokeradio.models import Track, AwardedBadge
 from pokeradio.scoring.models import Point
 from pokeradio.responses import (JSONResponse,
                                  JSONResponseError,
@@ -249,7 +249,9 @@ class MopidyPlaylistTrack(View):
 
 def badges(request, user_id):
     print 'Badges requested for', user_id
-    return JSONResponse([{'type': 'liam'}, ])
+    badges = AwardedBadge.objects.filter(user_id=user_id)
+    badges_json = [{ 'type': b.slug } for b in badges]
+    return JSONResponse(badges_json)
 
 
 playlist = csrf_exempt(Playlist.as_view())
