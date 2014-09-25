@@ -122,3 +122,13 @@ class Message(models.Model):
             as_dict['timeout'] = self.timeout
 
         return as_dict
+
+
+class AwardedBadge(models.Model):
+    user = models.ForeignKey(User)
+    badge = models.CharField(max_length=50,
+                             blank=False,
+                             unique=True)
+
+    def __unicode__(self):
+        return u'{0} badge awarded to {1}'.format(self.badge, self.user)

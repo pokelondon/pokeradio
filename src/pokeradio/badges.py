@@ -46,6 +46,10 @@ class BadgeManager(object):
         return self
 
     def apply_badge(self, badge, user):
-        # IOU some ORM code
+        from pokeradio.models import AwardedBadge
         print "Applying {0} to {1}".format(badge, user)
+        ab = AwardedBadge()
+        ab.badge = badge.slug
+        ab.user = user
+        ab.save()
         return self
