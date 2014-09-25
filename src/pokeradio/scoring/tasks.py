@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 
 import requests
 import logging
@@ -5,16 +6,16 @@ import logging
 from django.db import models, IntegrityError
 from django.conf import settings
 
+from pokeradio.scoring.slack import Slack
+
 from pokeradio.celery import app
-from pokeradio.spotify_playlist.utils import get_or_create_cred
-from pokeradio.spotify_playlist.models import PlaylistItem
-from .slack import Slack
 
 logger = logging.getLogger('raven')
 
-@app.task
-def send_slack_vote_task(point_id):
+@app.task(bind=True, default_retry_delay=5, max_retries=2)
+def send_slack_vote_task(self, point_id):
     from .models import Point
+
 
     point = Point.objects.get(pk=point_id)
 
@@ -39,7 +40,11 @@ def send_slack_vote_task(point_id):
     msg.add_field(title=title, value=track_votes, short=True)
     msg.add_field(title=point.user.get_full_name(), value=user_votes,
                   short=True)
-    msg.send()
+
+    try:
+        msg.send()
+    except Exception as exc:
+        raise self.retry(exc=exc)
 
 @app.task
 def send_light_vote_task(post_vars):
@@ -48,8 +53,8 @@ def send_light_vote_task(post_vars):
     except Exception:
         logger.warn('cannot send data to lights server')
 
-@app.task
-def send_slack_skip_task(verb, score, point_id):
+@app.task(bind=True, default_retry_delay=5, max_retries=2)
+def send_slack_skip_task(self, verb, score, point_id):
     from .models import Point
 
     point = Point.objects.get(pk=point_id)
@@ -68,14 +73,19 @@ def send_slack_skip_task(verb, score, point_id):
     msg.add_field(title=title, value=total_votes, short=True)
     msg.add_field(title=point.user.get_full_name(), value=score, short=True)
 
-    msg.send()
-    
+    try:
+        msg.send()
+    except Exception as exc:
+        raise self.retry(exc=exc)
 
 @app.task
 def add_to_personal_playlist_task(point_id):
     
+    from pokeradio.spotify_playlist.utils import get_or_create_cred
+    from pokeradio.spotify_playlist.models import PlaylistItem
     from .models import Point
     
+
     point = Point.objects.get(pk=point_id)
 
     cred = get_or_create_cred(point.vote_from)
