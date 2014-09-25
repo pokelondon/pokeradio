@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.db import IntegrityError
 
 
 class BaseBadge(object):
@@ -48,8 +49,9 @@ class BadgeManager(object):
     def apply_badge(self, badge, user):
         from pokeradio.models import AwardedBadge
         print "Applying {0} to {1}".format(badge, user)
-        ab = AwardedBadge()
-        ab.badge = badge.slug
-        ab.user = user
-        ab.save()
+
+        try:
+            AwardedBadge.objects.create(badge=badge.slug, user=user)
+        except IntegrityError:
+            pass
         return self

@@ -16,6 +16,12 @@ io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
 r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
                            db=settings.REDIS_DB)
 
+def badge_saved(sender, instance, created, **kwargs):
+
+    if created:
+         io.Of('/app').Emit('badge:add', instance.user_id)
+
+
 def track_saved(sender, instance, created, **kwargs):
 
     if created:

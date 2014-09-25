@@ -8,7 +8,8 @@ from django.contrib.auth.models import User
 
 from pokeradio.scoring.models import Point
 
-from .recievers import track_saved, track_saved_badge_handler, track_deleted
+from .recievers import (badge_saved, track_saved, track_saved_badge_handler,
+                        track_deleted)
 from .managers import TrackManager
 
 
@@ -127,8 +128,13 @@ class Message(models.Model):
 class AwardedBadge(models.Model):
     user = models.ForeignKey(User)
     badge = models.CharField(max_length=50,
-                             blank=False,
-                             unique=True)
+                             blank=False)
+
+    class Meta:
+        unique_together = ('user', 'badge',)
 
     def __unicode__(self):
         return u'{0} badge awarded to {1}'.format(self.badge, self.user)
+
+
+post_save.connect(badge_saved, sender=AwardedBadge)
