@@ -49,7 +49,7 @@ def send_light_vote_task(post_vars):
         logger.warn('cannot send data to lights server')
 
 @app.task
-def send_slack_skip_task(self, verb, score, point_id):
+def send_slack_skip_task(verb, score, point_id):
     from .models import Point
 
     point = Point.objects.get(pk=point_id)

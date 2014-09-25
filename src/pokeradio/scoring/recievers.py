@@ -41,7 +41,7 @@ def send_slack_vote(sender, instance, created, **kwargs):
     if not instance.user.groups.filter(name='Slack'):
         return
 
-    send_slack_vote_task(instance.id)
+    send_slack_vote_task.delay(instance.id)
 
 def send_light_vote(sender, instance, created, **kwargs):
     """ post_save on instance of Point
@@ -87,7 +87,7 @@ def check_track_skip(sender, instance, created, **kwargs):
         # Removes the track from the playlist if not yet played
         instance.playlist_track.delete()
 
-    send_slack_skip_task(verb, score, instance.id)
+    send_slack_skip_task.delay(verb, score, instance.id)
 
 
 
@@ -101,6 +101,6 @@ def add_to_personal_playlist(sender, instance, created, **kwargs):
     if instance.value < 0:
         return
 
-    add_to_personal_playlist_task(instance.id)
+    add_to_personal_playlist_task.delay(instance.id)
 
 
