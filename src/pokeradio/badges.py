@@ -1,9 +1,4 @@
-from datetime import datetime
-from django.db import IntegrityError
-
-NARRATIVE = {
-    'liam': "Stick with something good! We get it."
-}
+from datetime import datetime, timedelta
 
 
 class BaseBadge(object):
@@ -11,6 +6,7 @@ class BaseBadge(object):
     name = ''
     description = ''
     image = ''
+    expiry = timedelta(days=1)
 
     def __unicode__(self):
         return u'{0} badge'.format(self.name)
@@ -21,6 +17,7 @@ class LiamBadge(BaseBadge):
     name = 'Liam'
     description = "Stick with something good! We get it."
     image = 'foo.png'
+    expiry = timedelta(days=1)
 
     def on_add(self, track):
         from pokeradio.models import Track
@@ -60,8 +57,8 @@ class BadgeManager(object):
         from pokeradio.models import AwardedBadge
         print "Applying {0} to {1}".format(badge, user)
 
-        try:
-            AwardedBadge.objects.create(badge=badge.slug, user=user)
-        except IntegrityError:
-            pass
+        if AwardedBadge.objects.active(badge=badge.slug, user=user).count() == 0:
+            AwardedBadge.objects.create(badge=badge.slug,
+                                        user=user,
+                                        expires=datetime.today() + badge.expiry)
         return self

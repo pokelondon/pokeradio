@@ -1,5 +1,12 @@
+from datetime import datetime
 from django.db.models import Manager, Q
 from django.core.exceptions import ObjectDoesNotExist
+
+
+class AwardedBadgeManager(Manager):
+    def active(self, *args, **kwargs):
+        return super(AwardedBadgeManager, self).get_queryset(*args, **kwargs) \
+            .filter(expires__gt=datetime.today())
 
 
 class TrackManager(Manager):

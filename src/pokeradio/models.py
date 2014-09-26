@@ -10,7 +10,7 @@ from pokeradio.scoring.models import Point
 
 from .recievers import (badge_saved, track_saved, track_saved_badge_handler,
                         track_deleted)
-from .managers import TrackManager
+from .managers import AwardedBadgeManager, TrackManager
 from .badges import BadgeManager
 
 
@@ -129,9 +129,9 @@ class Message(models.Model):
 class AwardedBadge(models.Model):
     user = models.ForeignKey(User)
     badge = models.CharField(max_length=50, blank=False)
+    expiry = models.DateField(null=True)
 
-    class Meta:
-        unique_together = ('user', 'badge',)
+    objects = AwardedBadgeManager()
 
     def description(self):
         return BadgeManager().get_badge(self.badge)
