@@ -17,7 +17,7 @@ class LiamBadge(BaseBadge):
     name = 'Liam'
     description = "Stick with something good! We get it."
     image = 'foo.png'
-    expiry = timedelta(days=1)
+    delta = timedelta(days=1)
 
     def on_add(self, track):
         from pokeradio.models import Track
@@ -60,5 +60,5 @@ class BadgeManager(object):
         if AwardedBadge.objects.active(badge=badge.slug, user=user).count() == 0:
             AwardedBadge.objects.create(badge=badge.slug,
                                         user=user,
-                                        expires=datetime.today() + badge.expiry)
+                                        expires=datetime.today() + badge.delta)
         return self
