@@ -4,7 +4,8 @@ require.config({
         backbone: 'lib/backbone/backbone.min',
         underscore: 'lib/underscore/underscore',
         iobind: 'lib/backbone/backbone.iobind.min',
-        iosync: 'lib/backbone/backbone.iosync.min'
+        iosync: 'lib/backbone/backbone.iosync.min',
+        'jquery.cookie': '//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min'
     },
     shim:{
         'backbone': {

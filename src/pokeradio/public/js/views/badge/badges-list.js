@@ -1,5 +1,5 @@
 /**
- * Badg ListView
+ * Badge ListView
  */
 
 define(
@@ -7,9 +7,11 @@ define(
         'backbone',
         'underscore',
         'collections/badges',
-        'views/badge/badge-item'
+        'views/badge/badge-item',
+        'views/messaging/controller',
+        'jquery.cookie'
         ],
-    function($, Backbone,_ , Collection, ItemView){
+    function($, Backbone, _, Collection, ItemView, MessagingController){
         var View = Backbone.View.extend({
 
             initialize: function() {
@@ -25,6 +27,17 @@ define(
 
                 this.$el.append(item.render().el);
                 item.inserted();
+
+                var lastSeen = $.cookie('lastSeenBadge', Number); // passing in function performs type conversion on the value
+                if (typeof lastSeen === 'undefined' || parseInt(model.get('id'), 10) > lastSeen) {
+                    $.cookie('lastSeenBadge', model.get('id'));
+
+                    MessagingController.createMessage({
+                        text: 'You just gained the ' + model.get('type') + ' badge!',
+                        type: 'success',
+                        timeout: false
+                    });
+                }
             }
         });
 
