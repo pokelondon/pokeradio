@@ -57,7 +57,7 @@ class BadgeManager(object):
         from pokeradio.models import AwardedBadge
         print "Applying {0} to {1}".format(badge, user)
 
-        if AwardedBadge.objects.active(badge=badge.slug, user=user).count() == 0:
+        if AwardedBadge.objects.active().filter(badge=badge.slug, user=user).count() == 0:
             AwardedBadge.objects.create(badge=badge.slug,
                                         user=user,
                                         expires=datetime.today() + badge.delta)
