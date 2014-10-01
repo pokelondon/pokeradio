@@ -24,26 +24,25 @@ def badge_saved(sender, instance, created, **kwargs):
 
 def track_saved(sender, instance, created, **kwargs):
 
+    bm = BadgeManager()
+
     if created:
         data = json.dumps(instance.to_dict())
         io.Of('/app').Emit('playlist:add', data)
 
         # Track add redis event. Mopidy may resume if it's been waiting
         r_conn.publish('mopidy:track_added', data)
+
+        bm.trigger('add', instance)
     else:
         # Updating a track record, must be marking it as played
         io.Of('/app').Emit('playlist:played', json.dumps(instance.to_dict()))
 
 
-def track_saved_badge_handler(sender, instance, created, **kwargs):
+def track_deleted(sender, instance, **kwargs):
 
     bm = BadgeManager()
-
-    if created:
-        bm.trigger('add', instance, instance.user)
-
-
-def track_deleted(sender, instance, **kwargs):
+    bm.trigger('delete', instance)
 
     if not instance.played:
         io.Of('/app').Emit('playlist:delete', instance.id)

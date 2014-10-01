@@ -13,6 +13,7 @@ from .managers import TransactionManager
 from .recievers import (send_slack_vote,
                         send_light_vote,
                         check_track_skip,
+                        check_vote_badges,
                         add_to_personal_playlist)
 
 
@@ -79,4 +80,5 @@ class Point(BaseTransaction):
 post_save.connect(send_slack_vote, sender=Point)
 post_save.connect(send_light_vote, sender=Point)
 post_save.connect(check_track_skip, sender=Point)
+post_save.connect(check_vote_badges, sender=Point)
 post_save.connect(add_to_personal_playlist, sender=Point)
