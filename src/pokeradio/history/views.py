@@ -9,10 +9,15 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Count, Q, Sum
 
+from pokeradio.badges import get_badge_manager
+from pokeradio.models import AwardedBadge
 from pokeradio.views import WeekArchiveRedirect
 
 from .models import Play, Artist, ArchiveTrack
 from .patched_generic_views import PatchedWeekArchiveView
+
+
+bm = get_badge_manager()
 
 
 class Dashboard(TemplateView, ContextMixin):
@@ -29,6 +34,8 @@ class Dashboard(TemplateView, ContextMixin):
     def get_context_data(self, **kwargs):
         context = {}
         context['object_list'] = self.get_user_favs()
+        awarded_badges = AwardedBadge.objects.active().filter(user=self.request.user)
+        context['awarded_badges'] = [bm.get_badge(ab.badge) for ab in awarded_badges]
         context.update(kwargs)
         return super(Dashboard, self).get_context_data(**context)
 

@@ -4147,19 +4147,19 @@ a.spotify-link:hover {
 }
 .Badge {
   background: url('../img/badges_sprite.png') 0 0 no-repeat #000000;
-  -webkit-background-size: 156.8px 107.52000000000001px;
-  -moz-background-size: 156.8px 107.52000000000001px;
-  background-size: 156.8px 107.52000000000001px;
+  -webkit-background-size: 560px 384px;
+  -moz-background-size: 560px 384px;
+  background-size: 560px 384px;
   position: relative;
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 108px;
+  height: 108px;
   text-align: right;
   vertical-align: middle;
   cursor: pointer;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  border-radius: 20px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box;
@@ -4173,11 +4173,18 @@ a.spotify-link:hover {
   opacity: 0;
   margin-left: -50px;
 }
+.Badge--small {
+  width: 30px;
+  height: 30px;
+  -webkit-background-size: 156.8px 107.52000000000001px;
+  -moz-background-size: 156.8px 107.52000000000001px;
+  background-size: 156.8px 107.52000000000001px;
+}
 .Badge-title {
   position: absolute;
   text-align: center;
   background: #000;
-  top: 150%;
+  top: 110%;
   left: 50%;
   margin-left: -40px;
   height: 80px;
@@ -4187,6 +4194,7 @@ a.spotify-link:hover {
   box-sizing: border-box;
   font-size: 12px;
   line-height: 80px;
+  color: #ffffff;
   -webkit-border-radius: 80px;
   -moz-border-radius: 80px;
   border-radius: 80px;
@@ -4205,36 +4213,69 @@ a.spotify-link:hover {
   transform: scale(1) translateY(0);
   opacity: 1;
 }
+.Badge--small .Badge-title {
+  top: 150%;
+}
 .Badge--acidhouse {
+  background-position: -122px -128px;
+}
+.Badge--acidhouse.Badge--small {
   background-position: -34.160000000000004px -35.84px;
 }
 .Badge--backpedal {
+  background-position: -448px -128px;
+}
+.Badge--backpedal.Badge--small {
   background-position: -125.44000000000001px -35.84px;
 }
 .Badge--cherry {
+  background-position: -336px 0;
+}
+.Badge--cherry.Badge--small {
   background-position: -94.08000000000001px 0;
 }
 .Badge--earlybird {
+  background-position: -448px 0;
+}
+.Badge--earlybird.Badge--small {
   background-position: -125.44000000000001px 0;
 }
 .Badge--eno {
+  background-position: 0 -128px;
+}
+.Badge--eno.Badge--small {
   background-position: 0 -35.84px;
 }
 .Badge--florida {
+  background-position: 0 -256px;
+}
+.Badge--florida.Badge--small {
   background-position: 0 -71.68px;
 }
 .Badge--grumpybugger {
+  background-position: -122px 0;
+}
+.Badge--grumpybugger.Badge--small {
   background-position: -34.160000000000004px 0;
 }
 .Badge--latenightvibes {
+  background-position: -336px -128px;
+}
+.Badge--latenightvibes.Badge--small {
   background-position: -94.08000000000001px -35.84px;
 }
 .Badge--liam {
+  background-position: -224px 0;
+}
+.Badge--liam.Badge--small {
   background-position: -62.720000000000006px 0;
 }
 .Badge--rickroll {
   background-position: 0 0;
 }
 .Badge--swipe {
+  background-position: -224px -128px;
+}
+.Badge--swipe.Badge--small {
   background-position: -62.720000000000006px -35.84px;
 }

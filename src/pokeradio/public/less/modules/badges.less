@@ -7,18 +7,18 @@
 
 .Badge {
     background: url('../img/badges_sprite.png') 0 0 no-repeat #000;
-    .background-size(560px * 0.28 384px * 0.28);
+    .background-size(560px 384px);
 
     position: relative;
     display: inline-block;
-    width: 30px;
-    height: 30px;
+    width: 108px;
+    height: 108px;
 
     text-align: right;
     vertical-align: middle;
     cursor: pointer;
 
-    .border-radius(20px);
+    .border-radius(50%);
 
     transition: margin 300ms ease-in-out, opacity 100ms 100ms ease-in, transform 200ms 100ms ease-in;
     transform: scale(1);
@@ -32,12 +32,19 @@
     }
 }
 
+.Badge--small {
+    width: 30px;
+    height: 30px;
+
+    .background-size(560px * 0.28 384px * 0.28);
+}
+
 .Badge-title {
     position: absolute;
     text-align: center;
     background: #000;
 
-    top: 150%;
+    top: 110%;
     left: 50%;
     margin-left: -@popup-radius/2;
 
@@ -47,6 +54,7 @@
 
     font-size: 12px;
     line-height: @popup-radius;
+    color: @white;
 
     .border-radius(@popup-radius);
 
@@ -59,48 +67,96 @@
         transform: scale(1) translateY(0);
         opacity: 1;
     }
+
+    .Badge--small & {
+        top: 150%;
+    }
 }
 
 .Badge--acidhouse {
-    background-position: -122px * 0.28 -128px * 0.28;
+    background-position: -122px -128px;
+
+    &.Badge--small {
+        background-position: -122px * 0.28 -128px * 0.28;
+    }
 }
 
 .Badge--backpedal {
-    background-position: -448px * 0.28 -128px * 0.28;
+    background-position: -448px -128px;
+
+    &.Badge--small {
+        background-position: -448px * 0.28 -128px * 0.28;
+    }
 }
 
 .Badge--cherry {
-    background-position: -336px * 0.28 0;
+    background-position: -336px 0;
+
+    &.Badge--small {
+        background-position: -336px * 0.28 0;
+    }
 }
 
 .Badge--earlybird {
-    background-position: -448px * 0.28 0;
+    background-position: -448px 0;
+
+    &.Badge--small {
+        background-position: -448px * 0.28 0;
+    }
 }
 
 .Badge--eno {
-    background-position: 0 -128px * 0.28;
+    background-position: 0 -128px;
+
+    &.Badge--small {
+        background-position: 0 -128px * 0.28;
+    }
 }
 
 .Badge--florida {
-    background-position: 0 -256px * 0.28;
+    background-position: 0 -256px;
+
+    &.Badge--small {
+        background-position: 0 -256px * 0.28;
+    }
 }
 
 .Badge--grumpybugger {
-    background-position: -122px * 0.28 0;
+    background-position: -122px 0;
+
+    &.Badge--small {
+        background-position: -122px * 0.28 0;
+    }
 }
 
 .Badge--latenightvibes {
-    background-position: -336px * 0.28 -128px * 0.28;
+    background-position: -336px -128px;
+
+    &.Badge--small {
+        background-position: -336px * 0.28 -128px * 0.28;
+    }
 }
 
 .Badge--liam {
-    background-position: -224px * 0.28 0;
+    background-position: -224px 0;
+
+    &.Badge--small {
+        background-position: -224px * 0.28 0;
+    }
 }
 
 .Badge--rickroll {
     background-position: 0 0;
+
+    &.Badge--small {
+
+    }
 }
 
 .Badge--swipe {
-    background-position: -224px * 0.28 -128px * 0.28;
+    background-position: -224px -128px;
+
+    &.Badge--small {
+        background-position: -224px * 0.28 -128px * 0.28;
+    }
 }

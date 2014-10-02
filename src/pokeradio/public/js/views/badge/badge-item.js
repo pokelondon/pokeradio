@@ -8,7 +8,7 @@ define(
     function($, Backbone,_ , Badge, _events){
         var View = Backbone.View.extend({
             tagName: 'div',
-            className: 'Badge is-new',
+            className: 'Badge Badge--small is-new',
 
             initialize: function(options) {
                 this.model = options.model;
