@@ -4146,7 +4146,10 @@ a.spotify-link:hover {
   text-align: right;
 }
 .Badge {
-  background: green;
+  background: url('../img/badges_sprite.png') 0 0 no-repeat #000000;
+  -webkit-background-size: 156.8px 107.52000000000001px;
+  -moz-background-size: 156.8px 107.52000000000001px;
+  background-size: 156.8px 107.52000000000001px;
   position: relative;
   display: inline-block;
   width: 30px;
@@ -4202,12 +4205,36 @@ a.spotify-link:hover {
   transform: scale(1) translateY(0);
   opacity: 1;
 }
-.Badge--liam {
-  background: orange;
+.Badge--acidhouse {
+  background-position: -34.160000000000004px -35.84px;
+}
+.Badge--backpedal {
+  background-position: -125.44000000000001px -35.84px;
+}
+.Badge--cherry {
+  background-position: -94.08000000000001px 0;
+}
+.Badge--earlybird {
+  background-position: -125.44000000000001px 0;
 }
 .Badge--eno {
-  background: hotpink;
+  background-position: 0 -35.84px;
 }
-.Badge--other {
-  background: lime;
+.Badge--florida {
+  background-position: 0 -71.68px;
+}
+.Badge--grumpybugger {
+  background-position: -34.160000000000004px 0;
+}
+.Badge--latenightvibes {
+  background-position: -94.08000000000001px -35.84px;
+}
+.Badge--liam {
+  background-position: -62.720000000000006px 0;
+}
+.Badge--rickroll {
+  background-position: 0 0;
+}
+.Badge--swipe {
+  background-position: -62.720000000000006px -35.84px;
 }

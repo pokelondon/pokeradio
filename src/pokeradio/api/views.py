@@ -18,6 +18,7 @@ from django.conf import settings
 
 from .push import track_played_dweet, track_played_pusher
 
+from pokeradio.badges import BadgeManager
 from pokeradio.history.utils import get_or_create_track, record_track_play
 from pokeradio.models import Track, AwardedBadge
 from pokeradio.scoring.models import Point
@@ -248,9 +249,9 @@ class MopidyPlaylistTrack(View):
             return JSONResponse({'status': 'OK'})
 
 def badges(request, user_id):
-    print 'Badges requested for', user_id
+    bm = BadgeManager()
     awarded_badges = AwardedBadge.objects.active().filter(user_id=user_id)
-    awarded_badges_json = [{ 'type': ab.badge, 'id': ab.pk } for ab in awarded_badges]
+    awarded_badges_json = [dict(bm.get_badge(ab.badge).to_dict().items() + { 'id': ab.pk }.items()) for ab in awarded_badges]
     return JSONResponse(awarded_badges_json)
 
 

@@ -6,18 +6,23 @@ class BaseBadge(object):
     slug = ''
     name = ''
     description = ''
-    image = ''
     expiry = timedelta(days=1)
 
     def __unicode__(self):
         return u'{0} badge'.format(self.name)
+
+    def to_dict(self):
+        return {
+            'slug': self.slug,
+            'name': self.name,
+            'description': self.description,
+        }
 
 
 class AcidHouseBadge(BaseBadge):
     slug = 'acidhouse'
     name = 'Acid House'
     description = "Super happy this week - lots of upvotes"
-    image = 'foo.png'
     delta = timedelta(days=7)
 
     def on_vote(self, point):
@@ -34,7 +39,6 @@ class BackpedalBadge(BaseBadge):
     slug = 'backpedal'
     name = 'Backpedal'
     description = "Delete a track you added"
-    image = 'foo.png'
     delta = timedelta(days=7)
 
     def on_delete(self, track):
@@ -45,7 +49,6 @@ class CherryBadge(BaseBadge):
     slug = 'cherry'
     name = 'Cherry'
     description = "Played a track for the first time"
-    image = 'foo.png'
     delta = timedelta(days=1)
 
     def on_add(self, track):
@@ -59,7 +62,6 @@ class EarlyBirdBadge(BaseBadge):
     slug = 'earlybird'
     name = 'Early Bird'
     description = "First play of the day"
-    image = 'foo.png'
     delta = timedelta(days=1)
 
     def on_add(self, track):
@@ -74,7 +76,6 @@ class EnoBadge(BaseBadge):
     slug = 'eno'
     name = 'Eno'
     description = "Played a track longer than 20 minutes"
-    image = 'foo.png'
     delta = timedelta(days=7)
 
     def on_add(self, track):
@@ -85,7 +86,6 @@ class FloridaBadge(BaseBadge):
     slug = 'florida'
     name = 'Florida'
     description = "Your vote caused a track to be binned. Swing state!"
-    image = 'foo.png'
     delta = timedelta(days=7)
 
     def on_skip(self, point):
@@ -96,7 +96,6 @@ class GrumpyBuggerBadge(BaseBadge):
     slug = 'grumpybugger'
     name = 'Grumpy Bugger'
     description = "Gave a lot of downvotes this week"
-    image = 'foo.png'
     delta = timedelta(days=7)
 
     def on_vote(self, point):
@@ -113,7 +112,6 @@ class LateNightVibesBadge(BaseBadge):
     slug = 'latenightvibes'
     name = 'Late Night Vibes'
     description = "Played a track after midnight"
-    image = 'foo.png'
     delta = timedelta(days=7)
 
     def on_add(self, track):
@@ -124,7 +122,6 @@ class LiamBadge(BaseBadge):
     slug = 'liam'
     name = 'Liam'
     description = "Played a track that was already played today"
-    image = 'foo.png'
     delta = timedelta(days=1)
 
     def on_add(self, track):
@@ -139,7 +136,6 @@ class RickrollBadge(BaseBadge):
     slug = 'rickroll'
     name = 'Rickroll'
     description = "Never gonna give you up..."
-    image = 'foo.png'
     delta = timedelta(days=30)
 
     def on_add(self, track):
@@ -152,7 +148,6 @@ class SwipeBadge(BaseBadge):
     slug = 'swipe'
     name = 'Swipe'
     description = "Played a song that got voted off"
-    image = 'foo.png'
     delta = timedelta(days=7)
 
     def on_skip(self, point):
@@ -177,7 +172,7 @@ class BadgeManager(object):
         self._badges.append(RickrollBadge())
         self._badges.append(SwipeBadge())
 
-    def get_badge(slug):
+    def get_badge(self, slug):
         for badge in self._badges:
             if badge.slug == slug:
                 return badge
