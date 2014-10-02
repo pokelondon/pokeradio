@@ -11,7 +11,7 @@ from django.conf import settings
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
-from pokeradio.badges import BadgeManager
+from pokeradio.badges import get_badge_manager
 
 from .slack import Slack
 from tasks import (send_slack_vote_task,
@@ -20,6 +20,7 @@ from tasks import (send_slack_vote_task,
                     add_to_personal_playlist_task)
 
 
+bm = get_badge_manager()
 
 logger = logging.getLogger('raven')
 
@@ -76,7 +77,6 @@ def check_track_skip(sender, instance, created, **kwargs):
     verb = 'Scratched'
     data = json.dumps(instance.playlist_track.to_dict())
 
-    bm = BadgeManager()
     bm.trigger('skip', instance)
 
     if instance.playlist_track.is_playing():
@@ -98,8 +98,6 @@ def check_track_skip(sender, instance, created, **kwargs):
 def check_vote_badges(sender, instance, created, **kwargs):
     """ Check any vote-related badges for possible awards
     """
-    bm = BadgeManager()
-
     if created:
         bm.trigger('vote', instance)
 

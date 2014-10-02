@@ -200,3 +200,13 @@ class BadgeManager(object):
                                         user=user,
                                         expires=datetime.today() + badge.delta)
         return self
+
+
+bm = False
+
+
+def get_badge_manager():
+    global bm
+    if bm is False:
+        bm = BadgeManager()
+    return bm

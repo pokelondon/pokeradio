@@ -16,7 +16,6 @@ define(
             },
             badgeAdded: function(user_id) {
                 if(user_id === PRAD.user_id) {
-                    console.log('Getting teh new badguz');
                     this.fetch();
                 }
             }
@@ -24,4 +23,3 @@ define(
         return Collection;
     }
 );
-

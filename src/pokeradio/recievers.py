@@ -7,8 +7,10 @@ from emitter import Emitter
 
 from django.conf import settings
 
-from pokeradio.badges import BadgeManager
+from pokeradio.badges import get_badge_manager
 
+
+bm = get_badge_manager()
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
               'db': settings.REDIS_DB})
@@ -23,8 +25,6 @@ def badge_saved(sender, instance, created, **kwargs):
 
 
 def track_saved(sender, instance, created, **kwargs):
-
-    bm = BadgeManager()
 
     if created:
         data = json.dumps(instance.to_dict())
@@ -41,7 +41,6 @@ def track_saved(sender, instance, created, **kwargs):
 
 def track_deleted(sender, instance, **kwargs):
 
-    bm = BadgeManager()
     bm.trigger('delete', instance)
 
     if not instance.played:

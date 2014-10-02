@@ -33,7 +33,7 @@ define(
                     $.cookie('lastSeenBadge', model.get('id'));
 
                     MessagingController.createMessage({
-                        text: 'You just gained the ' + model.get('type') + ' badge!',
+                        text: 'You just gained the ' + model.get('name') + ' badge!',
                         type: 'success',
                         timeout: false
                     });
