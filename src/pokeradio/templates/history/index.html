@@ -15,11 +15,14 @@
         <p><strong>Spotify account</strong> </p>
         <a class="btn" href="{% url 'spotify_playlist:index' %}">Setup Spotify</a>
         <p><strong>Your badges</strong></p>
-        {% for badge in awarded_badges %}
-        <div class='Badge Badge--{{ badge.slug }}'>
-            <div class='Badge-title'>{{ badge.name }}</div>
-        </div>
-        {% endfor %}
+        <ul class='BadgeList'>
+            {% for badge in awarded_badges %}
+            <li class='BadgeList-item'>
+                <div class='Badge Badge--{{ badge.slug }}'></div>
+                <strong>{{ badge.name }}:</strong> {{ badge.description }}
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 
     <div class="col-md-4">

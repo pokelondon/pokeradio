@@ -4279,3 +4279,45 @@ a.spotify-link:hover {
 .Badge--swipe.Badge--small {
   background-position: -62.720000000000006px -35.84px;
 }
+.BadgeList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.BadgeList-item {
+  margin: 10px 0;
+  padding: 10px;
+  background: #ffffff;
+  line-height: 110px;
+}
+.BadgeList-item:before,
+.BadgeList-item:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.BadgeList-item:after {
+  clear: both;
+}
+.BadgeList-item:before,
+.BadgeList-item:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.BadgeList-item:after {
+  clear: both;
+}
+.BadgeList-item:nth-child(2n) {
+  background: #f3f5ec;
+}
+.BadgeList-item .Badge {
+  float: left;
+  margin-right: 20px;
+}

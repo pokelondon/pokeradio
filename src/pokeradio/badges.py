@@ -38,7 +38,7 @@ class AcidHouseBadge(BaseBadge):
 class BackpedalBadge(BaseBadge):
     slug = 'backpedal'
     name = 'Backpedal'
-    description = "Delete a track you added"
+    description = "Deleted a track you added"
     delta = timedelta(days=7)
 
     def on_delete(self, user):

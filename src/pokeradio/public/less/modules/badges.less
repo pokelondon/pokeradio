@@ -160,3 +160,30 @@
         background-position: -224px * 0.28 -128px * 0.28;
     }
 }
+
+.BadgeList {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.BadgeList-item {
+    margin: 10px 0;
+    padding: 10px;
+
+    background: lighten(@background, 20%);
+
+    line-height: 110px;
+
+    .clearfix;
+
+    &:nth-child(2n) {
+        background: @background;
+    }
+
+    .Badge {
+        float: left;
+        margin-right: 20px;
+    }
+}
