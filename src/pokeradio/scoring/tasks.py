@@ -80,11 +80,11 @@ def send_slack_skip_task(self, verb, score, point_id):
 
 @app.task
 def add_to_personal_playlist_task(point_id):
-    
+
     from pokeradio.spotify_playlist.utils import get_or_create_cred
     from pokeradio.spotify_playlist.models import PlaylistItem
     from .models import Point
-    
+
 
     point = Point.objects.get(pk=point_id)
 
@@ -112,3 +112,17 @@ def add_to_personal_playlist_task(point_id):
         playlist_item.delete()
 
 
+@app.task
+def trigger_badge_vote_task(point_id):
+    from pokeradio.badges import BadgeManager
+    from pokeradio.scoring.models import Point
+    instance = Point.objects.get(id=point_id)
+    BadgeManager.trigger('vote', instance)
+
+
+@app.task
+def trigger_badge_skip_task(user_id):
+    from pokeradio.badges import BadgeManager
+    from django.contrib.auth.models import User
+    instance = User.objects.get(id=user_id)
+    BadgeManager.trigger('skip', instance)

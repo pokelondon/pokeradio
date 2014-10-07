@@ -7,10 +7,8 @@ from emitter import Emitter
 
 from django.conf import settings
 
-from pokeradio.badges import get_badge_manager
+from pokeradio.tasks import trigger_badge_add_task, trigger_badge_delete_task
 
-
-bm = get_badge_manager()
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
               'db': settings.REDIS_DB})
@@ -33,7 +31,7 @@ def track_saved(sender, instance, created, **kwargs):
         # Track add redis event. Mopidy may resume if it's been waiting
         r_conn.publish('mopidy:track_added', data)
 
-        bm.trigger('add', instance)
+        trigger_badge_add_task.delay(instance.id)
     else:
         # Updating a track record, must be marking it as played
         io.Of('/app').Emit('playlist:played', json.dumps(instance.to_dict()))
@@ -41,7 +39,7 @@ def track_saved(sender, instance, created, **kwargs):
 
 def track_deleted(sender, instance, **kwargs):
 
-    bm.trigger('delete', instance)
+    trigger_badge_delete_task.delay(instance.user.id)
 
     if not instance.played:
         io.Of('/app').Emit('playlist:delete', instance.id)

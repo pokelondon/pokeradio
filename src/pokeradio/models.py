@@ -10,7 +10,7 @@ from pokeradio.scoring.models import Point
 
 from .recievers import badge_saved, track_saved, track_deleted
 from .managers import AwardedBadgeManager, TrackManager
-from .badges import get_badge_manager
+from .badges import BadgeManager
 
 
 class Profile(models.Model):
@@ -132,8 +132,7 @@ class AwardedBadge(models.Model):
     objects = AwardedBadgeManager()
 
     def description(self):
-        bm = get_badge_manager()
-        return bm.get_badge(self.badge)
+        return BadgeManager.get_badge(self.badge)
 
     def __unicode__(self):
         return u'{0} badge awarded to {1}'.format(self.badge, self.user)

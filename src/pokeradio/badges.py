@@ -41,8 +41,8 @@ class BackpedalBadge(BaseBadge):
     description = "Delete a track you added"
     delta = timedelta(days=7)
 
-    def on_delete(self, track):
-        return (True, track.user)
+    def on_delete(self, user):
+        return (True, user)
 
 
 class CherryBadge(BaseBadge):
@@ -150,34 +150,34 @@ class SwipeBadge(BaseBadge):
     description = "Played a song that got voted off"
     delta = timedelta(days=7)
 
-    def on_skip(self, point):
-        return (True, point.playlist_track.user)
+    def on_skip(self, user):
+        return (True, user)
 
 
 class BadgeManager(object):
-    _badges = []
+    _badges = [
+        AcidHouseBadge(),
+        BackpedalBadge(),
+        CherryBadge(),
+        EarlyBirdBadge(),
+        EnoBadge(),
+        FloridaBadge(),
+        GrumpyBuggerBadge(),
+        LateNightVibesBadge(),
+        LiamBadge(),
+        RickrollBadge(),
+        SwipeBadge(),
+    ]
     _events = ['add', 'delete', 'skip', 'vote',]
 
-    def __init__(self):
-        # instantiate badges
-        self._badges.append(AcidHouseBadge())
-        self._badges.append(BackpedalBadge())
-        self._badges.append(CherryBadge())
-        self._badges.append(EarlyBirdBadge())
-        self._badges.append(EnoBadge())
-        self._badges.append(FloridaBadge())
-        self._badges.append(GrumpyBuggerBadge())
-        self._badges.append(LateNightVibesBadge())
-        self._badges.append(LiamBadge())
-        self._badges.append(RickrollBadge())
-        self._badges.append(SwipeBadge())
-
+    @classmethod
     def get_badge(self, slug):
         for badge in self._badges:
             if badge.slug == slug:
                 return badge
         return None
 
+    @classmethod
     def trigger(self, event, instance):
         if event not in self._events:
             raise KeyError("No such event")
@@ -191,6 +191,7 @@ class BadgeManager(object):
                 pass
         return self
 
+    @classmethod
     def apply_badge(self, badge, user):
         from pokeradio.models import AwardedBadge
         print "Applying {0} to {1}".format(badge, user)
@@ -200,13 +201,3 @@ class BadgeManager(object):
                                         user=user,
                                         expires=datetime.today() + badge.delta)
         return self
-
-
-bm = False
-
-
-def get_badge_manager():
-    global bm
-    if bm is False:
-        bm = BadgeManager()
-    return bm
