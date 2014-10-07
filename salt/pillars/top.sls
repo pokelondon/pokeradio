@@ -9,4 +9,6 @@ vagrant:
 
     # DB Creds
     - mysql
+
     - postgres
+
