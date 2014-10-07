@@ -121,8 +121,8 @@ def trigger_badge_vote_task(point_id):
 
 
 @app.task
-def trigger_badge_skip_task(user_id):
+def trigger_badge_skip_task(point_id):
     from pokeradio.badges import BadgeManager
-    from django.contrib.auth.models import User
-    instance = User.objects.get(id=user_id)
+    from pokeradio.scoring.models import Point
+    instance = Point.objects.get(id=point_id)
     BadgeManager.trigger('skip', instance)

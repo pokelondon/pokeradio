@@ -30,11 +30,3 @@ def trigger_badge_add_task(track_id):
     from pokeradio.models import Track
     instance = Track.objects.get(id=track_id)
     BadgeManager.trigger('add', instance)
-
-
-@app.task
-def trigger_badge_delete_task(user_id):
-    from pokeradio.badges import BadgeManager
-    from django.contrib.auth.models import User
-    instance = User.objects.get(id=user_id)
-    BadgeManager.trigger('delete', instance)

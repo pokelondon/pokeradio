@@ -35,16 +35,6 @@ class AcidHouseBadge(BaseBadge):
         return (upvote_count >= 10, point.vote_from)
 
 
-class BackpedalBadge(BaseBadge):
-    slug = 'backpedal'
-    name = 'Backpedal'
-    description = "Deleted a track you added"
-    delta = timedelta(days=7)
-
-    def on_delete(self, user):
-        return (True, user)
-
-
 class CherryBadge(BaseBadge):
     slug = 'cherry'
     name = 'Cherry'
@@ -150,14 +140,13 @@ class SwipeBadge(BaseBadge):
     description = "Played a song that got voted off"
     delta = timedelta(days=7)
 
-    def on_skip(self, user):
-        return (True, user)
+    def on_skip(self, point):
+        return (True, point.user)
 
 
 class BadgeManager(object):
     _badges = [
         AcidHouseBadge(),
-        BackpedalBadge(),
         CherryBadge(),
         EarlyBirdBadge(),
         EnoBadge(),

@@ -7,7 +7,7 @@ from emitter import Emitter
 
 from django.conf import settings
 
-from pokeradio.tasks import trigger_badge_add_task, trigger_badge_delete_task
+from pokeradio.tasks import trigger_badge_add_task
 
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
@@ -38,8 +38,6 @@ def track_saved(sender, instance, created, **kwargs):
 
 
 def track_deleted(sender, instance, **kwargs):
-
-    trigger_badge_delete_task.delay(instance.user.id)
 
     if not instance.played:
         io.Of('/app').Emit('playlist:delete', instance.id)

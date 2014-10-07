@@ -76,7 +76,7 @@ def check_track_skip(sender, instance, created, **kwargs):
     verb = 'Scratched'
     data = json.dumps(instance.playlist_track.to_dict())
 
-    trigger_badge_skip_task.delay(instance.user.id)
+    trigger_badge_skip_task.delay(instance.id)
 
     if instance.playlist_track.is_playing():
         # Notify browsers
