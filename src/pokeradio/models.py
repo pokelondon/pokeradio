@@ -8,8 +8,9 @@ from django.contrib.auth.models import User
 
 from pokeradio.scoring.models import Point
 
-from .recievers import track_saved, track_deleted
-from .managers import TrackManager
+from .recievers import badge_saved, track_saved, track_deleted
+from .managers import AwardedBadgeManager, TrackManager
+from .badges import BadgeManager
 
 
 class Profile(models.Model):
@@ -44,10 +45,10 @@ class Track(models.Model):
 
         """Prevent hitting the DB"""
         return [ p.vote_from_id for p in self.point_set.all() if p.action == action]
-        
+
         """return map(int, self.point_set.all().filter(action=action)
                    .values_list('vote_from__id', flat=True))"""
-        
+
 
     def to_dict(self):
         return {
@@ -121,3 +122,20 @@ class Message(models.Model):
             as_dict['timeout'] = self.timeout
 
         return as_dict
+
+
+class AwardedBadge(models.Model):
+    user = models.ForeignKey(User)
+    badge = models.CharField(max_length=50, blank=False)
+    expires = models.DateField(null=True)
+
+    objects = AwardedBadgeManager()
+
+    def description(self):
+        return BadgeManager.get_badge(self.badge)
+
+    def __unicode__(self):
+        return u'{0} badge awarded to {1}'.format(self.badge, self.user)
+
+
+post_save.connect(badge_saved, sender=AwardedBadge)

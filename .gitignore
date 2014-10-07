@@ -13,3 +13,4 @@ node_modules/
 *.swp
 *.coverage
 npm-debug.log
+dump.rdb

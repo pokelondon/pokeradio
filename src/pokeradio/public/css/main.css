@@ -2878,6 +2878,26 @@ h1 + p.intro {
   padding: 10px 15px 10px 0;
   margin: -10px -15px -10px 0;
 }
+.NavBar-user .inner:after {
+  content: "\25BC";
+  display: block;
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  top: 0;
+  -webkit-transition: transform 200ms ease-in-out;
+  -moz-transition: transform 200ms ease-in-out;
+  -o-transition: transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out;
+  font-size: 0.8em;
+}
+.NavBar-user:hover .inner:after {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 .NavBar-user:hover .NavBar-dropdown {
   -webkit-transform: translateY(0);
   -moz-transform: translateY(0);
@@ -2903,13 +2923,16 @@ h1 + p.intro {
   -o-transition: transform 200ms;
   transition: transform 200ms;
   z-index: 2;
+  padding-top: 10px;
 }
 .NavBar-dropdown li {
   display: block;
   padding: 0;
-  border-top: 1px solid #444;
   line-height: 16px;
   font-size: 16px;
+}
+.NavBar-dropdown li.is-active a {
+  color: #61dfb4;
 }
 .NavBar-dropdown a {
   margin: 0;
@@ -2922,6 +2945,10 @@ h1 + p.intro {
 .NavBar-dropdown a:hover {
   background: #45444d;
   text-decoration: none;
+}
+.NavBar-dropdown .Nav-divider {
+  border-top: 1px solid #999;
+  margin: 5px 0;
 }
 #owlFavs {
   padding: 0;
@@ -4113,4 +4140,184 @@ a.spotify-link:hover {
     right: 10px;
     font-size: 20px;
   }
+}
+.Badge-container {
+  display: inline-block;
+  text-align: right;
+}
+.Badge {
+  background: url('../img/badges_sprite.png') 0 0 no-repeat #000000;
+  -webkit-background-size: 560px 384px;
+  -moz-background-size: 560px 384px;
+  background-size: 560px 384px;
+  position: relative;
+  display: inline-block;
+  width: 108px;
+  height: 108px;
+  text-align: right;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  transition: margin 300ms ease-in-out, opacity 100ms 100ms ease-in, transform 200ms 100ms ease-in;
+  transform: scale(1);
+  opacity: 1;
+  margin: 0 6px 0 0;
+}
+.Badge.is-new {
+  transform: scale(0);
+  opacity: 0;
+  margin-left: -50px;
+}
+.Badge--small {
+  width: 30px;
+  height: 30px;
+  -webkit-background-size: 156.8px 107.52000000000001px;
+  -moz-background-size: 156.8px 107.52000000000001px;
+  background-size: 156.8px 107.52000000000001px;
+}
+.Badge-title {
+  position: absolute;
+  text-align: center;
+  background: #000;
+  top: 110%;
+  left: 50%;
+  margin-left: -40px;
+  height: 80px;
+  width: 80px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 12px;
+  line-height: 80px;
+  color: #ffffff;
+  -webkit-border-radius: 80px;
+  -moz-border-radius: 80px;
+  border-radius: 80px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-transition: all 200ms;
+  -moz-transition: all 200ms;
+  -o-transition: all 200ms;
+  transition: all 200ms;
+  transform-origin: 50% 0;
+  transform: scale(0) translateY(-100%);
+  opacity: 0;
+}
+.Badge:hover .Badge-title {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+.Badge--small .Badge-title {
+  top: 150%;
+}
+.Badge--acidhouse {
+  background-position: -122px -128px;
+}
+.Badge--acidhouse.Badge--small {
+  background-position: -34.160000000000004px -35.84px;
+}
+.Badge--backpedal {
+  background-position: -448px -128px;
+}
+.Badge--backpedal.Badge--small {
+  background-position: -125.44000000000001px -35.84px;
+}
+.Badge--cherry {
+  background-position: -336px 0;
+}
+.Badge--cherry.Badge--small {
+  background-position: -94.08000000000001px 0;
+}
+.Badge--earlybird {
+  background-position: -448px 0;
+}
+.Badge--earlybird.Badge--small {
+  background-position: -125.44000000000001px 0;
+}
+.Badge--eno {
+  background-position: 0 -128px;
+}
+.Badge--eno.Badge--small {
+  background-position: 0 -35.84px;
+}
+.Badge--florida {
+  background-position: 0 -256px;
+}
+.Badge--florida.Badge--small {
+  background-position: 0 -71.68px;
+}
+.Badge--grumpybugger {
+  background-position: -122px 0;
+}
+.Badge--grumpybugger.Badge--small {
+  background-position: -34.160000000000004px 0;
+}
+.Badge--latenightvibes {
+  background-position: -336px -128px;
+}
+.Badge--latenightvibes.Badge--small {
+  background-position: -94.08000000000001px -35.84px;
+}
+.Badge--liam {
+  background-position: -224px 0;
+}
+.Badge--liam.Badge--small {
+  background-position: -62.720000000000006px 0;
+}
+.Badge--rickroll {
+  background-position: 0 0;
+}
+.Badge--swipe {
+  background-position: -224px -128px;
+}
+.Badge--swipe.Badge--small {
+  background-position: -62.720000000000006px -35.84px;
+}
+.BadgeList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.BadgeList-item {
+  margin: 10px 0;
+  padding: 10px;
+  background: #ffffff;
+  line-height: 110px;
+}
+.BadgeList-item:before,
+.BadgeList-item:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.BadgeList-item:after {
+  clear: both;
+}
+.BadgeList-item:before,
+.BadgeList-item:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.BadgeList-item:after {
+  clear: both;
+}
+.BadgeList-item:nth-child(2n) {
+  background: #f3f5ec;
+}
+.BadgeList-item .Badge {
+  float: left;
+  margin-right: 20px;
 }

@@ -11,12 +11,14 @@ from django.conf import settings
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
+
 from .slack import Slack
-from tasks import (send_slack_vote_task,
+from .tasks import (send_slack_vote_task,
                     send_light_vote_task,
                     send_slack_skip_task,
-                    add_to_personal_playlist_task)
-
+                    add_to_personal_playlist_task,
+                    trigger_badge_vote_task,
+                    trigger_badge_skip_task)
 
 
 logger = logging.getLogger('raven')
@@ -37,7 +39,7 @@ def send_slack_vote(sender, instance, created, **kwargs):
 
     if not created:
         return
-    
+
     if not instance.user.groups.filter(name='Slack'):
         return
 
@@ -58,7 +60,7 @@ def send_light_vote(sender, instance, created, **kwargs):
         post_vars["colour"] = 'FFFFFF'
 
     send_light_vote_task.delay(post_vars)
-   
+
 
 def check_track_skip(sender, instance, created, **kwargs):
     """ Triggered by downvotes, Takes an instance of Point
@@ -73,6 +75,8 @@ def check_track_skip(sender, instance, created, **kwargs):
 
     verb = 'Scratched'
     data = json.dumps(instance.playlist_track.to_dict())
+
+    trigger_badge_skip_task.delay(instance.id)
 
     if instance.playlist_track.is_playing():
         # Notify browsers
@@ -90,6 +94,13 @@ def check_track_skip(sender, instance, created, **kwargs):
     send_slack_skip_task.delay(verb, score, instance.id)
 
 
+def check_vote_badges(sender, instance, created, **kwargs):
+    """ Check any vote-related badges for possible awards
+    """
+    if created:
+        trigger_badge_vote_task.delay(instance.id)
+
+
 
 def add_to_personal_playlist(sender, instance, created, **kwargs):
     """ If the user casting an upvote has a connected spotify account,
@@ -102,5 +113,3 @@ def add_to_personal_playlist(sender, instance, created, **kwargs):
         return
 
     add_to_personal_playlist_task.delay(instance.id)
-
-

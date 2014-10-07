@@ -36,7 +36,7 @@ install_dependencies = [
     'socket.io-emitter',
     'spotipy == 2.0.2',
     'celery == 3.1.15',
-    'psycopg2 == 2.5.4',
+    #'psycopg2 == 2.5.4',
     'python-memcached == 1.53',
 ]
 
@@ -56,7 +56,6 @@ development_dependencies = test_dependencies + [
     'tornado == 3.1',
     'pyzmq == 13.1.0',
     'ipython == 0.13.1',
-    'velcro == 1.0.1',
 ]
 
 setup(

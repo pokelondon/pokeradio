@@ -48,9 +48,12 @@
         <div class="NavBar">
             <div class="container">
                 {% with request.resolver_match.url_name as route %}
-                <a href="{% url 'scoring:leaderboard_index' %}" class="{% if 'scoring' == request.resolver_match.namespace and 'leaderboard' == route %}is-active{% endif %}">Full Leaderboard</a>
-                <a href="{% url 'history:vote_tracks_index' 'all' %}" class="{% if 'history' == request.resolver_match.namespace and 'vote_archive_tracks' == route and 'all' == who %}is-active{% endif %}">Top 40</a>
-                <a href="{% url 'history:vote_tracks_index' 'me' %}" class="{% if 'history' == request.resolver_match.namespace and 'vote_archive_tracks' == route and 'me' == who %}is-active{% endif %}">My Favorites</a>
+                <div class="col-md-4">
+                    <a href="{% url 'scoring:leaderboard_index' %}" class="{% if 'scoring' == request.resolver_match.namespace and 'leaderboard' == route %}is-active{% endif %}">Full Leaderboard</a>
+                    <a href="{% url 'history:vote_tracks_index' 'all' %}" class="{% if 'history' == request.resolver_match.namespace and 'vote_archive_tracks' == route and 'all' == who %}is-active{% endif %}">Top 40</a>
+                </div>
+
+                <div class="Badge-container col-md-5 js-badge-container"> </div>
 
                 <div class="NavBar-user col-md-3 pull-right">
                     <div class="inner">
@@ -59,9 +62,11 @@
                     </div>
 
                     <ul class="NavBar-dropdown">
-                        <li><a href="{% url 'logout' %}" >Logout</a></li>
+                        <li class="{% if 'history' == request.resolver_match.namespace and 'vote_archive_tracks' == route and 'me' == who %}is-active{% endif %}"><a href="{% url 'history:vote_tracks_index' 'me' %}" >My Favorites</a></li>
                         <li class="{% if 'history' == request.resolver_match.namespace and 'index' == route %}is-active{% endif %}"><a href="{% url 'history:index' %}">Dashboard</a></li>
-                        <li class="{% if 'poke_pokeradio' == request.resolver_match.namespace and 'index' == route %}is-active{% endif %}"><a href="{% url 'spotify_playlist:index' %}">Setup Spotify</a></li>
+                        <li class="{% if 'spotify_playlist' == request.resolver_match.namespace and 'index' == route %}is-active{% endif %}"><a href="{% url 'spotify_playlist:index' %}">Setup Spotify</a></li>
+                        <li class="Nav-divider"></li>
+                        <li><a href="{% url 'logout' %}" >Logout</a></li>
                     </ul>
                 </div>
                 {% endwith %}
