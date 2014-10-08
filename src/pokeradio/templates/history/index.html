@@ -19,7 +19,9 @@
             {% for badge in awarded_badges %}
             <li class='BadgeList-item'>
                 <div class='Badge Badge--{{ badge.slug }}'></div>
-                <strong>{{ badge.name }}:</strong> {{ badge.description }}
+                <div class='Badge-description'>
+                    <strong>{{ badge.name }}:</strong> {{ badge.description }} {% if badge.note %}({{ badge.note }}){% endif %}
+                </div>
             </li>
             {% endfor %}
         </ul>

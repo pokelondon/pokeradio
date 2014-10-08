@@ -250,7 +250,10 @@ class MopidyPlaylistTrack(View):
 
 def badges(request, user_id):
     awarded_badges = AwardedBadge.objects.active().filter(user_id=user_id)
-    awarded_badges_json = [dict(BadgeManager.get_badge(ab.badge).to_dict().items() + { 'id': ab.pk }.items()) for ab in awarded_badges]
+    awarded_badges_json = \
+        [dict(BadgeManager.get_badge(ab.badge).to_dict().items() + {
+            'id': ab.pk,
+        }.items()) for ab in awarded_badges]
     return JSONResponse(awarded_badges_json)
 
 

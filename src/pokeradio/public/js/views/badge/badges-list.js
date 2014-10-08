@@ -28,6 +28,7 @@ define(
                 this.$el.append(item.render().el);
                 item.inserted();
 
+                /*
                 var lastSeen = $.cookie('lastSeenBadge', Number); // passing in function performs type conversion on the value
                 if (typeof lastSeen === 'undefined' || parseInt(model.get('id'), 10) > lastSeen) {
                     $.cookie('lastSeenBadge', model.get('id'));
@@ -38,6 +39,7 @@ define(
                         timeout: false
                     });
                 }
+                */
             }
         });
 

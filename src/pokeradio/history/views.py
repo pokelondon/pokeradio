@@ -32,7 +32,11 @@ class Dashboard(TemplateView, ContextMixin):
         context = {}
         context['object_list'] = self.get_user_favs()
         awarded_badges = AwardedBadge.objects.active().filter(user=self.request.user)
-        context['awarded_badges'] = [BadgeManager.get_badge(ab.badge) for ab in awarded_badges]
+        context['awarded_badges'] = \
+            [dict(BadgeManager.get_badge(ab.badge).to_dict().items() + {
+                'id': ab.pk,
+                'note': ab.note,
+            }.items()) for ab in awarded_badges]
         context.update(kwargs)
         return super(Dashboard, self).get_context_data(**context)
 

@@ -32,7 +32,7 @@ class AcidHouseBadge(BaseBadge):
         upvote_count = Point.objects.filter(vote_from=point.vote_from,
                                             created__gte=epoch,
                                             action=Point.TRACK_LIKED).count()
-        return (upvote_count >= 10, point.vote_from)
+        return (upvote_count >= 10, point.vote_from, None)
 
 
 class CherryBadge(BaseBadge):
@@ -45,7 +45,7 @@ class CherryBadge(BaseBadge):
         from pokeradio.models import Track
         previous = Track.objects.filter(href=track.href) \
                                 .exclude(pk=track.pk)
-        return (previous.count() == 0, track.user)
+        return (previous.count() == 0, track.user, track.name)
 
 
 class EarlyBirdBadge(BaseBadge):
@@ -59,7 +59,7 @@ class EarlyBirdBadge(BaseBadge):
         epoch = datetime.now().replace(hour=5, minute=0, second=0, microsecond=0)
         previous = Track.objects.filter(timestamp__gt=epoch) \
                                 .exclude(pk=track.pk)
-        return (previous.count() == 0, track.user)
+        return (previous.count() == 0, track.user, track.name)
 
 
 class EnoBadge(BaseBadge):
@@ -69,7 +69,7 @@ class EnoBadge(BaseBadge):
     delta = timedelta(days=7)
 
     def on_add(self, track):
-        return (track.length > (20 * 60), track.user)
+        return (track.length > (20 * 60), track.user, track.name)
 
 
 class FloridaBadge(BaseBadge):
@@ -79,7 +79,7 @@ class FloridaBadge(BaseBadge):
     delta = timedelta(days=7)
 
     def on_skip(self, point):
-        return (True, point.vote_from)
+        return (True, point.vote_from, point.track_name)
 
 
 class GrumpyBuggerBadge(BaseBadge):
@@ -95,7 +95,7 @@ class GrumpyBuggerBadge(BaseBadge):
         downvote_count = Point.objects.filter(vote_from=point.vote_from,
                                               created__gte=epoch,
                                               action=Point.TRACK_DISLIKED).count()
-        return (downvote_count >= 10, point.vote_from)
+        return (downvote_count >= 10, point.vote_from, None)
 
 
 class LateNightVibesBadge(BaseBadge):
@@ -105,7 +105,8 @@ class LateNightVibesBadge(BaseBadge):
     delta = timedelta(days=7)
 
     def on_add(self, track):
-        return (datetime.now().hour >= 0 and datetime.now().hour < 5, track.user)
+        return (datetime.now().hour >= 0 and datetime.now().hour < 5,
+                track.user, track.name)
 
 
 class LiamBadge(BaseBadge):
@@ -119,19 +120,19 @@ class LiamBadge(BaseBadge):
         epoch = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
         previous = Track.objects.filter(timestamp__gt=epoch, href=track.href) \
                                 .exclude(pk=track.pk)
-        return (previous.count() > 0, track.user)
+        return (previous.count() > 0, track.user, track.name)
 
 
 class RickrollBadge(BaseBadge):
     slug = 'rickroll'
     name = 'Rickroll'
-    description = "Never gonna give you up..."
+    description = "We're no strangers to love..."
     delta = timedelta(days=30)
 
     def on_add(self, track):
         return (track.artist.lower() == 'rick astley'
                     and 'never gonna give you up' in track.name.lower(),
-                track.user)
+                track.user, None)
 
 
 class SwipeBadge(BaseBadge):
@@ -141,7 +142,7 @@ class SwipeBadge(BaseBadge):
     delta = timedelta(days=7)
 
     def on_skip(self, point):
-        return (True, point.user)
+        return (True, point.user, point.track_name)
 
 
 class BadgeManager(object):
@@ -173,20 +174,23 @@ class BadgeManager(object):
         for badge in self._badges:
             try:
                 handler = getattr(badge, 'on_' + event)
-                result, user = handler(instance)
+                result, user, note = handler(instance)
                 if result is True:
-                    self.apply_badge(badge, user)
+                    self.apply_badge(badge, user, note)
             except AttributeError:
                 pass
         return self
 
     @classmethod
-    def apply_badge(self, badge, user):
+    def apply_badge(self, badge, user, note):
         from pokeradio.models import AwardedBadge
-        print "Applying {0} to {1}".format(badge, user)
-
-        if AwardedBadge.objects.active().filter(badge=badge.slug, user=user).count() == 0:
+        if AwardedBadge.objects.active().filter(badge=badge.slug, user=user) \
+                                        .count() == 0:
+            print "Applying {0} to {1}".format(badge, user)
             AwardedBadge.objects.create(badge=badge.slug,
                                         user=user,
-                                        expires=datetime.today() + badge.delta)
+                                        expires=datetime.today() + badge.delta,
+                                        note=note or '')
+        else:
+            print "User {0} already has {1}".format(user, badge)
         return self

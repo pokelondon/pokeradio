@@ -4288,7 +4288,6 @@ a.spotify-link:hover {
   margin: 10px 0;
   padding: 10px;
   background: #ffffff;
-  line-height: 110px;
 }
 .BadgeList-item:before,
 .BadgeList-item:after {
@@ -4320,4 +4319,7 @@ a.spotify-link:hover {
 .BadgeList-item .Badge {
   float: left;
   margin-right: 20px;
+}
+.Badge-description {
+  padding-top: 35px;
 }

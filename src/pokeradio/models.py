@@ -126,8 +126,9 @@ class Message(models.Model):
 
 class AwardedBadge(models.Model):
     user = models.ForeignKey(User)
-    badge = models.CharField(max_length=50, blank=False)
+    badge = models.CharField(max_length=50)
     expires = models.DateField(null=True)
+    note = models.CharField(max_length=250, blank=True, default='')
 
     objects = AwardedBadgeManager()
 
