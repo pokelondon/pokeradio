@@ -1,9 +1,12 @@
 from __future__ import division
 
 from math import ceil
+from logging import getLogger
 
 from datetime import datetime, timedelta
 from django.db import models
+
+logger = getLogger(__file__)
 
 
 class BaseBadge(object):
@@ -33,7 +36,7 @@ class SentimentBaseBadge(BaseBadge):
 
     def check_sentiment(self, user):
         from pokeradio.scoring.models import Point
-        today = datetime.today()
+        today = datetime.today().date()
         window = [today - timedelta(days=self.window_length), today]
 
         this_week = Point.objects.filter(vote_from=user,created__range=window)
