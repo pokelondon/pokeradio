@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import json
 from itertools import chain
+from logging import getLogger
 
 from emitter import Emitter
 
@@ -29,6 +30,7 @@ from pokeradio.responses import (JSONResponse,
 
 from .models import Token
 
+logger = getLogger(__file__)
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
               'db': settings.REDIS_DB})
@@ -222,7 +224,8 @@ class MopidyPlaylistTrack(View):
         try:
             self.object = Track.objects.filter(href=href, played=False)[0]
         except (Track.DoesNotExist, IndexError):
-            pass
+            logger.error('Setting traock as played - Track not found')
+            return JSONResponseNotFound()
         else:
 
             if 'started' == data['action']:
