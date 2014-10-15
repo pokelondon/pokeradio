@@ -44,12 +44,18 @@ class MessageAdmin(admin.ModelAdmin):
             {'fields': ('target_to_individuals', 'to_be_seen_by')}),
     )
 
+
+class AwardedBadgeAdmin(admin.ModelAdmin):
+    list_display = ('user', 'badge', 'expires', )
+    list_filter = ('badge', 'expires', )
+    search_fields = ('note', 'user__first_name')
+
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 admin.site.register(Track, TrackAdmin)
 admin.site.register(Message, MessageAdmin)
-admin.site.register(AwardedBadge)
+admin.site.register(AwardedBadge, AwardedBadgeAdmin)
 
 admin.site.unregister(Site)

@@ -15,7 +15,8 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'action', 'value', 'created')
     list_filter = ('user', 'created')
 
-    readonly_fields = ('value', 'track_name', 'action', 'user')
+    exclude = ('playlist_track', 'archive_track')
+    readonly_fields = ('value', 'track_name', 'action', 'user', )
 
 
 admin.site.register(Point, TransactionAdmin)
