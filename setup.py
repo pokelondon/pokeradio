@@ -68,13 +68,7 @@ setup(
     zip_safe=False,
     package_dir={'': 'src'},
     packages=find_packages('src'),
-    install_requires=install_dependencies,
     include_package_data=True,
-    extras_require={
-        'develop': development_dependencies,
-        'test': test_dependencies,
-    },
-    dependency_links = ['git@github.com:ziyasal/socket.io-python-emitter.git@master#egg=socket.io-emitter'],
     classifiers=[
         'Environment :: Console',
         'Development Status :: 5 - Production/Stable',

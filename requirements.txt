@@ -1,0 +1,17 @@
+Django==1.6
+South==0.7.6
+django-picklefield==0.3.0
+gunicorn==18.0
+django-extensions==1.2.2
+python-social-auth==0.1.14
+redis==2.8.0
+simplejson==3.3.1
+Pillow==2.3.0
+requests==2.0.0
+pusher==0.8
+-e git+git@github.com:ziyasal/socket.io-python-emitter.git@f97196bb4e264e5b6e61d78987f2c96a832f22d8#egg=socket.io_emitter-dev
+spotipy==2.0.2
+celery==3.1.15
+psycopg2==2.5.4
+python-memcached==1.53
+dj-database-url==0.3.0

@@ -23,7 +23,7 @@ def image(request, album_id, *args, **kwargs):
     except KeyError:
         return HttpResponseRedirect(settings.ALBUM_ART_FALLBACK)
 
-    response = HttpResponse(mimetype="image/jpg")
+    response = HttpResponse(content_type="image/jpg")
 
     try:
         image, fsize  = create_image(url, album_id,

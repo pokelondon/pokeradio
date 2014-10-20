@@ -5,6 +5,7 @@
 
 from django.conf import settings
 from django.conf.urls import patterns, include, url
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.views.generic import TemplateView
 
@@ -18,7 +19,8 @@ if settings.DEBUG:
         (r'^404/$', TemplateView.as_view(template_name="404.html")),
         (r'^500/$', TemplateView.as_view(template_name="500.html")),
     ]
-    urlpatterns += patterns('', *urls)
+    #urlpatterns += patterns('', *urls)
+    urlpatterns += staticfiles_urlpatterns()
 
 # Root Patterns
 urls = [
