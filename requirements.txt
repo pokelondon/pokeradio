@@ -9,7 +9,7 @@ simplejson==3.3.1
 Pillow==2.3.0
 requests==2.0.0
 pusher==0.8
--e git+https://github.com/ziyasal/socket.io-python-emitter.git@f97196bb4e264e5b6e61d78987f2c96a832f22d8#egg=socket.io_emitter-dev
+-e git+https://github.com/errkk/socket.io-python-emitter.git@19ff309f998879d3d3649ba88f00f0f86a036633#egg=socket.io_emitter-dev
 spotipy==2.0.2
 celery==3.1.15
 psycopg2==2.5.4

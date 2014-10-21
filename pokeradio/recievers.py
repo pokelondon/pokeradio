@@ -11,10 +11,11 @@ from pokeradio.tasks import trigger_badge_add_task
 
 
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
-              'db': settings.REDIS_DB})
+    'db': settings.REDIS_DB, 'password': settings.REDIS_PASSWORD})
 
 r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
-                           db=settings.REDIS_DB)
+                           db=settings.REDIS_DB,
+                           password=settings.REDIS_PASSWORD)
 
 def badge_saved(sender, instance, created, **kwargs):
 

@@ -32,9 +32,9 @@ from .models import Token
 
 logger = getLogger(__file__)
 
+# for Emiting events to be sent to browers via socket server
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
-              'db': settings.REDIS_DB})
-
+    'db': settings.REDIS_DB, 'password': settings.REDIS_PASSWORD})
 
 @csrf_exempt
 def vote(request):
