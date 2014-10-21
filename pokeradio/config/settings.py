@@ -179,7 +179,7 @@ REDIS_PASSWORD = redis_url.password
 REDIS_DB = 0
 
 """ Celery """
-BROKER_URL = os.environ.get('BROKER_URL')
+BROKER_URL = os.environ.get('REDISCLOUD_URL')
 
 """ Secret Key & Site ID """
 SITE_ID = 1
