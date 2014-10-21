@@ -15,3 +15,5 @@ celery==3.1.15
 psycopg2==2.5.4
 python-memcached==1.53
 dj-database-url==0.3.0
+django-bmemcached==0.2.1
+python-binary-memcached==0.24.3
