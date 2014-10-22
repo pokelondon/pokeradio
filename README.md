@@ -114,6 +114,14 @@ $ heroku run python manage.py migrate
 $ heroku ps:scale web=1
 ```
 
+###3. Async
+We have a lot of democracy in our studio, so much that it makes it a bit slow when some joker puts on Chas & Dave.
+Therefore in the intrests of scalability, we've moved some of the computational flim-flam into a Celery queue. If you want to run this, you'll need to scale up a worker for it
+```sh
+$ heroku ps:scale web=1
+```
+... and thus exhausting the free tier
+
 
 ### Development
 We have a Gruntfile to compile LESS and reload the browser. That's about it. If you want to use that then:
