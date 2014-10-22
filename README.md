@@ -87,7 +87,7 @@ $ heroku addons:add heroku-postgresql:hobby-dev
 $ heroku addons:add rediscloud
 $ git push heroku master
 ```
-###Socket Server
+###1.1 Socket Server
 To notify users of changes to the playlist while they have the page open, we send realtime events over a websocket. To do this, a Node.JS socket server listens to events from this app via a Redis PubSub proxy. If you want to use this, follow the instructions for [**pokeradio--socketserver**](https://github.com/pokelondon/pokeradio-socketserver)
 
 It has to connect to the same redisserver that you create for this app. You can get that from running
@@ -96,7 +96,7 @@ $ heroku config --shell | grep REDISCLOUD_URL
 ```
 
 
-###Set Config
+###2. Set Config
 There are a lot of config vars that need to be exported to the Heroku environment
 Included in the project is a template `.env` file for local development
 
@@ -114,12 +114,15 @@ $ heroku run python manage.py migrate
 $ heroku ps:scale web=1
 ```
 
-## Dont forget
-- lights webhook
-- feature flag by absence of config
-- ga account
-- s3 profile pics
-- Socket server repo. mention config on main app
 
-- make slack optional
-- analytics creds in settings
+### Development
+We have a Gruntfile to compile LESS and reload the browser. That's about it. If you want to use that then:
+```sh 
+$ npm install
+$ grunt
+```
+
+## TODO
+- document lights webhook
+- s3 profile pics and albumart
+- make slack and pusher optional if the config is absent
