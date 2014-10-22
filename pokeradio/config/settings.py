@@ -226,4 +226,4 @@ LIGHTS_WEBHOOK_URL = "http://stage.leds.oddish.pokedev.net?token=cFRbuBogZKFNqRZ
 """ Socket Server """
 SOCKET_PORT = 80
 
-SOCKETIO_CLIENT_URL = 'http://pokeradio-socketserver.herokuapp.com/app'
+SOCKETIO_CLIENT_URL = 'http://{0}/app'.format(os.environ.get('SOCKETSERVER_HOST'))
