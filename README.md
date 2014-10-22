@@ -118,7 +118,7 @@ $ heroku ps:scale web=1
 ### Development
 We have a Gruntfile to compile LESS and reload the browser. That's about it. If you want to use that then:
 ```sh 
-$ npm install
+$ mv _package.json package.json && npm install; mv package.json _package.json # Sorry!
 $ grunt
 ```
 
