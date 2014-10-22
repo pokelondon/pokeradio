@@ -1,5 +1,0 @@
-postgres.host: 'localhost'
-postgres.port: '5432'
-postgres.user: 'postgres'
-postgres.pass: ''
-postgres.maintenance_db: 'postgres'
