@@ -167,10 +167,9 @@ DWEET_NAME = os.environ.get('DWEET_NAME')
 
 """ Google analytics """
 ANALYTICS_ENABLED = False
+GA_ID = os.environ.get('GA_ID')
 
 """ Redis Pubsub """
-#REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
-#REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
 redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL'))
 
 REDIS_HOST = redis_url.hostname
@@ -189,16 +188,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
 """ Databases """
 
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(default='postgres://localhost/pokeradio')
-
-#if len(DATABASES['default']) == 0:
-    #DATABASES = {
-        #'default': {
-            #'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            #'NAME': 'pokeradio'
-        #}
-    #}
-
+DATABASES['default'] = dj_database_url.config()
 
 """ Pusher Settings """
 USE_PUSHER = False
@@ -207,6 +197,7 @@ PUSHER_KEY = os.environ.get('PUSHER_KEY')
 PUSHER_SECRET = os.environ.get('PUSHER_SECRET')
 
 """ Spotify web API """
+USE_SPOTIFY_PLAYLIST = False
 SPOTIFY_CLIENT_ID = os.environ.get('SPOTIFY_CLIENT_ID')
 SPOTIFY_CLIENT_SECRET = os.environ.get('SPOTIFY_CLIENT_SECRET')
 SPOTIFY_OAUTH_REDIRECT = os.environ.get('SPOTIFY_OAUTH_REDIRECT')
@@ -217,11 +208,11 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SEC
 SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS', None)
 
 """ Slack """
-SLACK = True
+SLACK = False
 SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
 
 """ LEDS """
-LIGHTS_WEBHOOK_URL = "http://stage.leds.oddish.pokedev.net?token=cFRbuBogZKFNqRZvEyfgIVNk"
+LIGHTS_WEBHOOK_URL = ""
 
 """ Socket Server """
 SOCKET_PORT = 80

@@ -36,4 +36,5 @@ def analytics(request):
     """
     return {
         'ANALYTICS_ENABLED': settings.ANALYTICS_ENABLED,
+        'GA_ID': settings.GA_ID,
     }
