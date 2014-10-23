@@ -38,7 +38,7 @@ $ psql
 ```
 and
 ```SQL
-CREATE DATABASE pokeradio;
+createdb pokeradio;
 ```
 
 Alternatively you can use the command line tool available in the same directory as the psql executable and run ```createdb pokeradio```
@@ -92,7 +92,7 @@ Then you can go to the hostname provided by Ngrock `http://{yourhostname}/` and 
 Although we host ours on Amazon, to make it simple, below are the recommended instructions to get this puppy running on Heroku.
 
 ###You need:
-- [**Heroku Toolbelt **](https://toolbelt.heroku.com/) + an account
+- [**Heroku Toolbelt**](https://toolbelt.heroku.com/) + an account
 - [**pokeradio--socketserver**](https://github.com/pokelondon/pokeradio-socketserver) running on another Heroku app (set this up after)
 
 ###1. Create and app, and setup addons
@@ -123,7 +123,7 @@ $ heroku config:set SOCKETSERVER_HOST={yoursocketserver.herokuapp.com}
 Repeat this process for the other vars that you've configured in `.env`
 
 When the config is ready, setup the database and start the app.
-```
+```sh
 $ heroku run python manage.py syncdb
 $ heroku run python manage.py migrate history
 $ heroku run python manage.py migrate
