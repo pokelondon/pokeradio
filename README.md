@@ -134,7 +134,7 @@ $ heroku ps:scale web=1
 We have a lot of democracy in our studio, so much that it makes it a bit slow when some joker puts on Chas & Dave.
 Therefore in the intrests of scalability, we've moved some of the computational flim-flam into a Celery queue. If you want to run this, you'll need to scale up a worker for it
 ```sh
-$ heroku ps:scale web=1
+$ heroku ps:scale worker=1
 ```
 ... and thus exhausting the free tier
 
