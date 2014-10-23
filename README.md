@@ -34,12 +34,15 @@ $ mkvirtualenv prad
 ###3. Make sure there's a dev DB running locally
 (Postgres.app is good for this)
 ```sh
-    pg_admin
-    CREATE DATABASE pokeradio;
+$ psql
+```
+and
+```SQL
+CREATE DATABASE pokeradio;
 ```
 ###4. Install Requirements, and the Django project.
 ```
-$ pip install -r requirements
+$ pip install -r requirements.txt
 $ python setup.py develop
 ```
 
