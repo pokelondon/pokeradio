@@ -8,14 +8,14 @@ from django.conf import settings
 
 from pokeradio.scoring.slack import Slack
 
-from pokeradio.celery import app
+from pokeradio.celeryapp import app
 
 logger = logging.getLogger('raven')
+
 
 @app.task(bind=True, default_retry_delay=5, max_retries=2)
 def send_slack_vote_task(self, point_id):
     from .models import Point
-
 
     point = Point.objects.get(pk=point_id)
 
@@ -29,11 +29,10 @@ def send_slack_vote_task(self, point_id):
         msg.pretext = 'Track Liked'
         msg.fallback = 'Track Liked: {0}'.format(point.archive_track.name)
 
-
     user_votes = point.user.point_set.all().aggregate(
-            models.Sum('value'))['value__sum']
+        models.Sum('value'))['value__sum']
     track_votes = point.archive_track.point_set.all().aggregate(
-            models.Sum('value'))['value__sum']
+        models.Sum('value'))['value__sum']
     title = '{0} - {1}'.format(unicode(point.archive_track.name),
                                unicode(point.archive_track.artist.name))
 
@@ -46,12 +45,14 @@ def send_slack_vote_task(self, point_id):
     except Exception as exc:
         raise self.retry(exc=exc)
 
+
 @app.task
 def send_light_vote_task(post_vars):
     try:
         r = requests.post(settings.LIGHTS_WEBHOOK_URL, data=post_vars)
     except Exception:
         logger.warn('cannot send data to lights server')
+
 
 @app.task(bind=True, default_retry_delay=5, max_retries=2)
 def send_slack_skip_task(self, verb, score, point_id):
@@ -65,10 +66,10 @@ def send_slack_skip_task(self, verb, score, point_id):
                 Slack.PUBLIC)
 
     total_votes = point.archive_track.point_set.all().aggregate(
-            models.Sum('value'))['value__sum']
+        models.Sum('value'))['value__sum']
 
     title = '{0} - {1}'.format(unicode(point.archive_track.name),
-                                unicode(point.archive_track.artist.name))
+                               unicode(point.archive_track.artist.name))
 
     msg.add_field(title=title, value=total_votes, short=True)
     msg.add_field(title=point.user.get_full_name(), value=score, short=True)
@@ -78,13 +79,13 @@ def send_slack_skip_task(self, verb, score, point_id):
     except Exception as exc:
         raise self.retry(exc=exc)
 
+
 @app.task
 def add_to_personal_playlist_task(point_id):
 
     from pokeradio.spotify_playlist.utils import get_or_create_cred
     from pokeradio.spotify_playlist.models import PlaylistItem
     from .models import Point
-
 
     point = Point.objects.get(pk=point_id)
 
@@ -98,8 +99,8 @@ def add_to_personal_playlist_task(point_id):
 
     try:
         playlist_item = PlaylistItem.objects.create(
-                user=point.vote_from,
-                href=point.playlist_track.href)
+            user=point.vote_from,
+            href=point.playlist_track.href)
     except IntegrityError:
         # Already probably in their playlist
         return

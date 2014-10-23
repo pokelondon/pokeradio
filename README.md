@@ -40,6 +40,8 @@ and
 ```SQL
 CREATE DATABASE pokeradio;
 ```
+
+alternatively you can use the command line tool available in the same directory as the psql executable and run ```createdb pokeradio``` 
 ###4. Install Requirements, and the Django project.
 ```
 $ pip install -r requirements.txt

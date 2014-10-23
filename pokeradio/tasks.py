@@ -3,7 +3,7 @@ from PIL import Image
 from StringIO import StringIO
 from os import stat
 
-from pokeradio.celery import app
+from pokeradio.celeryapp import app
 
 
 def create_image(imageurl, output_file, output_dir, size):
