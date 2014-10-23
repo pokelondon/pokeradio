@@ -6,6 +6,10 @@ This is the main (complicated) part of the legendary PokeRadio; the social wedge
 - [PokeRadio Socket Server](https://github.com/pokelondon/pokeradio-socketserver)
 - [PokeRadio Mopidy Client](https://github.com/pokelondon/pokeradio-mopidy)
 
+![Home Page](doc/homepage.png?raw=true)
+
+[Moar screenshotz](doc/screenshots.md)
+
 ## Running Locally
 
 ###You need:
@@ -125,7 +129,7 @@ $ heroku ps:scale web=1
 
 ### Development
 We have a Gruntfile to compile LESS and reload the browser. That's about it. If you want to use that then:
-```sh 
+```sh
 $ mv _package.json package.json && npm install; mv package.json _package.json # Sorry!
 $ grunt
 ```
