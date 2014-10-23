@@ -38,10 +38,10 @@ $ psql
 ```
 and
 ```SQL
-CREATE DATABASE pokeradio;
+createdb pokeradio;
 ```
 
-alternatively you can use the command line tool available in the same directory as the psql executable and run ```createdb pokeradio``` 
+Alternatively you can use the command line tool available in the same directory as the psql executable and run ```createdb pokeradio```
 ###4. Install Requirements, and the Django project.
 ```
 $ pip install -r requirements.txt
@@ -75,10 +75,16 @@ For this to work in dev, you need to [create an API token here](https://console.
 You will need to provide a publicly accessible callback URL when the authorisation is complete. This will be the URL of the Heroku app for production, and a local tunnel for development. We use [Ngrok](https://ngrok.com/) for that. So add both urls here
 
 Set the **Authorized Redirect URL** to
-http://{yourhostname}/complete/google-oauth2/ where *yourhostname* is your Ngrok tunnel and your chosen Heroku app hostname.
+`http://{yourhostname}/complete/google-oauth2/` where *yourhostname* is your Ngrok tunnel and your chosen Heroku app hostname.
 
-
-
+###8. Now you can run it
+Set up Ngrok to forward port `:5000` and run the project locally with:
+```sh
+$ python manage.py runserver 0.0.0.0:5000
+# or
+$ foreman start
+```
+Then you can go to the hostname provided by Ngrock `http://{yourhostname}/` and login with your Google account.
 
 #Deployment
 
@@ -116,7 +122,7 @@ $ heroku config:set SOCKETSERVER_HOST={yoursocketserver.herokuapp.com}
 Repeat this process for the other vars that you've configured in `.env`
 
 When the config is ready, setup the database and start the app.
-```
+```sh
 $ heroku run python manage.py syncdb
 $ heroku run python manage.py migrate history
 $ heroku run python manage.py migrate
@@ -125,9 +131,9 @@ $ heroku ps:scale web=1
 
 ###3. Async
 We have a lot of democracy in our studio, so much that it makes it a bit slow when some joker puts on Chas & Dave.
-Therefore in the intrests of scalability, we've moved some of the computational flim-flam into a Celery queue. If you want to run this, you'll need to scale up a worker for it
+Therefore in the interests of scalability, we've moved some of the computational flim-flam into a Celery queue. If you want to run this, you'll need to scale up a worker for it.
 ```sh
-$ heroku ps:scale web=1
+$ heroku ps:scale worker=1
 ```
 ... and thus exhausting the free tier
 
