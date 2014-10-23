@@ -72,10 +72,10 @@ $ python manage.py migrate
 Users login using OAuth with their Google account.
 For this to work in dev, you need to [create an API token here](https://console.developers.google.com/project/190611052995/apiui/credential?authuser=0) go to "Create new Client ID"
 
-You will need to provide a publicly accessible callback URL when the authroisation is complete. This will be the URL of the Heroku app for production, and a local tunnel for development. We use [Ngrok](https://ngrok.com/) for that. So add both urls here
+You will need to provide a publicly accessible callback URL when the authorisation is complete. This will be the URL of the Heroku app for production, and a local tunnel for development. We use [Ngrok](https://ngrok.com/) for that. So add both urls here
 
 Set the **Authorized Redirect URL** to
-http://{yourhostname}/complete/google-oauth2/ where *yourhostname* is your Ngrock tunnel and your chosen Heroku app hostname.
+http://{yourhostname}/complete/google-oauth2/ where *yourhostname* is your Ngrok tunnel and your chosen Heroku app hostname.
 
 
 
@@ -85,7 +85,7 @@ http://{yourhostname}/complete/google-oauth2/ where *yourhostname* is your Ngroc
 Although we host ours on Amazon, to make it simple, below are the recommended instructions to get this puppy running on Heroku.
 
 ###You need:
-- [**Heroku Toolbelt **](https://toolbelt.heroku.com/) + an account
+- [**Heroku Toolbelt**](https://toolbelt.heroku.com/) + an account
 - [**pokeradio--socketserver**](https://github.com/pokelondon/pokeradio-socketserver) running on another Heroku app (set this up after)
 
 ###1. Create and app, and setup addons
