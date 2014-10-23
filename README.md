@@ -41,7 +41,7 @@ and
 CREATE DATABASE pokeradio;
 ```
 
-alternatively you can use the command line tool available in the same directory as the psql executable and run ```createdb pokeradio```
+Alternatively you can use the command line tool available in the same directory as the psql executable and run ```createdb pokeradio```
 ###4. Install Requirements, and the Django project.
 ```
 $ pip install -r requirements.txt
@@ -132,7 +132,7 @@ $ heroku ps:scale web=1
 
 ###3. Async
 We have a lot of democracy in our studio, so much that it makes it a bit slow when some joker puts on Chas & Dave.
-Therefore in the intrests of scalability, we've moved some of the computational flim-flam into a Celery queue. If you want to run this, you'll need to scale up a worker for it
+Therefore in the interests of scalability, we've moved some of the computational flim-flam into a Celery queue. If you want to run this, you'll need to scale up a worker for it.
 ```sh
 $ heroku ps:scale worker=1
 ```
