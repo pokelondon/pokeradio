@@ -1,4 +1,7 @@
-#pokeradio
+<center>
+![PokeRadio](pokeradio/public/img/poke-radio-logo.png?raw=true)
+</center>
+###
 This is the main (complicated) part of the legendary PokeRadio; the social wedge between the (otherwise) good people of POKE.
 
 ##Also in this family:
@@ -6,9 +9,11 @@ This is the main (complicated) part of the legendary PokeRadio; the social wedge
 - [PokeRadio Socket Server](https://github.com/pokelondon/pokeradio-socketserver)
 - [PokeRadio Mopidy Client](https://github.com/pokelondon/pokeradio-mopidy)
 
+<center>
 ![Home Page](doc/homepage.png?raw=true)
+</center>
 
-[Moar screenshotz](doc/screenshots.md)
+[**Moar screenshotz →**](doc/screenshots.md)
 
 ## Running Locally
 
