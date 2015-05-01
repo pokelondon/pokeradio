@@ -22,8 +22,7 @@ def send_slack_vote_task(self, point_id):
     msg = Slack('Track Disliked',
                 'Track Dissed: {0}'.format(point.archive_track.name),
                 Slack.PINK,
-                'tech',
-                Slack.PUBLIC)
+                'tech')
 
     if point.action == Point.TRACK_LIKED:
         msg.pretext = 'Track Liked'
@@ -62,8 +61,7 @@ def send_slack_skip_task(self, verb, score, point_id):
     msg = Slack('Track {0}'.format(verb),
                 'Track {0}: {1}'.format(verb, point.archive_track.name),
                 Slack.PINK,
-                '#music',
-                Slack.PUBLIC)
+                '#music')
 
     total_votes = point.archive_track.point_set.all().aggregate(
         models.Sum('value'))['value__sum']

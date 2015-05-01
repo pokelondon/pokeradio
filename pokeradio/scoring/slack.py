@@ -8,19 +8,14 @@ logger = logging.getLogger('raven')
 
 
 class Slack:
-    DEV = 1
-    PUBLIC = 2
 
     GENERAL = '#general'
     USERNAME = "Poke Radio"
 
     PINK = '#f5007f'
 
-    def __init__(self, pretext, fallback='', colour=PINK,
-                 channel=GENERAL, group=DEV):
+    def __init__(self, pretext, fallback='', colour=PINK, channel=GENERAL):
 
-        self.url = {self.DEV: settings.DEV_SLACK_WEBHOOK_URL,
-                    self.PUBLIC: settings.EVERYONE_SLACK_WEBHOOK_URL}[group]
 
         self.colour = colour
         self.pretext = pretext
@@ -48,6 +43,7 @@ class Slack:
             print 'Slack message', payload
             return
         try:
-            r = requests.post(self.url, data=json.dumps(payload))
+            r = requests.post(settings.DEV_SLACK_WEBHOOK_URL,
+                              data=json.dumps(payload))
         except Exception, e:
-            logger.warn('cannot send data to Slack')
+            logger.warn('Cannot send data to Slack')
