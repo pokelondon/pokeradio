@@ -1,5 +1,11 @@
-import spotipy
+from os import stat
 
+import requests
+import spotipy
+from PIL import Image
+from StringIO import StringIO
+
+from django.http import Http404
 from django.conf import settings
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 
@@ -23,19 +29,12 @@ def image(request, album_id, *args, **kwargs):
     except KeyError:
         return HttpResponseRedirect(settings.ALBUM_ART_FALLBACK)
 
-    response = HttpResponse(content_type="image/jpg")
+    r = requests.get(url)
 
-    try:
-        image, fsize  = create_image(url, album_id,
-                                     settings.ALBUM_ART_BASE_DIR,
-                                     settings.THUMBNAIL_SIZE)
-    except Http404:
-        # Mark tracks as not having an image (for speed)
-        res = ArchiveTrack.objects.get(album_href=full_album_id).update(
-                no_artwork=True)
-        print 'No artwork for', res, 'items', full_album_id
-        return HttpResponseRedirect(settings.ALBUM_ART_FALLBACK)
-    else:
-        image.save(response, 'JPEG')
-        response['Content-Length'] = fsize
-        return response
+    if 200 != r.status_code:
+        return Http404()
+
+    image = Image.open(StringIO(r.content))
+    response = HttpResponse(content_type="image/jpg")
+    image.save(response, 'JPEG')
+    return response
