@@ -2855,7 +2855,17 @@ h1 + p.intro {
 .NavBar a.is-active {
   color: #61dfb4;
 }
+.NavBar--nav {
+  display: block;
+  background: #2d2c32;
+  position: relative;
+  z-index: 4;
+  margin: -10px 0 0;
+  padding: 10px 0 0;
+}
 .NavBar-user {
+  background: green;
+  padding-left: 0;
   display: inline-block;
   vertical-align: baseline;
   position: relative;
@@ -2864,8 +2874,8 @@ h1 + p.intro {
   position: relative;
   background: #2d2c32;
   z-index: 3;
-  padding: 10px 15px 10px 0;
-  margin: -10px -15px -10px 0;
+  padding: 10px 15px 10px;
+  margin: -10px -15px -10px;
 }
 .NavBar-user .inner:after {
   content: "\25BC";
@@ -2901,7 +2911,7 @@ h1 + p.intro {
   padding: 0;
   top: 28px;
   right: 0;
-  left: 15px;
+  left: 0;
   -webkit-transform: translateY(-100%);
   -moz-transform: translateY(-100%);
   -ms-transform: translateY(-100%);
@@ -3368,7 +3378,7 @@ progress.paused::-webkit-progress-bar {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 3;
+  z-index: 4;
   background: rgba(0, 0, 0, 0.7);
 }
 .add-track {

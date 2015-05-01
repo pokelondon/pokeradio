@@ -48,14 +48,14 @@
         <div class="NavBar">
             <div class="container">
                 {% with request.resolver_match.url_name as route %}
-                <div class="col-md-4">
+                <div class="NavBar--nav col-xs-12 col-sm-9">
                     <a href="{% url 'scoring:leaderboard_index' %}" class="{% if 'scoring' == request.resolver_match.namespace and 'leaderboard' == route %}is-active{% endif %}">Full Leaderboard</a>
                     <a href="{% url 'history:vote_tracks_index' 'all' %}" class="{% if 'history' == request.resolver_match.namespace and 'vote_archive_tracks' == route and 'all' == who %}is-active{% endif %}">Top 40</a>
+                    <div class="Badge-container js-badge-container"> </div>
                 </div>
 
-                <div class="Badge-container col-md-5 js-badge-container"> </div>
 
-                <div class="NavBar-user col-md-3 pull-right">
+                <div class="NavBar-user col-xs-12 col-sm-3 pull-right">
                     <div class="inner">
                         <img class="Header-userControls-image" src="{{ request.user.get_profile.image_url }}"/>
                         <span class="bold">{{ request.user.first_name }}</span>
