@@ -63,6 +63,10 @@ class Track(models.Model):
 
 
     def to_dict(self):
+        try:
+            profile_pic = self.user.get_profile().image_url
+        except:
+            profile_pic = None
         return {
             'id': self.id,
             'name': self.name,
@@ -75,7 +79,7 @@ class Track(models.Model):
             'user': {
                 'id': self.user.id,
                 'full_name': self.user.get_full_name(),
-                'user_profile_image': self.user.get_profile().image_url,
+                'user_profile_image': profile_pic,
             },
             'liked_ids': self._get_action_ids(Point.TRACK_LIKED),
             'disliked_ids': self._get_action_ids(Point.TRACK_DISLIKED),
