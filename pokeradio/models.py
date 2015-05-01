@@ -18,6 +18,13 @@ class Profile(models.Model):
     colour = models.CharField(max_length=6, default='FFFFFF')
     image = models.ImageField(upload_to='profiles', blank=True, null=True)
 
+    @property
+    def image_url(self):
+        if self.image:
+            return self.image.url
+        else:
+            return None
+
 
 class Track(models.Model):
 
@@ -64,6 +71,7 @@ class Track(models.Model):
             'user': {
                 'id': self.user.id,
                 'full_name': self.user.get_full_name(),
+                'user_profile_image': self.user.get_profile().image_url,
             },
             'liked_ids': self._get_action_ids(Point.TRACK_LIKED),
             'disliked_ids': self._get_action_ids(Point.TRACK_DISLIKED),
