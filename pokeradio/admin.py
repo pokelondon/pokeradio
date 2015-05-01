@@ -10,7 +10,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Track, Profile, Message, AwardedBadge
+from .models import Track, Profile, Message, AwardedBadge, Brand
 
 class TrackAdmin(admin.ModelAdmin):
     search_fields = ('name', 'artist', 'user__first_name', 'user__last_name')
@@ -54,6 +54,7 @@ class AwardedBadgeAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
+admin.site.register(Brand)
 admin.site.register(Track, TrackAdmin)
 admin.site.register(Message, MessageAdmin)
 admin.site.register(AwardedBadge, AwardedBadgeAdmin)

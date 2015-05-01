@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView, View
 from django.conf import settings
 
-from .push import track_played_dweet, track_played_pusher
+from .push import track_played_pusher
 
 from pokeradio.badges import BadgeManager
 from pokeradio.history.utils import get_or_create_track, record_track_play
@@ -234,10 +234,6 @@ class MopidyPlaylistTrack(View):
                 if settings.USE_PUSHER:
                     track_played_pusher(self.object)
 
-                if settings.DWEET_NAME:
-                    track_played_dweet(self.object)
-
-                # TODO maybe set started flag on model?
                 return JSONResponse({'status': 'OK'})
 
             if 'ended' == data['action']:

@@ -6,6 +6,7 @@
 
 from django.conf import settings
 from django.contrib.sites.models import Site
+from .models import Brand
 
 
 def domain(request):
@@ -24,10 +25,16 @@ def domain(request):
     finally:
         domain = getattr(settings, 'DOMAIN', 'http://%s' % current_site.domain)
 
+    try:
+        brand = Brand.objects.all().get()
+    except Brand.DoesNotExist:
+        brand = Brand.objects.create()
+
     return {
         'DOMAIN': domain,
         'site': current_site,
-        'socketio_client_url': settings.SOCKETIO_CLIENT_URL,
+        'SOCKETIO_CLIENT_URL': settings.SOCKETIO_CLIENT_URL,
+        'BRAND': brand,
     }
 
 

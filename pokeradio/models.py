@@ -13,6 +13,10 @@ from .managers import AwardedBadgeManager, TrackManager
 from .badges import BadgeManager
 
 
+class Brand(models.Model):
+    logo = models.ImageField(upload_to='brand', blank=True, null=True)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User)
     colour = models.CharField(max_length=6, default='FFFFFF')

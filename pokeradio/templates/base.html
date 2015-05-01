@@ -57,7 +57,7 @@
 
                 <div class="NavBar-user col-md-3 pull-right">
                     <div class="inner">
-                        <img class="Header-userControls-image" src="{{ request.user.get_profile.image.url }}"/>
+                        <img class="Header-userControls-image" src="{{ request.user.get_profile.image_url }}"/>
                         <span class="bold">{{ request.user.first_name }}</span>
                     </div>
 
@@ -81,7 +81,13 @@
             <div class="container">
                 {% block leaderboard %}
                 {% endblock %}
-                <a href="/"><div class="Header-logo"></div></a>
+                <a href="/">
+                    <div class="Header-logo">
+                        {% if BRAND.logo.url %}
+                        <img src="{{ BRAND.logo.url }}" alt="" />
+                        {% endif %}
+                    </div>
+                </a>
             </div>
         </header>
         <div class="container">

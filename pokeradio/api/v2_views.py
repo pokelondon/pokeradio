@@ -14,8 +14,6 @@ from django.db import IntegrityError
 from django.http import Http404
 from django.conf import settings
 
-from .push import track_played_dweet, track_played_pusher, track_played_halo
-
 from pokeradio.badges import BadgeManager
 from pokeradio.history.utils import get_or_create_track, record_track_play
 from pokeradio.models import Track, AwardedBadge
