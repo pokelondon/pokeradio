@@ -228,6 +228,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 SOUTH_MIGRATION_MODULES = {
     'default': 'social.apps.django_app.default.south_migrations',
+    'oauth2_provider': 'oauth2_provider.south_migrations',
 }
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
 
