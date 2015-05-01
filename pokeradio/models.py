@@ -16,6 +16,7 @@ from .badges import BadgeManager
 class Profile(models.Model):
     user = models.OneToOneField(User)
     colour = models.CharField(max_length=6, default='FFFFFF')
+    image = models.ImageField(upload_to='profiles', blank=True, null=True)
 
 
 class Track(models.Model):

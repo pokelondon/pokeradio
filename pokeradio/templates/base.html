@@ -57,7 +57,7 @@
 
                 <div class="NavBar-user col-md-3 pull-right">
                     <div class="inner">
-                        <img class="Header-userControls-image" src="/profilepictures/{{ request.user.id }}.jpg"/>
+                        <img class="Header-userControls-image" src="{{ request.user.get_profile.image.url }}"/>
                         <span class="bold">{{ request.user.first_name }}</span>
                     </div>
 

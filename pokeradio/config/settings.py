@@ -17,22 +17,39 @@ CACHE_LEADERBOARD_HP = 120
 """ Paths """
 PROJECT_ROOT = abspath(join(dirname(__file__), '..', ))
 
-MEDIA_ROOT = join(PROJECT_ROOT,'media')
-ALBUM_ART_BASE_DIR = join(MEDIA_ROOT, 'albumart')
-USER_PROFILE_PICTURES_BASE_DIR = join(MEDIA_ROOT, 'profilepictures')
-
 STATICFILES_DIRS = [
     join(PROJECT_ROOT, 'public'), ]
 
 LOG_ROOT = join(PROJECT_ROOT, 'logs')
 
 ALBUM_ART_FALLBACK = '/s/img/404-album.jpg'
+
+""" S3 Media Storage """
+AWS_HEADERS = {
+    'Cache-Control': 'max-age=86400',
+}
+
+DEFAULT_FILE_STORAGE = 'pokeradio.s3utils.MediaRootS3BotoStorage'
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_SECURE_URLS = False
+
+MEDIA_URL = 'https://s3-eu-west-1.amazonaws.com/{0}/'.format(
+        AWS_STORAGE_BUCKET_NAME)
+
+ALBUM_ART_URL = '{0}/albumart/'.format(MEDIA_URL)
+
+THUMBNAIL_MEDIA_URL = MEDIA_URL
+THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
+
+AWS_S3_FILE_OVERWRITE = False
+
 SESSION_COOKIE_AGE = 1209600
 
 """ Urls """
 STATIC_URL = '/s/'
-MEDIA_URL = '/m/'
-ALBUM_ART_URL = '/albumart/'
 ROOT_URLCONF = 'pokeradio.urls'
 
 
@@ -45,6 +62,7 @@ USE_L10N = True
 """ Image sizes """
 THUMBNAIL_SIZE = 195, 195
 PROFILE_PICTURE_SIZE = 70,70
+AUTH_PROFILE_MODULE = 'pokeradio.Profile'
 
 """ Templates """
 TEMPLATE_DIRS = [join(PROJECT_ROOT, 'templates')]
@@ -100,6 +118,7 @@ INSTALLED_APPS = (
     'oauth2_provider',
     'corsheaders',
     'rest_framework',
+    'storages',
     # Project Apps here
     'pokeradio',
     'pokeradio.scoring',

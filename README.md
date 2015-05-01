@@ -71,6 +71,7 @@ There's a migration dependency for the history app. It should be fine, just migr
 $ python manage.py syncdb
 $ python manage.py migrate history # sorry
 $ python manage.py migrate
+$ python manage.py migrate default # ?
 ```
 
 ###7. Oauth

@@ -1,18 +1,26 @@
 from django.conf import settings
+from django.core.files.base import ContentFile
+
 from pokeradio.tasks import create_image
+from pokeradio.models import Profile
+
+
+def get_or_create_user_profile(user):
+    try:
+        return user.get_profile()
+    except Profile.DoesNotExist:
+        return Profile.objects.create(user=user)
+
 
 def get_profile_pic(strategy, details, response, user=None, is_new=False, *args, **kwargs):
-    """ TODO: Get new image every 24 hours """
-    def save_image():       
-        image_url = response.get('picture','default')
+    image_url = response.get('picture', None)
 
-        if image_url != 'default':
-            user_id = str(user.id)
-            try:
-                create_image(image_url, user_id,
-                            settings.USER_PROFILE_PICTURES_BASE_DIR,
-                            settings.PROFILE_PICTURE_SIZE)
-            except IOError:
-                pass
+    if not image_url:
+        return
 
-    save_image()
+    image = create_image(image_url, settings.THUMBNAIL_SIZE)
+    profile = get_or_create_user_profile(user)
+    filename = 'profile_{0}.jpg'.format(user.id)
+    profile.image.save(filename, ContentFile(image.getvalue()), save=False)
+    profile.save(update_fields=['image'])
+
