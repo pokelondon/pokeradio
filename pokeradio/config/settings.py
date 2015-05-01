@@ -74,11 +74,13 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware', # After session middleware
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     # Social Auth
     'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 )
 
 """ Installed Applications """
@@ -95,6 +97,9 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'social.apps.django_app.default',
+    'oauth2_provider',
+    'corsheaders',
+    'rest_framework',
     # Project Apps here
     'pokeradio',
     'pokeradio.scoring',
@@ -104,9 +109,9 @@ INSTALLED_APPS = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
-    'social.apps.django_app.utils.BackendWrapper'
+    'social.backends.google.GoogleOAuth2',
+    'oauth2_provider.backends.OAuth2Backend',
 )
 
 """ GOOGLE AUTH BACKEND"""
@@ -218,3 +223,22 @@ LIGHTS_WEBHOOK_URL = ""
 SOCKET_PORT = 80
 
 SOCKETIO_CLIENT_URL = 'http://{0}/app'.format(os.environ.get('SOCKETSERVER_HOST'))
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+SOUTH_MIGRATION_MODULES = {
+    'default': 'social.apps.django_app.default.south_migrations',
+}
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}

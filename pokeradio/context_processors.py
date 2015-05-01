@@ -17,8 +17,13 @@ def domain(request):
     :returns: dict -- current site data
     """
 
-    current_site = Site.objects.get_current()
-    domain = getattr(settings, 'DOMAIN', 'http://%s' % current_site.domain)
+    try:
+        current_site = Site.objects.get_current()
+    except Site.DoesNotExist:
+        current_site = Site.objects.create()
+    finally:
+        domain = getattr(settings, 'DOMAIN', 'http://%s' % current_site.domain)
+
     return {
         'DOMAIN': domain,
         'site': current_site,
