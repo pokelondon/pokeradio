@@ -8,8 +8,34 @@ define([
     'events'
     ],
     function($, Backbone, urls, _, MopidyTrack, MessagingController, _events){
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+        var oldSync = Backbone.sync;
+        Backbone.sync = function(method, model, options){
+            if('create' === method || 'delete' === method || 'patch' === method) {
+                options.beforeSend = function(xhr){
+                    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                };
+            }
+            return oldSync(method, model, options);
+        };
         var Collection = Backbone.Collection.extend({
-            url: 'api/playlist/',
+            url: 'api/v2/playlist/',
             model: MopidyTrack,
             SHOW_NUM_PLAYED: 1,
 

@@ -5,6 +5,12 @@ define(['jquery',
         'views/messaging/controller'
         ],
         function($, Backbone, _, Analytics, MessagingController){
+            var ERRORS = {
+                OWN_TRACK: {'message': 'You can\'t vote on your own track'},
+                RATE_LIMIT: {'message': 'Woah, chill your boots yo! that\'s some pretty intense voting!'},
+                ALREADY_VOTED: {'message': 'You\'ve already voted for this one'}
+            };
+
             MopidyTrack = Backbone.Model.extend({
                 idAttribute: "id",
                 wasPlaying: false,
@@ -90,7 +96,7 @@ define(['jquery',
                             patch: true,
                             error: function(model, xhr) {
                                 MessagingController.createMessage({
-                                    text: JSON.parse(xhr.responseText).message,
+                                    text: ERRORS[JSON.parse(xhr.responseText).error].message,
                                     type: 'bad',
                                     modal: true,
                                     closable: true
