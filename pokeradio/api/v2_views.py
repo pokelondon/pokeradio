@@ -78,12 +78,7 @@ class PlaylistDetail(APIView):
         data = request.data
         user = request.user
 
-        if 'vote' in data:
-            action = Point.TRACK_LIKED
-            if 0 > data['vote']:
-                action = Point.TRACK_DISLIKED
-
-            return self._vote(pk, action, user)
+        return self._vote(pk, data['vote'], user)
 
 
     def _vote(self, pk, action, user):
