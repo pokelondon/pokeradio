@@ -12,14 +12,9 @@ remove_egg:
 	rm -rf ./src/pokeradio.egg-info
 
 install_develop_dependencies:
-	pip install "file://`pwd`#egg=pokeradio[develop]" --use-mirrors
-
-install_test_dependencies:
-	pip install "file://`pwd`#egg=pokeradio[test]" --use-mirrors
+	pip install -r requirements.txt
 
 develop: install_develop_dependencies remove_egg
-
-test: install_test_dependencies remove_egg
 
 syncdb:
 	django-admin.py syncdb
