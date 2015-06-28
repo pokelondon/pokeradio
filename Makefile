@@ -21,7 +21,7 @@ syncdb:
 	django-admin.py migrate
 
 run_django:
-	django-admin.py runserver 0.0.0.0:9000
+	python manage.py runserver 0.0.0.0:9000
 
 notebook:
 	django-admin.py shell_plus --notebook

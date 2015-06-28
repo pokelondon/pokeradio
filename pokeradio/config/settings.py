@@ -4,8 +4,6 @@
 """
 
 import os
-import dj_database_url
-import urlparse
 
 from os.path import abspath, join, dirname
 
@@ -16,42 +14,28 @@ CACHE_LEADERBOARD_HP = 120
 
 """ Paths """
 PROJECT_ROOT = abspath(join(dirname(__file__), '..', ))
+ROOTS_ROOT = abspath(join(dirname(PROJECT_ROOT), '..'))
 
 STATICFILES_DIRS = [
     join(PROJECT_ROOT, 'public'), ]
 
-LOG_ROOT = join(PROJECT_ROOT, 'logs')
+LOG_ROOT = join(ROOTS_ROOT, 'logs')
+STATIC_ROOT = join(ROOTS_ROOT, 'public')
+MEDIA_ROOT = join(ROOTS_ROOT, 'media')
 
 ALBUM_ART_FALLBACK = '/s/img/404-album.jpg'
 
-""" S3 Media Storage """
-AWS_HEADERS = {
-    'Cache-Control': 'max-age=86400',
-}
-
-DEFAULT_FILE_STORAGE = 'pokeradio.s3utils.MediaRootS3BotoStorage'
-
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_SECURE_URLS = False
-
-MEDIA_URL = 'https://s3-eu-west-1.amazonaws.com/{0}/'.format(
-        AWS_STORAGE_BUCKET_NAME)
+MEDIA_URL = '/m/'
 
 ALBUM_ART_URL = '{0}/albumart/'.format(MEDIA_URL)
 
 THUMBNAIL_MEDIA_URL = MEDIA_URL
-THUMBNAIL_DEFAULT_STORAGE = DEFAULT_FILE_STORAGE
-
-AWS_S3_FILE_OVERWRITE = False
 
 SESSION_COOKIE_AGE = 1209600
 
 """ Urls """
 STATIC_URL = '/s/'
 ROOT_URLCONF = 'pokeradio.urls'
-
 
 """ Location """
 TIME_ZONE = 'Europe/London'
@@ -118,7 +102,6 @@ INSTALLED_APPS = (
     'oauth2_provider',
     'corsheaders',
     'rest_framework',
-    'storages',
     # Project Apps here
     'pokeradio',
     'pokeradio.scoring',
@@ -178,11 +161,7 @@ CACHES = {
     },
     'object_cache': {
         'BACKEND': 'django_bmemcached.memcached.BMemcached',
-        'LOCATION': os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
-        'OPTIONS': {
-            'username': os.environ.get('MEMCACHEDCLOUD_USERNAME'),
-            'password': os.environ.get('MEMCACHEDCLOUD_PASSWORD')
-        }
+        'LOCATION': 'localhost',
     }
 }
 
@@ -194,15 +173,13 @@ ANALYTICS_ENABLED = False
 GA_ID = os.environ.get('GA_ID')
 
 """ Redis Pubsub """
-redis_url = urlparse.urlparse(os.environ.get('REDISCLOUD_URL'))
-
-REDIS_HOST = redis_url.hostname
-REDIS_PORT = redis_url.port
-REDIS_PASSWORD = redis_url.password
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_PASSWORD = None
 REDIS_DB = 0
 
 """ Celery """
-BROKER_URL = os.environ.get('REDISCLOUD_URL')
+BROKER_URL = 'redis://localhost:6379/0'
 
 """ Secret Key & Site ID """
 SITE_ID = 1
@@ -211,8 +188,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 """ Databases """
 
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config()
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'pokeradio.sqlite',
+        }
+    }
 
 """ Pusher Settings """
 USE_PUSHER = False
@@ -241,7 +222,7 @@ LIGHTS_WEBHOOK_URL = ""
 """ Socket Server """
 SOCKET_PORT = 80
 
-SOCKETIO_CLIENT_URL = 'http://{0}/app'.format(os.environ.get('SOCKETSERVER_HOST'))
+SOCKETIO_CLIENT_URL = '/app'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
