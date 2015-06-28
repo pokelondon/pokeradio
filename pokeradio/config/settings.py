@@ -190,11 +190,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY', DEFAULT_SECRET_KEY)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'pokeradio.sqlite',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
         }
     }
-
 """ Pusher Settings """
 USE_PUSHER = False
 PUSHER_APP_ID = os.environ.get('PUSHER_APP_ID')
