@@ -27,20 +27,19 @@ redis:
 socket:
   build: socketserver
   ports:
-    - "8080:8080"
+    - "8080"
   links:
     - redis
   environment:
-    - REDISCLOUD_URL=redis://redis:6379/0
     - PORT=8080
 
-web:
+django:
   build: .
   command: python manage.py runserver 0.0.0.0:8000
   volumes:
     - .:/usr/src/app/
   ports:
-    - "8000:8000"
+    - "8000"
   links:
     - db
     - redis
@@ -48,5 +47,11 @@ web:
     - INSTANCE_TYPE=web
     - DEBUG=1
     - DJANGO_SETTINGS_MODULE=pokeradio.config.settings
-    - DATABASE_URL=postgres://postgres@db/postgres
-    - REDISCLOUD_URL=redis://redis:6379/0
+
+web:
+  build: nginx
+  ports:
+    - "80:80"
+  links:
+    - django
+    - socket
