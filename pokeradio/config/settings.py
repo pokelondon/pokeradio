@@ -173,13 +173,13 @@ ANALYTICS_ENABLED = False
 GA_ID = os.environ.get('GA_ID')
 
 """ Redis Pubsub """
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+REDIS_HOST = os.environ.get('REDIS_1_PORT_6379_TCP_ADDR')
+REDIS_PORT = os.environ.get('REDIS_1_PORT_6379_TCP_PORT')
 REDIS_PASSWORD = None
 REDIS_DB = 0
 
 """ Celery """
-BROKER_URL = 'redis://localhost:6379/0'
+BROKER_URL = 'redis://{0}:{1}/{2}'.format(REDIS_HOST, REDIS_PORT, REDIS_DB)
 
 """ Secret Key & Site ID """
 SITE_ID = 1
