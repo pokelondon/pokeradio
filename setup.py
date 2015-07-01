@@ -18,7 +18,6 @@ setup(
     author='Poke London ltd',
     author_email='developer@pokelondon.com',
     description='',
-    long_description=read('README.md'),
     zip_safe=False,
     package_dir={'': 'pokeradio'},
     packages=find_packages('pokeradio'),

@@ -35,9 +35,7 @@ socket:
 
 django:
   build: .
-  command: python manage.py runserver 8000
-  volumes:
-    - .:/usr/src/app
+  working_dir: /usr/src/app
   ports:
     - "8000"
   links:
