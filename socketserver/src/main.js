@@ -26,7 +26,6 @@ nsp_app.on('connection', function(socket){
         connections --;
         console.log('User disconnected', connections);
     });
-
 });
 
 http.listen(PORT, function(){

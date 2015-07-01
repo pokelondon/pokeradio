@@ -27,7 +27,7 @@ redis:
 socket:
   build: socketserver
   ports:
-    - "8080"
+    - "8080:8080"
   links:
     - redis
   environment:
@@ -37,7 +37,7 @@ django:
   build: .
   working_dir: /usr/src/app
   ports:
-    - "8000"
+    - "8000:8000"
   links:
     - db
     - redis
@@ -49,7 +49,7 @@ django:
 web:
   build: nginx
   ports:
-    - "80:80"
+    - "80:8001"
   links:
     - django
     - socket
