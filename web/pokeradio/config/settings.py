@@ -7,6 +7,7 @@ import os
 
 from os.path import abspath, join, dirname
 
+ENV = os.environ.get('ENV', 'dev')
 DEBUG = True
 
 """ Object Cache """

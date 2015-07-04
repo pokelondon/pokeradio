@@ -18,7 +18,7 @@ redisdata:
   volumes:
     - /var/lib/redis
   command: true
- 
+
 redis:
   image: redis:latest
   volumes_from:
@@ -47,7 +47,8 @@ web:
   links:
     - postgres:postgres
     - redis:redis
-  command: /usr/local/bin/gunicorn pokeradio.wsgi:application -w 2 -b :8000
+  command: python manage.py runserver 0.0.0.0:8000
+  #command: /usr/local/bin/gunicorn pokeradio.wsgi:application -w 2 -b :8000
   env_file: .env
 
 nginx:
