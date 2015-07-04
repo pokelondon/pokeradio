@@ -173,9 +173,9 @@ ANALYTICS_ENABLED = False
 GA_ID = os.environ.get('GA_ID')
 
 """ Redis Pubsub """
-REDIS_HOST = os.environ.get('REDIS_1_PORT_6379_TCP_ADDR')
-REDIS_PORT = os.environ.get('REDIS_1_PORT_6379_TCP_PORT')
-REDIS_PASSWORD = None
+REDIS_HOST = os.environ.get('REDIS_1_PORT_6379_TCP_ADDR', 'redis')
+REDIS_PORT = int(os.environ.get('REDIS_1_PORT_6379_TCP_PORT', 6379))
+REDIS_PASSWORD = ''
 REDIS_DB = 0
 
 """ Celery """

@@ -14,8 +14,7 @@ io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
     'db': settings.REDIS_DB, 'password': settings.REDIS_PASSWORD})
 
 r_conn = redis.StrictRedis(settings.REDIS_HOST, settings.REDIS_PORT,
-                           db=settings.REDIS_DB,
-                           password=settings.REDIS_PASSWORD)
+                           db=settings.REDIS_DB)
 
 def badge_saved(sender, instance, created, **kwargs):
 

@@ -9,10 +9,10 @@ var io = require('socket.io')(http, {transports: 'websocket'});
 var nsp_app = io.of('/app');
 
 var REDIS_HOST = process.env.REDIS_PORT_6379_TCP_ADDR || 'redis';
-var REDIS_PORT = process.env.REDIS_PORT_6379_TCP_PORT || 6379;
+var REDIS_PORT = parseInt(process.env.REDIS_PORT_6379_TCP_PORT, 10) || 6379;
 
-var pub = redis.createClient(REDIS_PORT, REDIS_HOST);
-var sub = redis.createClient(REDIS_PORT, REDIS_HOST);
+var pub = redis.createClient(REDIS_PORT, REDIS_HOST, {return_buffers: true});
+var sub = redis.createClient(REDIS_PORT, REDIS_HOST, {return_buffers: true});
 
 io.adapter(redisAdapter({pubClient: pub, subClient: sub}));
 
