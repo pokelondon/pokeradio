@@ -1,9 +1,4 @@
-FROM nginx
-EXPOSE 8001
+FROM tutum/nginx
+RUN rm /etc/nginx/sites-enabled/default
+ADD sites-enabled/ /etc/nginx/sites-enabled
 
-MAINTAINER Poke London
-
-COPY nginx.conf /etc/nginx/nginx.conf
-WORKDIR /etc/nginx
-
-CMD service nginx restart
