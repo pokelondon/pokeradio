@@ -15,7 +15,7 @@ CACHE_LEADERBOARD_HP = 120
 
 """ Paths """
 PROJECT_ROOT = abspath(join(dirname(__file__), '..', ))
-ROOTS_ROOT = abspath(join(dirname(PROJECT_ROOT), '..'))
+ROOTS_ROOT = abspath(join(dirname(PROJECT_ROOT), '..', 'app'))
 
 STATICFILES_DIRS = [
     join(PROJECT_ROOT, 'public'), ]
