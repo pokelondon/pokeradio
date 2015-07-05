@@ -50,6 +50,19 @@ web:
   evironment:
       DEBUG: 0
 
+celery:
+  build: ./web/
+  restart: always
+  working_dir: /usr/src/app
+  volumes:
+    - web:/usr/src/app
+  links:
+    - postgres:postgres
+    - redis:redis
+  command: su -m celery_user -c "celery -A pokeradio  worker --loglevel=info"
+  env_file: .env
+  environment:
+    DEBUG: 0
 
 nginx:
   restart: always
