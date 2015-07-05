@@ -4,6 +4,7 @@ import json
 from itertools import chain
 from logging import getLogger
 
+import redis
 from emitter import Emitter
 
 from django.db import IntegrityError
@@ -35,6 +36,10 @@ logger = getLogger(__file__)
 # for Emiting events to be sent to browers via socket server
 io = Emitter({'host': settings.REDIS_HOST, 'port': settings.REDIS_PORT,
     'db': settings.REDIS_DB})
+
+redis_conn = redis.StrictRedis(host=settings.REDIS_HOST,
+                               port=settings.REDIS_PORT, db=settings.REDIS_DB)
+
 
 @csrf_exempt
 def vote(request):
@@ -245,6 +250,14 @@ class MopidyPlaylistTrack(View):
 
         if 'progress' == data['action']:
             io.Of('/app').Emit('play:progress', request.body)
+
+            playback_state = json.loads(request.body).get('playback_state',
+                                                          'unknown')
+            pipe = redis_conn.pipeline()
+            pipe.set('playback_state', playback_state)
+            pipe.expire('playback_state', 20)
+            pipe.execute()
+
             return JSONResponse({'status': 'OK'})
 
 def badges(request, user_id):
