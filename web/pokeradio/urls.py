@@ -19,7 +19,7 @@ if settings.DEBUG:
         (r'^404/$', TemplateView.as_view(template_name="404.html")),
         (r'^500/$', TemplateView.as_view(template_name="500.html")),
     ]
-    #urlpatterns += patterns('', *urls)
+    urlpatterns += patterns('', *urls)
     urlpatterns += staticfiles_urlpatterns()
 
 # Root Patterns

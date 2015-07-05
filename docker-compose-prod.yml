@@ -42,15 +42,14 @@ web:
   working_dir: /usr/src/app
   ports:
     - "8000:8000"
-  volumes:
-    - web:/usr/src/app
   links:
     - postgres:postgres
     - redis:redis
-  command: python manage.py runserver 0.0.0.0:8000
+  command: /usr/local/bin/gunicorn pokeradio.wsgi:application -w 2 -b :8000
   env_file: .env
-  environment:
-    DEBUG: 1
+  evironment:
+      DEBUG: 0
+
 
 nginx:
   restart: always

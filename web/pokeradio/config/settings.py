@@ -36,6 +36,7 @@ SESSION_COOKIE_AGE = 1209600
 
 """ Urls """
 STATIC_URL = '/s/'
+
 ROOT_URLCONF = 'pokeradio.urls'
 
 """ Location """
