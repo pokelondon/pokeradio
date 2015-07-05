@@ -4,36 +4,36 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            all:['pokeradio/public/js/*.js']
+            all:['web/pokeradio/public/js/*.js']
         },
         less: {
             development: {
                 options: {
-                    paths: ["pokeradio/public/css"]
+                    paths: ["web/pokeradio/public/css"]
                 },
                 files: {
-                    "pokeradio/public/css/main.css": "pokeradio/public/less/main.less",
-                     "pokeradio/public/css/bootstrap.css": "pokeradio/public/less/bootstrap/bootstrap.less"
+                    "web/pokeradio/public/css/main.css": "web/pokeradio/public/less/main.less",
+                     "web/pokeradio/public/css/bootstrap.css": "web/pokeradio/public/less/bootstrap/bootstrap.less"
 
                 }
             },
             production: {
                 options: {
-                    paths: ["pokeradio/public/css"],
+                    paths: ["web/pokeradio/public/css"],
                     yuicompress: true
                 },
                 files: {
-                    "pokeradio/public/css/main.css": "pokeradio/public/less/main.less"
+                    "web/pokeradio/public/css/main.css": "web/pokeradio/public/less/main.less"
                 }
             }
         },
         watch: {
-            files: ["pokeradio/public/less/*.less",
-                    "pokeradio/public/less/*/*.less",
-                    "pokeradio/public/less/bootstrap/*.less"],
+            files: ["web/pokeradio/public/less/*.less",
+                    "web/pokeradio/public/less/*/*.less",
+                    "web/pokeradio/public/less/bootstrap/*.less"],
             tasks: ['less:development'],
             css: {
-                files: ["pokeradio/public/css/*.css"],
+                files: ["web/pokeradio/public/css/*.css"],
                 options: {
                     livereload: true,
                 }
