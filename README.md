@@ -30,20 +30,34 @@ There are quite a few config vars. Rename the example `.env` file, modify it and
 ```sh
 $ mv example.env .env && vim .env
 ```
+
 ###3. Build images
 ```sh
 $ docker-compose build
+$ docker-compose up
+```
+
+```sh
+$ ssh boot2docker
+$ docker exec -it pokeradio_postgres_1
+$ psql
+$ CREATE USER pokeradio_user WITH PASSWORD 'prad$_Pa$$';
+$ ALTER USER pokeradio_user SUPERUSER;
+$ CREATE DATABASE mycms WITH OWNER = pokeradio_user;
+$ \q
+$ exit
 ```
 
 ###6. Database
 There's a migration dependency for the history app. It should be fine, just migrate it first.
 ```sh
+$ docker exec -it pokeradio_web_1
 $ python manage.py syncdb
 $ python manage.py migrate history # sorry
 $ python manage.py migrate
 ```
 
-### Development
+### Frontend
 We have a Gruntfile to compile LESS and reload the browser. That's about it. If you want to use that then:
 ```sh
 $ npm install
