@@ -47,7 +47,7 @@ web:
     - redis:redis
   command: /usr/local/bin/gunicorn pokeradio.wsgi:application -w 2 -b :8000
   env_file: .env
-  evironment:
+  environment:
       DEBUG: 0
 
 celery:
