@@ -26,35 +26,40 @@ $ git clone http://github.com/pokelondon/pokeradio
 $ cd pokeradio
 ```
 ###2. Set Config
-There are quite a few config vars. Rename the example `.env` file, modify it and source it to your shell.
+There are quite a few config vars. Rename the example `.env` file with important variables for the app. Docker Compose will export it to the web container at runtime.
 ```sh
 $ mv example.env .env && vim .env
 ```
 
 ###3. Build images
+The App is made up out of a few docker containers to run each service, webserver, redis, socket server etc. Docker Compose can be used to create them all and link them together.
+Make sure boot2docker is running then do this:
 ```sh
 $ docker-compose build
 $ docker-compose up
 ```
 
+First time round, you need to create a database and user to match the credentials defined in your `.env` file. This can be done by attaching to the postgres container and running the following:
 ```sh
 $ ssh boot2docker
-$ docker exec -it pokeradio_postgres_1
-$ psql
-$ CREATE USER pokeradio_user WITH PASSWORD 'prad$_Pa$$';
-$ ALTER USER pokeradio_user SUPERUSER;
-$ CREATE DATABASE mycms WITH OWNER = pokeradio_user;
-$ \q
-$ exit
+$ docker exec -it pokeradio_postgres_1 bash
+    $ psql
+    $ CREATE USER pokeradio_user WITH PASSWORD 'prad$_Pa$$';
+    $ ALTER USER pokeradio_user SUPERUSER;
+    $ CREATE DATABASE mycms WITH OWNER = pokeradio_user;
+    $ \q
+    $ exit
 ```
 
 ###6. Database
 There's a migration dependency for the history app. It should be fine, just migrate it first.
+Run the migrations on the web container
 ```sh
-$ docker exec -it pokeradio_web_1
-$ python manage.py syncdb
-$ python manage.py migrate history # sorry
-$ python manage.py migrate
+$ ssh boot2docker
+$ docker exec -it pokeradio_web_1 bash
+    $ python manage.py syncdb
+    $ python manage.py migrate history # sorry
+    $ python manage.py migrate
 ```
 
 ### Frontend
