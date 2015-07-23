@@ -11,13 +11,13 @@ postgresdata:
   image: postgres:latest
   volumes:
     - /var/lib/postgresql
-  command: true
+  #command: true
 
 redisdata:
   image: redis:latest
   volumes:
     - /var/lib/redis
-  command: true
+  #command: true
 
 redis:
   image: redis:latest
@@ -34,7 +34,7 @@ socketserver:
   links:
     - redis
   environment:
-    - PORT=8080
+    PORT: 8080
 
 web:
   build: ./web/

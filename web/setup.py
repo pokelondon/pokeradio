@@ -4,9 +4,7 @@ from os.path import abspath, dirname, join
 from setuptools import setup, find_packages
 from sys import path
 
-path.append(abspath(join(dirname(__file__), 'src')))
-
-from pokeradio import __VERSION__
+path.append(abspath(join(dirname(__file__), 'pokeradio')))
 
 
 def read(fname):
@@ -14,7 +12,6 @@ def read(fname):
 
 setup(
     name='pokeradio',
-    version=__VERSION__,
     author='Poke London ltd',
     author_email='developer@pokelondon.com',
     description='',
