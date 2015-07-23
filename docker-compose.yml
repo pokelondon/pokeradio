@@ -6,6 +6,9 @@ postgres:
   ports:
     - "5432:5432"
   env_file: .env
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
 
 postgresdata:
   restart: no
@@ -52,6 +55,9 @@ web:
   env_file: .env
   environment:
     DEBUG: 1
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
 
 celery:
   build: ./web/
@@ -66,6 +72,9 @@ celery:
   env_file: .env
   environment:
     DEBUG: 1
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
 
 nginx:
   restart: always
