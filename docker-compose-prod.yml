@@ -5,19 +5,21 @@ postgres:
     - postgresdata
   ports:
     - "5432:5432"
+  env_file: .env
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
 
 postgresdata:
   restart: no
   image: postgres:latest
   volumes:
     - /var/lib/postgresql
-  command: true
 
 redisdata:
   image: redis:latest
   volumes:
     - /var/lib/redis
-  command: true
 
 redis:
   image: redis:latest
@@ -37,7 +39,7 @@ socketserver:
     PORT: 8080
 
 web:
-  build: web
+  build: ./web/
   restart: always
   working_dir: /usr/src/app
   ports:
@@ -45,13 +47,16 @@ web:
   links:
     - postgres:postgres
     - redis:redis
-  command: /usr/local/bin/gunicorn pokeradio.wsgi:application -w 2 -b :8000
+  command: python manage.py runserver 0.0.0.0:8000
   env_file: .env
   environment:
-    DEBUG: 0
+    DEBUG: 1
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
 
 celery:
-  build: web
+  build: ./web/
   restart: always
   working_dir: /usr/src/app
   volumes:
@@ -62,11 +67,14 @@ celery:
   command: su -m celery_user -c "celery -A pokeradio  worker --loglevel=info"
   env_file: .env
   environment:
-    DEBUG: 0
+    DEBUG: 1
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
 
 nginx:
   restart: always
-  build: nginx
+  build: ./nginx/
   ports:
     - "80:80"
   volumes_from:

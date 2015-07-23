@@ -45,14 +45,6 @@ def send_slack_vote_task(self, point_id):
         raise self.retry(exc=exc)
 
 
-@app.task
-def send_light_vote_task(post_vars):
-    try:
-        r = requests.post(settings.LIGHTS_WEBHOOK_URL, data=post_vars)
-    except Exception:
-        logger.warn('cannot send data to lights server')
-
-
 @app.task(bind=True, default_retry_delay=5, max_retries=2)
 def send_slack_skip_task(self, verb, score, point_id):
     from .models import Point

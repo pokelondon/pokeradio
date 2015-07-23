@@ -14,7 +14,6 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .slack import Slack
 from .tasks import (send_slack_vote_task,
-                    send_light_vote_task,
                     send_slack_skip_task,
                     add_to_personal_playlist_task,
                     trigger_badge_vote_task,

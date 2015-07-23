@@ -8,7 +8,7 @@ import os
 from os.path import abspath, join, dirname
 
 ENV = os.environ.get('ENV', 'dev')
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', True)
 
 """ Object Cache """
 CACHE_LEADERBOARD_HP = 120
@@ -68,9 +68,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # Custom project context processprs
     'pokeradio.context_processors.domain',
     'pokeradio.context_processors.analytics',
-    #python-social-auth
-    'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect',
 )
 
 """ Middleware """
@@ -82,8 +79,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
-    # Social Auth
-    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 )
 
@@ -100,7 +95,6 @@ INSTALLED_APPS = (
     # Third Party Apps here
     'south',
     'django_extensions',
-    'social.apps.django_app.default',
     'oauth2_provider',
     'corsheaders',
     'rest_framework',
@@ -114,40 +108,14 @@ INSTALLED_APPS = (
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'social.backends.google.GoogleOAuth2',
     'oauth2_provider.backends.OAuth2Backend',
 )
-
-""" GOOGLE AUTH BACKEND"""
-SOCIAL_AUTH_GOOGLE_RAISE_EXCEPTIONS = True
-RAISE_EXCEPTIONS = True
-DEBUG = True
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = 'pokelondon.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    'https://www.googleapis.com/auth/userinfo.profile'
-]
-SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
-SOCIAL_AUTH_SESSION_EXPIRATION = False
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_URL = '/logout/'
 
 SPOTIFY_LOOKUP_ENDPOINT = 'http://ws.spotify.com/lookup/1/.json?uri=spotify:album:{0}'
-
-SOCIAL_AUTH_PIPELINE = (
-    'social.pipeline.social_auth.social_details',
-    'social.pipeline.social_auth.social_uid',
-    'social.pipeline.social_auth.auth_allowed',
-    'social.pipeline.social_auth.social_user',
-    'social.pipeline.user.get_username',
-    'social.pipeline.user.create_user',
-    'social.pipeline.social_auth.associate_user',
-    'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details',
-    'pokeradio.accounts.pipeline.get_profile_pic',
-)
 
 """ Credits and Points """
 POKERADIO_SCORING_POINT = {
@@ -212,11 +180,6 @@ SPOTIFY_CLIENT_ID = os.environ.get('SPOTIFY_CLIENT_ID')
 SPOTIFY_CLIENT_SECRET = os.environ.get('SPOTIFY_CLIENT_SECRET')
 SPOTIFY_OAUTH_REDIRECT = os.environ.get('SPOTIFY_OAUTH_REDIRECT')
 
-""" Google OAuth Credientials """
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
-SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS', None)
-
 """ Slack """
 SLACK = False
 SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
@@ -232,10 +195,8 @@ SOCKETIO_CLIENT_URL = '/app'
 CORS_ORIGIN_ALLOW_ALL = True
 
 SOUTH_MIGRATION_MODULES = {
-    'default': 'social.apps.django_app.default.south_migrations',
     'oauth2_provider': 'oauth2_provider.south_migrations',
 }
-SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': (
