@@ -19,14 +19,16 @@ This is the main (complicated) part of the legendary PokeRadio; the social wedge
 ###You need:
 - Docker
 - docker-compose
+- docker-machine (if you want, for deployment)
 
 ###1. Clone the repo
 ```sh
 $ git clone http://github.com/pokelondon/pokeradio
 $ cd pokeradio
 ```
+
 ###2. Set Config
-There are quite a few config vars. Rename the example `.env` file with important variables for the app. Docker Compose will export it to the web container at runtime.
+All installation specific configs are accessed from the environment variables. Modify the example with yours and name it `.env` for docker-compose to find.
 ```sh
 $ mv example.env .env && vim .env
 ```
@@ -39,27 +41,13 @@ $ docker-compose build
 $ docker-compose up
 ```
 
-First time round, you need to create a database and user to match the credentials defined in your `.env` file. This can be done by attaching to the postgres container and running the following:
-```sh
-$ ssh boot2docker
-$ docker exec -it pokeradio_postgres_1 bash
-    $ psql
-    $ CREATE USER pokeradio_user WITH PASSWORD 'prad$_Pa$$';
-    $ ALTER USER pokeradio_user SUPERUSER;
-    $ CREATE DATABASE mycms WITH OWNER = pokeradio_user;
-    $ \q
-    $ exit
-```
-
 ###6. Database
 There's a migration dependency for the history app. It should be fine, just migrate it first.
-Run the migrations on the web container
+Run the migrations on the web container and create a super user as instructed.
 ```sh
-$ ssh boot2docker
-$ docker exec -it pokeradio_web_1 bash
-    $ python manage.py syncdb
-    $ python manage.py migrate history # sorry
-    $ python manage.py migrate
+$ docker-compose run --rm web python manage.py syncdb
+$ docker-compose run --rm web python manage.py migrate history # sorry
+$ docker-compose run --rm web python manage.py migrate
 ```
 
 ### Frontend
