@@ -1,0 +1,88 @@
+postgres:
+  restart: always
+  image: postgres:latest
+  volumes_from:
+    - postgresdata
+  ports:
+    - "5432:5432"
+  env_file: .env
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
+
+postgresdata:
+  restart: no
+  image: postgres:latest
+  volumes:
+    - /var/lib/postgresql
+  #command: true
+
+redisdata:
+  image: redis:latest
+  volumes:
+    - /var/lib/redis
+  #command: true
+
+redis:
+  image: redis:latest
+  volumes_from:
+    - redisdata
+  ports:
+    - "6379"
+
+socketserver:
+  build: socketserver
+  restart: always
+  ports:
+    - "8080"
+  links:
+    - redis
+  environment:
+    PORT: 8080
+
+web:
+  build: ./web/
+  restart: always
+  working_dir: /usr/src/app
+  ports:
+    - "8000:8000"
+  volumes:
+    - web:/usr/src/app
+  links:
+    - postgres:postgres
+    - redis:redis
+  command: python manage.py runserver 0.0.0.0:8000
+  env_file: .env
+  environment:
+    DEBUG: 1
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
+
+celery:
+  build: ./web/
+  restart: always
+  working_dir: /usr/src/app
+  volumes:
+    - web:/usr/src/app
+  links:
+    - postgres:postgres
+    - redis:redis
+  command: su -m celery_user -c "celery -A pokeradio  worker --loglevel=info"
+  env_file: .env
+  environment:
+    DEBUG: 1
+  environment:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: ''
+
+nginx:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80:80"
+  volumes_from:
+    - web
+  links:
+    - web:web
+    - socketserver:socketserver
