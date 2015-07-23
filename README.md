@@ -22,21 +22,21 @@ This is the main (complicated) part of the legendary PokeRadio; the social wedge
 - docker-machine (if you want, for deployment)
 
 ###1. Clone the repo
-```sh
+```
 $ git clone http://github.com/pokelondon/pokeradio
 $ cd pokeradio
 ```
 
 ###2. Set Config
 All installation specific configs are accessed from the environment variables. Modify the example with yours and name it `.env` for docker-compose to find.
-```sh
+```
 $ mv example.env .env && vim .env
 ```
 
 ###3. Build images
 The App is made up out of a few docker containers to run each service, webserver, redis, socket server etc. Docker Compose can be used to create them all and link them together.
 Make sure boot2docker is running then do this:
-```sh
+```
 $ docker-compose build
 $ docker-compose up
 ```
@@ -44,7 +44,7 @@ $ docker-compose up
 ###6. Database
 There's a migration dependency for the history app. It should be fine, just migrate it first.
 Run the migrations on the web container and create a super user as instructed.
-```sh
+```
 $ docker-compose run --rm web python manage.py syncdb
 $ docker-compose run --rm web python manage.py migrate history # sorry
 $ docker-compose run --rm web python manage.py migrate
@@ -52,7 +52,7 @@ $ docker-compose run --rm web python manage.py migrate
 
 ### Frontend
 We have a Gruntfile to compile LESS and reload the browser. That's about it. If you want to use that then:
-```sh
+```
 $ npm install
 $ grunt
 ```
