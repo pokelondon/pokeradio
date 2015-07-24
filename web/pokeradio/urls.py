@@ -25,8 +25,6 @@ if settings.DEBUG:
 # Root Patterns
 urls = [
     url(r'^$', 'pokeradio.views.home', name='home'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', name="logout"),
-    url(r'^login/$', 'django.contrib.auth.views.login', name="login"),
 
     (r'^admin/', include(admin.site.urls)),
     (r'^scoring/', include('pokeradio.scoring.urls', namespace='scoring')),
@@ -35,6 +33,7 @@ urls = [
     (r'^api/', include('pokeradio.api.urls', namespace='api')),
     (r'^spotify/', include('pokeradio.spotify_playlist.urls',
         namespace='spotify_playlist')),
+    (r'^accounts/', include('pokeradio.accounts.urls', namespace='accounts')),
 
     (r'^monitor/$', TemplateView.as_view(template_name="pokeradiomon.html")),
 ]

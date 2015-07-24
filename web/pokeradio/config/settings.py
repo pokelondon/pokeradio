@@ -6,6 +6,7 @@
 import os
 
 from os.path import abspath, join, dirname
+from django.core.urlresolvers import reverse_lazy
 
 ENV = os.environ.get('ENV', 'dev')
 DEBUG = os.environ.get('DEBUG', True)
@@ -100,6 +101,7 @@ INSTALLED_APPS = (
     'rest_framework',
     # Project Apps here
     'pokeradio',
+    'pokeradio.accounts',
     'pokeradio.scoring',
     'pokeradio.history',
     'pokeradio.api',
@@ -111,9 +113,12 @@ AUTHENTICATION_BACKENDS = (
     'oauth2_provider.backends.OAuth2Backend',
 )
 
-LOGIN_URL = '/login/'
+#LOGIN_URL = reverse_lazy('accounts:login')
+#LOGOUT_URL = reverse_lazy('accounts:logout')
+
+LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_URL = '/logout/'
 
 SPOTIFY_LOOKUP_ENDPOINT = 'http://ws.spotify.com/lookup/1/.json?uri=spotify:album:{0}'
 

@@ -1,16 +1,5 @@
 {% extends 'base.html' %}
 
 {% block container %}
-<form action="{% url 'login' %}" method="post" accept-charset="utf-8">
-    {% csrf_token %}
-    {% for field in form %}
-        <label>{{ field.label }}</label>
-        {% if field.errors %}
-            {{ field.errors }}
-        {% endif %}
-        {{ field }}
-    {% endfor %}
-    <input type="hidden" name="next" value="{{ next }}" />
-    <input class="button small" type="submit" value="Submit"/>
-</form>
+{% include 'includes/form_snippet.html' with form=form %}
 {% endblock %}
