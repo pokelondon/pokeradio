@@ -220,3 +220,8 @@ REST_FRAMEWORK = {
 """ User Registration """
 REGISTRATION_AUTO_LOGIN = True
 ACCOUNT_ACTIVATION_DAYS = 7
+
+domain_whitelist = os.environ.get('REGISTRATION_DOMAIN_WHITELIST', None)
+if domain_whitelist:
+    REGISTRATION_DOMAIN_WHITELIST = domain_whitelist.split(',')
+    REGISTRATION_FORM = 'pokeradio.accounts.forms.RegistrationFormWhiteListDomains'
