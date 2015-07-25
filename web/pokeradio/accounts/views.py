@@ -6,3 +6,4 @@ from django.core.urlresolvers import reverse
 def logout_view(request):
     logout(request)
     return redirect(reverse('accounts:login'))
+

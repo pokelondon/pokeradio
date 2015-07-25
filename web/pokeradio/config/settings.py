@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'oauth2_provider',
     'corsheaders',
     'rest_framework',
+    'registration',
     # Project Apps here
     'pokeradio',
     'pokeradio.accounts',
@@ -201,6 +202,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 SOUTH_MIGRATION_MODULES = {
     'oauth2_provider': 'oauth2_provider.south_migrations',
+    'registration': 'registration.south_migrations',
 }
 
 REST_FRAMEWORK = {
@@ -214,3 +216,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+
+""" User Registration """
+REGISTRATION_AUTO_LOGIN = True
+ACCOUNT_ACTIVATION_DAYS = 7

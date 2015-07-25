@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block container %}
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <h1>Register</h1>
+        <div class="box">
+            {% include 'includes/form_snippet.html' with form=form %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

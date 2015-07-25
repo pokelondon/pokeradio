@@ -2804,6 +2804,9 @@ h1 + p.intro {
 .Header--page .btn--forward {
   margin-top: -10px;
 }
+.centre {
+  text-align: center;
+}
 .Header {
   height: 270px;
   padding-top: 65px;
@@ -4340,6 +4343,7 @@ a.spotify-link:hover {
 .Field input {
   outline: none;
 }
+.Field input[type="email"],
 .Field input[type="password"],
 .Field input[type="text"] {
   display: block;
@@ -4352,14 +4356,17 @@ a.spotify-link:hover {
   -webkit-transition: border 100ms ease-in;
   transition: border 100ms ease-in;
 }
+.Field input[type="email"]:focus,
 .Field input[type="password"]:focus,
 .Field input[type="text"]:focus {
   border-bottom-color: #61dfb4;
 }
+.Field.has-error input[type="email"],
 .Field.has-error input[type="password"],
 .Field.has-error input[type="text"] {
   border-bottom-color: #f84646;
 }
+.Field.has-error input[type="email"]:focus,
 .Field.has-error input[type="password"]:focus,
 .Field.has-error input[type="text"]:focus {
   border-bottom-color: #61dfb4;

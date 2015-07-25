@@ -1,8 +1,6 @@
 postgres:
   restart: always
   image: postgres:latest
-  volumes_from:
-    - postgresdata
   ports:
     - "5432:5432"
   env_file: .env
@@ -10,23 +8,8 @@ postgres:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: ''
 
-postgresdata:
-  restart: no
-  image: postgres:latest
-  volumes:
-    - /var/lib/postgresql
-  #command: true
-
-redisdata:
-  image: redis:latest
-  volumes:
-    - /var/lib/redis
-  #command: true
-
 redis:
   image: redis:latest
-  volumes_from:
-    - redisdata
   ports:
     - "6379"
 

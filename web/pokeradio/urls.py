@@ -34,6 +34,7 @@ urls = [
     (r'^spotify/', include('pokeradio.spotify_playlist.urls',
         namespace='spotify_playlist')),
     (r'^accounts/', include('pokeradio.accounts.urls', namespace='accounts')),
+    (r'^registration/', include('registration.backends.default.urls')),
 
     (r'^monitor/$', TemplateView.as_view(template_name="pokeradiomon.html")),
 ]
