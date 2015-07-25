@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 
 {% block container %}
-{% include 'includes/form_snippet.html' with form=form %}
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <h1>Login</h1>
+        <div class="box">
+            {% include 'includes/form_snippet.html' with form=form %}
+            <p>
+                <a class="btn btn--secondary">Register</a>
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}

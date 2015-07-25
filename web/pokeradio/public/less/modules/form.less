@@ -1,0 +1,71 @@
+.Form {
+    .btn {
+        margin-top: 10px;
+    }
+}
+
+.Form--full {
+    input {
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+.Field {
+    display: block;
+    margin-bottom: 10px;
+
+    input {
+        outline: none;
+    }
+    input[type="password"],
+    input[type="text"] {
+        display: block;
+        box-sizing: border-box;
+        padding: 5px 10px;
+        border: 2px solid @grey;
+
+        color: @txtGray;
+        vertical-align: baseline;
+        font-size: 25px;
+        -webkit-transition: border 100ms ease-in;
+                transition: border 100ms ease-in;
+
+        &:focus {
+            border-bottom-color: @poke-green;
+        }
+    }
+    &.has-error {
+        input[type="password"],
+        input[type="text"] {
+            border-bottom-color: @poke-pink;
+            &:focus {
+                border-bottom-color: @poke-green;
+            }
+        }
+    }
+}
+
+.Field-label-container {
+    .checkbox {}
+}
+.Field-label {
+    font-size: 1.2em;
+    display: block;
+}
+
+.Field-help {
+}
+
+.Field-errors {
+    list-style: none;
+    padding: 5px;
+    margin: 0 1px 1px;
+    color: @poke-pink;
+}
+
+.Field-errors-error {
+}

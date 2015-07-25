@@ -2545,6 +2545,20 @@ a {
   width: 100%;
   height: auto;
 }
+.box {
+  background: #fff;
+  padding: 20px 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-top: 1em;
+  clear: left;
+}
+.box h1,
+.box h2,
+.box h3 {
+  margin-top: 0;
+}
 /*------- transitions --------------*/
 /*------- common rules -------*/
 .clearfix:before,
@@ -4309,4 +4323,54 @@ a.spotify-link:hover {
 }
 .Badge-description {
   padding-top: 35px;
+}
+.Form .btn {
+  margin-top: 10px;
+}
+.Form--full input {
+  width: 100%;
+}
+.Form--full .btn {
+  width: 100%;
+}
+.Field {
+  display: block;
+  margin-bottom: 10px;
+}
+.Field input {
+  outline: none;
+}
+.Field input[type="password"],
+.Field input[type="text"] {
+  display: block;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  border: 2px solid #ebede5;
+  color: #5e5d64;
+  vertical-align: baseline;
+  font-size: 25px;
+  -webkit-transition: border 100ms ease-in;
+  transition: border 100ms ease-in;
+}
+.Field input[type="password"]:focus,
+.Field input[type="text"]:focus {
+  border-bottom-color: #61dfb4;
+}
+.Field.has-error input[type="password"],
+.Field.has-error input[type="text"] {
+  border-bottom-color: #f84646;
+}
+.Field.has-error input[type="password"]:focus,
+.Field.has-error input[type="text"]:focus {
+  border-bottom-color: #61dfb4;
+}
+.Field-label {
+  font-size: 1.2em;
+  display: block;
+}
+.Field-errors {
+  list-style: none;
+  padding: 5px;
+  margin: 0 1px 1px;
+  color: #f84646;
 }

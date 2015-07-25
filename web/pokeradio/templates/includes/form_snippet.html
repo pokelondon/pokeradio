@@ -1,10 +1,4 @@
-{% if form.errors %}
-<div class="alert alert-danger">
-    <a href="#" class="alert-link"></a>
-    <p>The form has errors</p>
-</div>
-{% endif %}
-<form role="form" method="post" action="{{ form.action }}" data-tracking-id="{{ form.form_name }}" class="Form js-form-{{ form.form_name }}" data-success-url="{{ form.success_url|urlencode }}">
+<form role="form" method="post" action="{{ form.action }}" class="Form Form--full">
     {% csrf_token %}
     {% for hidden in form.hidden_fields %}
     {{ hidden }}
@@ -13,6 +7,6 @@
     {% for field in form.visible_fields %}
     {% include "includes/form_field_snippet.html" with field=field %}
     {% endfor %}
-    <button class="Button Button--default Button--submit" type="submit">Submit</button>
+    <button class="btn" type="submit">Submit</button>
 </form>
 
