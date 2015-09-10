@@ -32,13 +32,12 @@ web:
   volumes:
     - web:/usr/src/app
   links:
-    - postgres:postgres
-    - redis:redis
+    - postgres
+    - redis
   command: python manage.py runserver 0.0.0.0:8000
   env_file: .env
   environment:
     DEBUG: 1
-  environment:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: ''
 
@@ -55,7 +54,6 @@ celery:
   env_file: .env
   environment:
     DEBUG: 1
-  environment:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: ''
 
@@ -67,5 +65,5 @@ nginx:
   volumes_from:
     - web
   links:
-    - web:web
-    - socketserver:socketserver
+    - web
+    - socketserver
