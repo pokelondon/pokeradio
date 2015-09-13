@@ -20,7 +20,8 @@ class Brand(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User)
     colour = models.CharField(max_length=6, default='FFFFFF')
-    image = models.ImageField(upload_to='profiles', blank=True, null=True)
+    image = models.ImageField('Avatar', upload_to='profiles', blank=True,
+                              null=True)
 
     @property
     def image_url(self):
