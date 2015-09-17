@@ -1,12 +1,11 @@
-postgres:
-  restart: always
-  image: postgres:latest
-  ports:
-    - "5432:5432"
-  env_file: .env
+db:
+  image: mysql
   environment:
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: ''
+    - MYSQL_DATABASE=prad
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    - MYSQL_USER=prad
+    - MYSQL_PASSWORD=prad
 
 redis:
   image: redis:latest
@@ -30,32 +29,38 @@ web:
   ports:
     - "8000:8000"
   volumes:
-    - web:/usr/src/app
+    - "web:/usr/src/app"
   links:
-    - postgres
+    - db
     - redis
   command: python manage.py runserver 0.0.0.0:8000
   env_file: .env
   environment:
-    DEBUG: 1
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: ''
+    - DEBUG=1
+    - MYSQL_DATABASE=prad
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    - MYSQL_USER=prad
+    - MYSQL_PASSWORD=prad
 
 celery:
   build: ./web/
   restart: always
   working_dir: /usr/src/app
   volumes:
-    - web:/usr/src/app
+    - "web:/usr/src/app"
   links:
-    - postgres:postgres
-    - redis:redis
+    - db
+    - redis
   command: su -m celery_user -c "celery -A pokeradio  worker --loglevel=info"
   env_file: .env
   environment:
-    DEBUG: 1
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: ''
+    - DEBUG=1
+    - MYSQL_DATABASE=prad
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    - MYSQL_USER=prad
+    - MYSQL_PASSWORD=prad
 
 nginx:
   restart: always
