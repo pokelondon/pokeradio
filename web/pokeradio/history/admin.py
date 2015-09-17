@@ -19,7 +19,7 @@ class TrackInline(admin.TabularInline):
 class PlayInline(admin.TabularInline):
     model = Play
     extra = 0
-    readonly_fields = ('user', 'created')
+    # readonly_fields = ('user', 'created')
 
 
 class ArtistAdmin(admin.ModelAdmin):

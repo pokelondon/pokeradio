@@ -1,7 +1,9 @@
+import json
 from datetime import datetime
 
 from django.conf import settings
-from django.views.generic import TemplateView, RedirectView, ListView
+from django.views.generic import (TemplateView, RedirectView, ListView,
+                                  DetailView)
 from django.views.generic.dates import _date_from_string
 from django.views.generic.base import ContextMixin
 from django.contrib.auth.decorators import login_required
@@ -98,6 +100,23 @@ class TopTracks(PatchedWeekArchiveView):
         return qs
 
 
+class TrackDetail(DetailView):
+    model = ArchiveTrack
+
+    def get_context_data(self, **kwargs):
+        c = super(TrackDetail, self).get_context_data(**kwargs)
+        count = Play.objects.filter(track=c['object'])\
+                .extra(select={'day': 'date(created)'})\
+                .values('day')\
+                .annotate(count=Count('id'))
+        time_series = [{'date': i['day'].strftime('%m-%Y'), \
+                        'value': i['count']} for i in count]
+        c['count'] = count
+        c['time_series'] = json.dumps(time_series)
+        return c
+
+
+
 # Most liked songs
 vote_archive_tracks = login_required(TopTracks.as_view())
 
@@ -107,3 +126,5 @@ index = login_required(Dashboard.as_view())
 # Redirects to different archives, depending on URL for the current week
 vote_tracks_index = login_required(WeekArchiveRedirect.as_view(
     pattern='history:vote_archive_tracks', who='me'))
+
+track_detail = TrackDetail.as_view()
