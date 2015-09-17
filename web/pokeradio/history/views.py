@@ -106,10 +106,12 @@ class TrackDetail(DetailView):
     def get_context_data(self, **kwargs):
         c = super(TrackDetail, self).get_context_data(**kwargs)
         count = Play.objects.filter(track=c['object'])\
-                .extra(select={'day': 'date(created)'})\
-                .values('day')\
+                .extra(select={'month': 'MONTH(created)',
+                               'year': 'YEAR(created)'})\
+                .values('month', 'year')\
                 .annotate(count=Count('id'))
-        time_series = [{'date': i['day'].strftime('%m-%Y'), \
+
+        time_series = [{'date': '{month}-{year}'.format(**i), \
                         'value': i['count']} for i in count]
         c['count'] = count
         c['time_series'] = json.dumps(time_series)

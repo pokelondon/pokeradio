@@ -78,6 +78,9 @@ class ArchiveTrack(Base):
         """
         return self.point_set.all().aggregate(models.Sum('value'))['value__sum']
 
+    def get_absolute_url(self):
+        return reverse('history:track_detail', (self.pk, ))
+
 
 class Play(Base):
     track = models.ForeignKey(ArchiveTrack)

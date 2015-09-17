@@ -21,7 +21,7 @@ urls = [
     url(r'^votes/(?P<who>(all|me))/choons/(?P<year>\d{4})/(?P<week>\d+)/$',
         'vote_archive_tracks', name='vote_archive_tracks'),
 
-    url(r'^track/(?P<pk>\d)/$', 'track_detail', name='track_detail'),
+    url(r'^track/(?P<pk>\d+)/$', 'track_detail', name='track_detail'),
 
 ]
 urlpatterns += patterns('pokeradio.history.views', *urls)
