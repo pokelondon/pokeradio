@@ -79,7 +79,7 @@ class ArchiveTrack(Base):
         return self.point_set.all().aggregate(models.Sum('value'))['value__sum']
 
     def get_absolute_url(self):
-        return reverse('history:track_detail', (self.pk, ))
+        return reverse('history:track_detail', args=(self.pk, ))
 
 
 class Play(Base):

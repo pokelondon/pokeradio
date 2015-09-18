@@ -118,6 +118,21 @@ class TrackDetail(DetailView):
         return c
 
 
+class TrackLisingByPlays(ListView):
+    model = ArchiveTrack
+
+    def get_queryset(self):
+
+        count = Play.objects.all()\
+                .order_by('-count')\
+                .values('track')\
+                .annotate(count=Count('id'))[:100]
+
+        res = ArchiveTrack.objects.filter(id__in=[p['track'] for p in count])
+
+        return res
+
+
 
 # Most liked songs
 vote_archive_tracks = login_required(TopTracks.as_view())
@@ -130,3 +145,4 @@ vote_tracks_index = login_required(WeekArchiveRedirect.as_view(
     pattern='history:vote_archive_tracks', who='me'))
 
 track_detail = TrackDetail.as_view()
+track_listing = TrackLisingByPlays.as_view()

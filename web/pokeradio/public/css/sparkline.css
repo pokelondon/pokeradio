@@ -39,12 +39,11 @@ body {
 }
 
 .js-report-sparkline {
-  width: 600px;
-  height: 150px;
+  width: 708px;
+  height: 250px;
   margin: 50px auto;
   font-family: "Proxima Nova", sans-serif;
   position: relative;
-  border-bottom: 1px solid #fff;
 
   * {
     box-sizing: border-box;
