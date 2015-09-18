@@ -23,65 +23,66 @@ $(document).ready(function() {
 
         // Get width and height of the container
         var w = th.width(),
-        h = th.height(),
+            h = th.height();
 
-            // Setting the margins
-            // You may set different margins for X/Y
-            xMargin = 30,
-            yMargin = 20,
+        // Setting the margins
+        // You may set different margins for X/Y
+        var xMargin = 30;
+        var yMargin = 20;
 
-                // Scale functions
-                // Setting the range with the margin
-                y = d3.scale.linear()
-                    .domain([0, 10])
-                    .range([h - yMargin, yMargin]),
-                    x = d3.time.scale()
-                        .domain(EXTENT)
-                        .range([xMargin, w - xMargin]),
+        // Scale functions
+        // Setting the range with the margin
+        var y = d3.scale.linear()
+            .domain([0, 10])
+            .range([h - yMargin, yMargin]);
 
-                        // Scale functions for creating the gradient fill/stroke
-                        // Calculating the color according to data in the range of colors
-                        // That user has passed with the data-range-[high-low]-color attributes
-                        gradientY = d3.scale.linear()
-                            .domain([0,1,2,3,4,5,6,7]) .range(['#e86e6b','#e86e6c','#fcd56b','#59d1ba','#59d1bb','#a5d36e']),
-                            // This is a different margin than the one for the chart
-                            // Setting the gradient stops from 0% to 100% will cause wrong color ranges
-                            // Because data points are positioned in the center of containing rect
-                            percentageMargin = 100 / data.length,
-                            percentageX = d3.scale.linear()
-                                .domain([0, data.length - 1])
-                                .range([percentageMargin, 100 - percentageMargin]),
+        var x = d3.time.scale()
+            .domain(EXTENT)
+            .range([xMargin, w - xMargin]);
 
-                                // Create S
-                                container = d3.select(this).append("div"),
+        // Scale functions for creating the gradient fill/stroke
+        // Calculating the color according to data in the range of colors
+        // That user has passed with the data-range-[high-low]-color attributes
+        var gradientY = d3.scale.linear()
+            .domain([0,1,2,3,4,5,6,7]).range(['#e86e6b','#e86e6c','#fcd56b','#59d1ba','#59d1bb','#a5d36e']);
+        //
+            // This is a different margin than the one for the chart
+            // Setting the gradient stops from 0% to 100% will cause wrong color ranges
+            // Because data points are positioned in the center of containing rect
+        var percentageMargin = 100 / data.length;
+        var percentageX = d3.scale.linear()
+            .domain([0, data.length - 1])
+            .range([percentageMargin, 100 - percentageMargin]);
 
-                                // Create SVG object and set dimensions
-                                vis = container
-                                    .append("svg:svg")
-                                    .attr("width", w)
-                                    .attr("height", h)
+        // Create S
+        var container = d3.select(this).append("div");
 
-
-
-                                    g = vis.append("svg:g")
-                                    .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
-                                    .attr("fill", "url(#sparkline-gradient-" + sparklineId + ")"),
+        // Create SVG object and set dimensions
+        var vis = container
+            .append("svg:svg")
+            .attr("width", w)
+            .attr("height", h);
 
 
-                                    // Create the line
-                                    // Using cardinal interpolation because we need
-                                    // The line to pass on every point
-                                    area = d3.svg.area()
-                                        .interpolate("cardinal")
-                                        .x(function(d,i) { return x(d.date); })
-                                        .y0(h)
-                                        .y1(function(d) { return y(d.value); }),
-                                        line = d3.svg.line()
-                                            .interpolate("cardinal")
-                                            .x(function(d) { return x(d.date); })
-                                            .y(function(d) { return y(d.value); });
+
+        var g = vis.append("svg:g")
+            .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
+            .attr("fill", "url(#sparkline-gradient-" + sparklineId + ")");
 
 
+            // Create the line
+            // Using cardinal interpolation because we need
+            // The line to pass on every point
+        var area = d3.svg.area()
+            .interpolate("cardinal")
+            .x(function(d,i) { return x(d.date); })
+            .y0(h)
+            .y1(function(d) { return y(d.value); });
+
+        var line = d3.svg.line()
+            .interpolate("cardinal")
+            .x(function(d) { return x(d.date); })
+            .y(function(d) { return y(d.value); });
 
 
         g.append("svg:path").attr("class","area").attr("d", area(data)).attr("style", "fill:url(#area-fill)");
@@ -104,6 +105,7 @@ $(document).ready(function() {
         // This is where the magic happens
         // We get datas and create gradient stops with calculated colors
         var defs = vis.append("svg:defs");
+
         defs.append("svg:linearGradient")
             .attr("id", "sparkline-gradient-" + sparklineId)
             .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
@@ -116,6 +118,5 @@ $(document).ready(function() {
             }).attr("style", function(d) {
                 return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
             });
-
     });
 });
