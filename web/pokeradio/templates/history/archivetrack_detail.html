@@ -26,7 +26,10 @@
         <h2>First Play</h2>
         <p>By: {{ first_play.user.get_full_name }}</p>
         <p>On: {{ first_play.created }}</p>
-        <p>Adoption by other players: {{ user_plays.count }}</p>
+        <p>Other people playing this: {{ user_plays.count }}</p>
+        {% for message in observations %}
+        <p>{{ message }}</p>
+        {% endfor %}
     </div>
     <div class="col-sm-4">
         <h2>Votes</h2>

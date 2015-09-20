@@ -107,6 +107,7 @@ class TrackDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         c = super(TrackDetail, self).get_context_data(**kwargs)
+        c['observations'] = []
         count = Play.objects.filter(track=c['object'])\
                 .extra(select={'month': 'MONTH(created)',
                                'year': 'YEAR(created)'})\
@@ -120,11 +121,21 @@ class TrackDetail(DetailView):
         c['first_play'] = Play.objects.filter(track=c['object'])\
                 .order_by('created').first()
 
+        if c['first_play'].user == self.request.user:
+            c['observations'].append('You brought {} to POKE'.format(c['object'].name))
+
         user_plays = c['object'].play_set.all()\
                 .values('user')\
                 .annotate(plays=Count('user'))\
                 .order_by('-plays')
+
         c['user_plays'] = user_plays
+
+        ave_plays = (sum([p['plays'] for p in user_plays]) / len(user_plays))
+        for i in user_plays:
+            if i['user'] == self.request.user.id:
+                if i['plays'] > ave_plays:
+                    c['observations'].append('You play this quite a bit')
 
         c['score'] = c['object'].point_set.all()\
                 .aggregate(score=Sum('value'))['score']
