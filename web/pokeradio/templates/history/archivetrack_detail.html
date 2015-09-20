@@ -32,7 +32,7 @@
         <h2>Votes</h2>
         <p>Score: {{ score }} over {{ object.point_set.all.count }} votes</p>
         <p>Total plays: {{ plays.count }}</p>
-        <p>Average score: {{ ave_score }}</p>
+        <p>Average score: {{ ave_score|floatformat:2 }}</p>
         <p>Position: TBC</p>
     </div>
     <div class="col-sm-4">
