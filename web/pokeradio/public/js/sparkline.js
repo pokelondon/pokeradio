@@ -1,4 +1,4 @@
-var EXTENT = [new Date(2014, 1, 1), new Date()];
+var EXTENT = [new Date(2014, 1, 1), new Date(2016, 1, 1)];
 
 $(document).ready(function() {
     // Metric
@@ -17,7 +17,6 @@ $(document).ready(function() {
         data.forEach(function(d) {
             d.date = parseDate.parse(d.date);
             d.value = +d.value;
-            console.log(d.date)
         });
 
 
@@ -45,10 +44,10 @@ $(document).ready(function() {
         // That user has passed with the data-range-[high-low]-color attributes
         var gradientY = d3.scale.linear()
             .domain([0,1,2,3,4,5,6,7,8,9,10]).range(['#e86e6b','#e86e6c','#fcd56b','#59d1ba','#59d1bb','#a5d36e']);
-        //
-            // This is a different margin than the one for the chart
-            // Setting the gradient stops from 0% to 100% will cause wrong color ranges
-            // Because data points are positioned in the center of containing rect
+
+        // This is a different margin than the one for the chart
+        // Setting the gradient stops from 0% to 100% will cause wrong color ranges
+        // Because data points are positioned in the center of containing rect
         var percentageMargin = 100 / data.length;
         var percentageX = d3.scale.linear()
             .domain([0, data.length - 1])
@@ -74,7 +73,7 @@ $(document).ready(function() {
                 d3.svg.axis()
                 .scale(x)
                 .orient("bottom")
-                .ticks(data.length)
+                .ticks(24)
                 .tickSize(-h+(yMargin*2), 0, 0)
                 .tickFormat(d3.time.format("%b"))
             );
@@ -90,9 +89,9 @@ $(document).ready(function() {
             .call(d3.svg.axis()
                 .scale(y)
                 .orient("left")
-                .ticks(4)
+                .ticks(8)
                 .tickSize(-w+(xMargin*2), 0, 0)
-                  .tickFormat(function(d, i){ return d+"%" })
+                  .tickFormat(function(d, i){ return d })
             );
         yAxis.selectAll("line")
             .style("stroke-dasharray", ("3, 3"));
