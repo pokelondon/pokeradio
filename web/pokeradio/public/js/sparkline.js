@@ -27,7 +27,7 @@ $(document).ready(function() {
 
         // Setting the margins
         // You may set different margins for X/Y
-        var xMargin = 30;
+        var xMargin = 40;
         var yMargin = 20;
 
         // Scale functions
@@ -44,7 +44,7 @@ $(document).ready(function() {
         // Calculating the color according to data in the range of colors
         // That user has passed with the data-range-[high-low]-color attributes
         var gradientY = d3.scale.linear()
-            .domain([0,1,2,3,4,5,6,7]).range(['#e86e6b','#e86e6c','#fcd56b','#59d1ba','#59d1bb','#a5d36e']);
+            .domain([0,1,2,3,4,5,6,7,8,9,10]).range(['#e86e6b','#e86e6c','#fcd56b','#59d1ba','#59d1bb','#a5d36e']);
         //
             // This is a different margin than the one for the chart
             // Setting the gradient stops from 0% to 100% will cause wrong color ranges
@@ -79,13 +79,14 @@ $(document).ready(function() {
             .y0(h)
             .y1(function(d) { return y(d.value); });
 
-        var line = d3.svg.line()
+        var line = d3.svg.area()
             .interpolate("cardinal")
             .x(function(d) { return x(d.date); })
+            .y0(h)
             .y(function(d) { return y(d.value); });
 
 
-        g.append("svg:path").attr("class","area").attr("d", area(data)).attr("style", "fill:url(#area-fill)");
+        //g.append("svg:path").attr("class","area").attr("d", area(data)).attr("style", "fill:url(#area-fill)");
 
         // Create points
         // We are only creating points for first and last data
