@@ -45,7 +45,7 @@ body {
 }
 
 .js-report-sparkline {
-  width: 708px;
+  width: 100%;
   height: 250px;
   margin: 50px auto;
   font-family: "Proxima Nova", sans-serif;

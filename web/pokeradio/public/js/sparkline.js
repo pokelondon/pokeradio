@@ -27,7 +27,7 @@ $(document).ready(function() {
 
         // Setting the margins
         // You may set different margins for X/Y
-        var xMargin = 40;
+        var xMargin = 30;
         var yMargin = 20;
 
         // Scale functions
@@ -64,6 +64,48 @@ $(document).ready(function() {
             .attr("height", h);
 
 
+        // Create the group object and set styles for gradient definition
+        // Which is about to add in a few lines
+        var xAxis = vis.append("svg:g")
+            .attr("class", "x-axis")
+            .attr("transform", "translate(" + 0 + "," + (h-yMargin) + ")")
+            .attr("stroke", "white")
+            .call(
+                d3.svg.axis()
+                .scale(x)
+                .orient("bottom")
+                .ticks(data.length)
+                .tickSize(-h+(yMargin*2), 0, 0)
+                .tickFormat(d3.time.format("%b"))
+            );
+        xAxis.selectAll("text")
+            .style("text-anchor", "middle")
+            .attr("transform", "translate(0,5)")
+            .attr("fill", "white")
+            .attr("stroke-width", "0");
+        var yAxis = vis.append("svg:g")
+            .attr("class", "y-axis")
+            .attr("transform", "translate("+xMargin+"," + 0 + ")")
+            .attr("stroke", "white")
+            .call(d3.svg.axis()
+                .scale(y)
+                .orient("left")
+                .ticks(4)
+                .tickSize(-w+(xMargin*2), 0, 0)
+                  .tickFormat(function(d, i){ return d+"%" })
+            );
+        yAxis.selectAll("line")
+            .style("stroke-dasharray", ("3, 3"));
+            yAxis.selectAll("text")
+            .style("text-anchor", "start")
+            .attr("transform", "translate(3,12)")
+            .attr("fill", "white")
+            .attr("stroke-width", "0");
+
+        g = vis.append("svg:g")
+                .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
+                .attr("fill", "url(#sparkline-gradient-" + sparklineId + ")");
+
 
         var g = vis.append("svg:g")
             .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
@@ -79,14 +121,13 @@ $(document).ready(function() {
             .y0(h)
             .y1(function(d) { return y(d.value); });
 
-        var line = d3.svg.area()
+        var line = d3.svg.line()
             .interpolate("cardinal")
             .x(function(d) { return x(d.date); })
-            .y0(h)
             .y(function(d) { return y(d.value); });
 
 
-        //g.append("svg:path").attr("class","area").attr("d", area(data)).attr("style", "fill:url(#area-fill)");
+        g.append("svg:path").attr("class","area").attr("d", area(data)).attr("style", "fill:url(#area-fill)");
 
         // Create points
         // We are only creating points for first and last data
@@ -101,6 +142,87 @@ $(document).ready(function() {
 
         // Append the line to the group
         g.append("svg:path").attr("d", line(data));
+        for (i = 0; i < data.length; ++i) {
+            var tooltip = container
+                .append("div")
+                .attr("class", "chart-tooltip")
+                .attr("data-index", i).html(data[i].value + " play" + ((data[i].value > 1) ? 's' : ''));
+            $tooltip = $(".chart-tooltip[data-index=" + i + "]");
+            $tooltip.data({
+                calcY: y,
+                calcX: x
+            });
+            var tooltipLeft = $tooltip.data("calcX")(data[i].date) - ($tooltip.width() / 2);
+            var tooltipTop = $tooltip.data("calcY")(data[i].value) - 30;
+
+            // Position it again
+            $tooltip.css({
+                left: tooltipLeft + "px",
+                top: tooltipTop + "px"
+            });
+        }
+
+
+        // Creating invisible rectangles for a better hover interaction
+        // Because otherwise user would need to hover to the line or point
+        // Which is a terrible experience
+        // Creating full height invisible bars and binding mouse events
+        // To do some special stuff like showing data or adding classes to
+        // The point in the targeted area
+
+        var rect = g.selectAll(".bar-rect")
+            .data(data)
+            .enter().append("svg:rect")
+            .attr("class", "bar-rect")
+            .attr("x", function(d, i) { return x(d.date) - (w / data.length / 2) })
+            .attr("y", 0)
+            .attr("width", w / data.length)
+            .attr("height", h)
+            .on("mouseenter", function(d, i) {
+                $('.chart-tooltip[data-index='+i+']').addClass('hover');
+                // Add hover class to the targeted point
+                var thisPoint = $(this).parent().parent().find('.point:eq(' + i + ')');
+                    thisPoint.attr('class', (i===0||i===(data.length-1)) ? 'end point hover' : 'point hover');
+            }).on("mouseleave", function(d, i) {
+                $('.chart-tooltip').removeClass('hover');
+                // Remove hover class from the targeted point
+                var thisPoint = $(this).parent().parent().find('.point:eq(' + i + ')');
+                    thisPoint.attr('class', (i===0||i===(data.length-1)) ? 'end point' : 'point');
+            });
+
+            // Helper function to calculate the HTML content of the tooltip
+            // Tooltip may contain any HTML
+            function formatTooltip(d, i) {
+                return '<div class="title">' + d.value + '</div>'
+            }
+
+
+
+    // Bind calculator functions to tooltip
+
+
+    // Create the gradient effect
+    // This is where the magic happens
+    // We get datas and create gradient stops with calculated colors
+    var defs = vis.append("svg:defs");
+    defs.append("svg:linearGradient")
+        .attr("id", "sparkline-gradient-" + sparklineId)
+        .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
+        .attr("gradientUnits", "userSpaceOnUse")
+        .selectAll(".gradient-stop")
+        .data(data)
+        .enter()
+        .append("svg:stop").attr('offset', function(d, i) {
+            return ((percentageX(i))) + "%";
+        }).attr("style", function(d) {
+            return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
+        });
+    areaFill = defs.append("svg:linearGradient");
+    areaFill.attr("id", "area-fill");
+    areaFill.attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%");
+    areaFill.append("svg:stop").attr('offset', "0%").attr("style", 'stop-color:white;stop-opacity:0.1');
+  	areaFill.append("svg:stop").attr('offset', "100%").attr("style", 'stop-color:white;stop-opacity:0');
+
 
         // Create the gradient effect
         // This is where the magic happens
