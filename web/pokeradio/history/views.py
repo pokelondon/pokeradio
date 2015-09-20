@@ -1,3 +1,5 @@
+from __future__ import division
+
 import json
 from datetime import datetime
 
@@ -113,22 +115,35 @@ class TrackDetail(DetailView):
 
         time_series = [{'date': '{month}-{year}'.format(**i), \
                         'value': i['count']} for i in count]
-        c['count'] = count
         c['time_series'] = json.dumps(time_series)
+
+        c['first_play'] = Play.objects.filter(track=c['object'])\
+                .order_by('created').first()
+
+        user_plays = c['object'].play_set.all()\
+                .values('user')\
+                .annotate(plays=Count('user'))\
+                .order_by('-plays')
+        c['user_plays'] = user_plays
+
+        c['score'] = c['object'].point_set.all()\
+                .aggregate(score=Sum('value'))['score']
+
+        c['plays'] = Play.objects.filter(track=c['object'])
+
+        c['ave_score'] = c['score'] / c['plays'].count()
+
         return c
 
 
 class TrackLisingByPlays(ListView):
     model = ArchiveTrack
+    template_name = 'history/archivetrack_list.html'
 
     def get_queryset(self):
-
-        count = Play.objects.all()\
-                .order_by('-count')\
-                .values('track')\
-                .annotate(count=Count('id'))[:100]
-
-        res = ArchiveTrack.objects.filter(id__in=[p['track'] for p in count])
+        res = ArchiveTrack.objects.select_related('Play').all()\
+                .annotate(count=Count('play', score=Sum('point__value')))\
+                .order_by('-count')[:100]
 
         return res
 

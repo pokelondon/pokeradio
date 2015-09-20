@@ -1,4 +1,4 @@
-var EXTENT = [new Date(2014, 1, 1), new Date(2016, 1, 1)];
+var EXTENT = [new Date(2014, 0, 0), new Date(2016, 0, 0)];
 
 $(document).ready(function() {
     // Metric
