@@ -2,6 +2,11 @@ body {
   background: #333;
   color: #fff;
 }
+.Artwork {
+    display: block;
+    width: 100%;
+    height: auto;
+}
 
 .x-axis .tick {
   stroke: white;

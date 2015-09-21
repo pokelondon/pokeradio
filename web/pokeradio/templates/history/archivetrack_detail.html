@@ -24,17 +24,17 @@
 </header>
 
 <div class="row">
-    <div class="col-sm-1">
-        <img src="{{ object.artwork_url }}" alt="Artwork" />
+    <div class="col-sm-2">
+        <img class="Artwork" src="{{ object.artwork_url }}" alt="Artwork" />
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <h2>First Play</h2>
         <p>By: {{ first_play.user.get_full_name }}</p>
         <p>On: {{ first_play.created }}</p>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <h2>Votes</h2>
-        <p>Score: {{ score }} over {{ object.point_set.all.count }} votes</p>
+        <p>Score: {{ score.score }} over {{ score.total }} votes</p>
         <p>Total plays: {{ plays.count }}</p>
         <p>Average score: {{ ave_score|floatformat:2 }}</p>
         <p>Position: TBC</p>

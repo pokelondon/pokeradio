@@ -148,10 +148,10 @@ class TrackDetail(DetailView):
         c['user_play_share'] = json.dumps(user_play_share)
 
         c['score'] = c['object'].point_set.all()\
-                .aggregate(score=Sum('value'))['score']
+                .aggregate(score=Sum('value'), total=Count('id'))
 
 
-        c['ave_score'] = c['score'] / total_plays
+        c['ave_score'] = c['score']['score'] / total_plays
 
         return c
 

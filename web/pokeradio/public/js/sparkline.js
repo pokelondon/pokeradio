@@ -6,8 +6,10 @@ $(document).ready(function() {
         var height = 160;
         var radius = Math.min(width, height) / 2;
         var donutWidth = 20;
+        var r = Math.min(width, height) / 2;
+        var labelr = r;
 
-        var color = d3.scale.category20b();
+        var color = d3.scale.category20c();
 
         var svg = d3.select('#playShare')
             .append('svg')
@@ -40,9 +42,18 @@ $(document).ready(function() {
             });
 
         g.append("text")
-            .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+            .attr("transform", function(d) {
+                var c = arc.centroid(d),
+                    x = c[0],
+                    y = c[1],
+                    h = Math.sqrt(x*x + y*y);
+                return "translate(" + (x/height * labelr) +  ',' + (y/height * labelr) +  ")";
+            })
             .attr("dy", ".35em")
-            .style("text-anchor", "middle")
+            .attr("text-anchor", function(d) {
+                // are we past the center?
+                return (d.endAngle + d.startAngle) / 2 > Math.PI ? "end" : "start";
+            })
             .text(function(d) {
                 return d.data.label;
             });
