@@ -1,6 +1,53 @@
 var EXTENT = [new Date(2014, 0, 0), new Date(2016, 0, 0)];
 
 $(document).ready(function() {
+    (function() {
+        var width = 160;
+        var height = 160;
+        var radius = Math.min(width, height) / 2;
+        var donutWidth = 20;
+
+        var color = d3.scale.category20b();
+
+        var svg = d3.select('#playShare')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .append('g')
+            .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+        var arc = d3.svg.arc()
+            .innerRadius(radius - donutWidth)
+            .outerRadius(radius);
+
+        var pie = d3.layout.pie()
+            .value(function(d) { return d.share })
+            .sort(null);
+
+        var g = svg.selectAll(".arc")
+            .data(pie(user_play_share))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        g.append("path")
+            .attr("d", arc)
+            .style("fill", function(d) {
+                if(d.data.label.length) {
+                    return '#f84646'
+                } else {
+                    return color(d.data.share);
+                }
+            });
+
+        g.append("text")
+            .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+            .attr("dy", ".35em")
+            .style("text-anchor", "middle")
+            .text(function(d) {
+                return d.data.label;
+            });
+    }());
+
     // Metric
     $('.js-report-sparkline').each(function(sparklineId) {
 

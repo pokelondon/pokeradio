@@ -8,6 +8,7 @@
     <script src="{% static 'js/sparkline.js' %}"></script>
     <script>
         var data = JSON.parse('{{ time_series|safe }}');
+        var user_play_share = JSON.parse('{{ user_play_share|safe }}');
     </script>
 {% endblock %}
 
@@ -17,19 +18,19 @@
 
 {% block container %}
 <header class="Header--page">
-    <h1>{{ object.name }} - {{ object.artist.name }}</h1>
+    <h1>{{ object.name }} - {{ object.artist.name }}
+    </h1>
     <a title="Open in Spotify locally" class="spotify-link js-spotifyLink js-spotifyLink--track" href="{{ object.spotify_href }}">Open in Spotify</a>
 </header>
 
 <div class="row">
+    <div class="col-sm-1">
+        <img src="{{ object.artwork_url }}" alt="Artwork" />
+    </div>
     <div class="col-sm-4">
         <h2>First Play</h2>
         <p>By: {{ first_play.user.get_full_name }}</p>
         <p>On: {{ first_play.created }}</p>
-        <p>Other people playing this: {{ user_plays.count }}</p>
-        {% for message in observations %}
-        <p>{{ message }}</p>
-        {% endfor %}
     </div>
     <div class="col-sm-4">
         <h2>Votes</h2>
@@ -38,8 +39,12 @@
         <p>Average score: {{ ave_score|floatformat:2 }}</p>
         <p>Position: TBC</p>
     </div>
-    <div class="col-sm-4">
-        <img src="{{ object.artwork_url }}" alt="Artwork" />
+    <div class="col-sm-3">
+        <div id="playShare"></div>
+        <p>{{ user_plays.count }} {{ user_plays.count|pluralize:"person,people" }} ha{{ user_plays.count|pluralize:"s,ve" }} been playing this</p>
+        {% for message in observations %}
+        <p>{{ message }}</p>
+        {% endfor %}
     </div>
 </div>
 <div class="row">

@@ -108,6 +108,8 @@ class TrackDetail(DetailView):
     def get_context_data(self, **kwargs):
         c = super(TrackDetail, self).get_context_data(**kwargs)
         c['observations'] = []
+        c['plays'] = Play.objects.filter(track=c['object'])
+
         count = Play.objects.filter(track=c['object'])\
                 .extra(select={'month': 'MONTH(created)',
                                'year': 'YEAR(created)'})\
@@ -137,12 +139,19 @@ class TrackDetail(DetailView):
                 if i['plays'] > ave_plays:
                     c['observations'].append('You play this quite a bit')
 
+        total_plays = c['plays'].count()
+
+        user_play_share = [{'share': (i['plays'] / total_plays),\
+                'label': 'You' if self.request.user.id == i['user'] else ''}\
+                for i in c['user_plays']]
+
+        c['user_play_share'] = json.dumps(user_play_share)
+
         c['score'] = c['object'].point_set.all()\
                 .aggregate(score=Sum('value'))['score']
 
-        c['plays'] = Play.objects.filter(track=c['object'])
 
-        c['ave_score'] = c['score'] / c['plays'].count()
+        c['ave_score'] = c['score'] / total_plays
 
         return c
 
