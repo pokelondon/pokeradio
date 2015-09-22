@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="{% static 'css/sparkline.css' %}">
 {% endblock %}
 
+{% block footer_scripts %}
+{% endblock %}
+
 {% block container %}
 <header class="Header--page">
     <h1>{{ object.name }} - {{ object.artist.name }}
@@ -53,8 +56,5 @@
         <div class="js-report-sparkline"></div>
     </div>
 </div>
-{% endblock %}
-
-{% block footer_scripts %}
 {% endblock %}
 

@@ -1,12 +1,32 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block scripts %}
+    <script src="{% static 'js/lib/d3.js' %}"></script>
+    <script src="{% static 'js/lib/jquery.2.1.3.js' %}"></script>
+
+    <script src="{% static 'js/sparkline.js' %}"></script>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/sparkline.css' %}">
+{% endblock %}
+
+{% block footer_scripts %}
+{% endblock %}
+
 {% block container %}
 <header class="Header--page">
     <h1>Highly played tracks</h1>
 </header>
 
 <div class="Listing-list">
+    <script>
+    var playdata = {};
+    {% for object in object_list %}
+    playdata.track_{{ object.id }} = JSON.parse('{{ object.get_play_count_by_month|safe }}');
+    {% endfor %}
+    </script>
     {% for object in object_list %}
     <div class="Listing">
         <h2>
@@ -16,6 +36,7 @@
         </h2>
         <p class="Listing-sub">
         <small>Score:</small> {{ object.score }} <small>&mdash; Plays</small> {{ object.count }}
+        <div class="js-report-sparkline-sm" data-id="{{ object.id }}" data-range-low-color="orange" data-range-high-color="green"></div>
         </p>
     </div>
     {% endfor %}

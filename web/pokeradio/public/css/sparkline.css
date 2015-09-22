@@ -135,3 +135,60 @@ body {
   right: 5px;
   top: 13px;
 }
+
+.js-report-sparkline-sm {
+    background: green;
+  width: 208px;
+  height: 70px;
+  margin: 50px auto;
+  font-family: sans-serif;
+  position: relative;
+}
+.js-report-sparkline-sm * {
+  box-sizing: border-box;
+}
+.js-report-sparkline-sm path {
+  stroke-width: 3;
+  fill: none;
+}
+.js-report-sparkline-sm .point {
+  stroke-width: 2;
+  -webkit-transition: all .3s;
+          transition: all .3s;
+}
+.js-report-sparkline-sm .bar-rect {
+  fill: transparent;
+  stroke: none;
+}
+.js-report-sparkline-sm .point.hover {
+  stroke-width: 4;
+}
+.js-report-sparkline-sm .chart-container {
+  position: relative;
+}
+.js-report-sparkline-sm .chart-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  left: 0;
+  display: none;
+  padding: 2px 5px;
+  font-size: 12px;
+  border-radius: 5px;
+  border: 1px solid white;
+  pointer-events: none;
+}
+.js-report-sparkline-sm .chart-tooltip .title {
+  z-index: 3;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.js-report-sparkline-sm .bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: block;
+  position: absolute;
+  right: 5px;
+  top: 13px;
+}

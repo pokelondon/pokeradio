@@ -2,6 +2,9 @@ var EXTENT = [new Date(2014, 0, 0), new Date(2016, 0, 0)];
 
 $(document).ready(function() {
     (function() {
+        if(!$('#playShare').length) {
+            return;
+        }
         var width = 160;
         var height = 160;
         var radius = Math.min(width, height) / 2;
@@ -298,5 +301,112 @@ $(document).ready(function() {
             }).attr("style", function(d) {
                 return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
             });
+    });
+
+
+
+
+    // Metric
+    $('.js-report-sparkline-sm').each(function(sparklineId) {
+        var th = $(this);
+
+        // Instead of splitting with "," we are passing the data in JSON format
+        // Because splitting may cause getting datas as string
+        // And that breaks scale calculators
+        // Also this chain clears the HTML content
+        var data = window.playdata['track_' + th.data('id')];
+        var parseDate = d3.time.format("%m-%Y");
+
+        data.forEach(function(d) {
+            d.date = parseDate.parse(d.date);
+            d.value = +d.value;
+        });
+
+        // Get width and height of the container
+        var w = th.width(),
+            h = th.height();
+
+        // Setting the margins
+        // You may set different margins for X/Y
+        var xMargin = 30;
+        var yMargin = 20;
+
+        // Scale functions
+        // Setting the range with the margin
+        y = d3.scale.linear()
+                    .domain(EXTENT)
+                    .range([yMargin, h - yMargin]),
+        x = d3.scale.linear()
+                    .domain([0, data.length - 1])
+                    .range([xMargin, w - xMargin]),
+
+        // Scale functions for creating the gradient fill/stroke
+        // Calculating the color according to data in the range of colors
+        // That user has passed with the data-range-[high-low]-color attributes
+        gradientY = d3.scale.linear()
+            .domain([0, 10])
+            .range([th.data("range-low-color"), th.data("range-high-color")]),
+
+        // This is a different margin than the one for the chart
+        // Setting the gradient stops from 0% to 100% will cause wrong color ranges
+        // Because data points are positioned in the center of containing rect
+        percentageMargin = 100 / data.length,
+        percentageX = d3.scale.linear()
+            .domain([0, data.length - 1])
+            .range([percentageMargin, 100 - percentageMargin]),
+
+        // Create S
+        container = d3.select(this).append("div"),
+
+        // Create SVG object and set dimensions
+        vis = container
+            .append("svg:svg")
+            .attr("width", w)
+            .attr("height", h)
+
+        // Create the group object and set styles for gradient definition
+        // Which is about to add in a few lines
+        g = vis.append("svg:g")
+                .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
+                .attr("fill", "url(#sparkline-gradient-" + sparklineId + ")"),
+
+        // Create the line
+        // Using cardinal interpolation because we need
+        // The line to pass on every point
+        line = d3.svg.line()
+            .interpolate("cardinal")
+            .x(function(d, i) { return x(i); })
+            .y(function(d) { return h - y(d.value); }),
+
+        // Create points
+        // We are only creating points for first and last data
+          // Because that looks cooler :)
+        points = g.selectAll(".point")
+            .data(data)
+            .enter().append("svg:circle")
+            .attr("class", "point")
+            .attr("cx", function(d, i) { return x(i) })
+            .attr("cy", function(d, i) { return h - y(d.value) })
+            .attr("r", function(d, i) { return (i === (data.length - 1) || i === 0) ? 5 : 0; });
+
+    // Append the line to the group
+    g.append("svg:path").attr("d", line(data));
+
+    // Create the gradient effect
+    // This is where the magic happens
+    // We get datas and create gradient stops with calculated colors
+    vis.append("svg:defs")
+        .append("svg:linearGradient")
+        .attr("id", "sparkline-gradient-" + sparklineId)
+        .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
+        .attr("gradientUnits", "userSpaceOnUse")
+        .selectAll(".gradient-stop")
+        .data(data)
+        .enter()
+        .append("svg:stop").attr('offset', function(d, i) {
+            return ((percentageX(i))) + "%";
+        }).attr("style", function(d) {
+            return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
+        });
     });
 });
