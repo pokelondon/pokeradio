@@ -108,27 +108,17 @@ class TrackDetail(DetailView):
     def get_context_data(self, **kwargs):
         c = super(TrackDetail, self).get_context_data(**kwargs)
         c['observations'] = []
-        c['plays'] = Play.objects.filter(track=c['object'])
+        c['plays'] = track=c['object'].play_set.all().order_by('created')
+        c['first_play'] = c['plays'].first()
 
-        count = Play.objects.filter(track=c['object'])\
-                .extra(select={'month': 'MONTH(created)',
-                               'year': 'YEAR(created)'})\
-                .values('month', 'year')\
-                .annotate(count=Count('id'))
-
-        time_series = [{'date': '{month}-{year}'.format(**i), \
-                        'value': i['count']} for i in count]
-        c['time_series'] = json.dumps(time_series)
-
-        c['first_play'] = Play.objects.filter(track=c['object'])\
-                .order_by('created').first()
+        # Aggregate QS of plays counted by each month
+        c['time_series'] = c['object'].get_play_count_by_month()
 
         if c['first_play'].user == self.request.user:
-            c['observations'].append('You brought {} to POKE'.format(c['object'].name))
+            c['observations'].append(
+                    'You brought {} to POKE'.format(c['object'].name))
 
-        user_plays = c['object'].play_set.all()\
-                .values('user')\
-                .annotate(plays=Count('user'))\
+        user_plays = c['plays'].values('user').annotate(plays=Count('user'))\
                 .order_by('-plays')
 
         c['user_plays'] = user_plays
@@ -141,17 +131,18 @@ class TrackDetail(DetailView):
 
         total_plays = c['plays'].count()
 
+        # Share of plays by user, for the pie chart
         user_play_share = [{'share': (i['plays'] / total_plays),\
                 'label': 'You' if self.request.user.id == i['user'] else ''}\
-                for i in c['user_plays']]
+                for i in user_plays]
 
         c['user_play_share'] = json.dumps(user_play_share)
 
-        c['score'] = c['object'].point_set.all()\
-                .aggregate(score=Sum('value'), total=Count('id'))
+        # Total and average score
+        c['score'], c['total_votes'] = c['object'].get_score()
 
-
-        c['ave_score'] = c['score']['score'] / total_plays
+        # Average score per play
+        c['ave_score'] = c['score'] / total_plays
 
         return c
 

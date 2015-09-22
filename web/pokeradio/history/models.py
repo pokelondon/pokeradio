@@ -4,6 +4,7 @@
    being played
 """
 
+import json
 import random
 import os
 
@@ -31,6 +32,13 @@ class Artist(Base):
     def __unicode__(self):
         return self.name
 
+class Play(Base):
+    track = models.ForeignKey('history.ArchiveTrack')
+    user = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return u'{0} played by {1}'.format(self.track, self.user)
+
 
 class ArchiveTrack(Base):
     name = models.CharField(max_length=255)
@@ -42,7 +50,7 @@ class ArchiveTrack(Base):
             help_text="This track is known to return no artwork from the "
                       "lookup service. Prevents additional lookups")
 
-    artist = models.ForeignKey(Artist)
+    artist = models.ForeignKey('history.Artist')
 
     objects = TrackManager()
     blacklist = BlacklistManager()
@@ -81,10 +89,27 @@ class ArchiveTrack(Base):
     def get_absolute_url(self):
         return reverse('history:track_detail', args=(self.pk, ))
 
+    def get_play_count_by_month(self):
+        """ Aggregate of plays, counted by each month.
+        @returns JSON list of date/value pairs
+        """
 
-class Play(Base):
-    track = models.ForeignKey(ArchiveTrack)
-    user = models.ForeignKey(User)
+        count = self.play_set.all()\
+            .extra(select={'month': 'MONTH(created)',
+                           'year': 'YEAR(created)'})\
+            .values('month', 'year')\
+            .annotate(count=models.Count('id'))
 
-    def __unicode__(self):
-        return u'{0} played by {1}'.format(self.track, self.user)
+        time_series = [{'date': '{month}-{year}'.format(**i), \
+                        'value': i['count']} for i in count]
+        return json.dumps(time_series)
+
+    def get_score(self):
+        """ return total and average score for this track
+        @returns tuple: net score, total votes
+        """
+        score = self.point_set.all().aggregate(score=models.Sum('value'),
+                                               total=models.Count('id'))
+        return score['score'], score['total']
+
+
