@@ -162,11 +162,6 @@ $(document).ready(function() {
             .attr("fill", "white")
             .attr("stroke-width", "0");
 
-        g = vis.append("svg:g")
-                .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
-                .attr("fill", "url(#sparkline-gradient-" + sparklineId + ")");
-
-
         var g = vis.append("svg:g")
             .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
             .attr("fill", "url(#sparkline-gradient-" + sparklineId + ")");
@@ -202,6 +197,7 @@ $(document).ready(function() {
 
         // Append the line to the group
         g.append("svg:path").attr("d", line(data));
+
         for (i = 0; i < data.length; ++i) {
             var tooltip = container
                 .append("div")
@@ -258,52 +254,34 @@ $(document).ready(function() {
 
 
 
-    // Bind calculator functions to tooltip
-
-
-    // Create the gradient effect
-    // This is where the magic happens
-    // We get datas and create gradient stops with calculated colors
-    var defs = vis.append("svg:defs");
-    defs.append("svg:linearGradient")
-        .attr("id", "sparkline-gradient-" + sparklineId)
-        .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
-        .attr("gradientUnits", "userSpaceOnUse")
-        .selectAll(".gradient-stop")
-        .data(data)
-        .enter()
-        .append("svg:stop").attr('offset', function(d, i) {
-            return ((percentageX(i))) + "%";
-        }).attr("style", function(d) {
-            return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
-        });
-    areaFill = defs.append("svg:linearGradient");
-    areaFill.attr("id", "area-fill");
-    areaFill.attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%");
-    areaFill.append("svg:stop").attr('offset', "0%").attr("style", 'stop-color:white;stop-opacity:0.1');
-  	areaFill.append("svg:stop").attr('offset', "100%").attr("style", 'stop-color:white;stop-opacity:0');
+        // Bind calculator functions to tooltip
 
 
         // Create the gradient effect
         // This is where the magic happens
         // We get datas and create gradient stops with calculated colors
         var defs = vis.append("svg:defs");
+            defs.append("svg:linearGradient")
+                .attr("id", "sparkline-gradient-" + sparklineId)
+                .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
+                .attr("gradientUnits", "userSpaceOnUse")
+                .selectAll(".gradient-stop")
+                .data(data)
+                .enter()
+                .append("svg:stop").attr('offset', function(d, i) {
+                    return ((percentageX(i))) + "%";
+                }).attr("style", function(d) {
+                    return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
+                });
 
-        defs.append("svg:linearGradient")
-            .attr("id", "sparkline-gradient-" + sparklineId)
-            .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
-            .attr("gradientUnits", "userSpaceOnUse")
-            .selectAll(".gradient-stop")
-            .data(data)
-            .enter()
-            .append("svg:stop").attr('offset', function(d, i) {
-                return ((percentageX(i))) + "%";
-            }).attr("style", function(d) {
-                return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
-            });
+
+        var areaFill = defs.append("svg:linearGradient");
+            areaFill.attr("id", "area-fill");
+            areaFill.attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%");
+            areaFill.append("svg:stop").attr('offset', "0%").attr("style", 'stop-color:white;stop-opacity:0.1');
+            areaFill.append("svg:stop").attr('offset', "100%").attr("style", 'stop-color:white;stop-opacity:0');
+
     });
-
-
 
 
     // Metric
@@ -314,7 +292,8 @@ $(document).ready(function() {
         // Because splitting may cause getting datas as string
         // And that breaks scale calculators
         // Also this chain clears the HTML content
-        var data = window.playdata['track_' + th.data('id')];
+        var sparklineId = th.data('id');
+        var data = window.playdata['track_' + sparklineId];
         var parseDate = d3.time.format("%m-%Y");
 
         data.forEach(function(d) {
@@ -331,82 +310,69 @@ $(document).ready(function() {
         var xMargin = 30;
         var yMargin = 20;
 
-        // Scale functions
-        // Setting the range with the margin
-        y = d3.scale.linear()
-                    .domain(EXTENT)
-                    .range([yMargin, h - yMargin]),
-        x = d3.scale.linear()
-                    .domain([0, data.length - 1])
-                    .range([xMargin, w - xMargin]),
+        var vis = d3.select('#svg_' + sparklineId).append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
 
         // Scale functions for creating the gradient fill/stroke
         // Calculating the color according to data in the range of colors
         // That user has passed with the data-range-[high-low]-color attributes
-        gradientY = d3.scale.linear()
+        var gradientY = d3.scale.linear()
+            .domain([0,1,2,3,4]).range(['#e86e6b','#e86e6c','#fcd56b','#59d1ba','#59d1bb','#a5d36e']);
+
+
+        // Scale functions
+        // Setting the range with the margin
+        var y = d3.scale.linear()
             .domain([0, 10])
-            .range([th.data("range-low-color"), th.data("range-high-color")]),
+            .range([h - yMargin, yMargin]);
 
-        // This is a different margin than the one for the chart
-        // Setting the gradient stops from 0% to 100% will cause wrong color ranges
-        // Because data points are positioned in the center of containing rect
-        percentageMargin = 100 / data.length,
-        percentageX = d3.scale.linear()
+        var x = d3.time.scale()
+            .domain([data[0].date, data[data.length-1].date])
+            .range([xMargin, w - xMargin]);
+
+        var percentageMargin = 100 / data.length;
+        var percentageX = d3.scale.linear()
             .domain([0, data.length - 1])
-            .range([percentageMargin, 100 - percentageMargin]),
+            .range([percentageMargin, 100 - percentageMargin]);
 
-        // Create S
-        container = d3.select(this).append("div"),
+        var g = vis.append("svg:g")
+            .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
+            .attr("fill", "url(#sparkline-gradient-" + sparklineId + ")");
 
-        // Create SVG object and set dimensions
-        vis = container
-            .append("svg:svg")
-            .attr("width", w)
-            .attr("height", h)
-
-        // Create the group object and set styles for gradient definition
-        // Which is about to add in a few lines
-        g = vis.append("svg:g")
-                .attr("stroke", "url(#sparkline-gradient-" + sparklineId + ")")
-                .attr("fill", "url(#sparkline-gradient-" + sparklineId + ")"),
-
-        // Create the line
-        // Using cardinal interpolation because we need
-        // The line to pass on every point
-        line = d3.svg.line()
+        var line = d3.svg.line()
             .interpolate("cardinal")
-            .x(function(d, i) { return x(i); })
-            .y(function(d) { return h - y(d.value); }),
+            .x(function(d) { return x(d.date); })
+            .y(function(d) { return y(d.value); });
 
-        // Create points
-        // We are only creating points for first and last data
-          // Because that looks cooler :)
-        points = g.selectAll(".point")
+
+        g.append("svg:path").attr("d", line(data));
+
+        // Create the gradient effect
+        // This is where the magic happens
+        // We get datas and create gradient stops with calculated colors
+        var defs = vis.append("svg:defs");
+            defs.append("svg:linearGradient")
+                .attr("id", "sparkline-gradient-" + sparklineId)
+                .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
+                .attr("gradientUnits", "userSpaceOnUse")
+                .selectAll(".gradient-stop")
+                .data(data)
+                .enter()
+                .append("svg:stop").attr('offset', function(d, i) {
+                    return ((percentageX(i))) + "%";
+                }).attr("style", function(d) {
+                    return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
+                });
+
+        // Points at the first and last data point
+        var points = g.selectAll(".point")
             .data(data)
             .enter().append("svg:circle")
-            .attr("class", "point")
-            .attr("cx", function(d, i) { return x(i) })
-            .attr("cy", function(d, i) { return h - y(d.value) })
-            .attr("r", function(d, i) { return (i === (data.length - 1) || i === 0) ? 5 : 0; });
-
-    // Append the line to the group
-    g.append("svg:path").attr("d", line(data));
-
-    // Create the gradient effect
-    // This is where the magic happens
-    // We get datas and create gradient stops with calculated colors
-    vis.append("svg:defs")
-        .append("svg:linearGradient")
-        .attr("id", "sparkline-gradient-" + sparklineId)
-        .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
-        .attr("gradientUnits", "userSpaceOnUse")
-        .selectAll(".gradient-stop")
-        .data(data)
-        .enter()
-        .append("svg:stop").attr('offset', function(d, i) {
-            return ((percentageX(i))) + "%";
-        }).attr("style", function(d) {
-            return "stop-color:" + gradientY(d.value) + ";stop-opacity:1";
-        });
+            .attr("class", function(d, i) { return (i === (data.length - 1) || i === 0) ? "point end" : "point"; })
+            .attr("cx", function(d, i) { return x(d.date) })
+            .attr("cy", function(d, i) { return y(d.value) })
+            .attr("r",  function(d, i) { return (i === (data.length - 1) || i === 0) ? 3 : 0; });
     });
 });

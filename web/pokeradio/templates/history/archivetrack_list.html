@@ -36,7 +36,7 @@
         </h2>
         <p class="Listing-sub">
         <small>Score:</small> {{ object.score }} <small>&mdash; Plays</small> {{ object.count }}
-        <div class="js-report-sparkline-sm" data-id="{{ object.id }}" data-range-low-color="orange" data-range-high-color="green"></div>
+        <div class="Sparkline--sm js-report-sparkline-sm" id="svg_{{ object.id }}" data-id="{{ object.id }}" data-range-low-color="orange" data-range-high-color="green"></div>
         </p>
     </div>
     {% endfor %}

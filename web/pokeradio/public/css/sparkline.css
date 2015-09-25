@@ -7,6 +7,9 @@ body {
     width: 100%;
     height: auto;
 }
+.Sparkline--sm {
+    float: right;
+}
 
 .x-axis .tick {
   stroke: white;
@@ -137,10 +140,8 @@ body {
 }
 
 .js-report-sparkline-sm {
-    background: green;
   width: 208px;
   height: 70px;
-  margin: 50px auto;
   font-family: sans-serif;
   position: relative;
 }
@@ -148,13 +149,10 @@ body {
   box-sizing: border-box;
 }
 .js-report-sparkline-sm path {
-  stroke-width: 3;
-  fill: none;
+    stroke-width: 3;
+    fill: none;
 }
 .js-report-sparkline-sm .point {
-  stroke-width: 2;
-  -webkit-transition: all .3s;
-          transition: all .3s;
 }
 .js-report-sparkline-sm .bar-rect {
   fill: transparent;
