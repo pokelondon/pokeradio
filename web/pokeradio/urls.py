@@ -37,5 +37,7 @@ urls = [
     (r'^registration/', include('registration.backends.default.urls')),
 
     (r'^monitor/$', TemplateView.as_view(template_name="pokeradiomon.html")),
+
+    (r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
 urlpatterns += patterns('', *urls)
